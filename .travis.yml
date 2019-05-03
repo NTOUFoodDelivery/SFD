@@ -1,0 +1,17 @@
+language: java
+jdk: oraclejdk8
+install: true
+script: ./mvnw clean install
+cache:
+  directories:
+    - $HOME/.m2
+deploy:
+  provider: heroku
+  api_key:
+    secure: efbf55a4-ba9f-4b02-9219-45348ebf36ef
+  app: ntou-sfd
+  on:
+    repo: NTOUFoodDelivery/SFD
+  #Setting your heroku Procfile here!!!
+  run:
+    "web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war"
