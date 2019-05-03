@@ -1,16 +1,15 @@
 language: java
 jdk: oraclejdk8
-# git strips the wrapper jar file so we have to force its download during the build
 install:
-  - mvn -N io.takari:maven:wrapper
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn -N io.takari:maven:wrapper
+- "./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
 cache:
   directories:
   - "$HOME/.m2"
 deploy:
   provider: heroku
   api_key:
-    secure: VBToFClF7qhIsJBFIhlNHlRDs9qJDL2tPRUm3OtwNI90488FfBSggRNHB4RzayNgfYS6H1VekrEQW/2T/z6Hz2HLUSfP3qC2i6yD+M6sPNsT7wwy7+NQalnEMocF2U9KeeL9VaEVPfIKfLmB/5GTDuHidwj4UpREcj7ojMcfgYoinmmOLg7tvHnAOLH39+XtwZDtryNJW9vCzJjokS+lbq5A8aw4pkAnkJ30Vq3Xp6E76qHQV8sQKOGlOg3gZ95mKC2cwPpWXKy5oRuzXcJC++Dl+fIH9mtxHszbqQIy1sUBHy966nBPu10Gqn1CkZ5jEu3z1d83ZK4X/Divsp/2A40jvJDxeo6D+lWxphvwIJL+E7VDnlGNWHDesTxDKUIo8i3FbyKfOng+gtNZVrc6ay0fUg/OQg0xOOoWJLhFJrhfN0oEJmDQ9EZSKDyvbYgr+7E9jV9F1L5v5gZcxKDoXuO+vLDYDq4+5YxjP2iUyF+kaivydunxIqh2ddpVwlNH6KU827yy5HJUhwliz13nqjbMhe+LA7yMRnAx4yzoSB3jzvmOniYGEw4vepyf0BsKfjqXma+6TL9EoH4vx8wNHgHOGhs17WNRtsYL8GuuBNQBf/rPTEd9bIKUO8yMwqzyhEKaeVNcbgGLB0sGLWJq1Q4GS2CrHg98rJIA6RCVoj8=
+    secure: OLIiEgoYOcjjKUYov7bmEMc1g8AInkNkh9izol3l14OhOTuNrovFtSuRYPQEW1EvEj3bHHkWgN5Fcet1BhNeWLCUChGETxBGzTXSkkb4QQwG/FBi4wcviwgqFi+DNRhhbxjKy0fJeAyn+8ATWZXLxXSRjhZ3bzeJoOIhitoXSXZssnUuKZu2KXIYiZDKzrIdZDmXstzVuo+xL7xieXmrM6/RmtV0DjTxPf6jFt/D4HqbB0IZnf203ybmEytsBUpO9O02o7NN5xrE2Lkjmw4u8okFHwU9iJz1PXMLYTJjAlZIq3/ytz9nS3R0uPolCYYyZlw2WQAFrGNleggKShAfnzbjUMdyZAE023UJKcHakCA79T1R2HEWaZR33qQXtsNhv0UHF2+ZjuGGkarvcQ9+LIfKDSytp9dho+iSLQw4zqgbeH2OwDtKX1fFO1oXsflOl62qk/vtBJHBPZXpEC7Se3t0E3gTjP5aoEc3FKaO0e9PwMz2yXfyyCk9FhfaJbZlFY0WOo2gLN0vA3YKBu92FmggTCbu0hngZhfqXzKebarmy5mQbhaq7UydfWo+wz5z8Ak6O4KweDFzUoxntL3T/b2EBZw6CWoPewfgvtbLd0hgUzzsK6Vm6Ba1EbRU8BYAwfYlbVugsYzXIVLaY3B35ajWA+X8Gj3cuBC1NDx5xm8=
   app: ntou-sfd
   on:
     repo: NTOUFoodDelivery/SFD
