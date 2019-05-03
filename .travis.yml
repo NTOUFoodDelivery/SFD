@@ -7,9 +7,6 @@ install:
 cache:
   directories:
   - "$HOME/.m2"
-env:
-  matrix:
-  - MAVEN_OPTS="-Xms2048m -Xmx=2048m"
 deploy:
   provider: heroku
   api_key:
