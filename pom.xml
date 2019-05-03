@@ -90,6 +90,12 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.16</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.github.jsimone/webapp-runner -->
+    <dependency>
+      <groupId>com.github.jsimone</groupId>
+      <artifactId>webapp-runner</artifactId>
+      <version>9.0.19.1</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>SFD</finalName>
