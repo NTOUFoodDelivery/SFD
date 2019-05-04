@@ -15,7 +15,7 @@ import java.util.Set;
 @ServerEndpoint(value = "/pushOrderEndpoint")
 public class PushOrderWebSocket {
 
-    private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+    public static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
 
     @OnOpen
     public void open(Session session, EndpointConfig config) {
@@ -23,9 +23,7 @@ public class PushOrderWebSocket {
     }
 
     @OnClose
-    public void onClose(Session session) {
-        sessions.remove(session);
-    }
+    public void onClose(Session session) { sessions.remove(session); }
 
     @OnMessage
     public void onMessageSession(String msg) throws IOException {
@@ -35,26 +33,13 @@ public class PushOrderWebSocket {
         Boolean isAccept = pushResult.isAccept();
 
         if(isAccept){ // 訂單被接受
-            // 去資料庫 修改訂單狀態 回 被接受之類的
+            // 去資料庫 修改訂單狀態成"被接受之類的"
         }else{  // 訂單被拒絕
-            // 去資料庫 修改訂單狀態 回 未推播
+            // 去資料庫 修改訂單狀態成"未推播"
         }
     }
 
     @OnError
     public void onError(Throwable t) {
-
-    }
-
-    private void pushOrder(String message) throws IOException { // 去資料庫 修改訂單狀態 回 已推播
-        synchronized(sessions){
-            // Iterate over the connected sessions
-            // and broadcast the received message
-            for(Session session : sessions){
-                if (!session.equals(sessions)){
-                    session.getBasicRemote().sendText(message);
-                }
-            }
-        }
     }
 }

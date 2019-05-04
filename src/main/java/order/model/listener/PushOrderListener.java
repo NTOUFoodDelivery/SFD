@@ -1,5 +1,7 @@
 package order.model.listener;
 
+import timer.PushOrderTimer;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -12,24 +14,26 @@ import javax.servlet.http.HttpSessionBindingEvent;
 public class PushOrderListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
-    // Public constructor is required by servlet spec
+    private PushOrderTimer pushOrderTimer = null;
+
     public PushOrderListener() {
     }
 
-    // -------------------------------------------------------
-    // ServletContextListener implementation
-    // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
-      /* This method is called when the servlet context is
-         initialized(when the Web application is deployed). 
-         You can initialize servlet context related data here.
-      */
+
+        String status = "[SYS] SMS reply listener start .";
+        sce.getServletContext().log(status);
+        System.out.println(status);
+        pushOrderTimer = new PushOrderTimer(1);
+        pushOrderTimer.start();
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
-      /* This method is invoked when the Servlet Context 
-         (the Web application) is undeployed or 
-         Application Server shuts down.
-      */
+        String status = "[SYS] SMS reply listener stop .";
+        sce.getServletContext().log(status);
+        System.out.println(status);
+        if (pushOrderTimer != null) {
+            pushOrderTimer.stop();
+        }
     }
 }
