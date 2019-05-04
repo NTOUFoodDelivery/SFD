@@ -4,18 +4,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class a
+public class a 
 {
 	private Connection con = null;  //Database objects
 	private PreparedStatement pst = null;
 	private ResultSet rs = null;
 	private String insertdbSQL = "INSERT INTO member(User_Id, Password, User_Name, Email, Phone_number, Last_Address, User_Type, User_Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 	//?叫做佔位符
-	private String selectSQL = "SELECT progId FROM program WHERE progName LIKE ?";
-	
+	private String selectSQL = "SELECT User_Name, User_Id FROM member WHERE Password LIKE ?";
+
+    //ResultSetMetaData rsmd = rs.getMetaData(); //取得Query資料
+
+  //  int numColumns = rsmd.getColumnCount();
 	
 	public a() {
 		try { 
@@ -47,12 +51,12 @@ public class a
 	public void insertTable() {
 		try {
 			pst = con.prepareStatement(insertdbSQL);
-			pst.setString(1, "313jjjv");
+			pst.setString(1, "c98798");
 			pst.setString(2, "b00000");
 			pst.setString(3, "蘇包");
 			pst.setString(4, "bao@gmail.com");
 			pst.setString(5, "0978716315");
-			pst.setString(6, "smail taipei");
+			pst.setString(6, null);
 			pst.setString(7, "EAT");
 			pst.setString(8, "fuck");
 			pst.executeUpdate();
@@ -65,6 +69,30 @@ public class a
 	    { 
 	      //Close(); 
 	    } 
+	}
+	public String searchTable(String username) {
+		String id = null;
+		String na = null;
+		try {
+			pst = con.prepareStatement(selectSQL);
+			//pst.setString(1, "User_Name");
+			//pst.setString(1, "member");
+			//pst.setString(2, "User_Id");
+			pst.setString(1, "b00000");
+			rs = pst.executeQuery();
+			while(rs.next()) {
+				na = rs.getString("User_Id");
+				id = rs.getString("User_Name");
+				System.out.println(na + "#" + id);
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			Close();
+		}
+		return id;
 	}
 	public void Close() {
 		try {
@@ -84,7 +112,7 @@ public class a
 	}
 	public static void main(String args[]) {
 		a f = new a();
-		f.insertTable();
+		f.searchTable("a00000");
 	}
 	
 }
