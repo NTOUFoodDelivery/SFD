@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ShowRestInfoServlet")
+@WebServlet("/ShowRestInfoServlet")
 public class ShowRestInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -29,7 +29,9 @@ public class ShowRestInfoServlet extends HttpServlet {
         result.setOrderID("test");
         result.setAccept(true);
 
+
         String json = gson.toJson(result);
+        System.out.println(json);
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
