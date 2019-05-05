@@ -1,4 +1,4 @@
-package order.model.service;
+package member.controller.service;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/ShowDeliveryStaffCurrentOrderServlet")
-public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
+@WebServlet("/SwitchStatusServlet")
+public class SwitchStatusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

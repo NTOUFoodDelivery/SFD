@@ -4,33 +4,38 @@ import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
-    public String _body;
+
+    private byte[] body;
 
     public MultiReadHttpServletRequest(HttpServletRequest request) throws IOException {
         super(request);
-        StringBuffer sBuffer = new StringBuffer();
-        BufferedReader bufferedReader = request.getReader();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            sBuffer.append(line);
-        }
-        _body = sBuffer.toString();
+        body = HttpHelper.getBodyString(request).getBytes(Charset.forName("UTF-8"));
 
     }
 
     @Override
-    public ServletInputStream getInputStream() {
-        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(_body.getBytes());
+    public BufferedReader getReader() throws IOException {
+        return new BufferedReader(new InputStreamReader(getInputStream()));
+    }
+
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+
+        final ByteArrayInputStream bais = new ByteArrayInputStream(body);
+
         return new ServletInputStream() {
+
             @Override
-            public int read() {
-                return byteArrayInputStream.read();
+            public int read() throws IOException {
+                return bais.read();
             }
 
             @Override
@@ -44,14 +49,14 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
             }
 
             @Override
-            public void setReadListener(ReadListener listener) {
+            public void setReadListener(ReadListener readListener) {
 
             }
+
         };
     }
 
-    @Override
-    public BufferedReader getReader() {
-        return new BufferedReader(new InputStreamReader(this.getInputStream()));
+    public void setInputStream(byte[] body) {
+        this.body = body;
     }
 }

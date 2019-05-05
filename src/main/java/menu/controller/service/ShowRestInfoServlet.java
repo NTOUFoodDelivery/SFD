@@ -1,4 +1,4 @@
-package menu.model.service;
+package menu.controller.service;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -23,6 +23,8 @@ public class ShowRestInfoServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+
+        //-----------------------------------------
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         PushResult result = new PushResult();

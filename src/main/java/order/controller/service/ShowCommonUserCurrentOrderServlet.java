@@ -1,9 +1,10 @@
-package order.model.service;
+package order.controller.service;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import order.model.javabean.PushResult;
+import tool.HttpCommonAction;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,11 +22,7 @@ public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        PushResult result = new PushResult();
-        result.setOrderID("test");
-        result.setAccept(true);
-
-        String json = gson.toJson(result);
+        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

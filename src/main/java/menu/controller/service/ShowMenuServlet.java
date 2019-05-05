@@ -1,4 +1,4 @@
-package menu.model.service;
+package menu.controller.service;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -16,9 +16,16 @@ import java.io.PrintWriter;
 @WebServlet("/ShowMenuServlet")
 public class ShowMenuServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+
+        String restID = request.getParameter("Rest_Id");
+
+        //------------------------------------------------
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         PushResult result = new PushResult();
@@ -29,9 +36,5 @@ public class ShowMenuServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

@@ -1,4 +1,4 @@
-package order.model.websocket;
+package order.controller.websocket;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;

@@ -6,11 +6,11 @@
   </welcome-file-list>
 
   <filter>
-    <filter-name>CommonRequestFilter</filter-name>
-    <filter-class>filter.CommonRequestFilter</filter-class>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>filter.CharacterEncodingFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>CommonRequestFilter</filter-name>
+    <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>

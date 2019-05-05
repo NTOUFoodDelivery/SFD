@@ -1,6 +1,6 @@
-package timerTask;
+package order.model.timerTask;
 
-import order.model.websocket.PushOrderWebSocket;
+import order.controller.websocket.PushOrderWebSocket;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.Date;

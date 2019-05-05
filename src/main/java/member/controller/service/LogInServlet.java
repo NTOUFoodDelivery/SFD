@@ -1,4 +1,4 @@
-package member.model.service;
+package member.controller.service;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
