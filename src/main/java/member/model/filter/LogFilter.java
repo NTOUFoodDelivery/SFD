@@ -4,7 +4,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@WebFilter(filterName = "LogFilter")
+@WebFilter("/LogFilter")
 public class LogFilter implements Filter {
     public void destroy() {
     }

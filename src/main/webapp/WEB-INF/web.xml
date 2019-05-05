@@ -5,6 +5,25 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
+  <filter>
+    <filter-name>CommonRequestFilter</filter-name>
+    <filter-class>filter.CommonRequestFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CommonRequestFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  <filter>
+    <filter-name>LogFilter</filter-name>
+    <filter-class>member.model.filter.LogFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LogFilter</filter-name>
+    <url-pattern>/LogInServlet</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
   <listener>
     <listener-class>order.model.listener.PushOrderListener</listener-class>
   </listener>
