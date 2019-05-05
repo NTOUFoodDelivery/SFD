@@ -14,6 +14,11 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
+        String restID = request.getParameter("Rest_Id");
+        String address = request.getParameter("address");
     }
 }
