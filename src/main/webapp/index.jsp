@@ -75,8 +75,8 @@ your name??<input id="nameInput" type="text" />
                     var name = msg.split("&says&")[0];
                     var text = msg.split("&says&")[1];
                     var showDialogue = $("#showDialogue");
-                    showDialogue.append('<div class="card text-dark bg-light m-2" style="margin-bottom:10px;line-height:20px;padding:3px;float:left;max-width:70%;text-align:left">'+name+'：<br/>' + text + '</div><br/>');
-
+                    showDialogue.append('<div class="card text-dark bg-light m-2" style="margin-bottom:10px;line-height:20px;padding:3px;float:left;max-width:70%;text-align:left">'+name+'：<br/>&ensp;' + text + '</div><div style="clear:both"></div>');
+                    showDialogue[0].scrollTop = showDialogue[0].scrollHeight;
                 }
                 this.webSocket.onclose = function(event) {
                     console.log("onclose::" + JSON.stringify(event, null, 4));
@@ -124,7 +124,9 @@ your name??<input id="nameInput" type="text" />
             orderID: name+"&says&"+text,
             accept: true
         }
-        $('#showDialogue').append('<div class="card text-dark bg-light m-2" style="line-height:20px;padding:3px;float:right;max-width: 70%;text-align:left">'+name+'：<br/>' + text + '</div><br/>');
+        var showDialogue = $("#showDialogue");
+        showDialogue.append('<div class="card text-dark bg-light m-2" style="line-height:20px;padding:3px;float:right;max-width: 70%;text-align:left">'+name+'：<br/>&ensp;' + text + '</div><div style="clear:both"></div>');
+        showDialogue[0].scrollTop = showDialogue[0].scrollHeight;
         client.send(JSON.stringify(jsonObject));
         document.getElementById('textInput').value="";
     })
