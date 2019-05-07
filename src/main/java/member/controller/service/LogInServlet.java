@@ -38,11 +38,11 @@ public class LogInServlet extends HttpServlet {
 
                 if(UserDAO.login(userID,password)){
                     info.add("登入成功，歡迎"+userID+"！");
-                    response.sendRedirect("index.jsp"); // 跳轉頁面
+                    response.sendRedirect("chatDemo.jsp"); // 跳轉頁面
                 }else {
                     info.add("登入失敗，錯誤的ID和密碼");
                     request.setAttribute("info", info); // 保存錯誤訊息
-                    request.getRequestDispatcher("Login.jsp").forward(request,response); // 跳轉回登入頁面
+                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
                 }
             } catch (Exception e) {
                 e.printStackTrace();
