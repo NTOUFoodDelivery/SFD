@@ -22,7 +22,8 @@ public class PushOrderListener implements ServletContextListener,
         String status = "[SYS] SMS reply listener start .";
         sce.getServletContext().log(status);
         System.out.println(status);
-        pushOrderTimer = new PushOrderTimer(1);
+        pushOrderTimer = new PushOrderTimer(60);
+
         pushOrderTimer.start();
     }
 

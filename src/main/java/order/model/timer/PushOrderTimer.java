@@ -6,17 +6,30 @@ import java.util.Date;
 import java.util.Timer;
 
 public class PushOrderTimer {
-    private final Timer timer = new Timer();
-    private final int min;
-    public PushOrderTimer(int minutes) {
-        min = minutes;
+    private static Timer timer = null ;
+
+    private int sec;
+    public PushOrderTimer(int secs) {
+        sec = secs;
     }
     public void start() {
+        timer = new Timer();
         Date date = new Date();
-        timer.schedule(new PushOrderTask()
-                , date, min * 60 * 1000);
+        timer.schedule(new PushOrderTask(),
+                0, sec * 1000);
     }
     public void stop() {
         timer.cancel();
+    }
+    public void reset() {
+        timer.cancel();
+        timer = new Timer();
+        Date date = new Date();
+
+        timer.schedule(new PushOrderTask(),
+                0, sec * 1000);
+    }
+    public void setSec(int secs) {
+        sec = secs;
     }
 }
