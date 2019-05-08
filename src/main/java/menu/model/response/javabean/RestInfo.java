@@ -1,4 +1,4 @@
-package menu.model.javabean;
+package menu.model.response.javabean;
 
 public class RestInfo {
     /**

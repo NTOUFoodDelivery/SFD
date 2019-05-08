@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
-    public static boolean login(String userID, String password){
+    public static boolean login(String userID, String password, String userType){
         User u = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -18,10 +18,11 @@ public class UserDAO {
         boolean result = false;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "select * from member where User_Id=? and Password=?";
+            String sql = "select * from member where User_Id=? and Password=? and User_Type=?";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             preparedStatement.setString(1,userID);
             preparedStatement.setString(2,password);
+            preparedStatement.setString(3,userType);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 result = true;

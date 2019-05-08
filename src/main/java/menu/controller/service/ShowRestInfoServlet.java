@@ -3,6 +3,8 @@ package menu.controller.service;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import db.demo.dao.RestDAO;
 import order.model.javabean.PushResult;
 
 import javax.servlet.ServletException;
@@ -24,16 +26,12 @@ public class ShowRestInfoServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
 
-        //-----------------------------------------
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        PushResult result = new PushResult();
-        result.setOrderID("test");
-        result.setAccept(true);
 
+        JsonObject jsonObject = RestDAO.searchRestInfo();
 
-        String json = gson.toJson(result);
-        System.out.println(json);
+        String json = gson.toJson(jsonObject);
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

@@ -25,6 +25,9 @@
   </filter-mapping>
 
   <listener>
+    <listener-class>listener.RequestListener</listener-class>
+  </listener>
+  <listener>
     <listener-class>order.model.listener.PushOrderListener</listener-class>
   </listener>
 

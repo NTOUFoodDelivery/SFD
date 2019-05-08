@@ -3,8 +3,11 @@ package order.controller.websocket;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import configurator.GetHttpSessionConfigurator;
+import db.demo.javabean.User;
 import order.model.javabean.PushResult;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -12,14 +15,32 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint("/pushOrderEndpoint")
+@ServerEndpoint(value="/pushOrderEndpoint",configurator= GetHttpSessionConfigurator.class)
 public class PushOrderWebSocket {
 
     public static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+    private Session wsSession;
+    private HttpSession httpSession;
 
     @OnOpen
     public void open(Session session, EndpointConfig config) {
+        HttpSession httpSession= (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+        System.out.println(httpSession.getAttribute("userID"));
+//        if(user != null){
+//            this.wsSession = session;
+//            this.httpSession = httpSession;
+//        }else{
+//
+//            try {
+//                session.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
         System.out.println("PushOrderWebSocket Server open ::"+session.getId());
+
+        System.out.println("User Type ::"+session.getId());
         sessions.add(session);
     }
 

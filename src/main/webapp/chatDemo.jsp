@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+
 <html>
 <head>
     <title>SFD TEST</title>
@@ -17,8 +18,21 @@
 
 </head>
 <body>
-<h2>Hello World!</h2>
-your name??<input id="nameInput" type="text" />
+<%
+    request.setCharacterEncoding("utf-8");
+%>
+<%
+    String userID = (String)request.getSession().getAttribute("userID");
+    String userType = (String)request.getSession().getAttribute("userType");
+
+    if(userID!=null && userType!=null ){
+%>
+<h2> Welcome <%=userType%> <%=userID%></h2>
+<%
+    }else{
+        response.sendRedirect("LoginDemo.jsp");
+    }
+%>
 
 <section id="mySection">
     <!-- ---------   chatBox   ---------- -->
