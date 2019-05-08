@@ -11,9 +11,8 @@ import javax.servlet.http.*;
 public class RequestListener implements ServletRequestListener {
 
     public void requestInitialized(ServletRequestEvent sre)  {
-        //将所有request请求都携带上httpSession
-        System.out.println(((HttpServletRequest) sre.getServletRequest()).getSession().getAttribute("userID"));
-
+        //request 附上 httpSession
+        ((HttpServletRequest) sre.getServletRequest()).getSession();
     }
     public RequestListener() {
     }
