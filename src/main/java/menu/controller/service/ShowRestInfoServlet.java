@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
-import order.model.javabean.PushResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +17,6 @@ import java.io.PrintWriter;
 @WebServlet("/ShowRestInfoServlet")
 public class ShowRestInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

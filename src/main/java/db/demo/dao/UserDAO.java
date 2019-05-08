@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
+
+    // 登入
     public static boolean login(String userID, String password, String userType){
         User u = null;
         Connection connection = null;
@@ -39,7 +41,7 @@ public class UserDAO {
         return result;
     }
 
-    //此方法實現註冊功能，向資料庫中寫入新使用者的資訊
+    // 註冊
     public static void addUser(User user){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -61,6 +63,17 @@ public class UserDAO {
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-
     }
+
+    // 利用 userID 刪除 使用者
+    public static void delUser(int userID){}
+
+    // 利用 userID ban 使用者
+    public static void banUser(int userID){}
+
+    // 利用 userID 看 資料庫 有無相同 userID
+    public static boolean searchUser(int userID){ return false; }
+
+    // 利用 userID 查詢 空閒的 外送員
+    public static void searchIdelDeliver(int userID){}
 }

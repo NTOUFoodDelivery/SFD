@@ -36,7 +36,6 @@ public class JdbcUtils {
     public static Connection getconn() throws SQLException {
         Connection connection = DriverManager.getConnection(url,user,password);
         return connection;
-
     }
 
     public static void close(Statement statement, Connection connection){
