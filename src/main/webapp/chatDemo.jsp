@@ -25,7 +25,10 @@
     String userID = (String)request.getSession().getAttribute("userID");
     String userType = (String)request.getSession().getAttribute("userType");
 
+
     if(userID!=null && userType!=null ){
+        session.setAttribute("userID",userID);
+        session.setAttribute("userType",userType);
 %>
 <h2> Welcome <%=userType%> <%=userID%></h2>
 <%
@@ -38,22 +41,81 @@
     <!-- ---------   chatBox   ---------- -->
 
 
-        <div class="card border-warning mb-3">
-            <div class="card-header text-white bg-warning" style="height: 43px;">CAHT</div>
-            <div class="card-body" id="showDialogue" style="height: 247px; overflow-y:scroll;"></div>
-            <div class="card-footer border-top" style="height: 90px;">
-                <div class="input-group">
-                    <input type="text" id="textInput" class="form-control" style="width:180px; margin-bottom:5px">
-                    <div style="width:100%; text-align:center">
+    <div class="card border-warning mb-3">
+        <div class="card-header text-white bg-warning" style="height: 43px;">CAHT</div>
+        <div class="card-body" id="showDialogue" style="height: 247px; overflow-y:scroll;"></div>
+        <div class="card-footer border-top" style="height: 90px;">
+            <div class="input-group">
+                <input type="text" id="textInput" class="form-control" style="width:180px; margin-bottom:5px">
+                <div style="width:100%; text-align:center">
 
-                        <button id="submit">submit</button>
-                    </div>
+                    <button id="submit">submit</button>
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- ---------   chatBox   ---------- -->
 </section>
+<img id="img" />
+<input type="file" id = "file">
+<input id="but" value="aa" type="button" onclick="mes()">
+<script type="text/javascript">
+    function mes(){
+        var imgs = document.getElementById("file");
+        var img = document.getElementById("img");
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(imgs.files[0]);
+        reader.onload=function(e){
+            var bf = this.result;
+            var blob = new Blob([bf],{type:"text/plain"});
+            // console.log(blob);
+            var str = URL.createObjectURL(blob);
+            img.src = str;
+        };
+
+    }
+
+</script>
+<script>
+    $(document).ready(function() {
+        let json = `
+        {
+            \t"restName":"Apple203",
+            \t"restAddress":"中正路111號"
+        }`;
+        $.ajax({
+            type: "POST",
+            url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
+            dataType: "json",
+            data:json,
+            success: function(data) {
+                console.log(data);
+                var img = document.getElementById("img");
+                var Image = data.result[0].Image;
+                // Convert the blob to arrayBuffer
+                var bf = null;
+                bf = str2ab(Image);
+                console.log(Image);
+                var blob = new Blob([bf],{type:"text/plain"});
+                var str = URL.createObjectURL(blob);
+                img.src = str;
+
+            },
+            error: function () {
+
+            }
+        })
+    });
+    function str2ab(str) {
+        var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+        var bufView = new Uint16Array(buf);
+        for (var i=0, strLen=str.length; i < strLen; i++) {
+            bufView[i] = str.charCodeAt(i);
+        }
+        return buf;
+    }
+</script>
 </body>
 <script>
     class WebSocketClient {

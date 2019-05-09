@@ -14,33 +14,23 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value="/pushOrderEndpoint",configurator= GetHttpSessionConfigurator.class)
 public class PushOrderWebSocket {
 
-    public static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
-    private Session wsSession;
+    public static final Set<Session> sessions = Collections.synchronizedSet(new CopyOnWriteArraySet<Session>());
+    private Session session;
     private HttpSession httpSession;
 
     @OnOpen
     public void open(Session session, EndpointConfig config) {
         HttpSession httpSession= (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-        System.out.println(httpSession.getAttribute("userID"));
-//        if(user != null){
-//            this.wsSession = session;
-//            this.httpSession = httpSession;
-//        }else{
-//
-//            try {
-//                session.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
+        this.session = session;
+        this.httpSession = (HttpSession) config.getUserProperties()
+                .get(HttpSession.class.getName());
         System.out.println("PushOrderWebSocket Server open ::"+session.getId());
-
-        System.out.println("User Type ::"+session.getId());
         sessions.add(session);
     }
 

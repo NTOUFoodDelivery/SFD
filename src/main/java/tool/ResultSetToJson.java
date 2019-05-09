@@ -1,9 +1,11 @@
 package tool;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import com.google.gson.*;
+import org.apache.commons.codec.binary.Base64;
 
 public class ResultSetToJson {
     public static final JsonArray ResultSetToJsonArray(ResultSet rs) {
@@ -40,7 +42,15 @@ public class ResultSetToJson {
                 element = new JsonObject();
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     columnName = rsmd.getColumnName(i + 1);
-                    columnValue = rs.getString(columnName);
+                    if(columnName.equals("Image"))
+                    {
+                        if(rs.getString(columnName) != null) {
+                            byte[] bytes = rs.getBytes("Image");
+                            columnValue = Base64.encodeBase64String(bytes);
+                        }
+                    }else{
+                        columnValue = rs.getString(columnName);
+                    }
                     element.addProperty(columnName, columnValue);
                 }
                 ja.add(element);
