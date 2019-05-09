@@ -176,8 +176,8 @@
             }
         }
     }
-    let client = new WebSocketClient("ws", "127.0.0.1", 8080, "/SFD/pushOrderEndpoint"); // 測試
-    // let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
+    // let client = new WebSocketClient("ws", "127.0.0.1", 8080, "/SFD/pushOrderEndpoint"); // 測試
+    let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
     client.connect();
 
     document.getElementById('submit').addEventListener("click", function () {
