@@ -86,7 +86,7 @@
         }`;
         $.ajax({
             type: "POST",
-            url: "https://https://ntou-sfd.herokuapp.com/ShowMenuServlet",
+            url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
             dataType: "json",
             data:json,
             success: function(data) {
