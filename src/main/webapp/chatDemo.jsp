@@ -86,35 +86,22 @@
         }`;
         $.ajax({
             type: "POST",
-            url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
+            url: "https://https://ntou-sfd.herokuapp.com/ShowMenuServlet",
             dataType: "json",
             data:json,
             success: function(data) {
                 console.log(data);
                 var img = document.getElementById("img");
                 var Image = data.result[0].Image;
-                // Convert the blob to arrayBuffer
-                var bf = null;
-                bf = str2ab(Image);
+                var str = "data:image/png;base64,"+Image;
                 console.log(Image);
-                var blob = new Blob([bf],{type:"text/plain"});
-                var str = URL.createObjectURL(blob);
                 img.src = str;
-
             },
             error: function () {
 
             }
         })
     });
-    function str2ab(str) {
-        var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-        var bufView = new Uint16Array(buf);
-        for (var i=0, strLen=str.length; i < strLen; i++) {
-            bufView[i] = str.charCodeAt(i);
-        }
-        return buf;
-    }
 </script>
 </body>
 <script>
