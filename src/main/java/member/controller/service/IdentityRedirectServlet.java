@@ -15,15 +15,13 @@ public class IdentityRedirectServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        response.setHeader("Access-Control-Allow-Origin", "*");
 
         HttpSession session = request.getSession();
 
         if(session.isNew()){
-            System.out.println("A new session");
+            System.out.println("A new session :: "+session.getId());
         }else{
-            System.out.println("IdentityRedirectServlet request :: "+session.getId());
-            System.out.println("Welcome back ! ");
+            System.out.println("Welcome back ! :: "+session.getId());
         }
     }
 }

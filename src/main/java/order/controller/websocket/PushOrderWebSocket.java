@@ -1,24 +1,19 @@
 package order.controller.websocket;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import configurator.GetHttpSessionConfigurator;
-import db.demo.javabean.User;
-import order.model.javabean.PushResult;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(value="/pushOrderEndpoint",configurator= GetHttpSessionConfigurator.class)
 public class PushOrderWebSocket {
 
-    public static Map<String, Session> sessions = new HashMap<>();
+//    private static CopyOnWriteArraySet<Session> sessions = new CopyOnWriteArraySet<Session>();
+    private static Map<String,String> httpSessions =  new ConcurrentHashMap<String,String>();
+    private static Map<String,Session> sessions =  new ConcurrentHashMap<String,Session>();
 //    public static Set<Session> sessions = Collections.synchronizedSet(new CopyOnWriteArraySet<Session>());
     private Session session;
     private HttpSession httpSession;
@@ -29,7 +24,7 @@ public class PushOrderWebSocket {
         this.session = session;
         this.httpSession = (HttpSession) config.getUserProperties()
                 .get(HttpSession.class.getName());
-        System.out.println("httpSession :: "+httpSession.getId());
+        System.out.println("httpSession :: " + httpSession.getId());
         sessions.put(httpSession.getId(),session);
     }
 

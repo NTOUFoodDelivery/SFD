@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--reconnect websocket-->
-    <script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>
+<%--    <script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>--%>
 
 </head>
 <body>
@@ -24,8 +24,6 @@
 <%
     String userID = (String)request.getSession().getAttribute("userID");
     String userType = (String)request.getSession().getAttribute("userType");
-
-
     if(userID!=null && userType!=null ){
         session.setAttribute("userID",userID);
         session.setAttribute("userType",userType);
@@ -109,8 +107,9 @@
             xhrFields: {
                 withCredentials: true
             },
+            crossDomain: true,
             type: "GET",
-            url: "http://127.0.0.1:8080/SFD/IdentityRedirectServlet",
+            url: "http://localhost:8080/SFD/IdentityRedirectServlet",
             dataType: "json",
             success: function(data) {
                 console.log(data);
