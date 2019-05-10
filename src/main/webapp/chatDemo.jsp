@@ -57,6 +57,7 @@
 
     <!-- ---------   chatBox   ---------- -->
 </section>
+<button id="testSubmit">submit</button>
 <img id="img" />
 <input type="file" id = "file">
 <input id="but" value="aa" type="button" onclick="mes()">
@@ -94,7 +95,6 @@
                 var img = document.getElementById("img");
                 var Image = data.result[0].Image;
                 var str = "data:image/png;base64,"+Image;
-                console.log(Image);
                 img.src = str;
             },
             error: function () {
@@ -102,6 +102,24 @@
             }
         })
     });
+</script>
+<script>
+    $('#testSubmit').click(function () {
+        $.ajax({
+            xhrFields: {
+                withCredentials: true
+            },
+            type: "GET",
+            url: "http://127.0.0.1:8080/SFD/IdentityRedirectServlet",
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+            },
+            error: function () {
+
+            }
+        })
+    })
 </script>
 </body>
 <script>
@@ -176,8 +194,8 @@
             }
         }
     }
-    // let client = new WebSocketClient("ws", "127.0.0.1", 8080, "/SFD/pushOrderEndpoint"); // 測試
-    let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
+    let client = new WebSocketClient("ws", "127.0.0.1", 8080, "/SFD/pushOrderEndpoint"); // 測試
+    // let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
     client.connect();
 
     document.getElementById('submit').addEventListener("click", function () {
