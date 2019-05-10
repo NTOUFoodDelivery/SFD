@@ -37,8 +37,8 @@
             }
         }
     %>
-    <form action="LogInServlet" method="post" onSubmit="return validate(this)">
-        Username:<input type="text" name="userID"><br>
+    <form action="LogInServlet" method="post">
+        Username:<input type="text" name="account"><br>
         Password:<input type="password" name="password"><br>
         <select class="custom-select" name="userType">
             <option selected>Choose...</option>

@@ -1,3 +1,4 @@
+<%@ page import="order.controller.websocket.PushOrderWebSocket" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 
@@ -14,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--reconnect websocket-->
-<%--    <script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>--%>
+    <script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>
 
 </head>
 <body>
@@ -22,13 +23,13 @@
     request.setCharacterEncoding("utf-8");
 %>
 <%
-    String userID = (String)request.getSession().getAttribute("userID");
+    String account = (String)request.getSession().getAttribute("account");
     String userType = (String)request.getSession().getAttribute("userType");
-    if(userID!=null && userType!=null ){
-        session.setAttribute("userID",userID);
+    if(account!=null && userType!=null ){
+        session.setAttribute("account",account);
         session.setAttribute("userType",userType);
 %>
-<h2> Welcome <%=userType%> <%=userID%></h2>
+<h2> Welcome <%=userType%> <%=account%></h2>
 <%
     }else{
         response.sendRedirect("LoginDemo.jsp");
@@ -54,8 +55,9 @@
     </div>
 
     <!-- ---------   chatBox   ---------- -->
-</section>
-<button id="testSubmit">submit</button>
+</section><br>
+<button id="testSubmit">testSubmit</button><br>
+<a href="otherDemo.jsp">網頁跳轉</a><br>
 <img id="img" />
 <input type="file" id = "file">
 <input id="but" value="aa" type="button" onclick="mes()">
@@ -76,31 +78,31 @@
     }
 
 </script>
-<script>
-    $(document).ready(function() {
-        let json = `
-        {
-            \t"restName":"Apple203",
-            \t"restAddress":"中正路111號"
-        }`;
-        $.ajax({
-            type: "POST",
-            url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
-            dataType: "json",
-            data:json,
-            success: function(data) {
-                console.log(data);
-                var img = document.getElementById("img");
-                var Image = data.result[0].Image;
-                var str = "data:image/png;base64,"+Image;
-                img.src = str;
-            },
-            error: function () {
+<%--<script>--%>
+<%--    $(document).ready(function() {--%>
+<%--        let json = `--%>
+<%--        {--%>
+<%--            \t"restName":"Apple203",--%>
+<%--            \t"restAddress":"中正路111號"--%>
+<%--        }`;--%>
+<%--        $.ajax({--%>
+<%--            type: "POST",--%>
+<%--            url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",--%>
+<%--            dataType: "json",--%>
+<%--            data:json,--%>
+<%--            success: function(data) {--%>
+<%--                console.log(data);--%>
+<%--                var img = document.getElementById("img");--%>
+<%--                var Image = data.result[0].Image;--%>
+<%--                var str = "data:image/png;base64,"+Image;--%>
+<%--                img.src = str;--%>
+<%--            },--%>
+<%--            error: function () {--%>
 
-            }
-        })
-    });
-</script>
+<%--            }--%>
+<%--        })--%>
+<%--    });--%>
+<%--</script>--%>
 <script>
     $('#testSubmit').click(function () {
         $.ajax({
@@ -193,9 +195,13 @@
             }
         }
     }
-    let client = new WebSocketClient("ws", "127.0.0.1", 8080, "/SFD/pushOrderEndpoint"); // 測試
+    let client = new WebSocketClient("ws", "localhost", 8080, "/SFD/pushOrderEndpoint"); // 測試
     // let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
     client.connect();
+
+    window.onbeforeunload = function() {
+        client.close();
+    };
 
     document.getElementById('submit').addEventListener("click", function () {
         let name =document.getElementById('nameInput').value;

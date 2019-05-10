@@ -2,7 +2,8 @@ package db.demo.javabean;
 
 public class User {
 
-    private String userID;
+    private int userID;
+    private String account;
     private String password;
     private String userName;
     private String email;
@@ -12,13 +13,17 @@ public class User {
     private String userStatus;
 
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
+
+    public String getAccount() { return account; }
+
+    public void setAccount(String account) { this.account = account; }
 
     public String getPassword() {
         return password;
