@@ -4,6 +4,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import db.demo.dao.OrderDAO;
+import db.demo.dao.UserDAO;
+import member.model.javabean.MemberSetting;
 import tool.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
@@ -26,10 +28,11 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
         String json = null;
         int userID;
         try {
-
             userID = Integer.parseInt(parm);
-            // 查詢 外送員 當前訂單
-            OrderDAO.searchDeliverOrder(userID);
+            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)) {
+                // 查詢 外送員 當前訂單
+                OrderDAO.searchDeliverOrder(userID);
+            }
         } catch (NumberFormatException e) {
 //            e.printStackTrace();
             StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
@@ -37,7 +40,6 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
             statusCodeResponse.setTime(new Date().toString());
             json = gson.toJson(statusCodeResponse);
         }
-
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

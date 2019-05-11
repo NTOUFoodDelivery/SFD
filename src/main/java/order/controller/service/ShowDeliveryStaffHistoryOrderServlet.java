@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.UserDAO;
+import member.model.javabean.MemberSetting;
 import tool.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
@@ -28,9 +29,10 @@ public class ShowDeliveryStaffHistoryOrderServlet extends HttpServlet {
         int userID;
         try {
             userID = Integer.parseInt(parm);
-            System.out.println(UserDAO.showUserIdentity(userID));
-            // 查詢 外送員 歷史訂單
-            OrderDAO.searchDeliverHistoryOrder(userID);
+            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)){
+                // 查詢 外送員 歷史訂單
+                OrderDAO.searchDeliverHistoryOrder(userID);
+            }
         } catch (NumberFormatException e) {
 //            e.printStackTrace();
             StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
