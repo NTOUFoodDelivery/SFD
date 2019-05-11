@@ -69,79 +69,80 @@ public class UserDAO {
     }
 
     // 利用 userID 查看 使用者目前身份
-    public static JsonObject showUserIdentity(int userID)
+    public static String showUserIdentity(int userID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        JsonObject jsonString = null;
+        String identity = null;
         try {
             connection = JdbcUtils.getconn();
             String sql = "SELECT User_Status FROM member WHERE User_Id = ?";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             preparedStatement.setInt(1,userID);
             resultSet = preparedStatement.executeQuery();
-            resultSet.getMetaData();
-            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
+            if(resultSet.next()){
+                identity = resultSet.getString("User_Status");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-        return jsonString;
+        return identity;
     }
 
     // 利用 userID 刪除 使用者
     public static void delUser(int userID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-        	connection = JdbcUtils.getconn();
-        	String sql = "DELETE FROM member WHERE User_Id = ?";
-        	preparedStatement = connection.prepareStatement(sql);
-        	preparedStatement.setInt(1, userID);
-        	preparedStatement.executeUpdate();
+            connection = JdbcUtils.getconn();
+            String sql = "DELETE FROM member WHERE User_Id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.executeUpdate();
         }
-        catch(SQLException e) 
-	    { 
-        	e.printStackTrace();
-	    } 
-	    finally 
-	    { 
-	    	JdbcUtils.close(preparedStatement,connection);
-	    }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
     }
 
     // 利用 userID ban 使用者
     // 暴風的寫法  請證實他 
-    public static void banUser(int userID)              
+    public static void banUser(int userID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-        	connection = JdbcUtils.getconn();
-        	String sql = "UPDATE member\n" + 
-        			"SET User_Status = ban\n" + 
-        			"WHERE User_Id = ?;";
-        	preparedStatement = connection.prepareStatement(sql);
-        	preparedStatement.setInt(1, userID);
-        	preparedStatement.executeUpdate();
+            connection = JdbcUtils.getconn();
+            String sql = "UPDATE member\n" +
+                    "SET User_Status = ban\n" +
+                    "WHERE User_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.executeUpdate();
         }
-        catch(SQLException e) 
-	    { 
-        	e.printStackTrace();
-	    } 
-	    finally 
-	    { 
-	    	JdbcUtils.close(preparedStatement,connection);
-	    }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
     }
 
     // 利用 userID 看 資料庫 有無相同 userID
     public static boolean searchUser(int userID)
-    { 
-    	Connection connection = null;
+    {
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -153,21 +154,21 @@ public class UserDAO {
             resultSet.getMetaData();
             if(resultSet.next())
             {
-            	return true;
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-    	return false; 
+        return false;
     }
 
     // 利用 userID 查詢 全部的空閒的 外送員 
     public static ArrayList<Integer> searchIdelDeliver()
     {
-    	ArrayList<Integer> a = new ArrayList<Integer>();
-    	Connection connection = null;
+        ArrayList<Integer> a = new ArrayList<Integer>();
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -178,13 +179,13 @@ public class UserDAO {
             resultSet.getMetaData();
             while(resultSet.next())
             {
-            	a.add(resultSet.getInt("User_Id"));
+                a.add(resultSet.getInt("User_Id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-		return a;
+        return a;
     }
 }

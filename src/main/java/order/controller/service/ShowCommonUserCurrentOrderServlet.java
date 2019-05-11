@@ -3,7 +3,8 @@ package order.controller.service;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import tool.HttpCommonAction;
+import db.demo.dao.OrderDAO;
+import tool.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 @WebServlet("/ShowCommonUserCurrentOrderServlet")
 public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
@@ -20,8 +22,22 @@ public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+        String parm = request.getParameter("userID");
+        String json = null;
+        int userID;
+        try {
 
-        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
+            userID = Integer.parseInt(parm);
+            // 查詢 食客 當前訂單
+            OrderDAO.searchEaterOrder(userID);
+        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+            StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            statusCodeResponse.setTime(new Date().toString());
+            json = gson.toJson(statusCodeResponse);
+        }
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

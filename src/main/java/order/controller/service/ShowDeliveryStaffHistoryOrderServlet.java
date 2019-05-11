@@ -3,7 +3,9 @@ package order.controller.service;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import order.model.javabean.PushResult;
+import db.demo.dao.OrderDAO;
+import db.demo.dao.UserDAO;
+import tool.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 @WebServlet("/ShowDeliveryStaffHistoryOrderServlet")
 public class ShowDeliveryStaffHistoryOrderServlet extends HttpServlet {
@@ -20,12 +23,22 @@ public class ShowDeliveryStaffHistoryOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+        String parm = request.getParameter("userID");
+        String json = null;
+        int userID;
+        try {
+            userID = Integer.parseInt(parm);
+            System.out.println(UserDAO.showUserIdentity(userID));
+            // 查詢 外送員 歷史訂單
+            OrderDAO.searchDeliverHistoryOrder(userID);
+        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+            StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            statusCodeResponse.setTime(new Date().toString());
+            json = gson.toJson(statusCodeResponse);
+        }
 
-        PushResult result = new PushResult();
-        result.setOrderID("test");
-        result.setAccept(true);
-
-        String json = gson.toJson(result);
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
