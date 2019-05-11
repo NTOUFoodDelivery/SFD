@@ -26,7 +26,6 @@ public class ShowRestInfoServlet extends HttpServlet {
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-
         JsonObject jsonObject = RestDAO.searchRestInfo();
 
         String json = gson.toJson(jsonObject);
