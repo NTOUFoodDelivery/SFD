@@ -91,6 +91,7 @@ public class RestDAO {
         try {
         	connection = JdbcUtils.getconn();
         	String sql = "DELETE FROM restaurant_info WHERE Rest_Id = ?";
+        	preparedStatement = connection.prepareStatement(sql);
         	preparedStatement.setInt(1, restID);
         	preparedStatement.executeUpdate();
         }
@@ -141,6 +142,7 @@ public class RestDAO {
         try {
         	connection = JdbcUtils.getconn();
         	String sql = "DELETE FROM meal WHERE Food_Id = ?";
+        	preparedStatement = connection.prepareStatement(sql);
         	preparedStatement.setInt(1, foodID);
         	preparedStatement.executeUpdate();
         }
