@@ -120,7 +120,7 @@ public class UserDAO {
     }
 
     // 利用 userID ban 使用者
-    // 暴風的寫法  請證實他
+    // 暴風的寫法  請證實他 
     public static void banUser(int userID)              
     {
     	Connection connection = null;
