@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.google.gson.JsonObject;
 
@@ -79,16 +80,9 @@ public class UserDAO {
             String sql = "SELECT User_Status FROM member WHERE User_Id = ?";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             preparedStatement.setInt(1,userID);
-            //不確定目前  我把*改成了User_Status  他resultSet 會只吃到User_Status嗎
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
             jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
-            while(resultSet.next()) 
-            {
-            	String na = resultSet.getString("User_Status");
-				System.out.println(na);
-				System.out.println("你有拿到嗎?");
-			}
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -145,13 +139,59 @@ public class UserDAO {
     }
 
     // 利用 userID 看 資料庫 有無相同 userID
-    public static boolean searchUser(int userID){ return false; }
+    public static boolean searchUser(int userID)
+    { 
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT User_Id FROM member WHERE User_Id = ?";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData();
+            if(resultSet.next())
+            {
+            	return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+    	return false; 
+    }
 
-    // 利用 userID 查詢 空閒的 外送員 
-    public static void searchIdelDeliver(int userID){}
+    // 利用 userID 查詢 全部的空閒的 外送員 
+    public static ArrayList<Integer> searchIdelDeliver()
+    {
+    	ArrayList<Integer> a = new ArrayList<Integer>();
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int index = 0;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT User_Id FROM member WHERE User_Status = 'Deliver_On'";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData();
+            while(resultSet.next())
+            {
+            	a.add(resultSet.getInt("User_Id"));
+            	System.out.println(a.get(index));
+            	index++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+		return a;
+    }
     
     public static void main(String args[]) {
-    	showUserIdentity(0);
+    	searchIdelDeliver();
 	}
-    
 }
