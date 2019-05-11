@@ -170,7 +170,6 @@ public class UserDAO {
     	Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        int index = 0;
         try {
             connection = JdbcUtils.getconn();
             String sql = "SELECT User_Id FROM member WHERE User_Status = 'Deliver_On'";
@@ -180,8 +179,6 @@ public class UserDAO {
             while(resultSet.next())
             {
             	a.add(resultSet.getInt("User_Id"));
-            	System.out.println(a.get(index));
-            	index++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,8 +187,4 @@ public class UserDAO {
         }
 		return a;
     }
-    
-    public static void main(String args[]) {
-    	searchIdelDeliver();
-	}
 }
