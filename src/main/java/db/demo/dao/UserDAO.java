@@ -147,7 +147,7 @@ public class UserDAO {
     // 利用 userID 看 資料庫 有無相同 userID
     public static boolean searchUser(int userID){ return false; }
 
-    // 利用 userID 查詢 空閒的 外送員
+    // 利用 userID 查詢 空閒的 外送員 
     public static void searchIdelDeliver(int userID){}
     
     public static void main(String args[]) {
