@@ -104,7 +104,7 @@
 <%--</script>--%>
 <script>
     $('#testSubmit').click(function () {
-        var url="http://ntou-sfd.herokuapp.com/IdentityRedirectServlet";
+        var url="https://ntou-sfd.herokuapp.com/IdentityRedirectServlet";
         // var url="http://localhost:8080/SFD/IdentityRedirectServlet";
         $.ajax({
             xhrFields: {
