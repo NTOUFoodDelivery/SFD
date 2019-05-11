@@ -59,17 +59,99 @@ public class RestDAO {
 
     // 新增 合作餐廳
     // 要幫 rest 生成 restID
-    public static void addRest(Rest rest){}
+    public static void addRest(Rest rest)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "INSERT INTO restaurant_info(Rest_Id, Rest_Name, Rest_Address, Description) VALUES(?, ?, ?, ?);";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setInt(1, rest.getRestID());
+        	preparedStatement.setString(2, rest.getRestName());
+        	preparedStatement.setString(3, rest.getRestAddress());
+        	preparedStatement.setString(4, rest.getDescription());
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
 
     // 利用 restID 刪除 合作餐廳
-    public static void delRest(int restID){}
+    public static void delRest(int restID)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "DELETE FROM restaurant_info WHERE Rest_Id = ?";
+        	preparedStatement.setInt(1, restID);
+        	preparedStatement.executeUpdate();
+        }
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
 
     // 新增 指定合作餐廳 的菜單
     // menu 裡面有 restID
-    public static void addRestMenu(Menu menu){}
+    public static void addRestMenu(Menu menu)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "INSERT INTO meal(Food_Id, Food_Name, Rest_Id, Cost, Description, Image) VALUES(?, ?, ?, ?, ?, ?);";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setString(1, menu.getFood_Id());
+        	preparedStatement.setString(2, menu.getFood_Name());
+        	preparedStatement.setString(3, menu.getRest_Id());
+        	preparedStatement.setInt(4, menu.getCost());
+        	preparedStatement.setString(5, menu.getDescription());
+        	preparedStatement.setString(6, menu.getImage());
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    } 
+    }
 
     // 利用 restID 和 foodID 刪除 指定合作餐廳 的菜單
     // menu 裡面有 restID
-    public static void delRestMenu(int foodID){}
+    public static void delRestMenu(int foodID)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "DELETE FROM meal WHERE Food_Id = ?";
+        	preparedStatement.setInt(1, foodID);
+        	preparedStatement.executeUpdate();
+        }
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
 
 }
