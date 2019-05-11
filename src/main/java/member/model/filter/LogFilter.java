@@ -20,7 +20,7 @@ public class LogFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
         String path = ((HttpServletRequest) req).getServletPath();
-        System.out.println(path);
+//        System.out.println(path);
         if(!excludedUrls.contains(path)){
             HttpServletRequest request = (HttpServletRequest) req;
             HttpServletResponse response = (HttpServletResponse) resp;

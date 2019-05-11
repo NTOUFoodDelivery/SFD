@@ -20,8 +20,8 @@
 <a href="LogoutDemo.jsp">Logout</a><br>
 <script>
     $('#testSubmit').click(function () {
-        var url="https://ntou-sfd.herokuapp.com/IdentityRedirectServlet";
-        // var url="http://localhost:8080/SFD/IdentityRedirectServlet";
+        // var url="/IdentityRedirectServlet";
+        var url="/SFD/IdentityRedirectServlet";
         $.ajax({
             xhrFields: {
                 withCredentials: true

@@ -2,7 +2,6 @@ package member.controller.service;
 
 import db.demo.dao.UserDAO;
 import order.controller.websocket.PushOrderWebSocket;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,15 +62,24 @@ public class LogInServlet extends HttpServlet {
 //                    }
 
                     List<HttpSession> keyList = (List<HttpSession>)getKey(PushOrderWebSocket.httpSessions,userID);
-                    int i = 0 ;
+                    List<HttpSession> oneUserSameKeyList = new ArrayList<>();
+                    int count = 0 ;
                     for(HttpSession key : keyList){
-                        if(!key.getId().equals(session.getId())){ // 登入其他瀏覽器的同一個帳號
+                        if(!key.getId().equals(session.getId())){ // 一個使用者 但有多個session，要踢除其他的session
                             PushOrderWebSocket.httpSessions.remove(key);
                             key.invalidate(); // 銷毀 session
+                        }else{ // 和目前登入 session 一樣的 放進List 裡
+                            oneUserSameKeyList.add(key);
                         }
-                        System.out.println(i+" :: "+key.getId());
-                        i++;
+                        System.out.println(count+" :: "+key.getId());
+                        count++;
                     }
+//                    if(oneUserSameKeyList.size()>1){ // 如果 相同的 session 登入 多個 同一個使用者
+//                        for(int i =0;i<oneUserSameKeyList.size()-1;i++){ // 剔除 其他session
+//                            PushOrderWebSocket.httpSessions.remove(oneUserSameKeyList.get(i));
+//                            oneUserSameKeyList.get(i).invalidate(); // 銷毀 session
+//                        }
+//                    }
                     // ------判斷使用者登入狀況------- END
                 }else {
                     info.add("登入失敗，錯誤的帳號、密碼或userType");

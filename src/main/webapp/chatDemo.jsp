@@ -86,7 +86,7 @@
 <%--        }`;--%>
 <%--        $.ajax({--%>
 <%--            type: "POST",--%>
-<%--            url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",--%>
+<%--            url: "/ShowMenuServlet",--%>
 <%--            dataType: "json",--%>
 <%--            data:json,--%>
 <%--            success: function(data) {--%>
@@ -104,8 +104,8 @@
 <%--</script>--%>
 <script>
     $('#testSubmit').click(function () {
-        var url="https://ntou-sfd.herokuapp.com/IdentityRedirectServlet";
-        // var url="http://localhost:8080/SFD/IdentityRedirectServlet";
+        // var url="/IdentityRedirectServlet";
+        var url="/SFD/IdentityRedirectServlet";
         $.ajax({
             xhrFields: {
                 withCredentials: true
