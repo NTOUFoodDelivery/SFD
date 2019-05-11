@@ -77,8 +77,8 @@ public class LogInServlet extends HttpServlet {
                     info.add("登入失敗，錯誤的帳號、密碼或userType");
                     request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
-                    response.sendRedirect("LoginDemo.jsp");
-//                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
+//                    response.sendRedirect("LoginDemo.jsp");
+                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,8 +86,8 @@ public class LogInServlet extends HttpServlet {
         }else {
             request.setAttribute("info", info); // 保存錯誤訊息
             session.invalidate(); // 銷毀 session
-            response.sendRedirect("LoginDemo.jsp");
-//            request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
+//            response.sendRedirect("LoginDemo.jsp");
+            request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
         }
     }
 

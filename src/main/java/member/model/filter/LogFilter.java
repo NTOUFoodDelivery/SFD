@@ -20,21 +20,22 @@ public class LogFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
         String path = ((HttpServletRequest) req).getServletPath();
-
+        System.out.println(path);
         if(!excludedUrls.contains(path)){
             HttpServletRequest request = (HttpServletRequest) req;
             HttpServletResponse response = (HttpServletResponse) resp;
             HttpSession session = request.getSession();
             //判斷session是否過期
             if (session.getAttribute("login") == null) {
+                System.out.println("session died");
                 String errors = "您還沒有登入，或者session已過期。請先登入！";
                 request.setAttribute("Message", errors);
-                //跳轉至登入頁面
-                request.getRequestDispatcher("LoginDemo.jsp").forward(request, response);
+                response.setHeader("sessionstatus", "timeout");
+                request.getRequestDispatcher("/LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
             } else {
                 chain.doFilter(request, response);
             }
-        } else {
+        }else {
             chain.doFilter(req, resp);
         }
     }

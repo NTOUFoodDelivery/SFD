@@ -16,6 +16,7 @@
 <body>
 <h1>OOSOSOSO</h1>
 <button id="testSubmit">testSubmit</button><br>
+<a href="chatDemo.jsp">網頁跳轉BACK</a><br>
 <a href="LogoutDemo.jsp">Logout</a><br>
 <script>
     $('#testSubmit').click(function () {
@@ -23,18 +24,39 @@
             xhrFields: {
                 withCredentials: true
             },
+            async:false,
             crossDomain: true,
             type: "GET",
             url: "http://localhost:8080/SFD/IdentityRedirectServlet",
             dataType: "json",
             success: function(data) {
                 console.log(data);
+                if(data === null){
+                    window.location.href = "/LoginDemo.jsp";
+                }
             },
             error: function () {
 
             }
         })
     })
+</script>
+<script type="text/javascript">
+    $(function(){
+        $.ajaxSetup ({
+            cache: false, //關掉AJAX 緩存
+            async:false, //同步請求
+            contentType:"application/x-www-form-urlencoded;charset=utf-8",
+            complete:function(XMLHttpRequest,textStatus){
+                // 用 XMLHttpRequest 拿 header，sessionstatus，
+                var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
+                if(sessionstatus=="timeout"){
+                    alert("重複登入或長時間無操作～請重新登入！！");
+                    parent.location.href = "LoginDemo.jsp";
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>
