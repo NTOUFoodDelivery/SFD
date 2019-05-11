@@ -172,6 +172,7 @@
 
                 // 接收Websocket Server傳來的資料
                 this.webSocket.onmessage = function(event) {
+                    console.log("tyghj")
                     var msg = event.data;
                     var name = msg.split("&says&")[0];
                     var text = msg.split("&says&")[1];
