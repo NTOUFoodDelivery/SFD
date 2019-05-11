@@ -3,6 +3,7 @@ package db.demo.connect;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.time.Instant;
 import java.util.Properties;
 
 public class JdbcUtils {
@@ -77,5 +78,15 @@ public class JdbcUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    synchronized static public int generateID(){
+        long ut1 = Instant.now().getEpochSecond();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return (int)ut1;
     }
 }
