@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.google.gson.JsonObject;
 
@@ -75,7 +76,30 @@ public class OrderDAO {
     }
 
     // 找出 未推播 訂單
-    public static void searchIdelOrder(){}
+    // 暴風製造              請渣炸眨詐過目檢查
+    public static ArrayList<Integer> searchIdelOrder()
+    {
+    	ArrayList<Integer> a = new ArrayList<Integer>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT Order_Id FROM order WHERE Order_Status = 'wait'";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData();
+            while(resultSet.next())
+            {
+                a.add(resultSet.getInt("Order_Id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return a;
+    }
 
     // 利用 userID 查詢 食客 當前訂單
     // 暴風製造              請渣炸眨詐過目檢查
