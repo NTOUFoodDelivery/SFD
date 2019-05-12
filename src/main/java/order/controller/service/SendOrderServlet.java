@@ -26,10 +26,12 @@ public class SendOrderServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        Order  order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
+        Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
 
         order.setOrder_Id(JdbcUtils.generateID()); // 產生訂單 ID
+//        order.setOrder_Id(1);
         OrderDAO.addOrder(order);
+
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
         statusCodeResponse.setTime(new Date().toString());

@@ -28,7 +28,7 @@ public class ShowCommonUserHistoryOrderServlet extends HttpServlet {
         String json = null;
         int userID;
         try {
-            userID = Integer.parseInt(parm);
+            userID = (int)Long.parseLong(parm);
             if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.CUSTOMER)) {
                 // 查詢 食客 歷史訂單
                 OrderDAO.searchEaterHistoryOrder(userID);

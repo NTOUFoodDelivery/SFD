@@ -23,7 +23,6 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
         response.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
         response.setHeader("Access-Control-Allow-Credentials","true"); //是否支持 cookie 跨域
         filterChain.doFilter(servletRequest, servletResponse);
 

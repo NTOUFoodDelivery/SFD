@@ -28,11 +28,11 @@ public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
         String json = null;
         int userID;
         try {
-            userID = Integer.parseInt(parm);
-            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.CUSTOMER)) {
-                // 查詢 食客 當前訂單
-                OrderDAO.searchEaterOrder(userID);
-            }
+            userID = (int)Long.parseLong(parm);
+//            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.CUSTOMER)) {
+//                // 查詢 食客 當前訂單
+//                OrderDAO.searchEaterOrder(userID);
+//            }
         } catch (NumberFormatException e) {
 //            e.printStackTrace();
             StatusCodeResponse statusCodeResponse = new StatusCodeResponse();

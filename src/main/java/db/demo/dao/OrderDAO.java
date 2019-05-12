@@ -24,7 +24,7 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
 
             // set order table ----- BEGIN<33333333
-            String order_sql = "INSERT INTO order(Order_Id, Start_Time, Type_Count, Total, Order_Status) VALUES(?, ?, ?, ?, ?);";
+            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status) VALUES(?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
             preparedStatement.setInt(1,order.getOrder_Id());
             preparedStatement.setString(2,order.getStart_Time());
@@ -34,7 +34,7 @@ public class OrderDAO {
             preparedStatement.executeUpdate();
             // set order table ----- END
             // set order_food table ----- BEGIN
-            String order_food_sql = "INSERT INTO order(Order_SERIAL, Food_Id, Total, Count) VALUES(?, ?, ?, ?);";
+            String order_food_sql = "INSERT INTO `order`(Order_SERIAL, Food_Id, Total, Count) VALUES(?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
             for(Order.MealsBean meal : order.getMeals()) {
                 preparedStatement.setInt(1, order.getOrder_Id());
@@ -59,7 +59,7 @@ public class OrderDAO {
         PreparedStatement preparedStatement = null;
         try {
         	connection = JdbcUtils.getconn();
-        	String sql = "DELETE FROM order WHERE Order_Id = ?";
+        	String sql = "DELETE FROM `order` WHERE Order_Id = ?";
         	preparedStatement = connection.prepareStatement(sql);
         	preparedStatement.setInt(1, orderID);
         	preparedStatement.executeUpdate();
@@ -88,7 +88,7 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT * FROM order WHERE Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+            String search_history_sql = "SELECT * FROM `order` WHERE Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             pst = (PreparedStatement)con.prepareStatement(search_history_sql);
             pst.setInt(1, userID);
             rs = pst.executeQuery();
@@ -139,7 +139,7 @@ public class OrderDAO {
 
     // 利用 userID 查詢 外送員 當前訂單
     // 暴風製造              請渣炸眨詐過目檢查
-    public static void searchDeliverOrder(int userID)
+    public static JsonObject searchDeliverOrder(int userID)
     {
     	Connection con = null;
         PreparedStatement pst = null;
@@ -148,7 +148,7 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT * FROM order WHERE Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             pst = (PreparedStatement)con.prepareStatement(search_history_sql);
             pst.setInt(1, userID);
             rs = pst.executeQuery();
