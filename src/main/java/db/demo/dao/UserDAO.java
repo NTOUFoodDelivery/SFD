@@ -69,6 +69,7 @@ public class UserDAO {
     }
 
     // 利用 userID 查看 使用者目前身份
+    // 已測試成功
     public static String showUserIdentity(int userID)
     {
         Connection connection = null;
@@ -83,6 +84,7 @@ public class UserDAO {
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 identity = resultSet.getString("User_Status");
+                //System.out.println(identity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,6 +95,7 @@ public class UserDAO {
     }
 
     // 利用 userID 刪除 使用者
+    // 已測試成功
     public static void delUser(int userID)
     {
         Connection connection = null;
@@ -115,7 +118,7 @@ public class UserDAO {
     }
 
     // 利用 userID ban 使用者
-    // 暴風的寫法  請證實他 
+    // 已測試成功
     public static void banUser(int userID)
     {
         Connection connection = null;
@@ -138,6 +141,7 @@ public class UserDAO {
     }
 
     // 利用 userID 看 資料庫 有無相同 userID
+    // 已測試成功
     public static boolean searchUser(int userID)
     {
         Connection connection = null;
@@ -152,6 +156,7 @@ public class UserDAO {
             resultSet.getMetaData();
             if(resultSet.next())
             {
+            	//System.out.println("有喔");
                 return true;
             }
         } catch (SQLException e) {
@@ -159,16 +164,19 @@ public class UserDAO {
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
+        //System.out.println("沒喔");
         return false;
     }
 
     // 利用 userID 查詢 全部的空閒的 外送員 
+    // 已測試成功
     public static ArrayList<Integer> searchIdelDeliver()
     {
         ArrayList<Integer> a = new ArrayList<Integer>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        //int index = 0;
         try {
             connection = JdbcUtils.getconn();
             String sql = "SELECT User_Id FROM member WHERE User_Status = 'Deliver_On'";
@@ -178,6 +186,8 @@ public class UserDAO {
             while(resultSet.next())
             {
                 a.add(resultSet.getInt("User_Id"));
+                //System.out.println(a.get(index));
+                //index++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -186,8 +196,4 @@ public class UserDAO {
         }
         return a;
     }
-    
-    public static void main(String args[]) {
-    	banUser(0);
-	}
 }
