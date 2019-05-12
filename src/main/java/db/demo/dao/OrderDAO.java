@@ -81,28 +81,23 @@ public class OrderDAO {
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchEaterOrder(int userID)
     {
-    	Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-            con = JdbcUtils.getconn();
+        	connection = JdbcUtils.getconn();
 
             String search_history_sql = "SELECT * FROM `order` WHERE Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
-            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
-            pst.setInt(1, userID);
-            rs = pst.executeQuery();
-            rs.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-         /*while(rs.next()) {
-				int na = rs.getInt("History_Id");
-
-				System.out.println(na );
-			}*/
+            preparedStatement = connection.prepareStatement(search_history_sql);
+            preparedStatement.setInt(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
-            JdbcUtils.close(pst,con);
+            JdbcUtils.close(preparedStatement,connection);
         }
     	return jsonString;
     }
@@ -111,28 +106,23 @@ public class OrderDAO {
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchEaterHistoryOrder(int userID)
     {
-    	Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-            con = JdbcUtils.getconn();
+        	connection = JdbcUtils.getconn();
 
             String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
-            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
-            pst.setInt(1, userID);
-            rs = pst.executeQuery();
-            rs.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-         /*while(rs.next()) {
-				int na = rs.getInt("History_Id");
-
-				System.out.println(na );
-			}*/
+            preparedStatement = connection.prepareStatement(search_history_sql);
+            preparedStatement.setInt(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
-            JdbcUtils.close(pst,con);
+            JdbcUtils.close(preparedStatement,connection);
         }
     	return jsonString;
     }
@@ -141,28 +131,23 @@ public class OrderDAO {
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchDeliverOrder(int userID)
     {
-    	Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-            con = JdbcUtils.getconn();
+        	connection = JdbcUtils.getconn();
 
             String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
-            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
-            pst.setInt(1, userID);
-            rs = pst.executeQuery();
-            rs.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-         /*while(rs.next()) {
-				int na = rs.getInt("History_Id");
-
-				System.out.println(na );
-			}*/
+            preparedStatement = connection.prepareStatement(search_history_sql);
+            preparedStatement.setInt(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
-            JdbcUtils.close(pst,con);
+            JdbcUtils.close(preparedStatement,connection);
         }
     	return jsonString;
     }
