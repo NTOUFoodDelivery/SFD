@@ -125,7 +125,7 @@ public class UserDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "UPDATE member SET User_Status = 'ban' WHERE User_Id = ?;";
+            String sql = "UPDATE member SET User_Status = 'USER_BAN' WHERE User_Id = ?;";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();
@@ -179,7 +179,7 @@ public class UserDAO {
         //int index = 0;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT User_Id FROM member WHERE User_Status = 'Deliver_On'";
+            String sql = "SELECT User_Id FROM member WHERE User_Status = 'DELIVER_ON'";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
