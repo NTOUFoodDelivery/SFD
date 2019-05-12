@@ -122,9 +122,7 @@ public class UserDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "UPDATE member\n" +
-                    "SET User_Status = ban\n" +
-                    "WHERE User_Id = ?;";
+            String sql = "UPDATE member SET User_Status = 'ban' WHERE User_Id = ?;";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();
@@ -188,4 +186,8 @@ public class UserDAO {
         }
         return a;
     }
+    
+    public static void main(String args[]) {
+    	banUser(0);
+	}
 }
