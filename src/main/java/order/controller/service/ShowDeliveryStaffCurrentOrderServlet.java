@@ -31,7 +31,7 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
             userID = (int)Long.parseLong(parm);
             if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)) {
                 // 查詢 外送員 當前訂單
-                System.out.println(OrderDAO.searchDeliverOrder(userID));
+                json = gson.toJson(OrderDAO.searchDeliverOrder(userID));
             }
         } catch (NumberFormatException e) {
 //            e.printStackTrace();

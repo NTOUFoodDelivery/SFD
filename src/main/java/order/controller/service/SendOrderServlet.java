@@ -30,7 +30,14 @@ public class SendOrderServlet extends HttpServlet {
 
         order.setOrder_Id(JdbcUtils.generateID()); // 產生訂單 ID
 //        order.setOrder_Id(1);
-        OrderDAO.addOrder(order);
+//        OrderDAO.addOrder(order);
+        for(Order.MealsBean meal : order.getMeals()) {
+            String str = order.getOrder_Id() + "" + meal.getFood_Id();
+            int orderSerial = (int) Long.parseLong(str.trim(), 10);
+            Long parseLong = Long.parseLong(str.trim());
+            int parseInt = Integer.parseInt(String.valueOf(parseLong));
+            System.out.println(parseInt);
+        }
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);

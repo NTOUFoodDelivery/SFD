@@ -34,10 +34,12 @@ public class OrderDAO {
             preparedStatement.executeUpdate();
             // set order table ----- END
             // set order_food table ----- BEGIN
-            String order_food_sql = "INSERT INTO `order`(Order_SERIAL, Food_Id, Total, Count) VALUES(?, ?, ?, ?);";
+            String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`) VALUES(?, (SELECT Order_Id FROM `order` WHERE `order`.Order_Id = ?), (SELECT Food_Id FROM meal WHERE meal.Food_Id = ?), ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
             for(Order.MealsBean meal : order.getMeals()) {
-                preparedStatement.setInt(1, order.getOrder_Id());
+                String str = order.getOrder_Id()+""+meal.getFood_Id();
+                int orderSerial = (int)Long.parseLong(str.trim(),10);
+                preparedStatement.setInt(1, orderSerial);
                 preparedStatement.setInt(2, order.getOrder_Id());
                 preparedStatement.setInt(3, meal.getFood_Id());
                 preparedStatement.setInt(4, meal.getCount());
