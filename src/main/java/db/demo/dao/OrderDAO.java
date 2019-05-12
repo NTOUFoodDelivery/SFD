@@ -52,21 +52,119 @@ public class OrderDAO {
     }
 
     // 利用 orderID 刪除 訂單
-    public static void delOrder(int orderID){}
+    // 需要把order_Fodd也都刪光光嗎                   @渣炸眨詐
+    public static void delOrder(int orderID)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "DELETE FROM order WHERE Order_Id = ?";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setInt(1, orderID);
+        	preparedStatement.executeUpdate();
+        }
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
 
     // 找出 未推播 訂單
     public static void searchIdelOrder(){}
 
     // 利用 userID 查詢 食客 當前訂單
-    public static void searchEaterOrder(int userID){}
+    // 暴風製造              請渣炸眨詐過目檢查
+    public static JsonObject searchEaterOrder(int userID)
+    {
+    	Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        JsonObject jsonString = null;
+        try {
+            con = JdbcUtils.getconn();
+
+            String search_history_sql = "SELECT * FROM order WHERE Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
+            pst.setInt(1, userID);
+            rs = pst.executeQuery();
+            rs.getMetaData(); //取得Query資料
+            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
+         /*while(rs.next()) {
+				int na = rs.getInt("History_Id");
+
+				System.out.println(na );
+			}*/
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(pst,con);
+        }
+    	return jsonString;
+    }
 
     // 利用 userID 查詢 食客 歷史訂單
-    public static void searchEaterHistoryOrder(int userID){}
+    // 暴風製造              請渣炸眨詐過目檢查
+    public static JsonObject searchEaterHistoryOrder(int userID)
+    {
+    	Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        JsonObject jsonString = null;
+        try {
+            con = JdbcUtils.getconn();
+
+            String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
+            pst.setInt(1, userID);
+            rs = pst.executeQuery();
+            rs.getMetaData(); //取得Query資料
+            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
+         /*while(rs.next()) {
+				int na = rs.getInt("History_Id");
+
+				System.out.println(na );
+			}*/
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(pst,con);
+        }
+    	return jsonString;
+    }
 
     // 利用 userID 查詢 外送員 當前訂單
-    public static void searchDeliverOrder(int userID){
-    	
-    	
+    // 暴風製造              請渣炸眨詐過目檢查
+    public static void searchDeliverOrder(int userID)
+    {
+    	Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        JsonObject jsonString = null;
+        try {
+            con = JdbcUtils.getconn();
+
+            String search_history_sql = "SELECT * FROM order WHERE Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
+            pst.setInt(1, userID);
+            rs = pst.executeQuery();
+            rs.getMetaData(); //取得Query資料
+            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
+         /*while(rs.next()) {
+				int na = rs.getInt("History_Id");
+
+				System.out.println(na );
+			}*/
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(pst,con);
+        }
+    	return jsonString;
     }
 
     // 利用 userID 查詢 外送員 歷史訂單
