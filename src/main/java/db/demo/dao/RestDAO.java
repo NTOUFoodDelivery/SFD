@@ -1,6 +1,8 @@
 package db.demo.dao;
 
 import com.google.gson.JsonObject;
+
+import db.a;
 import db.demo.connect.JdbcUtils;
 import db.demo.javabean.Rest;
 import menu.model.response.javabean.Menu;
@@ -58,7 +60,7 @@ public class RestDAO {
     }
 
     // 新增 合作餐廳
-    // 要幫 rest 生成 restID
+    // 已測試成功
     public static void addRest(Rest rest)
     {
     	Connection connection = null;
@@ -84,6 +86,7 @@ public class RestDAO {
     }
 
     // 利用 restID 刪除 合作餐廳
+    // 已測試成功
     public static void delRest(int restID)
     {
     	Connection connection = null;
@@ -106,7 +109,7 @@ public class RestDAO {
     }
 
     // 新增 指定合作餐廳 的菜單
-    // menu 裡面有 restID
+    // 已測試成功
     public static void addRestMenu(Menu menu)
     {
     	Connection connection = null;
@@ -134,7 +137,7 @@ public class RestDAO {
     }
 
     // 利用 restID 和 foodID 刪除 指定合作餐廳 的菜單
-    // menu 裡面有 restID
+    // 已測試成功
     public static void delRestMenu(int foodID)
     {
     	Connection connection = null;
@@ -155,5 +158,4 @@ public class RestDAO {
 	    	JdbcUtils.close(preparedStatement,connection);
 	    }
     }
-
 }
