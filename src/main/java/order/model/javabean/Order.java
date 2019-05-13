@@ -13,6 +13,7 @@ public class Order {
      * Other : "asdasd"
      */
 
+    private long Customer_Id;
     private long Deliver_Id;
     private long Order_Id;
     private String Start_Time;
@@ -84,6 +85,14 @@ public class Order {
 
     public void setOther(String other) {
         Other = other;
+    }
+
+    public long getCustomer_Id() {
+        return Customer_Id;
+    }
+
+    public void setCustomer_Id(long customer_Id) {
+        Customer_Id = customer_Id;
     }
 
     public static class MealsBean {
