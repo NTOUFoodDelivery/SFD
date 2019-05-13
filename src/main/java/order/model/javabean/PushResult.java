@@ -2,18 +2,20 @@ package order.model.javabean;
 
 public class PushResult {
     /**
+     * deliverID : 213
      * orderID : f23trkogire
      * accept : true
      */
 
-    private String orderID;
+    private Long deliverID;
+    private Long orderID;
     private boolean accept;
 
-    public String getOrderID() {
+    public Long getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(Long orderID) {
         this.orderID = orderID;
     }
 
@@ -23,5 +25,13 @@ public class PushResult {
 
     public void setAccept(boolean accept) {
         this.accept = accept;
+    }
+
+    public Long getDeliverID() {
+        return deliverID;
+    }
+
+    public void setDeliverID(Long deliverID) {
+        this.deliverID = deliverID;
     }
 }

@@ -22,7 +22,7 @@ public class SwitchIdentityServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         PushResult result = new PushResult();
-        result.setOrderID("test");
+        result.setOrderID(1L);
         result.setAccept(true);
 
         String json = gson.toJson(result);
