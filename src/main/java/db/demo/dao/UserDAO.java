@@ -222,7 +222,7 @@ public class UserDAO {
         return a;
     }
     
-    // 食客or外送員  傳送客服回報
+    // 食客or外送員  傳送客服回報給 管理者
     public static void addFeedback(Long FeedbackID, Long UserID, String Content)
     {
     	Connection connection = null;
@@ -246,5 +246,70 @@ public class UserDAO {
 	    }
     }
     
+    //管理者拿到feedback資訊
+    public static void AdministratorGetFeedback(Long FeedbackID)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "SELECT * FROM feedback WHERE Feedback_Id = ?;";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setLong(1, FeedbackID);
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
     
+    // 管理者  傳送客服回報給 食客or外送員
+    public static void replyFeedback(Long FeedbackID, String BackContent)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "UPDATE feedback SET Back_Content = ? WHERE Feedback_Id = ?;";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setString(1, BackContent);
+        	preparedStatement.setLong(2, FeedbackID);
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
+    
+    //食客or外送員拿到feedback資訊
+    public static void CustomerOrDeliverGetFeedback(Long FeedbackID)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "SELECT * FROM feedback WHERE Feedback_Id = ?;";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setLong(1, FeedbackID);
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
 }
