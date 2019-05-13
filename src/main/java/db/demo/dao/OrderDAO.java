@@ -77,7 +77,7 @@ public class OrderDAO {
     }
 
 
-    // 找出 未推播 訂單
+    // 找出 未推播 訂單 並回傳詳細資訊
     // 暴風製造              請渣炸眨詐過目檢查OK
     public static ArrayList<JsonObject> searchIdelOrder()
     {
@@ -87,7 +87,7 @@ public class OrderDAO {
         ResultSet resultSet = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address \n" + 
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address " + 
             		"FROM `order` " + 
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
@@ -119,7 +119,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, customer_deliver_info.Deliver_Id, member.Account, member.User_Name, member.Phone_Number, " + 
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " + 
             		"FROM `order` " + 
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
@@ -152,8 +152,9 @@ public class OrderDAO {
         JsonObject jsonString = null;
         try {
             connection = JdbcUtils.getconn();
-
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Address, history_food.Food_Name, history_food.Count, customer_deliver_info.Deliver_Id, member.Accout, member.User_Name, member.Email, member.Phone_Number " +
+/*add history customer deliver info !!!!!!!!!!!!!!!*/
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name,"
+            		+ " history_food.Count,  member.Accout, member.User_Name" +//add rest name!!!!1
             		"FROM history " +
             		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
             		"INNER JOIN customer_deliver_info ON history.History_Id = customer_deliver_info.Order_Id " + 
@@ -184,7 +185,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, customer_deliver_info.Customer_Id, member.Account, member.User_Name, member.Phone_Number, " + 
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " + 
             		"FROM `order` " + 
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
@@ -215,7 +216,7 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Address, history_food.Food_Name, history_food.Count, customer_deliver_info.Deliver_Id, member.Accout, member.User_Name, member.Email, member.Phone_Number " +
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number " +
             		"FROM history " +
             		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
             		"INNER JOIN customer_deliver_info ON history.History_Id = customer_deliver_info.Order_Id " + 
