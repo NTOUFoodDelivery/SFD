@@ -92,7 +92,7 @@ public class OrderDAO {
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
             		"INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " + 
-            		"WHERE Order_Status = 'wait'";
+            		"WHERE Order_Status = 'WAIT'";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();

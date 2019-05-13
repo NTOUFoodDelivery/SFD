@@ -94,6 +94,32 @@ public class UserDAO {
         return identity;
     }
 
+    // 利用 userID 查看 使用者目前Type
+    // 已測試成功
+    public static String showUserType(Long userID)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String identity = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT User_Type FROM member WHERE User_Id = ?";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            preparedStatement.setLong(1,userID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                identity = resultSet.getString("User_Type");
+                //System.out.println(identity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return identity;
+    }
+    
     // 利用 userID 刪除 使用者
     // 已測試成功
     public static void delUser(Long userID)
