@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<html>
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <style type="text/css">
+        div {
+            color: #ffffff;
+            background-color: #ff0000;
+            border-width: 1px;
+            border-color: black;
+            border-style: solid;
+            position: absolute;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var JData;
+        var sJson = JSON.stringify
+            ({
+                
+                    User_Id: "fdvy8bejr",
+                    password: "iofeks",
+                    User_Name: "ibmelsl",
+                    email: "ifekcv",
+                    Phone_Number: "nyeljb",
+                    address: "56g7fruikf",
+                    User_Type: "deliver"
+                
+            });
+
+        $.ajax({
+            url: "https://ntou-sfd.herokuapp.com/SignUpServlet",
+            type: "POST",
+            async: true,
+            dataType: "json",
+            contentType: 'application/json; charset=UTF-8',
+            data: sJson,
+            success: function (JData) {
+
+                alert("SUCCESS!!!");
+                $.each(JData, function () {
+                    //var stringJData = JSON.stringify(JData);
+
+                    $("body").append("<tr>" + stringJData + "</tr>");
+                    
+                        $("body").append("<tr>" +
+                            "<p>IsRepeat: " + JData.result["IsRepeat"] + " </p><br>" +
+                            "<p>IsEmpty: " + JData.result["IsEmpty"] + " </p>" +
+
+                            "<br>" +
+                            "</tr>");
+                    
+                    //JData = JSON.parse(stringJData);
+
+
+                });
+
+
+            },
+
+            error: function () {
+                alert("ERROR!!!");
+            }
+
+
+        });
+
+    </script>
+</head>
+
+<body>
+
+    <tr>
+        <td></td>
+    </tr>
+    <p></p>
+
+</body>
+
+</html>
