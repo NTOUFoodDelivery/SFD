@@ -2,7 +2,7 @@ package db.demo.javabean;
 
 public class User {
 
-    private int userID;
+    private long userID;
     private String account;
     private String password;
     private String userName;
@@ -13,11 +13,11 @@ public class User {
     private String userStatus;
 
 
-    public int getUserID() {
+    public long getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 

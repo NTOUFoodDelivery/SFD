@@ -2,16 +2,16 @@ package db.demo.javabean;
 
 public class Rest {
 
-    private int restID;
+    private long restID;
     private String restName;
     private String restAddress;
     private String description;
 
-    public int getRestID() {
+    public long getRestID() {
         return restID;
     }
 
-    public void setRestID(int restID) {
+    public void setRestID(long restID) {
         this.restID = restID;
     }
 

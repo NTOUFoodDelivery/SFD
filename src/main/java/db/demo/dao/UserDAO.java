@@ -17,12 +17,12 @@ import com.google.gson.JsonObject;
 public class UserDAO {
 
     // 登入
-    public static int login(String account, String password, String userType){
+    public static Long login(String account, String password, String userType){
         User u = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        int userID = -1;
+        Long userID = -1L;
         try {
             connection = JdbcUtils.getconn();
             String sql = "select * from member where account=? and Password=? and User_Type=?";
@@ -32,7 +32,7 @@ public class UserDAO {
             preparedStatement.setString(3,userType);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                userID = resultSet.getInt("User_Id");
+                userID = resultSet.getLong("User_Id");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class UserDAO {
             connection = JdbcUtils.getconn();
             String sql = "INSERT INTO member(User_Id, account, Password, User_Name, Email, Phone_number, Last_Address, User_Type, User_Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
-            preparedStatement.setInt(1,user.getUserID());
+            preparedStatement.setLong(1,user.getUserID());
             preparedStatement.setString(2,user.getAccount());
             preparedStatement.setString(3,user.getPassword());
             preparedStatement.setString(4,user.getUserName());
@@ -70,7 +70,7 @@ public class UserDAO {
 
     // 利用 userID 查看 使用者目前身份
     // 已測試成功
-    public static String showUserIdentity(int userID)
+    public static String showUserIdentity(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -80,7 +80,7 @@ public class UserDAO {
             connection = JdbcUtils.getconn();
             String sql = "SELECT User_Status FROM member WHERE User_Id = ?";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
-            preparedStatement.setInt(1,userID);
+            preparedStatement.setLong(1,userID);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 identity = resultSet.getString("User_Status");
@@ -96,7 +96,7 @@ public class UserDAO {
 
     // 利用 userID 刪除 使用者
     // 已測試成功
-    public static void delUser(int userID)
+    public static void delUser(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -104,7 +104,7 @@ public class UserDAO {
             connection = JdbcUtils.getconn();
             String sql = "DELETE FROM member WHERE User_Id = ?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setLong(1, userID);
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)
@@ -119,7 +119,7 @@ public class UserDAO {
 
     // 利用 userID ban 使用者
     // 已測試成功
-    public static void banUser(int userID)
+    public static void banUser(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -127,7 +127,7 @@ public class UserDAO {
             connection = JdbcUtils.getconn();
             String sql = "UPDATE member SET User_Status = 'USER_BAN' WHERE User_Id = ?;";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setLong(1, userID);
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)
@@ -142,7 +142,7 @@ public class UserDAO {
 
     // 利用 userID 看 資料庫 有無相同 userID
     // 已測試成功
-    public static boolean searchUser(int userID)
+    public static boolean searchUser(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -151,7 +151,7 @@ public class UserDAO {
             connection = JdbcUtils.getconn();
             String sql = "SELECT User_Id FROM member WHERE User_Id = ?";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
             if(resultSet.next())
@@ -170,7 +170,7 @@ public class UserDAO {
 
     // 利用 userID 查詢 全部的空閒的 外送員 
     // 已測試成功
-    public static ArrayList<Integer> searchIdelDeliver()
+    public static ArrayList<Integer> searchIdleDeliver()
     {
         ArrayList<Integer> a = new ArrayList<Integer>();
         Connection connection = null;

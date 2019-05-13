@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PushOrderWebSocket {
 
 
-    public static Map<HttpSession,Integer> httpSessions =  new ConcurrentHashMap<HttpSession,Integer>();
-    public static Map<Integer,Session> sessions =  new ConcurrentHashMap<Integer,Session>();
+    public static Map<HttpSession,Long> httpSessions =  new ConcurrentHashMap<HttpSession,Long>();
+    public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>();
 
     private Session session;
     private HttpSession httpSession;
@@ -32,7 +32,7 @@ public class PushOrderWebSocket {
         this.session = session;
         this.httpSession = (HttpSession) config.getUserProperties()
                 .get(HttpSession.class.getName());
-        int userID = httpSessions.get(httpSession);
+        Long userID = httpSessions.get(httpSession);
         System.out.println(userID);
         if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果是外送員 連結 websocket
             sessions.put(userID,session);

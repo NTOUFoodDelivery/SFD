@@ -26,9 +26,9 @@ public class ShowCommonUserHistoryOrderServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         String parm = request.getParameter("userID");
         String json = null;
-        int userID;
+        Long userID;
         try {
-            userID = (int)Long.parseLong(parm);
+            userID = Long.parseLong(parm);
             if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.CUSTOMER)) {
                 // 查詢 食客 歷史訂單
                 json = gson.toJson(OrderDAO.searchEaterHistoryOrder(userID));

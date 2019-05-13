@@ -55,7 +55,7 @@ public class OrderDAO {
     }
 
     // 利用 orderID 刪除 訂單
-    public static void delOrder(int orderID)
+    public static void delOrder(Long orderID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -63,7 +63,7 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
             String sql = "DELETE FROM `order` WHERE Order_Id = ?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, orderID);
+            preparedStatement.setLong(1, orderID);
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)
@@ -110,7 +110,7 @@ public class OrderDAO {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 當前訂單
     // OK
-    public static JsonObject searchEaterOrder(int userID)
+    public static JsonObject searchEaterOrder(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -129,7 +129,7 @@ public class OrderDAO {
             		"WHERE customer_deliver_info.Customer_Id = ?";
             //String search_history_sql = "SELECT * FROM `order` WHERE ( Order_Status LIKE 'WAIT' OR Order_Status LIKE 'DEALING' ) AND Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
             jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
@@ -144,7 +144,7 @@ public class OrderDAO {
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 歷史訂單
     // 暴風製造
-    public static JsonObject searchEaterHistoryOrder(int userID)
+    public static JsonObject searchEaterHistoryOrder(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -162,7 +162,7 @@ public class OrderDAO {
             		"WHERE history_customer_deliver_info.Customer_Id = ?";
             //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
             jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
@@ -176,7 +176,7 @@ public class OrderDAO {
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 當前訂單
     // OK
-    public static JsonObject searchDeliverOrder(int userID)
+    public static JsonObject searchDeliverOrder(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -195,7 +195,7 @@ public class OrderDAO {
             		"WHERE customer_deliver_info.Deliver_Id = ?";
             //String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
             jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
@@ -208,7 +208,7 @@ public class OrderDAO {
     }
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 歷史訂單
-    public static JsonObject searchDeliverHistoryOrder(int deliverId){
+    public static JsonObject searchDeliverHistoryOrder(Long deliverId){
         Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -224,7 +224,7 @@ public class OrderDAO {
             		"WHERE customer_deliver_info.Deliver_Id = ?";
             //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             pst = (PreparedStatement)con.prepareStatement(sql);
-            pst.setInt(1, deliverId);
+            pst.setLong(1, deliverId);
             rs = pst.executeQuery();
             rs.getMetaData(); //取得Query資料
             jsonString = ResultSetToJson.ResultSetToJsonObject(rs);

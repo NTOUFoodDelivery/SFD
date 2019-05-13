@@ -48,8 +48,8 @@ public class LogInServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(info.size()==0){
             try {
-                int userID = UserDAO.login(account,password,userType);
-                if(userID != -1){
+                Long userID = UserDAO.login(account,password,userType);
+                if(userID != -1L){
                     // ------判斷使用者登入狀況------- BEGIN
 //                    if(PushOrderWebSocket.httpSessions.get(session) == null){ // 單個登入
                         PushOrderWebSocket.httpSessions.put(session,userID);

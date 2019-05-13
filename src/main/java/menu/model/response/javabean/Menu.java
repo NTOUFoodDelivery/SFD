@@ -11,27 +11,27 @@ public class Menu {
      * status : true
      */
 
-    private int Rest_Id;
-    private int Food_Id;
+    private long Rest_Id;
+    private long Food_Id;
     private String Food_Name;
     private int Cost;
     private String Description;
     private String Image;
     private boolean status;
 
-    public int getRest_Id() {
+    public long getRest_Id() {
         return Rest_Id;
     }
 
-    public void setRest_Id(int Rest_Id) {
+    public void setRest_Id(long Rest_Id) {
         this.Rest_Id = Rest_Id;
     }
 
-    public int getFood_Id() {
+    public long getFood_Id() {
         return Food_Id;
     }
 
-    public void setFood_Id(int Food_Id) {
+    public void setFood_Id(long Food_Id) {
         this.Food_Id = Food_Id;
     }
 
