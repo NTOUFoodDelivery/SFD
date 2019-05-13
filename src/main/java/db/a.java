@@ -116,10 +116,10 @@ public class a
 	      System.out.println("Close Exception :" + e.toString()); 
 	    } 
 	}
-	public static void main(String args[]) {
-		a f = new a();
-		f.searchTable("a00000");
-		//f.insertTable();
-	}
+//	public static void main(String args[]) {
+//		a f = new a();
+//		f.searchTable("a00000");
+//		//f.insertTable();
+//	}
 	
 }
