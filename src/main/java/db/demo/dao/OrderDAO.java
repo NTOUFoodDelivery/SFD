@@ -27,7 +27,7 @@ public class OrderDAO {
             // set order table ----- BEGIN<33333333
             String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status) VALUES(?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
-            preparedStatement.setInt(1,order.getOrder_Id());
+            preparedStatement.setLong(1,order.getOrder_Id());
             preparedStatement.setString(2,order.getStart_Time());
             preparedStatement.setInt(3,order.getType_Count());
             preparedStatement.setInt(4,order.getTotal());
@@ -39,9 +39,9 @@ public class OrderDAO {
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
             for(Order.MealsBean meal : order.getMeals()) {
                 String str = order.getOrder_Id()+""+meal.getFood_Id();
-                int orderSerial = (int)Long.parseLong(str.trim(),10);
-                preparedStatement.setInt(1, orderSerial);
-                preparedStatement.setInt(2, order.getOrder_Id());
+                Long orderSerial = Long.parseLong(str.trim(),10);
+                preparedStatement.setLong(1, orderSerial);
+                preparedStatement.setLong(2, order.getOrder_Id());
                 preparedStatement.setInt(3, meal.getFood_Id());
                 preparedStatement.setInt(4, meal.getCount());
             }
