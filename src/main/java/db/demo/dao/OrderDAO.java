@@ -156,7 +156,7 @@ public class OrderDAO {
  /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
     
     
-    // 傳出ORDER 資料到HISTORY
+    // 傳出ORDER 資料到HISTORY!!!
     public static void OrdertoHistory(Long OrderID)
     {
         Connection connection = null;
