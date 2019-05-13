@@ -67,12 +67,13 @@ public class RestDAO {
         PreparedStatement preparedStatement = null;
         try {
         	connection = JdbcUtils.getconn();
-        	String sql = "INSERT INTO restaurant_info(Rest_Id, Rest_Name, Rest_Address, Description) VALUES(?, ?, ?, ?);";
+        	String sql = "INSERT INTO restaurant_info(Rest_Id, Rest_Name, Rest_Address, Description, Rest_Photo) VALUES(?, ?, ?, ?, ?);";
         	preparedStatement = connection.prepareStatement(sql);
         	preparedStatement.setLong(1, rest.getRestID());
         	preparedStatement.setString(2, rest.getRestName());
         	preparedStatement.setString(3, rest.getRestAddress());
         	preparedStatement.setString(4, rest.getDescription());
+            preparedStatement.setString(4, rest.getRestPhoto());
         	preparedStatement.executeUpdate();
 		}
         catch(SQLException e) 

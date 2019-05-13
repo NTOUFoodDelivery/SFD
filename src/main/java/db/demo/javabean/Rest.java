@@ -6,6 +6,7 @@ public class Rest {
     private String restName;
     private String restAddress;
     private String description;
+    private String restPhoto;
 
     public long getRestID() {
         return restID;
@@ -39,4 +40,11 @@ public class Rest {
         this.description = description;
     }
 
+    public String getRestPhoto() {
+        return restPhoto;
+    }
+
+    public void setRestPhoto(String restPhoto) {
+        this.restPhoto = restPhoto;
+    }
 }
