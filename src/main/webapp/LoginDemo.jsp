@@ -42,9 +42,9 @@
         Password:<input type="password" name="password"><br>
         <select class="custom-select" name="userType">
             <option selected>Choose...</option>
-            <option value="deliver">外送員</option>
-            <option value="eater">食客</option>
-            <option value="admin">admin</option>
+            <option value="Customer_and_Deliver">外送員</option>
+            <option value="Customer">食客</option>
+            <option value="Administrator">admin</option>
         </select>
         <input type="submit" value="Login">
         <input type="reset" value="reset">

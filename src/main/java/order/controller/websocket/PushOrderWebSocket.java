@@ -59,7 +59,7 @@ public class PushOrderWebSocket {
             try {
 
                 PushResult pushResult = gson.fromJson(msg, PushResult.class);
-                String orderID = pushResult.getOrderID();
+                Long orderID = pushResult.getOrderID();
 
                 Boolean isAccept = pushResult.isAccept();
                 if (isAccept) { // 訂單被接受

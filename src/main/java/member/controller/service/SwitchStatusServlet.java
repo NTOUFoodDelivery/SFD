@@ -22,7 +22,8 @@ public class SwitchStatusServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         PushResult result = new PushResult();
-        result.setOrderID("test");
+        result.setDeliverID(456L);
+        result.setOrderID(123L);
         result.setAccept(true);
 
         String json = gson.toJson(result);
