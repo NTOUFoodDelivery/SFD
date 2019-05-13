@@ -152,7 +152,7 @@ public class OrderDAO {
         JsonObject jsonString = null;
         try {
             connection = JdbcUtils.getconn();
-/*add history customer deliver info !!!!!!!!!!!!!!!*/
+/*add history customer deliver info !!!!!!!!!!!!!!!!!!!!!!!*/
             String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name,"
             		+ " history_food.Count,  member.Accout, member.User_Name" +//add rest name!!!!1
             		"FROM history " +
