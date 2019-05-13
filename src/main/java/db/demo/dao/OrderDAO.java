@@ -111,7 +111,7 @@ public class OrderDAO {
         ResultSet resultSet1 = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT Order_Id FROM order WHERE Order_Status = 'wait'";
+            String sql = "SELECT Order_Id FROM `order` WHERE Order_Status = 'wait'";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
