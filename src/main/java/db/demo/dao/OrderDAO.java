@@ -109,7 +109,7 @@ public class OrderDAO {
     }
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 當前訂單
-    // 暴風製造              請渣炸眨詐過目檢查OK
+    // OK
     public static JsonObject searchEaterOrder(int userID)
     {
         Connection connection = null;
@@ -154,12 +154,12 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
 /*add history customer deliver info !!!!!!!!!!!!!!!!!!!!!!!*/
             String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name,"
-            		+ " history_food.Count,  member.Accout, member.User_Name" +//add rest name!!!!1
+            		+ " history_food.Count,  member.Accout, member.User_Name, history_food.Rest_Name" +//add rest name!!!!1
             		"FROM history " +
             		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
-            		"INNER JOIN customer_deliver_info ON history.History_Id = customer_deliver_info.Order_Id " + 
-            		"INNER JOIN member ON customer_deliver_info.Deliver_Id = member.User_Id " + 
-            		"WHERE customer_deliver_info.Customer_Id = ?";
+            		"INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " + 
+            		"INNER JOIN member ON history_customer_deliver_info.Deliver_Id = member.User_Id " + 
+            		"WHERE history_customer_deliver_info.Customer_Id = ?";
             //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userID);
@@ -175,7 +175,7 @@ public class OrderDAO {
     }
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 當前訂單
-    // 暴風製造
+    // OK
     public static JsonObject searchDeliverOrder(int userID)
     {
         Connection connection = null;
@@ -216,11 +216,11 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number " +
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number, history_food.Rest_Address" +
             		"FROM history " +
             		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
-            		"INNER JOIN customer_deliver_info ON history.History_Id = customer_deliver_info.Order_Id " + 
-            		"INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id " + 
+            		"INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " + 
+            		"INNER JOIN member ON history_customer_deliver_info.Customer_Id = member.User_Id " + 
             		"WHERE customer_deliver_info.Deliver_Id = ?";
             //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             pst = (PreparedStatement)con.prepareStatement(sql);
@@ -240,34 +240,7 @@ public class OrderDAO {
         }
         return jsonString;
     }
-    //History_id 外送員歷史訂單食物
-    public static JsonObject searchDeliverHistoryOrder_Food(int orderID){
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        JsonObject jsonString = null;
-        try {
-            con = JdbcUtils.getconn();
-
-            String search_history_sql = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name "
-            		+ "FROM meal "
-            		+ "INNER JOIN history_food ON history_food.Food_Name = meal.Food_Name "
-            		+ "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id "
-            		+ "WHERE history_food.History_Id = ?";
-            pst = con.prepareStatement(search_history_sql);
-            pst.setInt(1, orderID);
-            rs = pst.executeQuery();
-            rs.first();
-            rs.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally{
-            JdbcUtils.close(pst,con);
-        }
-        return jsonString;
-    }
-
+   
     //測試區
 //    public static void main(String args[]) {
 //    	searchDeliverHistoryOrder_Food(0);
