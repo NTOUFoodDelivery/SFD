@@ -101,12 +101,14 @@ public class OrderDAO {
 
     // 找出 未推播 訂單
     // 暴風製造              請渣炸眨詐過目檢查OK
-    public static ArrayList<Integer> searchIdelOrder()
+    public static ArrayList<JsonObject> searchIdelOrder()
     {
-    	ArrayList<Integer> a = new ArrayList<Integer>();
+    	ArrayList<JsonObject> a = new ArrayList<JsonObject>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        PreparedStatement preparedStatement1 = null;
+        ResultSet resultSet1 = null;
         try {
             connection = JdbcUtils.getconn();
             String sql = "SELECT Order_Id FROM order WHERE Order_Status = 'wait'";
@@ -115,7 +117,13 @@ public class OrderDAO {
             resultSet.getMetaData();
             while(resultSet.next())
             {
-                a.add(resultSet.getInt("Order_Id"));
+                String search_history_sql1 = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name FROM meal INNER JOIN history_food ON history_food.Food_Name = meal.Food_Name INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id WHERE history_food.History_Id = ?";
+                preparedStatement1 = connection.prepareStatement(search_history_sql1);
+                preparedStatement1.setInt(1, resultSet.getInt("Order_Id"));
+                resultSet1 = preparedStatement1.executeQuery();
+                resultSet1.first();
+                resultSet1.getMetaData(); //取得Query資料
+                a.add(ResultSetToJson.ResultSetToJsonObject(resultSet1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -250,7 +258,7 @@ public class OrderDAO {
         }
     	return jsonString;
     }
-    //Order_id 連結對應食物查詢   還沒完成 !!!!~~~~ 
+    //Order_id 連結對應食物查詢   完成
     public static JsonObject searchDeliverHistoryOrder_Food(int orderID){
     	Connection con = null;
         PreparedStatement pst = null;
@@ -266,16 +274,6 @@ public class OrderDAO {
             rs.first();
             rs.getMetaData(); //取得Query資料
             jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-            
-//            String b = rs.getString("Food_Name");
-//			System.out.println(b);
-//            while(rs.next()) 
-//            {
-//            	String a = rs.getString("Food_Name");
-//				System.out.println(a);
-//				System.out.println("HI");
-//			}
-            //System.out.println("HI");
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -285,8 +283,8 @@ public class OrderDAO {
     }
     
     //測試區
-    public static void main(String args[]) {
-    	searchDeliverHistoryOrder_Food(0);
-    	
-	}
+//    public static void main(String args[]) {
+//    	searchDeliverHistoryOrder_Food(0);
+//    	
+//	}
 }
