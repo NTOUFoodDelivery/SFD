@@ -25,15 +25,25 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
 
             // set order table ----- BEGIN<33333333
-            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status) VALUES(?, ?, ?, ?, ?);";
+            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other) VALUES(?, ?, ?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
             preparedStatement.setLong(1,order.getOrder_Id());
             preparedStatement.setString(2,order.getStart_Time());
             preparedStatement.setInt(3,order.getType_Count());
             preparedStatement.setInt(4,order.getTotal());
             preparedStatement.setString(5,order.getOrder_Status());
+            preparedStatement.setString(6,order.getAddress());
+            preparedStatement.setString(7,order.getOther());
             preparedStatement.executeUpdate();
             // set order table ----- END
+            // set OCD table ----- BEGIN
+            String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id) VALUES(?, ?);";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(OC_sql);
+            preparedStatement.setLong(1,order.getOrder_Id());
+            preparedStatement.setLong(2,order.getCustomer_Id());
+            preparedStatement.executeUpdate();
+            
+            // set OCD table ----- END
             // set order_food table ----- BEGIN
             String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`) VALUES(?, (SELECT Order_Id FROM `order` WHERE `order`.Order_Id = ?), (SELECT Food_Id FROM meal WHERE meal.Food_Id = ?), ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
@@ -141,6 +151,110 @@ public class OrderDAO {
         return jsonString;
     }
 
+    
+    
+ /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    
+    
+    // 傳出ORDER 資料到HISTORY!!!
+    public static void OrdertoHistory(Long OrderID)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement2 = null;
+        ResultSet resultSet = null;
+        try {
+            connection = JdbcUtils.getconn();
+//  order_food.Order_SERIAL, order_food.`Count`, meal.Food_Name, restaurant_info.Rest_Name, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id " + 
+            String sql = "SELECT  * FROM `order` WHERE Order_Id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, OrderID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            
+            String inserthistory = "INSERT INTO history(History_Id, Start_Time, Type_Count, Total, Final_Status, Address, Other) VALUES(?, ?, ?, ?, ?, ?, ?);";
+            preparedStatement2 = (PreparedStatement)connection.prepareStatement(inserthistory);
+            preparedStatement2.setLong(1,resultSet.getLong("Order_Id"));
+            preparedStatement2.setString(2,resultSet.getString("Start_Time"));
+            preparedStatement2.setInt(3,resultSet.getInt("Type_Count"));
+            preparedStatement2.setInt(4,resultSet.getInt("Total"));
+            preparedStatement2.setString(5,resultSet.getString("Order_Status"));
+            preparedStatement2.setString(6,resultSet.getString("Address"));
+            preparedStatement2.setString(7,resultSet.getString("Other"));
+            preparedStatement2.executeUpdate();
+            //set HOCD-history_Id
+            String insertHO_CD_history_Id = "INSERT INTO history_customer_deliver_info(History_Id) VALUES(?)";
+            preparedStatement2 = (PreparedStatement)connection.prepareStatement(insertHO_CD_history_Id);
+            preparedStatement2.setLong(1,resultSet.getLong("Order_Id"));
+            preparedStatement2.executeUpdate();
+            
+            // set OCD table ----- BEGIN
+            String select_OCDsql = "SELECT  * FROM customer_deliver_info WHERE Order_Id = ?";
+            preparedStatement = connection.prepareStatement(select_OCDsql);
+            preparedStatement.setLong(1, OrderID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            
+            String OCD_sql = "INSERT INTO history_customer_deliver_info(History_Id, Customer_Id, Deliver_Id) VALUES(?, ?, ?);";
+            preparedStatement2 = (PreparedStatement)connection.prepareStatement(OCD_sql);
+            preparedStatement2.setLong(1,resultSet.getLong("Order_Id"));
+            preparedStatement2.setLong(2,resultSet.getLong("Customer_Id"));
+            preparedStatement2.setLong(3,resultSet.getLong("Deliver_Id"));
+            preparedStatement2.executeUpdate();
+            
+            // set OCD table ----- END
+            // set order_food table ----- BEGIN
+            String selectfoodsql = "SELECT  order_food.Order_SERIAL, order_food.Order_Id, order_food.`Count`, meal.Food_Name, restaurant_info.Rest_Name "
+            		+ "FROM order_food INNER JOIN meal ON order_food.Food_Id = meal.Food_Id "
+            		+ "INNER JOIN restaurant_info ON meal.Rest_Id =  restaurant_info.Rest_Id WHERE order_food.Order_Id = ?";
+            preparedStatement = connection.prepareStatement(selectfoodsql);
+            preparedStatement.setLong(1, OrderID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            
+            while(resultSet.next()) {
+            	String history_food_sql = "INSERT INTO history_food(History_SERIAL, History_Id, Food_Name, `Count`, Rest_Name) VALUES(?, ?, ?, ?, ?);";
+                preparedStatement2 = (PreparedStatement)connection.prepareStatement(history_food_sql);
+                preparedStatement2.setLong(1,resultSet.getLong("order_food.Order_SERIAL"));
+                preparedStatement2.setLong(2,resultSet.getLong("order_food.Order_Id"));
+                preparedStatement2.setString(3,resultSet.getString("meal.Food_Name"));
+                preparedStatement2.setInt(4,resultSet.getInt("order_food.`Count`"));
+                preparedStatement2.setString(5,resultSet.getString("restaurant_info.Rest_Name"));
+                preparedStatement2.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+    }
+
+    
+    
+ /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    //訂單建立後新增DELIVER_ID到OCD
+    
+    public static void insertDtoOCD(Order order)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "UPDATE customer_deliver_info SET Deliver_Id = ? WHERE Order_Id LIKE ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, order.getDeliver_Id());
+            preparedStatement.setLong(2, order.getOrder_Id());
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
+    }
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 歷史訂單
     // 暴風製造
@@ -152,7 +266,6 @@ public class OrderDAO {
         JsonObject jsonString = null;
         try {
             connection = JdbcUtils.getconn();
-/*add history customer deliver info !!!!!!!!!!!!!!!!!!!!!!!*/
             String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name,"
             		+ " history_food.Count,  member.Accout, member.User_Name, history_food.Rest_Name" +
             		"FROM history " +
@@ -240,7 +353,7 @@ public class OrderDAO {
         }
         return jsonString;
     }
-   
+   /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 更改orderStauts
     public static void modifyOrderStauts(Long orderID, String OrderStauts)
     {
