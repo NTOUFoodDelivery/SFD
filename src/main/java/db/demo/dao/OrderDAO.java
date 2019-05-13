@@ -193,7 +193,7 @@ public class OrderDAO {
             		"INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " + 
             		"INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id " + 
             		"WHERE customer_deliver_info.Deliver_Id = ?";
-            //~~String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            //String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
