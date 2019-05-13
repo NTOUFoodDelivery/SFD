@@ -259,24 +259,23 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name "
-            											 + "FROM meal "
-            											 + "INNER JOIN history_food ON history_food.Food_Id = meal.Food_Id"
-            											 + "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id "
-            											 + "WHERE history_food.History_Id = ?";
-            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
+            String search_history_sql = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name FROM meal INNER JOIN history_food ON history_food.Food_Name = meal.Food_Name INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id WHERE history_food.History_Id = ?";
+            pst = con.prepareStatement(search_history_sql);
             pst.setInt(1, orderID);
             rs = pst.executeQuery();
+            rs.first();
             rs.getMetaData(); //取得Query資料
             jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-           /* while(rs.next()) {
-				String na = rs.getString("Food_Name");
-				String id = rs.getString("Rest_Name");
-				int as = rs.getInt("Cost");
-				int ie = rs.getInt("Count");
-				System.out.println(na + " " + id + " " + as+ " " + ie);
-			}
-            */
+            
+//            String b = rs.getString("Food_Name");
+//			System.out.println(b);
+//            while(rs.next()) 
+//            {
+//            	String a = rs.getString("Food_Name");
+//				System.out.println(a);
+//				System.out.println("HI");
+//			}
+            //System.out.println("HI");
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -286,8 +285,8 @@ public class OrderDAO {
     }
     
     //測試區
-  /*  public static void main(String args[]) {
+    public static void main(String args[]) {
     	searchDeliverHistoryOrder_Food(0);
     	
-	}*/
+	}
 }
