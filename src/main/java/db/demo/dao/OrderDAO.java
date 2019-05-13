@@ -58,52 +58,52 @@ public class OrderDAO {
     // 需要把order_Fodd也都刪光光嗎                   @渣炸眨詐
     public static void delOrder(int orderID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-        	connection = JdbcUtils.getconn();
-        	String sql = "DELETE FROM `order` WHERE Order_Id = ?";
-        	preparedStatement = connection.prepareStatement(sql);
-        	preparedStatement.setInt(1, orderID);
-        	preparedStatement.executeUpdate();
+            connection = JdbcUtils.getconn();
+            String sql = "DELETE FROM `order` WHERE Order_Id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, orderID);
+            preparedStatement.executeUpdate();
         }
-        catch(SQLException e) 
-	    { 
-        	e.printStackTrace();
-	    } 
-	    finally 
-	    { 
-	    	JdbcUtils.close(preparedStatement,connection);
-	    }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
     }
     /*delete order_food 所屬食物項目*/
     public static void delOrder_food(int orderID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-        	connection = JdbcUtils.getconn();
-        	String sql = "DELETE FROM `order_food` WHERE Order_Id = ?";
-        	preparedStatement = connection.prepareStatement(sql);
-        	preparedStatement.setInt(1, orderID);
-        	preparedStatement.executeUpdate();
+            connection = JdbcUtils.getconn();
+            String sql = "DELETE FROM `order_food` WHERE Order_Id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, orderID);
+            preparedStatement.executeUpdate();
         }
-        catch(SQLException e) 
-	    { 
-        	e.printStackTrace();
-	    } 
-	    finally 
-	    { 
-	    	JdbcUtils.close(preparedStatement,connection);
-	    }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
     }
-    
+
 
     // 找出 未推播 訂單
     // 暴風製造              請渣炸眨詐過目檢查OK
     public static ArrayList<JsonObject> searchIdelOrder()
     {
-    	ArrayList<JsonObject> a = new ArrayList<JsonObject>();
+        ArrayList<JsonObject> a = new ArrayList<JsonObject>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -137,12 +137,12 @@ public class OrderDAO {
     // 暴風製造              請渣炸眨詐過目檢查OK
     public static JsonObject searchEaterOrder(int userID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-        	connection = JdbcUtils.getconn();
+            connection = JdbcUtils.getconn();
 
             String search_history_sql = "SELECT * FROM `order` WHERE ( Order_Status LIKE 'WAIT' OR Order_Status LIKE 'DEALING' ) AND Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             preparedStatement = connection.prepareStatement(search_history_sql);
@@ -155,12 +155,12 @@ public class OrderDAO {
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-    	return jsonString;
+        return jsonString;
     }
 
-  //Order_id 連結對應當前食物查詢顧客
+    //Order_id 連結對應當前食物查詢顧客
     public static JsonObject searchCustomerNowOrder_Food(int orderID){
-    	Connection con = null;
+        Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
         JsonObject jsonString = null;
@@ -178,19 +178,19 @@ public class OrderDAO {
         }finally{
             JdbcUtils.close(pst,con);
         }
-    	return jsonString;
+        return jsonString;
     }
-    
+
     // 利用 userID 查詢 食客 歷史訂單
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchEaterHistoryOrder(int userID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-        	connection = JdbcUtils.getconn();
+            connection = JdbcUtils.getconn();
 
             String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             preparedStatement = connection.prepareStatement(search_history_sql);
@@ -203,19 +203,19 @@ public class OrderDAO {
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-    	return jsonString;
+        return jsonString;
     }
 
     // 利用 userID 查詢 外送員 當前訂單
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchDeliverOrder(int userID)
     {
-    	Connection connection = null;
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-        	connection = JdbcUtils.getconn();
+            connection = JdbcUtils.getconn();
 
             String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             preparedStatement = connection.prepareStatement(search_history_sql);
@@ -228,12 +228,12 @@ public class OrderDAO {
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-    	return jsonString;
+        return jsonString;
     }
 
     // 利用 userID 查詢 外送員 歷史訂單
     public static JsonObject searchDeliverHistoryOrder(int deliverId){
-    	Connection con = null;
+        Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
         JsonObject jsonString = null;
@@ -256,11 +256,11 @@ public class OrderDAO {
         }finally{
             JdbcUtils.close(pst,con);
         }
-    	return jsonString;
+        return jsonString;
     }
     //Order_id 連結對應食物查詢   完成
     public static JsonObject searchDeliverHistoryOrder_Food(int orderID){
-    	Connection con = null;
+        Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
         JsonObject jsonString = null;
@@ -279,12 +279,12 @@ public class OrderDAO {
         }finally{
             JdbcUtils.close(pst,con);
         }
-    	return jsonString;
+        return jsonString;
     }
-    
+
     //測試區
 //    public static void main(String args[]) {
 //    	searchDeliverHistoryOrder_Food(0);
-//    	
+//
 //	}
 }
