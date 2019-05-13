@@ -10,20 +10,23 @@ public class Order {
      * Total : 634
      * meals : [{"Food_Id":1236,"Count":5}]
      * Order_Status : vlcd;sx
+     * Other : "asdasd"
      */
 
-    private int Order_Id;
+    private long Deliver_Id;
+    private long Order_Id;
     private String Start_Time;
     private int Type_Count;
     private int Total;
     private String Order_Status;
     private List<MealsBean> meals;
+    private String Other;
 
-    public int getOrder_Id() {
+    public long getOrder_Id() {
         return Order_Id;
     }
 
-    public void setOrder_Id(int Order_Id) {
+    public void setOrder_Id(long Order_Id) {
         this.Order_Id = Order_Id;
     }
 
@@ -65,6 +68,22 @@ public class Order {
 
     public void setMeals(List<MealsBean> meals) {
         this.meals = meals;
+    }
+
+    public long getDeliver_Id() {
+        return Deliver_Id;
+    }
+
+    public void setDeliver_Id(long deliver_Id) {
+        Deliver_Id = deliver_Id;
+    }
+
+    public String getOther() {
+        return Other;
+    }
+
+    public void setOther(String other) {
+        Other = other;
     }
 
     public static class MealsBean {
