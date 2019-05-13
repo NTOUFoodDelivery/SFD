@@ -196,4 +196,27 @@ public class UserDAO {
         }
         return a;
     }
+    
+    public static void addFeedback(Long FeedbackID, Long UserID, String Content)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "INSERT INTO feedback(Feedback_Id, User_Id, Content) VALUES(?, ?, ?);";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setLong(1, FeedbackID);
+        	preparedStatement.setLong(2, UserID);
+        	preparedStatement.setString(3, Content);
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
 }
