@@ -117,17 +117,42 @@ public class UserDAO {
         }
     }
 
-    // 利用 userID ban 使用者
+    // 利用 userID 更改 使用者的Status
     // 已測試成功
-    public static void banUser(Long userID)
+    public static void modifyUserStatus(Long userID, String userStatus)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "UPDATE member SET User_Status = 'USER_BAN' WHERE User_Id = ?;";
+            String sql = "UPDATE member SET User_Stauts = ? WHERE User_Id = ?;";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, userID);
+            preparedStatement.setString(1, userStatus);
+            preparedStatement.setLong(2, userID);
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
+    }
+    
+    // 利用 userID 更改 使用者的Type
+    // 已測試成功
+    public static void modifyUserType(Long userID, String userType)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "UPDATE member SET User_Typr = ? WHERE User_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userType);
+            preparedStatement.setLong(2, userID);
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)
@@ -196,4 +221,30 @@ public class UserDAO {
         }
         return a;
     }
+    
+    // 食客or外送員  傳送客服回報
+    public static void addFeedback(Long FeedbackID, Long UserID, String Content)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+        	connection = JdbcUtils.getconn();
+        	String sql = "INSERT INTO feedback(Feedback_Id, User_Id, Content) VALUES(?, ?, ?);";
+        	preparedStatement = connection.prepareStatement(sql);
+        	preparedStatement.setLong(1, FeedbackID);
+        	preparedStatement.setLong(2, UserID);
+        	preparedStatement.setString(3, Content);
+        	preparedStatement.executeUpdate();
+		}
+        catch(SQLException e) 
+	    { 
+        	e.printStackTrace();
+	    } 
+	    finally 
+	    { 
+	    	JdbcUtils.close(preparedStatement,connection);
+	    }
+    }
+    
+    
 }
