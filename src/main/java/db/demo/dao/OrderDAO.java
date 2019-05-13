@@ -76,27 +76,6 @@ public class OrderDAO {
             JdbcUtils.close(preparedStatement,connection);
         }
     }
-    /*delete order_food 所屬食物項目*/
-    public static void delOrder_food(int orderID)
-    {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = JdbcUtils.getconn();
-            String sql = "DELETE FROM `order_food` WHERE Order_Id = ?";
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, orderID);
-            preparedStatement.executeUpdate();
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            JdbcUtils.close(preparedStatement,connection);
-        }
-    }
 
 
     // 找出 未推播 訂單
@@ -107,23 +86,20 @@ public class OrderDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        PreparedStatement preparedStatement1 = null;
-        ResultSet resultSet1 = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT Order_Id FROM `order` WHERE Order_Status = 'wait'";
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address \n" + 
+            		"FROM `order` " + 
+            		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
+            		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
+            		"INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " + 
+            		"WHERE Order_Status = 'wait'";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
             while(resultSet.next())
             {
-                String search_history_sql1 = "SELECT order_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name FROM meal INNER JOIN order_food ON order_food.Food_Name = meal.Food_Name INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id WHERE order_food.Order_Id = ?";
-                preparedStatement1 = connection.prepareStatement(search_history_sql1);
-                preparedStatement1.setInt(1, resultSet.getInt("Order_Id"));
-                resultSet1 = preparedStatement1.executeQuery();
-                resultSet1.first();
-                resultSet1.getMetaData(); //取得Query資料
-                a.add(ResultSetToJson.ResultSetToJsonObject(resultSet1));
+                a.add(ResultSetToJson.ResultSetToJsonObject(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,7 +108,7 @@ public class OrderDAO {
         }
         return a;
     }
-
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 當前訂單
     // 暴風製造              請渣炸眨詐過目檢查OK
     public static JsonObject searchEaterOrder(int userID)
@@ -158,29 +134,7 @@ public class OrderDAO {
         return jsonString;
     }
 
-    //Order_id 連結對應當前食物查詢顧客
-    public static JsonObject searchCustomerNowOrder_Food(int orderID){
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        JsonObject jsonString = null;
-        try {
-            con = JdbcUtils.getconn();
-
-            String search_history_sql = "SELECT Food_Id, Count FROM History WHERE Order_Id = ?";
-            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
-            pst.setInt(1, orderID);
-            rs = pst.executeQuery();
-            rs.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally{
-            JdbcUtils.close(pst,con);
-        }
-        return jsonString;
-    }
-
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 歷史訂單
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchEaterHistoryOrder(int userID)
@@ -205,7 +159,7 @@ public class OrderDAO {
         }
         return jsonString;
     }
-
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 當前訂單
     // 暴風製造              請渣炸眨詐過目檢查
     public static JsonObject searchDeliverOrder(int userID)
@@ -230,7 +184,7 @@ public class OrderDAO {
         }
         return jsonString;
     }
-
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 歷史訂單
     public static JsonObject searchDeliverHistoryOrder(int deliverId){
         Connection con = null;
@@ -258,7 +212,7 @@ public class OrderDAO {
         }
         return jsonString;
     }
-    //Order_id 連結對應食物查詢   完成
+    //History_id 外送員歷史訂單食物
     public static JsonObject searchDeliverHistoryOrder_Food(int orderID){
         Connection con = null;
         PreparedStatement pst = null;
@@ -267,7 +221,11 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name FROM meal INNER JOIN history_food ON history_food.Food_Name = meal.Food_Name INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id WHERE history_food.History_Id = ?";
+            String search_history_sql = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name "
+            		+ "FROM meal "
+            		+ "INNER JOIN history_food ON history_food.Food_Name = meal.Food_Name "
+            		+ "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id "
+            		+ "WHERE history_food.History_Id = ?";
             pst = con.prepareStatement(search_history_sql);
             pst.setInt(1, orderID);
             rs = pst.executeQuery();
