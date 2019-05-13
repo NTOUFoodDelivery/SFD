@@ -133,7 +133,7 @@ public class RestDAO {
 	    finally 
 	    { 
 	    	JdbcUtils.close(preparedStatement,connection);
-	    } 
+	    }
     }
 
     // 利用 restID 和 foodID 刪除 指定合作餐廳 的菜單

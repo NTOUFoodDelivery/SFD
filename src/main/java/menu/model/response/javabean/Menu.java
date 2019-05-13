@@ -2,13 +2,12 @@ package menu.model.response.javabean;
 
 public class Menu {
     /**
-     * Rest_Id : ybgufejk
-     * Food_Id : tgfgehwjk
+     * Rest_Id : 12
+     * Food_Id : 45
      * Food_Name : kvjfndb
      * Cost : 124
      * Description : ergftegwhj
      * Image : vtyfudj
-     * status : true
      */
 
     private long Rest_Id;
@@ -17,7 +16,6 @@ public class Menu {
     private int Cost;
     private String Description;
     private String Image;
-    private boolean status;
 
     public long getRest_Id() {
         return Rest_Id;
@@ -67,11 +65,4 @@ public class Menu {
         this.Image = Image;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }
