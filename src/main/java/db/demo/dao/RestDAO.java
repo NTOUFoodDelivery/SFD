@@ -73,7 +73,7 @@ public class RestDAO {
         	preparedStatement.setString(2, rest.getRestName());
         	preparedStatement.setString(3, rest.getRestAddress());
         	preparedStatement.setString(4, rest.getDescription());
-            preparedStatement.setString(4, rest.getRestPhoto());
+            preparedStatement.setString(5, rest.getRestPhoto());
         	preparedStatement.executeUpdate();
 		}
         catch(SQLException e) 
