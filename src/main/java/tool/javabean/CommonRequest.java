@@ -1,5 +1,7 @@
 package tool.javabean;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 public class CommonRequest {

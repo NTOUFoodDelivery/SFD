@@ -6,14 +6,12 @@ public class RestInfo {
      * Rest_Name : obuvygfdh
      * Rest_address : ygfhdjsk
      * Description : ygfhjd
-     * status : true
      */
 
     private String Rest_Id;
     private String Rest_Name;
     private String Rest_address;
     private String Description;
-    private boolean status;
 
     public String getRest_Id() {
         return Rest_Id;
@@ -47,11 +45,4 @@ public class RestInfo {
         this.Description = Description;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }
