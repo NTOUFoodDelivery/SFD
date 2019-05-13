@@ -55,7 +55,6 @@ public class OrderDAO {
     }
 
     // 利用 orderID 刪除 訂單
-    // 需要把order_Fodd也都刪光光嗎                   @渣炸眨詐
     public static void delOrder(int orderID)
     {
         Connection connection = null;
@@ -120,8 +119,16 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT * FROM `order` WHERE ( Order_Status LIKE 'WAIT' OR Order_Status LIKE 'DEALING' ) AND Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
-            preparedStatement = connection.prepareStatement(search_history_sql);
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, customer_deliver_info.Deliver_Id, member.Account, member.User_Name, member.Phone_Number, " + 
+            		"FROM `order` " + 
+            		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
+            		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
+            		"INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " + 
+            		"INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " + 
+            		"INNER JOIN member ON customer_deliver_info.Deliver_Id = member.User_Id " + 
+            		"WHERE customer_deliver_info.Customer_Id = ?";
+            //String search_history_sql = "SELECT * FROM `order` WHERE ( Order_Status LIKE 'WAIT' OR Order_Status LIKE 'DEALING' ) AND Order_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
@@ -136,7 +143,7 @@ public class OrderDAO {
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 食客 歷史訂單
-    // 暴風製造              請渣炸眨詐過目檢查
+    // 暴風製造
     public static JsonObject searchEaterHistoryOrder(int userID)
     {
         Connection connection = null;
@@ -146,8 +153,14 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
-            preparedStatement = connection.prepareStatement(search_history_sql);
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Address, history_food.Food_Name, history_food.Count, customer_deliver_info.Deliver_Id, member.Accout, member.User_Name, member.Email, member.Phone_Number " +
+            		"FROM history " +
+            		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
+            		"INNER JOIN customer_deliver_info ON history.History_Id = customer_deliver_info.Order_Id " + 
+            		"INNER JOIN member ON customer_deliver_info.Deliver_Id = member.User_Id " + 
+            		"WHERE customer_deliver_info.Customer_Id = ?";
+            //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
@@ -161,7 +174,7 @@ public class OrderDAO {
     }
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 當前訂單
-    // 暴風製造              請渣炸眨詐過目檢查
+    // 暴風製造
     public static JsonObject searchDeliverOrder(int userID)
     {
         Connection connection = null;
@@ -171,8 +184,16 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
-            preparedStatement = connection.prepareStatement(search_history_sql);
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, customer_deliver_info.Customer_Id, member.Account, member.User_Name, member.Phone_Number, " + 
+            		"FROM `order` " + 
+            		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
+            		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
+            		"INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " + 
+            		"INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " + 
+            		"INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id " + 
+            		"WHERE customer_deliver_info.Deliver_Id = ?";
+            //String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
@@ -194,8 +215,14 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
-            pst = (PreparedStatement)con.prepareStatement(search_history_sql);
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Address, history_food.Food_Name, history_food.Count, customer_deliver_info.Deliver_Id, member.Accout, member.User_Name, member.Email, member.Phone_Number " +
+            		"FROM history " +
+            		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
+            		"INNER JOIN customer_deliver_info ON history.History_Id = customer_deliver_info.Order_Id " + 
+            		"INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id " + 
+            		"WHERE customer_deliver_info.Deliver_Id = ?";
+            //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            pst = (PreparedStatement)con.prepareStatement(sql);
             pst.setInt(1, deliverId);
             rs = pst.executeQuery();
             rs.getMetaData(); //取得Query資料
