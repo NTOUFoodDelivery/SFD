@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet(name = "ModifyMenuServlet")
+@WebServlet("/ModifyMenuServlet")
 public class ModifyMenuServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -44,16 +44,16 @@ public class ModifyMenuServlet extends HttpServlet {
             case "add":{
                 System.out.println("add");
                 for(Menu menu : MenuList){
-                    System.out.println(menu.getFood_Id());
-//                    RestDAO.addRestMenu(menu);
+//                    System.out.println(menu.getFood_Id());
+                    RestDAO.addRestMenu(menu);
                 }
                 break;
             }
             case "delete":{
                 System.out.println("delete");
                 for(Menu menu : MenuList){
-                    System.out.println(menu.getFood_Id());
-//                    RestDAO.delRestMenu(menu.getFood_Id());
+//                    System.out.println(menu.getFood_Id());
+                    RestDAO.delRestMenu(menu.getFood_Id());
                 }
                 break;
             }
