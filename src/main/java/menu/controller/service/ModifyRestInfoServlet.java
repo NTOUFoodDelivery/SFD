@@ -32,7 +32,7 @@ public class ModifyRestInfoServlet extends HttpServlet {
         switch (cmd){
             case "add":{
                 System.out.println("add");
-                System.out.println(resultBeans.get(0));
+                System.out.println((RestInfo)resultBeans.get(0));
 //                for(Object object : resultBeans){
 //                    RestInfo restInfo = (RestInfo)object;
 //                    System.out.println(restInfo.getDescription());
