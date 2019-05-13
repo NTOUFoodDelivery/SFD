@@ -5,7 +5,10 @@ import java.util.List;
 public class Order {
     /**
      * Order_Id : 12314
+     * Customer_Id : 123
+     * Customer_Id : 243
      * Start_Time : tfdyhj
+     * Address : dslkvmds
      * Type_Count : 1
      * Total : 634
      * meals : [{"Food_Id":1236,"Count":5}]
@@ -17,6 +20,7 @@ public class Order {
     private long Deliver_Id;
     private long Order_Id;
     private String Start_Time;
+    private String Address;
     private int Type_Count;
     private int Total;
     private String Order_Status;
@@ -93,6 +97,14 @@ public class Order {
 
     public void setCustomer_Id(long customer_Id) {
         Customer_Id = customer_Id;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 
     public static class MealsBean {
