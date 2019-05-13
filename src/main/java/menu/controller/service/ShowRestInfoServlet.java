@@ -28,14 +28,11 @@ public class ShowRestInfoServlet extends HttpServlet {
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-//        JsonObject jsonObject = RestDAO.searchRestInfo();
-        List<JsonObject> jsonObjects = OrderDAO.searchIdelOrder();
-        for(JsonObject jsonObject : jsonObjects){
-            System.out.println(gson.toJson(jsonObject));
-        }
-//        String json = gson.toJson(jsonObject);
-//        PrintWriter out = response.getWriter();
-//        out.print(json);
-//        out.flush();
+        JsonObject jsonObject = RestDAO.searchRestInfo();
+
+        String json = gson.toJson(jsonObject);
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
     }
 }
