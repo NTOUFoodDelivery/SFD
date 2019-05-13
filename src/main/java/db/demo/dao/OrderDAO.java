@@ -117,7 +117,7 @@ public class OrderDAO {
             resultSet.getMetaData();
             while(resultSet.next())
             {
-                String search_history_sql1 = "SELECT history_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name FROM meal INNER JOIN history_food ON history_food.Food_Name = meal.Food_Name INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id WHERE history_food.History_Id = ?";
+                String search_history_sql1 = "SELECT order_food.Food_Name, meal.Cost, history_food.Count, restaurant_info.Rest_Name FROM meal INNER JOIN order_food ON order_food.Food_Name = meal.Food_Name INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id WHERE order_food.Order_Id = ?";
                 preparedStatement1 = connection.prepareStatement(search_history_sql1);
                 preparedStatement1.setInt(1, resultSet.getInt("Order_Id"));
                 resultSet1 = preparedStatement1.executeQuery();
