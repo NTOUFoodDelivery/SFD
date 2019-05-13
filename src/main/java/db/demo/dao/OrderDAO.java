@@ -241,6 +241,29 @@ public class OrderDAO {
         return jsonString;
     }
    
+    // 更改orderStauts
+    public static void modifyOrderStauts(Long orderID, String OrderStauts)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "UPDATE `order` SET Order_Stauts = ? WHERE Order_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, OrderStauts);
+            preparedStatement.setLong(2, orderID);
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
+    }
+    
     //測試區
 //    public static void main(String args[]) {
 //    	searchDeliverHistoryOrder_Food(0);
