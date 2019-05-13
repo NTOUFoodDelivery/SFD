@@ -87,7 +87,7 @@ public class OrderDAO {
         ResultSet resultSet = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address " + 
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, `order`.Other, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address " + 
             		"FROM `order` " + 
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
@@ -119,7 +119,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " + 
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " + 
             		"FROM `order` " + 
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
@@ -153,8 +153,8 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 /*add history customer deliver info !!!!!!!!!!!!!!!!!!!!!!!*/
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name,"
-            		+ " history_food.Count,  member.Accout, member.User_Name, history_food.Rest_Name" +//add rest name!!!!1
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name,"
+            		+ " history_food.Count,  member.Accout, member.User_Name, history_food.Rest_Name" +
             		"FROM history " +
             		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
             		"INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " + 
@@ -185,7 +185,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " + 
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " + 
             		"FROM `order` " + 
             		"INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " + 
             		"INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " + 
@@ -216,7 +216,7 @@ public class OrderDAO {
         try {
             con = JdbcUtils.getconn();
 
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number, history_food.Rest_Address" +
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number, history_food.Rest_Address" +
             		"FROM history " +
             		"INNER JOIN history_food ON history.History_Id = history_food.History_Id " + 
             		"INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " + 
