@@ -40,10 +40,6 @@ public class LogInServlet extends HttpServlet {
         if(userType==null||"".equals(userType)){ // userType不能空著喔
             info.add("userType不能空著喔");
         }
-//        request.getSession().setAttribute("account",account); // account 保存進 session 全域變數中
-//        request.getSession().setAttribute("userType",userType); // userType 保存進 session 全域變數中
-//
-//        request.getRequestDispatcher("chatDemo.jsp").forward(request,response); // 跳轉回登入頁面
 
         HttpSession session = request.getSession();
         if(info.size()==0){

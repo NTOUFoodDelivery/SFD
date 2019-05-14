@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import db.demo.dao.RestDAO;
 import db.demo.dao.UserDAO;
+import member.controller.service.FeedbackService;
 import member.model.javabean.FeedBack;
 import member.model.javabean.MemberSetting;
 import menu.model.response.javabean.Menu;
@@ -32,51 +33,11 @@ public class FeedBackServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        //FeedBack feedBack = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()), FeedBack.class);
-        
-        CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
-        String cmd = commonRequest.getQuery().getCommand(); // 新增 刪除 修改
-        List<Object> resultBeans = commonRequest.getResult();
-        List<FeedBack> feedBackList = new ArrayList<>();
-        for(Object object: resultBeans){
-            JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
-            feedBackList.add(gson.fromJson(jsonObject.toString(),FeedBack.class)); // feedBack資料存取
-        }
 
-        switch (cmd){
-            case MemberSetting.Feedback.ADD:{
-                System.out.println("ADD");
-                for(FeedBack feedBack : feedBackList){
-                	UserDAO.addFeedback(feedBack.getFeedBackID(),feedBack.getUserID(),feedBack.getContent());
-                }
-                break;
-            }
-            case MemberSetting.Feedback.ADMINISTRATORGET:{
-                System.out.println("ADMINISTRATORGET");
-                for(FeedBack feedBack : feedBackList){
-              	UserDAO.AdministratorGetFeedback(feedBack.getFeedBackID());
-              }
-                break;
-            }
-            case MemberSetting.Feedback.REPLY:{
-                System.out.println("REPLY");
-                for(FeedBack feedBack : feedBackList){
-              	UserDAO.replyFeedback(feedBack.getFeedBackID(),feedBack.getContent());
-              }
-                break;
-            }
-            case MemberSetting.Feedback.CUSTOMERORDELIVERGET:{
-                System.out.println("CUSTOMERORDELIVERGET");
-                for(FeedBack feedBack : feedBackList){
-              	UserDAO.CustomerOrDeliverGetFeedback(feedBack.getFeedBackID());
-              }
-                break;
-            }
-            default:{
-                System.out.println("default");
-                break;
-            }
-        }
+        CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
+
+        // 更改 回饋
+        FeedbackService.modifyFeedback(commonRequest);
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);

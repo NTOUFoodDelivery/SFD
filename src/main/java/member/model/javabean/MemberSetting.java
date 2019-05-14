@@ -25,6 +25,7 @@ public class MemberSetting {
         public static final String USER_BAN = "User_Ban";
         public static final String ADMINISTRATOR = "ADMINISTRATOR";
         public static final String DELETE = "DELETE";
+        public static final String PUSHING = "PUSHING";
     }
     public class Feedback {
         public static final String ADD = "Add";

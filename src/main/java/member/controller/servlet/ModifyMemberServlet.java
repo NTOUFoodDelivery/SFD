@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
+import member.controller.service.MemberService;
 import member.model.javabean.MemberSetting;
 import menu.model.response.javabean.Menu;
 import tool.HttpCommonAction;
@@ -34,79 +35,11 @@ public class ModifyMemberServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
-        String cmd = commonRequest.getQuery().getCommand(); // 新增 刪除 修改...
-        List<Object> resultBeans = commonRequest.getResult();
-        List<User> userList = new ArrayList<>();
-        for(Object object: resultBeans){
-            JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
-            userList.add(gson.fromJson(jsonObject.toString(),User.class)); // 使用者物件
-        }
+
+        MemberService.modifyMemberStatus(commonRequest);
+
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
-        switch (cmd){
-            case MemberSetting.Command.USER_BAN:{
-                System.out.println("ban");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(), cmd);
-                }
-                break;
-            }
-            case MemberSetting.Command.DELETE:{
-                System.out.println("delete");
-                for(User user : userList){
-                    UserDAO.delUser(user.getUserID());
-                }
-                break;
-            }
-            case MemberSetting.Command.DELIVER_ON:{
-                System.out.println("deliverOn");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(), cmd);
-                }
-                break;
-            }
-            case MemberSetting.Command.CUSTOMER:{
-                System.out.println("customer");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(), cmd);
-                }
-                break;
-            }
-            case MemberSetting.Command.DELIVER_BUSY:{
-                System.out.println("deliverBusy");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(),cmd);
-                }
-                break;
-            }
-            case MemberSetting.Command.DELIVER_OFF:{
-                System.out.println("deliverOff");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(), cmd);
-                }
-                break;
-            }
-            case MemberSetting.Command.OFFLINE:{
-                System.out.println("offline");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(), cmd);
-                }
-                break;
-            }
-            case MemberSetting.Command.ADMINISTRATOR:{
-                System.out.println("admin");
-                for(User user : userList){
-                    UserDAO.modifyUserStatus(user.getUserID(), cmd);
-                }
-                break;
-            }
-            default:{
-                System.out.println("default");
-                statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_ACCEPTABLE);
-                break;
-            }
-        }
-
         statusCodeResponse.setTime(new Date().toString());
         String json = gson.toJson(statusCodeResponse);
         PrintWriter out = response.getWriter();
