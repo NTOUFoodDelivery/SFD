@@ -33,26 +33,28 @@ public class PushOrderTask extends TimerTask {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                List<Long> idleDeliver = UserDAO.searchIdleDeliver();
+                // idle order
+                List<JsonObject> idleOrderList = OrderDAO.searchIdelOrder();
+                for(JsonObject jsonObject : idleOrderList){
+                    // idle deliver
+                    for(Long idleDeliverID : idleDeliver){
+                        Session idleDeliverSession = PushOrderWebSocket.sessions.get(idleDeliverID);
+                        if(idleDeliverSession != null)
+                        {
+                            try {
+                                Date date = new Date();
+                                idleDeliverSession.getBasicRemote().sendText(gson.toJson(jsonObject));
+                            } catch (IOException e) {
+
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
             }
-//            List<Long> idleDeliver = UserDAO.searchIdleDeliver();
-//            // idle order
-//            List<JsonObject> idleOrderList = OrderDAO.searchIdelOrder();
-//            for(JsonObject jsonObject : idleOrderList){
-//                // idle deliver
-//                for(Long idleDeliverID : idleDeliver){
-//                    Session idleDeliverSession = PushOrderWebSocket.sessions.get(idleDeliverID);
-//                    if(idleDeliverSession != null)
-//                    {
-//                        try {
-//                            Date date = new Date();
-//                            idleDeliverSession.getBasicRemote().sendText(gson.toJson(jsonObject));
-//                        } catch (IOException e) {
-//
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
+
         }
     }
     public void run() {

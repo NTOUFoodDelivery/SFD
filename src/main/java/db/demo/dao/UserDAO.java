@@ -217,9 +217,9 @@ public class UserDAO {
 
     // 利用 userID 查詢 全部的空閒的 外送員 
     // 已測試成功
-    public static ArrayList<Integer> searchIdleDeliver()
+    public static ArrayList<Long> searchIdleDeliver()
     {
-        ArrayList<Integer> a = new ArrayList<Integer>();
+        ArrayList<Long> a = new ArrayList<Long>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -232,7 +232,7 @@ public class UserDAO {
             resultSet.getMetaData();
             while(resultSet.next())
             {
-                a.add(resultSet.getInt("User_Id"));
+                a.add(resultSet.getLong("User_Id"));
                 //System.out.println(a.get(index));
                 //index++;
             }
