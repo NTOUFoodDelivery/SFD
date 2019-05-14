@@ -116,9 +116,9 @@ public class RestDAO {
         	connection = JdbcUtils.getconn();
         	String sql = "INSERT INTO meal(Food_Id, Food_Name, Rest_Id, Cost, Description, Image) VALUES(?, ?, ?, ?, ?, ?);";
         	preparedStatement = connection.prepareStatement(sql);
-        	preparedStatement.setLong(1, menu.getFood_Id());
+        	preparedStatement.setLong(1, menu.getFoodID());
         	preparedStatement.setString(2, menu.getFood_Name());
-        	preparedStatement.setLong(3, menu.getRest_Id());
+        	preparedStatement.setLong(3, menu.getRestID());
         	preparedStatement.setInt(4, menu.getCost());
         	preparedStatement.setString(5, menu.getDescription());
         	preparedStatement.setString(6, menu.getImage());

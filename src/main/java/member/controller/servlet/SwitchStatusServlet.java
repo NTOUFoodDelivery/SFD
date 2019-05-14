@@ -28,40 +28,40 @@ public class SwitchStatusServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         UserStatus userStatus = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),UserStatus.class);
 
-        String status = userStatus.getUser_Status();
+        String status = userStatus.getUserStatus();
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
         switch (status){
             case MemberSetting.UserStatus.DELIVER_ON:{
-                String identity = UserDAO.showUserIdentity(userStatus.getUser_Id());
+                String identity = UserDAO.showUserIdentity(userStatus.getUserID());
                 if(identity.equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){
-                    UserDAO.modifyUserStatus(userStatus.getUser_Id(),status);
+                    UserDAO.modifyUserStatus(userStatus.getUserID(),status);
                 }
                 break;
             }
             case MemberSetting.UserStatus.DELIVER_OFF:{
-                String identity = UserDAO.showUserIdentity(userStatus.getUser_Id());
+                String identity = UserDAO.showUserIdentity(userStatus.getUserID());
                 if(identity.equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){
-                    UserDAO.modifyUserStatus(userStatus.getUser_Id(),status);
+                    UserDAO.modifyUserStatus(userStatus.getUserID(),status);
                 }
                 break;
             }
             case MemberSetting.UserStatus.OFFLINE:{
                 // 如果目前有接單，收回
-                String currentUserStatus = UserDAO.showUserType(userStatus.getUser_Id());
+                String currentUserStatus = UserDAO.showUserType(userStatus.getUserID());
                 if(currentUserStatus.equals(MemberSetting.UserStatus.DELIVER_BUSY)){}
                 // 如果目前有推播訂單，收回
 //                String currentUserStatus = UserDAO.showUserType(userStatus.getUser_Id());
 //                if(currentUserStatus.equals(MemberSetting.UserStatus.DELIVER_ON)){}
-                UserDAO.modifyUserStatus(userStatus.getUser_Id(),status);
+                UserDAO.modifyUserStatus(userStatus.getUserID(),status);
                 break;
             }
             case MemberSetting.UserStatus.CUSTOMER:{
-                UserDAO.modifyUserStatus(userStatus.getUser_Id(),status);
+                UserDAO.modifyUserStatus(userStatus.getUserID(),status);
                 break;
             }
             case MemberSetting.UserStatus.DELIVER_BUSY:{
-                UserDAO.modifyUserStatus(userStatus.getUser_Id(),status);
+                UserDAO.modifyUserStatus(userStatus.getUserID(),status);
                 break;
             }
             default:{

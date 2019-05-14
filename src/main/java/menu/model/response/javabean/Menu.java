@@ -1,5 +1,8 @@
 package menu.model.response.javabean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Menu {
     /**
      * Rest_Id : 12
@@ -10,59 +13,72 @@ public class Menu {
      * Image : vtyfudj
      */
 
-    private long Rest_Id;
-    private long Food_Id;
+    @SerializedName("Rest_Id")
+    @Expose
+    private long restID;
+    @SerializedName("Food_Id")
+    @Expose
+    private long foodID;
+    @SerializedName("Food_Name")
+    @Expose
     private String Food_Name;
-    private int Cost;
-    private String Description;
-    private String Image;
+    @SerializedName("Cost")
+    @Expose
+    private int cost;
+    @SerializedName("Description")
+    @Expose
+    private String description;
+    @SerializedName("Image")
+    @Expose
+    private String image;
 
-    public long getRest_Id() {
-        return Rest_Id;
+
+    public long getRestID() {
+        return restID;
     }
 
-    public void setRest_Id(long Rest_Id) {
-        this.Rest_Id = Rest_Id;
+    public void setRestID(long restID) {
+        this.restID = restID;
     }
 
-    public long getFood_Id() {
-        return Food_Id;
+    public long getFoodID() {
+        return foodID;
     }
 
-    public void setFood_Id(long Food_Id) {
-        this.Food_Id = Food_Id;
+    public void setFoodID(long foodID) {
+        this.foodID = foodID;
     }
 
     public String getFood_Name() {
         return Food_Name;
     }
 
-    public void setFood_Name(String Food_Name) {
-        this.Food_Name = Food_Name;
+    public void setFood_Name(String food_Name) {
+        Food_Name = food_Name;
     }
 
     public int getCost() {
-        return Cost;
+        return cost;
     }
 
-    public void setCost(int Cost) {
-        this.Cost = Cost;
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
-    public void setImage(String Image) {
-        this.Image = Image;
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

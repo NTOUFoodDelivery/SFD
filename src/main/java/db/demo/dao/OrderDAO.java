@@ -27,11 +27,11 @@ public class OrderDAO {
             // set order table ----- BEGIN<33333333
             String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other) VALUES(?, ?, ?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
-            preparedStatement.setLong(1,order.getOrder_Id());
-            preparedStatement.setString(2,order.getStart_Time());
-            preparedStatement.setInt(3,order.getType_Count());
+            preparedStatement.setLong(1,order.getOrderID());
+            preparedStatement.setString(2,order.getStartTime());
+            preparedStatement.setInt(3,order.getTypeCount());
             preparedStatement.setInt(4,order.getTotal());
-            preparedStatement.setString(5,order.getOrder_Status());
+            preparedStatement.setString(5,order.getOrderStatus());
             preparedStatement.setString(6,order.getAddress());
             preparedStatement.setString(7,order.getOther());
             preparedStatement.executeUpdate();
@@ -39,8 +39,8 @@ public class OrderDAO {
             // set OCD table ----- BEGIN
             String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id) VALUES(?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(OC_sql);
-            preparedStatement.setLong(1,order.getOrder_Id());
-            preparedStatement.setLong(2,order.getCustomer_Id());
+            preparedStatement.setLong(1,order.getOrderID());
+            preparedStatement.setLong(2,order.getCustomerID());
             preparedStatement.executeUpdate();
             
             // set OCD table ----- END
@@ -48,11 +48,11 @@ public class OrderDAO {
             String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`) VALUES(?, (SELECT Order_Id FROM `order` WHERE `order`.Order_Id = ?), (SELECT Food_Id FROM meal WHERE meal.Food_Id = ?), ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
             for(Order.MealsBean meal : order.getMeals()) {
-                String str = order.getOrder_Id()+""+meal.getFood_Id();
+                String str = order.getOrderID()+""+meal.getFoodID();
                 Long orderSerial = Long.parseLong(str.trim(),10);
                 preparedStatement.setLong(1, orderSerial);
-                preparedStatement.setLong(2, order.getOrder_Id());
-                preparedStatement.setInt(3, meal.getFood_Id());
+                preparedStatement.setLong(2, order.getOrderID());
+                preparedStatement.setInt(3, meal.getFoodID());
                 preparedStatement.setInt(4, meal.getCount());
             }
             preparedStatement.executeUpdate();
@@ -242,8 +242,8 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
             String sql = "UPDATE customer_deliver_info SET Deliver_Id = ? WHERE Order_Id LIKE ?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, order.getDeliver_Id());
-            preparedStatement.setLong(2, order.getOrder_Id());
+            preparedStatement.setLong(1, order.getDeliverID());
+            preparedStatement.setLong(2, order.getOrderID());
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)

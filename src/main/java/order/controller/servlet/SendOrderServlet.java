@@ -28,7 +28,7 @@ public class SendOrderServlet extends HttpServlet {
 
         Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
 
-        order.setOrder_Id(JdbcUtils.generateID()); // 產生訂單 ID
+        order.setOrderID(JdbcUtils.generateID()); // 產生訂單 ID
 //        order.setOrder_Id(1);
         OrderDAO.addOrder(order);
 

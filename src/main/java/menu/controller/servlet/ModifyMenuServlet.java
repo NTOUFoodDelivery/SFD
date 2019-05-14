@@ -53,7 +53,7 @@ public class ModifyMenuServlet extends HttpServlet {
                 System.out.println("delete");
                 for(Menu menu : MenuList){
 //                    System.out.println(menu.getFood_Id());
-                    RestDAO.delRestMenu(menu.getFood_Id());
+                    RestDAO.delRestMenu(menu.getFoodID());
                 }
                 break;
             }

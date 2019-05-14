@@ -1,5 +1,8 @@
 package order.model.javabean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Order {
@@ -16,55 +19,107 @@ public class Order {
      * Other : "asdasd"
      */
 
-    private long Customer_Id;
-    private long Deliver_Id;
-    private long Order_Id;
-    private String Start_Time;
-    private String Address;
-    private int Type_Count;
-    private int Total;
-    private String Order_Status;
+    @SerializedName("Customer_Id")
+    @Expose
+    private long customerID;
+    @SerializedName("Deliver_Id")
+    @Expose
+    private long deliverID;
+    @SerializedName("Order_Id")
+    @Expose
+    private long orderID;
+    @SerializedName("Start_Time")
+    @Expose
+    private String startTime;
+    @SerializedName("Address")
+    @Expose
+    private String address;
+    @SerializedName("Type_Count")
+    @Expose
+    private int typeCount;
+    @SerializedName("Total")
+    @Expose
+    private int total;
+    @SerializedName("Order_Status")
+    @Expose
+    private String orderStatus;
+    @SerializedName("meals")
+    @Expose
     private List<MealsBean> meals;
-    private String Other;
+    @SerializedName("Other")
+    @Expose
+    private String other;
 
-    public long getOrder_Id() {
-        return Order_Id;
+    public long getCustomerID() {
+        return customerID;
     }
 
-    public void setOrder_Id(long Order_Id) {
-        this.Order_Id = Order_Id;
+    public void setCustomerID(long customerID) {
+        this.customerID = customerID;
     }
 
-    public String getStart_Time() {
-        return Start_Time;
+    public long getDeliverID() {
+        return deliverID;
     }
 
-    public void setStart_Time(String Start_Time) {
-        this.Start_Time = Start_Time;
+    public void setDeliverID(long deliverID) {
+        this.deliverID = deliverID;
     }
 
-    public int getType_Count() {
-        return Type_Count;
+    public long getOrderID() {
+        return orderID;
     }
 
-    public void setType_Count(int type_Count) {
-        Type_Count = type_Count;
+    public void setOrderID(long orderID) {
+        this.orderID = orderID;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getTypeCount() {
+        return typeCount;
+    }
+
+    public void setTypeCount(int typeCount) {
+        this.typeCount = typeCount;
     }
 
     public int getTotal() {
-        return Total;
+        return total;
     }
 
-    public void setTotal(int Total) {
-        this.Total = Total;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public String getOrder_Status() {
-        return Order_Status;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrder_Status(String Order_Status) {
-        this.Order_Status = Order_Status;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
     }
 
     public List<MealsBean> getMeals() {
@@ -75,61 +130,34 @@ public class Order {
         this.meals = meals;
     }
 
-    public long getDeliver_Id() {
-        return Deliver_Id;
-    }
-
-    public void setDeliver_Id(long deliver_Id) {
-        Deliver_Id = deliver_Id;
-    }
-
-    public String getOther() {
-        return Other;
-    }
-
-    public void setOther(String other) {
-        Other = other;
-    }
-
-    public long getCustomer_Id() {
-        return Customer_Id;
-    }
-
-    public void setCustomer_Id(long customer_Id) {
-        Customer_Id = customer_Id;
-    }
-
-    public String getAddress() {
-        return Address;
-    }
-
-    public void setAddress(String address) {
-        Address = address;
-    }
-
     public static class MealsBean {
         /**
          * Food_Id : 1236
          * Count : 5
          */
 
-        private int Food_Id;
-        private int Count;
+        @SerializedName("Food_Id")
+        @Expose
+        private int foodID;
+        @SerializedName("Count")
+        @Expose
+        private int count;
 
-        public int getFood_Id() {
-            return Food_Id;
+        public int getFoodID() {
+            return foodID;
         }
 
-        public void setFood_Id(int Food_Id) {
-            this.Food_Id = Food_Id;
+        public void setFoodID(int foodID) {
+            this.foodID = foodID;
         }
 
         public int getCount() {
-            return Count;
+            return count;
         }
 
-        public void setCount(int Count) {
-            this.Count = Count;
+        public void setCount(int count) {
+            this.count = count;
         }
+
     }
 }

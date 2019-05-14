@@ -1,5 +1,8 @@
 package menu.model.response.javabean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class RestInfo {
     /**
      * Rest_Id : tfydhn
@@ -8,41 +11,49 @@ public class RestInfo {
      * Description : ygfhjd
      */
 
-    private String Rest_Id;
-    private String Rest_Name;
-    private String Rest_address;
-    private String Description;
+    @SerializedName("Rest_Id")
+    @Expose
+    private String restID;
+    @SerializedName("Rest_Name")
+    @Expose
+    private String restName;
+    @SerializedName("Rest_address")
+    @Expose
+    private String restAddress;
+    @SerializedName("Description")
+    @Expose
+    private String description;
 
-    public String getRest_Id() {
-        return Rest_Id;
+    public String getRestID() {
+        return restID;
     }
 
-    public void setRest_Id(String Rest_Id) {
-        this.Rest_Id = Rest_Id;
+    public void setRestID(String restID) {
+        this.restID = restID;
     }
 
-    public String getRest_Name() {
-        return Rest_Name;
+    public String getRestName() {
+        return restName;
     }
 
-    public void setRest_Name(String Rest_Name) {
-        this.Rest_Name = Rest_Name;
+    public void setRestName(String restName) {
+        this.restName = restName;
     }
 
-    public String getRest_address() {
-        return Rest_address;
+    public String getRestAddress() {
+        return restAddress;
     }
 
-    public void setRest_address(String Rest_address) {
-        this.Rest_address = Rest_address;
+    public void setRestAddress(String restAddress) {
+        this.restAddress = restAddress;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

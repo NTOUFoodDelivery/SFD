@@ -1,15 +1,36 @@
 package db.demo.javabean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
+    @SerializedName("User_Id")
+    @Expose
     private long userID;
+    @SerializedName("Account")
+    @Expose
     private String account;
+    @SerializedName("Password")
+    @Expose
     private String password;
+    @SerializedName("User_Name")
+    @Expose
     private String userName;
+    @SerializedName("Email")
+    @Expose
     private String email;
+    @SerializedName("Phone_Number")
+    @Expose
     private String phoneNumber;
+    @SerializedName("Last_Address")
+    @Expose
     private String lastAddress;
+    @SerializedName("User_Type")
+    @Expose
     private String userType;
+    @SerializedName("User_Status")
+    @Expose
     private String userStatus;
 
 

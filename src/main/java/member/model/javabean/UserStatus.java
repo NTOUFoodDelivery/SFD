@@ -1,27 +1,35 @@
 package member.model.javabean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class UserStatus {
     /**
      * User_Id : 231
      * User_Status : ftdyh
      */
 
-    private Long User_Id;
-    private String User_Status;
+    @SerializedName("User_Id")
+    @Expose
+    private Long userID;
+    @SerializedName("User_Status")
+    @Expose
+    private String userStatus;
 
-    public Long getUser_Id() {
-        return User_Id;
+    public Long getUserID() {
+        return userID;
     }
 
-    public void setUser_Id(Long User_Id) {
-        this.User_Id = User_Id;
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
-    public String getUser_Status() {
-        return User_Status;
+    public String getUserStatus() {
+        return userStatus;
     }
 
-    public void setUser_Status(String User_Status) {
-        this.User_Status = User_Status;
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
     }
+
 }
