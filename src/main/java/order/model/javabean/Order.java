@@ -11,6 +11,7 @@ public class Order {
      * Customer_Id : 123
      * Customer_Id : 243
      * Start_Time : tfdyhj
+     * Rest_Address : fdsk
      * Address : dslkvmds
      * Type_Count : 1
      * Total : 634
@@ -31,6 +32,9 @@ public class Order {
     @SerializedName("Start_Time")
     @Expose
     private String startTime;
+    @SerializedName("Rest_Address")
+    @Expose
+    private String restAddress;
     @SerializedName("Address")
     @Expose
     private String address;
@@ -49,6 +53,9 @@ public class Order {
     @SerializedName("Other")
     @Expose
     private String other;
+
+    public Order() {
+    }
 
     public long getCustomerID() {
         return customerID;
@@ -128,6 +135,14 @@ public class Order {
 
     public void setMeals(List<MealsBean> meals) {
         this.meals = meals;
+    }
+
+    public String getRestAddress() {
+        return restAddress;
+    }
+
+    public void setRestAddress(String restAddress) {
+        this.restAddress = restAddress;
     }
 
     public static class MealsBean {

@@ -86,6 +86,35 @@ public class OrderDAO {
         }
     }
 
+//    //  利用orderID 回傳 該筆訂單資訊
+//    public static Order getOrder(Long orderID)
+//    {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        try {
+//            connection = JdbcUtils.getconn();
+//            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, `order`.Other, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address " +
+//                    "FROM `order` " +
+//                    "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
+//                    "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
+//                    "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
+//                    "WHERE Order_Id = ?";
+//            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setLong(1, orderID);
+//            resultSet = preparedStatement.executeQuery();
+//            resultSet.getMetaData();
+//
+//        }
+//        catch(SQLException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        finally
+//        {
+//            JdbcUtils.close(preparedStatement,connection);
+//        }
+//    }
 
     // 找出 未推播 訂單 並回傳詳細資訊
     // 暴風製造              請渣炸眨詐過目檢查OK
