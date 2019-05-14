@@ -1,4 +1,4 @@
-package member.controller.service;
+package member.controller.servlet;
 
 import db.demo.dao.UserDAO;
 import order.controller.websocket.PushOrderWebSocket;

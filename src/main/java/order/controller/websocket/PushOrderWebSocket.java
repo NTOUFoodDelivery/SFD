@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import configurator.GetHttpSessionConfigurator;
 import db.demo.dao.UserDAO;
-import member.controller.service.LogInServlet;
+import member.controller.servlet.LogInServlet;
 import member.model.javabean.MemberSetting;
 import order.model.javabean.PushResult;
 

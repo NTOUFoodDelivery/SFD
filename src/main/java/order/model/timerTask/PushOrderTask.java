@@ -21,9 +21,14 @@ public class PushOrderTask extends TimerTask {
     private void pushOrder() { // 去資料庫 修改訂單狀態成"已推播"
 
         // 推播 idle 訂單 給 空閒的 外送員
-//        synchronized(PushOrderWebSocket.sessions){
-//            // Iterate over the connected sessions
-//            // and broadcast the received message
+        synchronized(PushOrderWebSocket.sessions){
+            // Iterate over the connected sessions
+            // and broadcast the received message
+            try {
+                PushOrderWebSocket.sessions.get(0).getBasicRemote().sendText("21312312");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 //            List<Integer> idleDeliver = UserDAO.searchIdleDeliver();
 //            // idle order
 //            List<JsonObject> idleOrderList = OrderDAO.searchIdelOrder();
@@ -43,7 +48,7 @@ public class PushOrderTask extends TimerTask {
 //                    }
 //                }
 //            }
-//        }
+        }
     }
     public void run() {
         pushOrder();

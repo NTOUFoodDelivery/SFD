@@ -1,4 +1,4 @@
-package menu.controller.service;
+package menu.controller.servlet;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -6,11 +6,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
 import db.demo.javabean.Rest;
-import menu.model.response.javabean.Menu;
+import menu.model.response.javabean.RestInfo;
 import tool.HttpCommonAction;
 import tool.javabean.CommonRequest;
 import tool.javabean.StatusCodeResponse;
 
+import javax.management.ObjectName;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,12 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet("/ModifyMenuServlet")
-public class ModifyMenuServlet extends HttpServlet {
+@WebServlet("/ModifyRestInfoServlet")
+public class ModifyRestInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
@@ -34,26 +36,25 @@ public class ModifyMenuServlet extends HttpServlet {
         CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
         String cmd = commonRequest.getQuery().getCommand(); // 新增 刪除 修改
         List<Object> resultBeans = commonRequest.getResult();
-        List<Menu> MenuList = new ArrayList<>();
+        List<Rest> restList = new ArrayList<>();
         for(Object object: resultBeans){
             JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
-            MenuList.add(gson.fromJson(jsonObject.toString(),Menu.class)); // 餐廳資訊物件
+            restList.add(gson.fromJson(jsonObject.toString(),Rest.class)); // 餐廳資訊物件
         }
 
         switch (cmd){
             case "add":{
                 System.out.println("add");
-                for(Menu menu : MenuList){
-//                    System.out.println(menu.getFood_Id());
-                    RestDAO.addRestMenu(menu);
+                for(Rest rest : restList){
+                    RestDAO.addRest(rest);
                 }
                 break;
             }
             case "delete":{
                 System.out.println("delete");
-                for(Menu menu : MenuList){
-//                    System.out.println(menu.getFood_Id());
-                    RestDAO.delRestMenu(menu.getFood_Id());
+                for(Rest rest : restList){
+                    System.out.println(rest.getRestID());
+                    RestDAO.delRest(rest.getRestID());
                 }
                 break;
             }
@@ -74,6 +75,7 @@ public class ModifyMenuServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

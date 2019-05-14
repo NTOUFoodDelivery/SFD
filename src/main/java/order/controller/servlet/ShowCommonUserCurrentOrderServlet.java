@@ -1,4 +1,4 @@
-package order.controller.service;
+package order.controller.servlet;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
-@WebServlet("/ShowDeliveryStaffCurrentOrderServlet")
-public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
+@WebServlet("/ShowCommonUserCurrentOrderServlet")
+public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
@@ -29,9 +29,9 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
         Long userID;
         try {
             userID = Long.parseLong(parm);
-            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)) {
-                // 查詢 外送員 當前訂單
-                json = gson.toJson(OrderDAO.searchDeliverOrder(userID));
+            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.CUSTOMER)) {
+                // 查詢 食客 當前訂單
+                json = gson.toJson(OrderDAO.searchEaterOrder(userID));
             }
         } catch (NumberFormatException e) {
 //            e.printStackTrace();
@@ -40,6 +40,7 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
             statusCodeResponse.setTime(new Date().toString());
             json = gson.toJson(statusCodeResponse);
         }
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

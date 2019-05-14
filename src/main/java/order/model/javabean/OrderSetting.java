@@ -2,11 +2,11 @@ package order.model.javabean;
 
 public class OrderSetting {
     public class UserType {
-        private String CANCEL = "CANCEL";
-        private String WAIT = "WAIT";
-        private String TIME_OUT = "TIME_OUT";
-        private String DEALING = "DEALING";
-        private String FINISH = "FINISH";
+        private String CANCEL = "Cancel";
+        private String WAIT = "Wait";
+        private String TIME_OUT = "Time_Out";
+        private String DEALING = "Dealing";
+        private String FINISH = "Finish";
     }
 
 }

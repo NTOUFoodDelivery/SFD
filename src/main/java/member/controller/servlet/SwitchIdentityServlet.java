@@ -1,4 +1,4 @@
-package member.controller.service;
+package member.controller.servlet;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/SwitchStatusServlet")
-public class SwitchStatusServlet extends HttpServlet {
+@WebServlet("/SwitchIdentityServlet")
+public class SwitchIdentityServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
@@ -22,8 +22,7 @@ public class SwitchStatusServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         PushResult result = new PushResult();
-        result.setDeliverID(456L);
-        result.setOrderID(123L);
+        result.setOrderID(1L);
         result.setAccept(true);
 
         String json = gson.toJson(result);

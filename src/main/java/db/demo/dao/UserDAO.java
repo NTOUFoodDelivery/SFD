@@ -1,18 +1,14 @@
 package db.demo.dao;
 
 
-import db.a;
 import db.demo.connect.JdbcUtils;
 import db.demo.javabean.User;
-import tool.ResultSetToJson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import com.google.gson.JsonObject;
 
 public class UserDAO {
 

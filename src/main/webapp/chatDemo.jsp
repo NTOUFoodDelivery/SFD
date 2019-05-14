@@ -16,6 +16,7 @@
     <!--reconnect websocket-->
     <script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <link rel="manifest" href="assets/json/manifest.json">
 </head>
 <body>
 <%
@@ -196,6 +197,15 @@
             alert('上傳完成，稍待一會兒就可以在底部的列表上看見了。')
         });
     })
+
+    window.addEventListener('load', function () {
+        Notification.requestPermission(function (status) {
+            // This allows to use Notification.permission with Chrome/Safari
+            if (Notification.permission !== status) {
+                Notification.permission = status;
+            }
+        });
+    });
 </script>
 </body>
 <script>

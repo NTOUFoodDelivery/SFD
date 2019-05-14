@@ -1,4 +1,4 @@
-package menu.controller.service;
+package menu.controller.servlet;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;

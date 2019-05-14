@@ -1,4 +1,4 @@
-package order.controller.service;
+package order.controller.servlet;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
