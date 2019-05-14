@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
 import db.demo.dao.UserDAO;
 import member.model.javabean.FeedBack;
+import member.model.javabean.MemberSetting;
 import menu.model.response.javabean.Menu;
 import tool.HttpCommonAction;
 import tool.javabean.CommonRequest;
@@ -43,29 +44,29 @@ public class FeedBackServlet extends HttpServlet {
         }
 
         switch (cmd){
-            case "addFeedback":{
-                System.out.println("addFeedback");
+            case MemberSetting.Feedback.ADD:{
+                System.out.println("ADD");
                 for(FeedBack feedBack : feedBackList){
                 	UserDAO.addFeedback(feedBack.getFeedBackID(),feedBack.getUserID(),feedBack.getContent());
                 }
                 break;
             }
-            case "AdministratorGetFeedback":{
-                System.out.println("AdministratorGetFeedback");
+            case MemberSetting.Feedback.ADMINISTRATORGET:{
+                System.out.println("ADMINISTRATORGET");
                 for(FeedBack feedBack : feedBackList){
               	UserDAO.AdministratorGetFeedback(feedBack.getFeedBackID());
               }
                 break;
             }
-            case "replyFeedback":{
-                System.out.println("replyFeedback");
+            case MemberSetting.Feedback.REPLY:{
+                System.out.println("REPLY");
                 for(FeedBack feedBack : feedBackList){
               	UserDAO.replyFeedback(feedBack.getFeedBackID(),feedBack.getContent());
               }
                 break;
             }
-            case "CustomerOrDeliverGetFeedback":{
-                System.out.println("CustomerOrDeliverGetFeedback");
+            case MemberSetting.Feedback.CUSTOMERORDELIVERGET:{
+                System.out.println("CUSTOMERORDELIVERGET");
                 for(FeedBack feedBack : feedBackList){
               	UserDAO.CustomerOrDeliverGetFeedback(feedBack.getFeedBackID());
               }

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
+import menu.controller.service.RestInfoService;
 import menu.model.request.javabean.RestMenuReq;
 import tool.HttpCommonAction;
 
@@ -26,12 +27,7 @@ public class ShowMenuServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         RestMenuReq restMenuReq = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),RestMenuReq.class);
 
-        String restName = restMenuReq.getRestName();
-        String restAddress = restMenuReq.getRestAddress();
-
-        JsonObject jsonObject = RestDAO.searchRestMenu(restName,restAddress);
-
-        String json = gson.toJson(jsonObject);
+        String json = gson.toJson(RestInfoService.getRestMenu(restMenuReq)); // 拿到 一家餐廳 的菜單
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

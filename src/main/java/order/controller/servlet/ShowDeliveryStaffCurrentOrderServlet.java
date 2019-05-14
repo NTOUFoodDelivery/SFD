@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.UserDAO;
 import member.model.javabean.MemberSetting;
+import order.controller.service.DeliverOrderService;
 import tool.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
@@ -29,10 +30,9 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
         Long userID;
         try {
             userID = Long.parseLong(parm);
-            if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)) {
-                // 查詢 外送員 當前訂單
-                json = gson.toJson(OrderDAO.searchDeliverOrder(userID));
-            }
+            // 拿 外送員 當前訂單
+            json = gson.toJson(DeliverOrderService.getCurrentOrder(userID));
+
         } catch (NumberFormatException e) {
 //            e.printStackTrace();
             StatusCodeResponse statusCodeResponse = new StatusCodeResponse();

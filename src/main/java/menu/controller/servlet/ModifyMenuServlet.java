@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
 import db.demo.javabean.Rest;
+import menu.controller.service.RestInfoService;
 import menu.model.response.javabean.Menu;
 import tool.HttpCommonAction;
 import tool.javabean.CommonRequest;
@@ -32,40 +33,8 @@ public class ModifyMenuServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
-        String cmd = commonRequest.getQuery().getCommand(); // 新增 刪除 修改
-        List<Object> resultBeans = commonRequest.getResult();
-        List<Menu> MenuList = new ArrayList<>();
-        for(Object object: resultBeans){
-            JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
-            MenuList.add(gson.fromJson(jsonObject.toString(),Menu.class)); // 餐廳資訊物件
-        }
 
-        switch (cmd){
-            case "add":{
-                System.out.println("add");
-                for(Menu menu : MenuList){
-//                    System.out.println(menu.getFood_Id());
-                    RestDAO.addRestMenu(menu);
-                }
-                break;
-            }
-            case "delete":{
-                System.out.println("delete");
-                for(Menu menu : MenuList){
-//                    System.out.println(menu.getFood_Id());
-                    RestDAO.delRestMenu(menu.getFoodID());
-                }
-                break;
-            }
-            case "modify":{
-                System.out.println("modify");
-                break;
-            }
-            default:{
-                System.out.println("default");
-                break;
-            }
-        }
+        RestInfoService.modifyRestMenu(commonRequest);
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);

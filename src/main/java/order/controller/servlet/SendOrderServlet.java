@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import db.demo.connect.JdbcUtils;
 import db.demo.dao.OrderDAO;
+import order.controller.service.OrderService;
 import order.model.javabean.Order;
 import tool.HttpCommonAction;
 import tool.javabean.StatusCodeResponse;
@@ -28,9 +29,8 @@ public class SendOrderServlet extends HttpServlet {
 
         Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
 
-        order.setOrderID(JdbcUtils.generateID()); // 產生訂單 ID
-//        order.setOrder_Id(1);
-        OrderDAO.addOrder(order);
+        // 產生訂單編號 將訂單存入資料庫
+        OrderService.addOrder(order);
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);

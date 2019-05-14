@@ -4,9 +4,12 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import configurator.GetHttpSessionConfigurator;
+import db.demo.dao.OrderDAO;
 import db.demo.dao.UserDAO;
 import member.controller.servlet.LogInServlet;
 import member.model.javabean.MemberSetting;
+import order.controller.service.OrderService;
+import order.model.javabean.OrderSetting;
 import order.model.javabean.PushResult;
 
 import javax.servlet.http.HttpSession;
@@ -34,10 +37,10 @@ public class PushOrderWebSocket {
                 .get(HttpSession.class.getName());
         Long userID = httpSessions.get(httpSession);
 
-        if(UserDAO.showUserType(userID).equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){ // 如果是外送員 連結 websocket
+        if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket
             sessions.put(userID,session);
-            System.out.println(userID + " :: CUSTOMER_AND_DELIVER");
-        }else { // 不是外送員 斷開 websocket連結
+            System.out.println(userID + " :: DELIVER_ON");
+        }else { // 若外送員 已接單 或 離線 則 斷開 websocket連結
             onClose(session);
         }
     }
@@ -58,16 +61,10 @@ public class PushOrderWebSocket {
         synchronized(sessions) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
             try {
-
-                PushResult pushResult = gson.fromJson(msg, PushResult.class);
-                Long orderID = pushResult.getOrderID();
-
-                Boolean isAccept = pushResult.isAccept();
-                if (isAccept) { // 訂單被接受
-                    // 去資料庫 修改訂單狀態成"被接受之類的"
-                } else {  // 訂單被拒絕
-                    // 去資料庫 修改訂單狀態成"未推播"
-                }
+//                List<Long> msgSessions = (List<Long>)LogInServlet.getKey(sessions,session);
+//                for(Long deliverID : msgSessions){
+                OrderService.dealOrder(gson.fromJson(msg, PushResult.class));
+//                }
             } catch (Exception e) {
             }
         }

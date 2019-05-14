@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.RestDAO;
+import menu.controller.service.RestInfoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,9 +27,7 @@ public class ShowRestInfoServlet extends HttpServlet {
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        JsonObject jsonObject = RestDAO.searchRestInfo();
-
-        String json = gson.toJson(jsonObject);
+        String json = gson.toJson(RestInfoService.getRestInfo());  // 拿到所有餐廳
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

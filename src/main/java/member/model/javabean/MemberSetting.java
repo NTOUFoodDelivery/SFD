@@ -9,6 +9,7 @@ public class MemberSetting {
         public static final String DELIVER_BUSY = "Deliver_Busy";
         public static final String USER_BAN = "User_Ban";
         public static final String ADMINISTRATOR = "ADMINISTRATOR";
+        public static final String PUSHING = "PUSHING";
     }
     public class UserType {
         public static final String CUSTOMER = "Customer";
@@ -24,5 +25,11 @@ public class MemberSetting {
         public static final String USER_BAN = "User_Ban";
         public static final String ADMINISTRATOR = "ADMINISTRATOR";
         public static final String DELETE = "DELETE";
+    }
+    public class Feedback {
+        public static final String ADD = "Add";
+        public static final String ADMINISTRATORGET = "AdministratorGet";
+        public static final String REPLY = "Reply";
+        public static final String CUSTOMERORDELIVERGET = "CustomerOrDeliverGet";
     }
 }
