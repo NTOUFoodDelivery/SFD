@@ -33,9 +33,10 @@ public class PushOrderWebSocket {
         this.httpSession = (HttpSession) config.getUserProperties()
                 .get(HttpSession.class.getName());
         Long userID = httpSessions.get(httpSession);
-        System.out.println(userID);
-        if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果是外送員 連結 websocket
+
+        if(UserDAO.showUserType(userID).equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){ // 如果是外送員 連結 websocket
             sessions.put(userID,session);
+            System.out.println(userID + " :: CUSTOMER_AND_DELIVER");
         }else { // 不是外送員 斷開 websocket連結
             onClose(session);
         }
@@ -44,8 +45,8 @@ public class PushOrderWebSocket {
     @OnClose
     public void onClose(Session session) {
         System.out.println("PushOrderWebSocket Server close ::"+session.getId());
-        List<Integer> closeSessions = (List<Integer>)LogInServlet.getKey(sessions,session);
-        for(int closeSessionUserID : closeSessions){
+        List<Long> closeSessions = (List<Long>)LogInServlet.getKey(sessions,session);
+        for(Long closeSessionUserID : closeSessions){
             sessions.remove(closeSessionUserID);
         }
     }

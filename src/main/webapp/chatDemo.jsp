@@ -15,8 +15,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--reconnect websocket-->
     <script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <link rel="manifest" href="assets/json/manifest.json">
+    <%--    <script src="https://unpkg.com/vue/dist/vue.js"></script>--%>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 <%
@@ -198,14 +198,7 @@
         });
     })
 
-    window.addEventListener('load', function () {
-        Notification.requestPermission(function (status) {
-            // This allows to use Notification.permission with Chrome/Safari
-            if (Notification.permission !== status) {
-                Notification.permission = status;
-            }
-        });
-    });
+
 </script>
 </body>
 <script>
@@ -238,6 +231,14 @@
 
                 // 接收Websocket Server傳來的資料
                 this.webSocket.onmessage = function(event) {
+                    // 客製化-----BEGIN
+                    var img = 'web/images/Logo.jpg';
+                    var text = 'Test SFD';
+                    var notification = new Notification('Hello', { body: text, icon: img });
+                    setTimeout(notification.close.bind(notification), 4000);
+                    // 客製化-----END
+                    // var n = new Notification("Hi! ", {tag: 'soManyNotification'});
+
                     console.log("tyghj")
                     var msg = event.data;
                     var name = msg.split("&says&")[0];
@@ -281,8 +282,8 @@
             }
         }
     }
-    let client = new WebSocketClient("ws", "localhost", 8080, "/SFD/pushOrderEndpoint"); // 測試
-    // let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
+    // let client = new WebSocketClient("ws", "localhost", 8080, "/SFD/pushOrderEndpoint"); // 測試
+    let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
     client.connect();
 
     window.onbeforeunload = function() {
