@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset= utf-8" />
+<title>Starburst Food Delivery</title>
+<meta name="description" content="" />
+		<meta name="keywords" content="" />
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDd-5ECORJoBZBUiPycKb6AWbwHbc_Cx7I&call"> </script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		
+
+<script>
+ var directionDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
+    var initialPlace;
+    var infowindow = new google.maps.InfoWindow();
+    var browserSupportFlag =  new Boolean();
+    var urPosition;
+    var taipei;
+ function initialize() {
+     directionsDisplay = new google.maps.DirectionsRenderer();
+     geocoder = new google.maps.Geocoder();
+     initialPlace = new google.maps.LatLng(25.147020,121.747046);
+      
+      var myOptions = {
+        zoom:16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: initialPlace
+        }
+      map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+      
+      var marker = new google.maps.Marker({
+            map: map, 
+            position: initialPlace
+        });
+      infowindow.setContent("TEST");
+      infowindow.open(map, marker);
+      directionsDisplay.setMap(map);
+      directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+     
+    }
+    
+ function getAddress(){
+        if(document.getElementById("agree").value=="no")     document.getElementById("address_lb").style.visibility="visible";
+        if(document.getElementById("agree").value=="yes")      document.getElementById("address_lb").style.visibility="hidden";
+        }
+    
+function getUrposition(){
+       taipei = new google.maps.LatLng(25.091075,121.55983449999997);
+        // Try W3C Geolocation (Preferred)
+	  if(navigator.geolocation) {
+		browserSupportFlag = true;
+		navigator.geolocation.getCurrentPosition(function(position) {
+		  urPosition = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+		  //map.setCenter(initialLocation);
+		}, function() {
+		  handleNoGeolocation(browserSupportFlag);
+		});
+	  // Try Google Gears Geolocation
+	   } else if (google.gears) {
+		browserSupportFlag = true;
+		var geo = google.gears.factory.create('beta.geolocation');
+		geo.getCurrentPosition(function(position) {
+		 urPosition = new google.maps.LatLng(position.latitude,position.longitude);
+		 // map.setCenter(initialLocation);
+		}, function() {
+		  handleNoGeoLocation(browserSupportFlag);
+		});
+	  // Browser doesn't support Geolocation
+	    } else {
+		browserSupportFlag = false;
+		handleNoGeolocation(browserSupportFlag);
+	  } 
+	}
+	 
+function handleNoGeolocation(errorFlag) {
+		if (errorFlag == true) {
+		  alert("Geolocation service failed.");
+		  //initialLocation = newyork;
+		} else {
+		  alert("Your browser doesn't support geolocation. We've placed you in Taipei.");
+		  urPosition = taipei;
+		}
+		//map.setCenter(initialLocation);
+	 }
+	  
+function calcRoute() {
+      var selectedMode = document.getElementById("mode").value; //交通方式
+      var selectedAgree = document.getElementById("agree").value;
+      var request;
+      var start;
+      var end ="俞家鮮魚湯";  
+      if(selectedAgree =="yes"){
+            getUrposition();
+             request = {
+                origin: urPosition, 
+                destination: initialPlace,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+                };
+              }  
+        else if(selectedAgree == "no"){
+            start=document.getElementById("address").value; 
+            request = {
+                origin: start, 
+                destination: end,
+                travelMode: google.maps.DirectionsTravelMode[selectedMode]
+              };
+             }
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+    }
+    
+	</script>
+</head>
+<body onload="initialize()">
+<div class="wrapper style1">
+
+				<!-- Header -->
+					<div id="header" class="skel-panels-fixed">
+						
+							<div id="logo">
+								<a></a>
+							  <h1><a href="index.html">Starburst Food Delivery</a></h1>
+							<span class="tag">NTOUFoodDelivery</span>
+						</div>
+						<nav id="nav">
+							<ul>
+								
+								<li><a href="#">登出</a></li>
+								<li><a href="#" >切換身分</a></li>
+								<li><a href="#" >切換上下線</a></li>
+								<li><a href="#" >目前接收的訂單</a></li>
+								<li><a href="#" >配送紀錄</a></li>
+							</ul>
+						</nav>
+					</div>
+
+				<!-- Banner -->
+					<div id="banner" class="container">
+						<section> </section>
+					</div>
+
+				
+					
+
+				<!-- Main -->
+					<!--<div id="main">
+						
+									
+									
+									
+											<div style="margin:0px auto;">
+													<!--<iframe width="800" height="800" frameborder="0" src="https://www.bing.com/maps/embed?h=400&w=500&cp=25.03739999999999~121.564&lvl=11&typ=d&sty=r&src=SHELL&FORM=MBEDV8" scrolling="no">
+													</iframe>
+													<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9233.740275260068!2d121.7821341212798!3d25.139884172218704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x345d4f0ea837f037%3A0x71c1565620cdc1f5!2zMjAy5Z-66ZqG5biC5Lit5q2j5Y2A5rW35rSL5bel56iL57ac5ZCI5a-m6amX6aSo!5e0!3m2!1szh-TW!2stw!4v1557916802427!5m2!1szh-TW!2stw" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+													<div style="white-space: nowrap; text-align: center; width: 500px; padding: 6px 0;">
+													   <a id="largeMapLink" target="_blank" href="https://www.bing.com/maps?cp=25.03739999999999~121.564&amp;sty=r&amp;lvl=11&amp;FORM=MBEDLD">檢視較大的地圖</a> &nbsp; | &nbsp;
+													   <a id="dirMapLink" target="_blank" href="https://www.bing.com/maps/directions?cp=25.03739999999999~121.564&amp;sty=r&amp;lvl=11&amp;rtp=~pos.25.03739999999999_121.564____&amp;FORM=MBEDLD">取得路線</a>
+												   </div>
+											   </div>
+									
+								
+					</div>
+				-->
+				
+	</div>
+<div id="wrapper">
+
+
+	
+	<div id="content"> 
+                 
+				 <select id="agree" style = "width:20%;"onchange="getAddress();">
+                      <option value="no">自行輸入地點</option>
+                      <option value="yes">同意本站存取您現在的位置</option>
+                   </select>
+				   <label id="address_lb">出發地
+                     <input id="address" type="text" size="30" id="address"/>
+                  </label>
+                 <select id="mode" style = "margin-top:2px;">
+                      <option value="DRIVING">開車</option>
+                      <option value="WALKING">步行</option>
+                   </select>
+                  <input type="button" value="前往!" id="go" onclick="calcRoute();"style = "margin-left:10px"/><br />
+				   
+				  <div style = "margin-top:-20px">
+                   <div id="map-canvas"style="width: 70%; height: 250px"></div>             
+                  <!--<p style="clear:both" /> -->
+              <!-- end center-->
+              
+                 <div style=" height:300px; float:left; width:20%;margin-left:20px;margin-bottom:30px;">
+                     <div id="directionsPanel" style="width:200px; height:300px;  overflow-Y:auto"></div>
+                </div>    
+				 <div class="clear" style="height:40px"></div> 
+				</div>				
+                <!--<div class="clear" style="height:40px"></div> -->
+            
+            </div> 
+            <!-- end content --> 
+          
+
+
+</div>
+
+</body>
+</html>
