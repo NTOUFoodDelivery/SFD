@@ -40,7 +40,7 @@ public class OrderService {
         if (isAccept) { // 訂單被接受
 //            pushOrders.remove(orderID);
             // 去資料庫 修改訂單狀態成"被接受之類的"
-            OrderDAO.modifyOrderStauts(orderID, OrderSetting.OrderStatus.DEALING);
+            OrderDAO.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DEALING);
             // 將 外送員狀態 改成"已接受訂單之類的"
             UserDAO.modifyUserStatus(deliverID, MemberSetting.UserStatus.DELIVER_BUSY);
         } else {  // 訂單取消
@@ -49,7 +49,7 @@ public class OrderService {
 //            order.setOrderStatus(OrderSetting.OrderStatus.WAIT);
 //            onlineDelivers.get(order.getDeliverID()).setUserStatus(MemberSetting.UserStatus.DELIVER_ON);
             // 去資料庫 修改訂單狀態成"未推播"
-            OrderDAO.modifyOrderStauts(orderID,OrderSetting.OrderStatus.WAIT);
+            OrderDAO.modifyOrderStatus(orderID,OrderSetting.OrderStatus.WAIT);
             // 將外送員狀態 改成"空閒之類的"
             UserDAO.modifyUserStatus(deliverID,MemberSetting.UserStatus.DELIVER_ON);
         }

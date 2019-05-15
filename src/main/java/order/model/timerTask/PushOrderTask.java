@@ -40,7 +40,7 @@ public class PushOrderTask extends TimerTask {
                 Collections.sort(idleOrderList, new Comparator<Order>() {
                     @Override
                     public int compare(Order order1, Order order2) {
-                        return order2.getValue() - order1.getValue();
+                        return order2.getCastingPrio() - order1.getCastingPrio();
                     }
                 });
 
@@ -58,7 +58,7 @@ public class PushOrderTask extends TimerTask {
                                     idleDeliverSession.getBasicRemote().sendText(gson.toJson(order));
 //                                    System.out.println(order.getOrderID());
 //                                    System.out.println(deliver.getUserID());
-                                    OrderDAO.modifyOrderStauts(order.getOrderID(), OrderSetting.OrderStatus.PUSHING);
+                                    OrderDAO.modifyOrderStatus(order.getOrderID(), OrderSetting.OrderStatus.PUSHING);
                                     UserDAO.modifyUserStatus(deliver.getUserID(), MemberSetting.UserStatus.PUSHING);
                                     order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
                                     deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);

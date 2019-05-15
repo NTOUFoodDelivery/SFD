@@ -174,7 +174,7 @@ public class OrderDAO {
                 Order order = new Order();
                 List<Order.MealsBean> meals = new ArrayList<>();
                 order.setOrderStatus(resultSet.getString("Order_Status"));
-                order.setValue(0);
+                order.setCastingPrio(0);
 
                 order.setOrderID(resultSet.getInt("Order_Id"));
                 order.setTotal(resultSet.getInt("Total"));
@@ -459,8 +459,8 @@ public class OrderDAO {
         return jsonString;
     }
     /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    // 更改orderStauts
-    public static void modifyOrderStauts(Long orderID, String OrderStatus)
+    // 更改orderStatus
+    public static void modifyOrderStatus(Long orderID, String OrderStatus)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
