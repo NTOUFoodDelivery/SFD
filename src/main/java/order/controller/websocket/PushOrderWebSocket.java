@@ -39,7 +39,7 @@ public class PushOrderWebSocket {
 
         User user = httpSessions.get(httpSession);
         System.out.println(user.getUserStatus());
-        OrderService.onlineDelivers.put(user.getUserID(),user);
+//        OrderService.onlineDelivers.put(user.getUserID(),user);
 
         if(UserDAO.showUserIdentity(user.getUserID()).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket
             sessions.put(user.getUserID(),session);
@@ -52,10 +52,11 @@ public class PushOrderWebSocket {
     @OnClose
     public void onClose(Session session) {
         System.out.println("PushOrderWebSocket Server close ::"+session.getId());
-        List<User> closeSessions = (List<User>)LogInServlet.getKey(sessions,session);
-        for(User user : closeSessions){
-            sessions.remove(user);
-            OrderService.onlineDelivers.remove(user.getUserID());
+        List<Long> closeSessions = (List<Long>)LogInServlet.getKey(sessions,session);
+        for(Long userID : closeSessions){
+            sessions.remove(userID);
+            UserDAO.modifyUserStatus(userID, MemberSetting.UserStatus.OFFLINE);
+//            OrderService.onlineDelivers.remove(user.getUserID());
         }
     }
 

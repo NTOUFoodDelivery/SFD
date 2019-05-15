@@ -199,7 +199,6 @@ public class OrderDAO {
                 preparedStatement.setLong(1, order.getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
 
-                int count = 0;
                 while(mealResultSet.next()){
                     order.setRestName(mealResultSet.getString("Rest_Name"));
                     order.setRestAddress(mealResultSet.getString("Rest_Address"));
@@ -208,8 +207,6 @@ public class OrderDAO {
                     meal.setFoodName(mealResultSet.getString("Food_Name"));
                     meal.setCount(mealResultSet.getInt("Count"));
                     meals.add(meal);
-                    count++;
-                    System.out.println(count);
                 }
 
                 order.setMeals(meals);

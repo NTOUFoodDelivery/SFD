@@ -56,12 +56,12 @@ public class PushOrderTask extends TimerTask {
 
                                 try {
                                     idleDeliverSession.getBasicRemote().sendText(gson.toJson(order));
-                                    System.out.println(order.getOrderID());
-                                    System.out.println(deliver.getUserID());
+//                                    System.out.println(order.getOrderID());
+//                                    System.out.println(deliver.getUserID());
                                     OrderDAO.modifyOrderStauts(order.getOrderID(), OrderSetting.OrderStatus.PUSHING);
                                     UserDAO.modifyUserStatus(deliver.getUserID(), MemberSetting.UserStatus.PUSHING);
-//                                    order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
-//                                    deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
+                                    order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
+                                    deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
 
                                 } catch (IOException e) {
                                     e.printStackTrace();
