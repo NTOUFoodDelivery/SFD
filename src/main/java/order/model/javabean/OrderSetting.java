@@ -1,6 +1,7 @@
 package order.model.javabean;
 
 public class OrderSetting {
+    public static final int ORDERSTAGE = 5;
     public class OrderStatus {
         public static final String CANCEL = "CANCEL";
         public static final String WAIT = "WAIT";

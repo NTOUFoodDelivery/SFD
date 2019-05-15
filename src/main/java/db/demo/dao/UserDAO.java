@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class UserDAO {
 
-    // 登入
-    public static Long login(String account, String password, String userType){
+    // 登入 return UserId Long
+    public static Long loginID(String account, String password, String userType){
         User u = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -37,6 +37,41 @@ public class UserDAO {
             JdbcUtils.close(preparedStatement,connection);
         }
         return userID;
+    }
+
+    // 登入 return User Object
+    public static User loginUser(String account, String password, String userType){
+        User u = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = new User();
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "select * from member where account=? and Password=? and User_Type=?";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            preparedStatement.setString(1,account);
+            preparedStatement.setString(2,password);
+            preparedStatement.setString(3,userType);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                user.setUserID(resultSet.getLong("User_Id"));
+                user.setAccount(resultSet.getString("Account"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setLastAddress(resultSet.getString("Last_Address"));
+                user.setPassword(resultSet.getString("Password"));
+                user.setPhoneNumber(resultSet.getString("Phone_Number"));
+                user.setUserName(resultSet.getString("User_Name"));
+                user.setUserStatus(resultSet.getString("User_Status"));
+                user.setUserType(resultSet.getString("User_Type"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return user;
     }
 
     // 註冊

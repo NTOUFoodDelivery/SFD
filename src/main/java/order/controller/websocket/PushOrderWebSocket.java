@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import configurator.GetHttpSessionConfigurator;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.UserDAO;
+import db.demo.javabean.User;
 import member.controller.servlet.LogInServlet;
 import member.model.javabean.MemberSetting;
 import order.controller.service.OrderService;
@@ -23,8 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PushOrderWebSocket {
 
 
-    public static Map<HttpSession,Long> httpSessions =  new ConcurrentHashMap<HttpSession,Long>();
-    public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>();
+    public static Map<HttpSession, User> httpSessions =  new ConcurrentHashMap<HttpSession,User>();
+    public static Map<User,Session> sessions =  new ConcurrentHashMap<User,Session>();
 
     private Session session;
     private HttpSession httpSession;
@@ -35,11 +36,13 @@ public class PushOrderWebSocket {
         this.session = session;
         this.httpSession = (HttpSession) config.getUserProperties()
                 .get(HttpSession.class.getName());
-        Long userID = httpSessions.get(httpSession);
 
-        if(UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket
-            sessions.put(userID,session);
-            System.out.println(userID + " :: DELIVER_ON");
+        User user = httpSessions.get(httpSession);
+        OrderService.onlineDelivers.put(user.getUserID(),user);
+
+        if(UserDAO.showUserIdentity(user.getUserID()).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket
+            sessions.put(user,session);
+            System.out.println(user.getUserID() + " :: DELIVER_ON");
         }else { // 若外送員 已接單 或 離線 則 斷開 websocket連結
             onClose(session);
         }
@@ -48,9 +51,10 @@ public class PushOrderWebSocket {
     @OnClose
     public void onClose(Session session) {
         System.out.println("PushOrderWebSocket Server close ::"+session.getId());
-        List<Long> closeSessions = (List<Long>)LogInServlet.getKey(sessions,session);
-        for(Long closeSessionUserID : closeSessions){
-            sessions.remove(closeSessionUserID);
+        List<User> closeSessions = (List<User>)LogInServlet.getKey(sessions,session);
+        for(User user : closeSessions){
+            sessions.remove(user);
+            OrderService.onlineDelivers.remove(user.getUserID());
         }
     }
 

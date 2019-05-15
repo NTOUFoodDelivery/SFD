@@ -1,6 +1,7 @@
 package member.controller.servlet;
 
 import db.demo.dao.UserDAO;
+import db.demo.javabean.User;
 import order.controller.websocket.PushOrderWebSocket;
 
 import javax.servlet.ServletException;
@@ -44,12 +45,12 @@ public class LogInServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(info.size()==0){
             try {
-                Long userID = UserDAO.login(account,password,userType);
+                User user = UserDAO.loginUser(account,password,userType);
 
-                if(userID != -1L){
+                if(user != null){
                     // ------判斷使用者登入狀況------- BEGIN
 //                    if(PushOrderWebSocket.httpSessions.get(session) == null){ // 單個登入
-                        PushOrderWebSocket.httpSessions.put(session,userID);
+                        PushOrderWebSocket.httpSessions.put(session,user);
                         session.setAttribute("login","login");
                         session.setAttribute("account",account); // account 保存進 session 全域變數中
                         session.setAttribute("userType",userType); // userType 保存進 session 全域變數中
@@ -58,7 +59,7 @@ public class LogInServlet extends HttpServlet {
 //                    request.getRequestDispatcher("chatDemo.jsp").forward(request,response); // 跳轉回登入頁面
 //                    }
 
-                    List<HttpSession> keyList = (List<HttpSession>)getKey(PushOrderWebSocket.httpSessions,userID);
+                    List<HttpSession> keyList = (List<HttpSession>)getKey(PushOrderWebSocket.httpSessions,user);
                     List<HttpSession> oneUserSameKeyList = new ArrayList<>();
                     int count = 0 ;
                     for(HttpSession key : keyList){

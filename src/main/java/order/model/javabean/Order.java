@@ -54,6 +54,8 @@ public class Order {
     @Expose
     private String other;
 
+    private int value;
+
     public Order() {
     }
 
@@ -143,6 +145,14 @@ public class Order {
 
     public void setRestAddress(String restAddress) {
         this.restAddress = restAddress;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public static class MealsBean {
