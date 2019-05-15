@@ -482,6 +482,7 @@ public class OrderDAO {
         }
     }
     
+    //拿到orderStatus
     public static String getOrderStatus(Long orderID)
     {
     	Connection connection = null;
