@@ -5,7 +5,7 @@
 <meta name="description" content="" />
 		<meta name="keywords" content="" />
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBombwBFDaA5F9dQlNIlevCWrTA_WChG4&call"> </script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDd-5ECORJoBZBUiPycKb6AWbwHbc_Cx7I&call"> </script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -57,7 +57,7 @@
 function getUrposition(){
        taipei = new google.maps.LatLng(25.091075,121.55983449999997);
         // Try W3C Geolocation (Preferred)
-
+/*
 	  if(navigator.geolocation) {
 		browserSupportFlag = true;
 		navigator.geolocation.getCurrentPosition(function(position) {
@@ -80,7 +80,20 @@ function getUrposition(){
 	    } else {
 		browserSupportFlag = false;
 		handleNoGeolocation(browserSupportFlag);
-	  } 
+	  } */
+	  navigator.geolocation.getCurrentPosition(success);
+	  function success(pos) {
+	  var crd = pos.coords;
+	
+		
+		urPosition = new google.maps.LatLng(crd.latitude,crd.longitude);
+		/*console.log('Your current position is:');
+		console.log('Latitude : ' + crd.latitude);
+		console.log('Longitude: ' + crd.longitude);
+		console.log('More or less ' + crd.accuracy + ' meters.');*/
+		
+		};
+	 
 	}
 	 
 function handleNoGeolocation(errorFlag) {
@@ -101,12 +114,20 @@ function calcRoute() {
       var start;
       var end ="俞家鮮魚湯";  
       if(selectedAgree =="yes"){
+		
             getUrposition();
+			
              request = {
                 origin: urPosition, 
                 destination: initialPlace,
                 travelMode: google.maps.DirectionsTravelMode.DRIVING
                 };
+				
+				directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
               }  
         else if(selectedAgree == "no"){
             start=document.getElementById("address").value; 
@@ -115,8 +136,9 @@ function calcRoute() {
                 destination: end,
                 travelMode: google.maps.DirectionsTravelMode[selectedMode]
               };
-             }
-      directionsService.route(request, function(response, status) {
+			 
+        }
+       directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(response);
         }
