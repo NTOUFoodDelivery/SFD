@@ -481,6 +481,30 @@ public class OrderDAO {
             JdbcUtils.close(preparedStatement,connection);
         }
     }
+    
+    public static String getOrderStatus(Long orderID)
+    {
+    	Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String status = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT Order_Status FROM `order` WHERE Order_Id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1,orderID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+            	status = resultSet.getString("Order_Status");
+                //System.out.println(identity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return status;
+    }
 
     // 更改 訂單權重
     public static void modifyOrderCastingPrio(Long orderID,int castingPrio)
