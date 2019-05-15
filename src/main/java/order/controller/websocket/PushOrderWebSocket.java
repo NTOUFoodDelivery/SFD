@@ -25,7 +25,7 @@ public class PushOrderWebSocket {
 
 
     public static Map<HttpSession, User> httpSessions =  new ConcurrentHashMap<HttpSession,User>();
-    public static Map<User,Session> sessions =  new ConcurrentHashMap<User,Session>();
+    public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>();
 
     private Session session;
     private HttpSession httpSession;
@@ -42,7 +42,7 @@ public class PushOrderWebSocket {
         OrderService.onlineDelivers.put(user.getUserID(),user);
 
         if(UserDAO.showUserIdentity(user.getUserID()).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket
-            sessions.put(user,session);
+            sessions.put(user.getUserID(),session);
             System.out.println(user.getUserID() + " :: DELIVER_ON");
         }else { // 若外送員 已接單 或 離線 則 斷開 websocket連結
             onClose(session);

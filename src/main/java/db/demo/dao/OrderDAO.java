@@ -461,15 +461,15 @@ public class OrderDAO {
     }
     /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 更改orderStauts
-    public static void modifyOrderStauts(Long orderID, String OrderStauts)
+    public static void modifyOrderStauts(Long orderID, String OrderStatus)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "UPDATE `order` SET Order_Stauts = ? WHERE Order_Id = ?;";
+            String sql = "UPDATE `order` SET Order_Status = ? WHERE Order_Id = ?;";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, OrderStauts);
+            preparedStatement.setString(1, OrderStatus);
             preparedStatement.setLong(2, orderID);
             preparedStatement.executeUpdate();
         }

@@ -31,15 +31,6 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 //        String address = request.getParameter("address");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
-        for(Order order : idleOrderList){
-            System.out.println(gson.toJson(order));
-        }
-
-        List<User> idleDeliverList = UserDAO.searchIdleDeliverUser();
-        for(User user : idleDeliverList){
-            System.out.println(gson.toJson(user));
-        }
 
 //        String json = gson.toJson(jsonObject);
 //        PrintWriter out = response.getWriter();
