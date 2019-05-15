@@ -157,7 +157,7 @@ public class OrderDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        Order order = new Order();
+
         try {
             connection = JdbcUtils.getconn();
             String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id " +
@@ -170,7 +170,7 @@ public class OrderDAO {
 
             while(resultSet.next())
             {
-
+                Order order = new Order();
                 List<Order.MealsBean> meals = new ArrayList<>();
                 order.setOrderStatus(resultSet.getString("Order_Status"));
                 order.setValue(0);
@@ -194,19 +194,19 @@ public class OrderDAO {
                         "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id  \n" +
                         "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
-                        "WHERE Order_Id = ?";
+                        "WHERE `order`.Order_Id = ?";
                 preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);
                 preparedStatement.setLong(1, order.getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
 
                 int count = 0;
                 while(mealResultSet.next()){
-                    order.setRestName(resultSet.getString("Rest_Name"));
-                    order.setRestAddress(resultSet.getString("Rest_Address"));
+                    order.setRestName(mealResultSet.getString("Rest_Name"));
+                    order.setRestAddress(mealResultSet.getString("Rest_Address"));
                     Order.MealsBean meal = new Order.MealsBean();
-                    meal.setFoodID(resultSet.getInt("Food_Id"));
-                    meal.setFoodName(resultSet.getString("Food_Name"));
-                    meal.setCount(resultSet.getInt("Count"));
+                    meal.setFoodID(mealResultSet.getInt("Food_Id"));
+                    meal.setFoodName(mealResultSet.getString("Food_Name"));
+                    meal.setCount(mealResultSet.getInt("Count"));
                     meals.add(meal);
                     count++;
                     System.out.println(count);
