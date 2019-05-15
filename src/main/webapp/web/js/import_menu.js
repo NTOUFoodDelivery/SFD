@@ -1,10 +1,10 @@
 function import_menu(n1, n2) {
-    var JData;
+    var JData_menu;
     var sJson = JSON.stringify
         ({
-            restName: n1, restAddress: n2
+            Rest_Name: n1, Rest_Address: n2
         });
-
+        var showmenutemp=document.getElementById("extra").value;
     $.ajax({
         url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
         type: "POST",
@@ -12,50 +12,53 @@ function import_menu(n1, n2) {
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',
         data: sJson,
-        success: function (JData) {
+        success: function (JData_menu) {
 
             alert("menu_SUCCESS!!!" + n1 + n2);
-            $.each(JData, function () {
-                var NumOfJData = JData.result.length;
-                var stringJData = JSON.stringify(JData);
-                var m1, m2, m3;
-                $("body").append("<tr>" + stringJData + "</tr>");
-                for (var i = 0; i < NumOfJData; i++) {
-                    m1 = JData.result[i]["Food_Name"];
-                    m2 = JData.result[i]["Cost"];
-                    m3 = JData.result[i]["Description"];
+            $.each(JData_menu, function () {
+                var NumOfJData_menu = JData_menu.result.length;
+                var stringJData_menu = JSON.stringify(JData_menu);
+                var m1, m2, m3,m4;
+                var addtocart;
+                $("body").append("<tr>" + stringJData_menu + "</tr>");
+                for (var i = 0; i < NumOfJData_menu; i++) {
+                    m1 = JData_menu.result[i]["Food_Name"];
+                    m2 = JData_menu.result[i]["Cost"];
+                    m3 = JData_menu.result[i]["Description"];
+                    m4 = JData_menu.result[i]["Image"];
 
                     var abc = 0;
+                    
 
                     if (i % 3 == 0 && abc % 3 == 0) {
-                        temp = temp + '<div class="row no-collapse-1">';
+                        showmenutemp = showmenutemp + '<div class="row no-collapse-1">';
 
 
-                        temp = temp + '<section class="4u">' +
+                        showmenutemp = showmenutemp + '<section class="4u">' +
                             '<a href="#" class="image featured">' +
-                            '<img src="images/pic01.jpg" alt="">' +
+                            '<img src="'+m4+'" alt="">' +
                             '</a>' +
                             '<div class="box">' +
                             '<p>' + m1 + "<br>" + m2 + '</p>' +
-                            '<a href="#" class="button"  >Read More</a>' +
+                            '<a href="#" class="button"  >加入購物車</a>' +
                             '</div>' +
                             '</section>';
                     }
                     else {
-                        temp = temp + '<section class="4u">' +
+                        showmenutemp = showmenutemp + '<section class="4u">' +
                         '<a href="#" class="image featured">' +
                         '<img src="images/pic01.jpg" alt="">' +
                         '</a>' +
                         '<div class="box">' +
                         '<p>' + m1 + "<br>" + m2 + '</p>' +
-                        '<a href="#" class="button"  >Read More</a>' +
+                        '<a href="#" class="button"  >加入購物車</a>' +
                         '</div>' +
                         '</section>';
                     }
                     abc++;
-                    if (i % 3 == 2 || i == NumOfJData - 1) { temp = temp + '</div>'; }
+                    if (i % 3 == 2 || i == NumOfJData_menu - 1) { showmenutemp = showmenutemp + '</div>'; }
                 }
-                //JData = JSON.parse(stringJData);
+                //JData_menu = JSON.parse(stringJData_menu);
                 //push test
 
 
@@ -65,9 +68,11 @@ function import_menu(n1, n2) {
         },
 
         error: function () {
-            alert("ERROR!!!");
+            alert("無法取得餐廳餐點資訊，請重新整理");
         }
 
 
     });
 }
+
+
