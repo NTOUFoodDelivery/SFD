@@ -482,6 +482,55 @@ public class OrderDAO {
         }
     }
 
+    // 更改 訂單權重
+    public static void modifyOrderCastingPrio(Long orderID,int castingPrio)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "UPDATE `order` SET Casting_Prio = ? WHERE Order_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, orderID);
+            preparedStatement.setInt(2, castingPrio);
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
+    }
+
+    // 拿到 訂單權重
+    public static int getOrderCastingPrio(Long orderID)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int castingPrio = 0;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT Casting_Prio FROM `order` WHERE Order_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, orderID);
+            resultSet = preparedStatement.executeQuery();
+            castingPrio = resultSet.getInt("Casting_Prio");
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return castingPrio;
+    }
+
     //測試區
 //    public static void main(String args[]) {
 //    	searchDeliverHistoryOrder_Food(0);

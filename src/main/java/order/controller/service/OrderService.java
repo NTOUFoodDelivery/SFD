@@ -48,6 +48,7 @@ public class OrderService {
 //            order.setValue(order.getValue()+OrderSetting.ORDERSTAGE);
 //            order.setOrderStatus(OrderSetting.OrderStatus.WAIT);
 //            onlineDelivers.get(order.getDeliverID()).setUserStatus(MemberSetting.UserStatus.DELIVER_ON);
+            OrderDAO.modifyOrderCastingPrio(orderID,OrderDAO.getOrderCastingPrio(orderID)+OrderSetting.ORDERSTAGE);
             // 去資料庫 修改訂單狀態成"未推播"
             OrderDAO.modifyOrderStatus(orderID,OrderSetting.OrderStatus.WAIT);
             // 將外送員狀態 改成"空閒之類的"

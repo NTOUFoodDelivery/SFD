@@ -56,7 +56,6 @@ public class PushOrderWebSocket {
         for(Long userID : closeSessions){
             sessions.remove(userID);
             UserDAO.modifyUserStatus(userID, MemberSetting.UserStatus.OFFLINE);
-
 //            OrderService.onlineDelivers.remove(user.getUserID());
         }
     }
