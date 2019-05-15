@@ -26,7 +26,7 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
 
             // set order table ----- BEGIN<33333333
-            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other) VALUES(?, ?, ?, ?, ?, ?, ?);";
+            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other, Casting_Prio) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
             preparedStatement.setLong(1,order.getOrderID());
             preparedStatement.setString(2,order.getStartTime());
@@ -35,6 +35,7 @@ public class OrderDAO {
             preparedStatement.setString(5,order.getOrderStatus());
             preparedStatement.setString(6,order.getAddress());
             preparedStatement.setString(7,order.getOther());
+            preparedStatement.setInt(8,order.getCastingPrio());
             preparedStatement.executeUpdate();
             // set order table ----- END
             // set OCD table ----- BEGIN
@@ -128,7 +129,7 @@ public class OrderDAO {
         ResultSet resultSet = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, `order`.Other, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address " +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, `order`.Other,`order`.Casting_Prio, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address " +
                     "FROM `order` " +
                     "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
                     "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
@@ -160,7 +161,7 @@ public class OrderDAO {
 
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id " +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id " +
                     "FROM `order`" +
                     "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id" +
                     " WHERE Order_Status = 'WAIT'";
@@ -185,7 +186,7 @@ public class OrderDAO {
 
                 order.setCustomerID(resultSet.getInt("Customer_Id"));
                 order.setDeliverID(resultSet.getInt("Deliver_Id"));
-
+                order.setCastingPrio(resultSet.getInt("Casting_Prio"));
 
 
                 ResultSet mealResultSet = null;
@@ -232,7 +233,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, `order`.Casting_Prio, member.Account, member.User_Name, member.Phone_Number, " +
                     "FROM `order` " +
                     "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
                     "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
@@ -275,7 +276,7 @@ public class OrderDAO {
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
 
-            String inserthistory = "INSERT INTO history(History_Id, Start_Time, Type_Count, Total, Final_Status, Address, Other) VALUES(?, ?, ?, ?, ?, ?, ?);";
+            String inserthistory = "INSERT INTO history(History_Id, Start_Time, Type_Count, Total, Final_Status, Address, Other,Casting_Prio) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
             preparedStatement2 = (PreparedStatement)connection.prepareStatement(inserthistory);
             preparedStatement2.setLong(1,resultSet.getLong("Order_Id"));
             preparedStatement2.setString(2,resultSet.getString("Start_Time"));
@@ -284,6 +285,7 @@ public class OrderDAO {
             preparedStatement2.setString(5,resultSet.getString("Order_Status"));
             preparedStatement2.setString(6,resultSet.getString("Address"));
             preparedStatement2.setString(7,resultSet.getString("Other"));
+            preparedStatement2.setInt(8,resultSet.getInt("Casting_Prio"));
             preparedStatement2.executeUpdate();
             //set HOCD-history_Id
             String insertHO_CD_history_Id = "INSERT INTO history_customer_deliver_info(History_Id) VALUES(?)";

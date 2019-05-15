@@ -32,7 +32,7 @@ public class PushOrderTask extends TimerTask {
             List<User> idleDeliverList = UserDAO.searchIdleDeliverUser(); // 找 閒置的外送員
             List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
             if (idleDeliverList.size() > 0 && idleOrderList.size() > 0) { // 如果有在線的外送員的話 且有空閒訂單
-                System.out.println("IM UUU");
+
 //            if(PushOrderWebSocket.sessions.size() > 0 && OrderService.pushOrders.size() > 0){ // 如果有在線的外送員的話 且有空閒訂單
 
 //                List<Order> entryList = new ArrayList<>(OrderService.pushOrders.values());
@@ -46,7 +46,7 @@ public class PushOrderTask extends TimerTask {
 
                 for (Order order : idleOrderList) {
 
-//                    // 如果訂單為空閒
+                    // 如果訂單為空閒
                     if(order.getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
 
                         for (User deliver : idleDeliverList) {

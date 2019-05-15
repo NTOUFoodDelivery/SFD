@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OrderService {
 
 //    public static Map<Long, User> onlineDelivers =  new ConcurrentHashMap<Long,User>();
-//    public static Map<Long, Order> pushOrders =  new ConcurrentHashMap<Long,Order>();
+    public static Map<Long, Order> pushOrders =  new ConcurrentHashMap<Long,Order>();
 
     // 產生訂單編號 將訂單存入資料庫
     public static void addOrder(Order order){

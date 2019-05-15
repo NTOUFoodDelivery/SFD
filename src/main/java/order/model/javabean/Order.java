@@ -57,8 +57,9 @@ public class Order {
     @SerializedName("Other")
     @Expose
     private String other;
-
-    private int value;
+    @SerializedName("Casting_Prio")
+    @Expose
+    private int castingPrio;
 
     public Order() {
     }
@@ -151,13 +152,7 @@ public class Order {
         this.restAddress = restAddress;
     }
 
-    public int getValue() {
-        return value;
-    }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
 
     public String getRestName() {
         return restName;
@@ -165,6 +160,14 @@ public class Order {
 
     public void setRestName(String restName) {
         this.restName = restName;
+    }
+
+    public int getCastingPrio() {
+        return castingPrio;
+    }
+
+    public void setCastingPrio(int castingPrio) {
+        this.castingPrio = castingPrio;
     }
 
     public static class MealsBean {

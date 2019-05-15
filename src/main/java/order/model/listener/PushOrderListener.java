@@ -1,5 +1,6 @@
 package order.model.listener;
 
+import order.model.timer.PushOrderTimeOutTimer;
 import order.model.timer.PushOrderTimer;
 
 import javax.servlet.ServletContextEvent;
@@ -14,6 +15,7 @@ public class PushOrderListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
     private PushOrderTimer pushOrderTimer = null;
+    private PushOrderTimeOutTimer pushOrderTimeOutTimer = null;
 
     public PushOrderListener() {
     }
@@ -24,7 +26,7 @@ public class PushOrderListener implements ServletContextListener,
         sce.getServletContext().log(status);
         System.out.println(status);
         pushOrderTimer = new PushOrderTimer(10);
-
+        pushOrderTimeOutTimer = new PushOrderTimeOutTimer(25);
         pushOrderTimer.start();
     }
 
@@ -34,6 +36,9 @@ public class PushOrderListener implements ServletContextListener,
         System.out.println(status);
         if (pushOrderTimer != null) {
             pushOrderTimer.stop();
+        }
+        if (pushOrderTimeOutTimer != null) {
+            pushOrderTimeOutTimer.stop();
         }
     }
 }
