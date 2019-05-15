@@ -16,7 +16,7 @@ public class Order {
      * Address : dslkvmds
      * Type_Count : 1
      * Total : 634
-     * meals : [{"Food_Id":1236,"Count":5}]
+     * meals : [{"Food_Name": dc, "Food_Id":1236,"Count":5}]
      * Order_Status : vlcd;sx
      * Other : "asdasd"
      */
@@ -170,12 +170,16 @@ public class Order {
     public static class MealsBean {
         /**
          * Food_Id : 1236
+         * Food_Name : df
          * Count : 5
          */
 
         @SerializedName("Food_Id")
         @Expose
         private int foodID;
+        @SerializedName("Food_Name")
+        @Expose
+        private String foodName;
         @SerializedName("Count")
         @Expose
         private int count;
@@ -196,5 +200,12 @@ public class Order {
             this.count = count;
         }
 
+        public String getFoodName() {
+            return foodName;
+        }
+
+        public void setFoodName(String foodName) {
+            this.foodName = foodName;
+        }
     }
 }
