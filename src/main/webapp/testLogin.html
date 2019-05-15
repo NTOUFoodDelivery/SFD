@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SFD登入測試</title>
+    <style>
+        #center {
+            position:absolute; top:50%; left:50%;
+            margin-left: -105px;
+            margin-top: -170px;
+        }
+    </style>
+</head>
+<body>
+<div id="center">
+    <h1>登入後台測試</h1>
+    <form action="LogInServlet" method="post">
+        Username:<input type="text" name="account"><br>
+        Password:<input type="password" name="password"><br>
+        <select class="custom-select" name="userType">
+            <option selected>Choose...</option>
+            <option value="Customer_and_Deliver">外送員</option>
+            <option value="Customer">食客</option>
+            <option value="Administrator">admin</option>
+        </select>
+        <input type="submit" value="Login">
+        <input type="reset" value="reset">
+    </form>
+</div>
+</body>
+</html>

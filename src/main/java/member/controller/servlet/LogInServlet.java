@@ -66,6 +66,7 @@ public class LogInServlet extends HttpServlet {
                             System.out.println("duajsd");
                             user.setUserType(MemberSetting.UserStatus.DELIVER_ON);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.DELIVER_ON);
+                            response.sendRedirect("testDeliver.html");
                             break;
                         }
                         case MemberSetting.UserType.ADMINISTRATOR:{
@@ -78,7 +79,8 @@ public class LogInServlet extends HttpServlet {
                         }
                     }
 
-                    response.sendRedirect("chatDemo.jsp");
+
+//                    response.sendRedirect("chatDemo.jsp");
 //                    request.getRequestDispatcher("chatDemo.jsp").forward(request,response); // 跳轉回登入頁面
 //                    }
 
@@ -101,13 +103,16 @@ public class LogInServlet extends HttpServlet {
 //                            oneUserSameKeyList.get(i).invalidate(); // 銷毀 session
 //                        }
 //                    }
+
+
                     // ------判斷使用者登入狀況------- END
                 }else {
                     info.add("登入失敗，錯誤的帳號、密碼或userType");
                     request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
 //                    response.sendRedirect("LoginDemo.jsp");
-                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
+                    response.sendRedirect("testLogin.html");
+//                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static db.demo.dao.OrderDAO.getOrderStatus;
+
 public class OrderService {
 
 //    public static Map<Long, User> onlineDelivers =  new ConcurrentHashMap<Long,User>();
@@ -30,8 +32,12 @@ public class OrderService {
     }
 
     // 雙方 完成訂單
-    public static void confirmOrder(){
-
+    public static void confirmOrder(PushResult pushResult){
+        Long orderID = pushResult.getOrderID();
+        Long deliverID = pushResult.getDeliverID();
+        String status = OrderDAO.getOrderStatus(orderID);
+        System.out.println(status);
+//        if9s0
     }
 
     // 處理訂單 接受與否 以及 外送員、訂單狀態 轉換
