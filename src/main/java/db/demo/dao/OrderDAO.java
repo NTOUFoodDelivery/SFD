@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.JsonObject;
 
@@ -159,7 +160,7 @@ public class OrderDAO {
         Order order = new Order();
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, `order`.Order_Status, `order`.Other, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id" +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, order_food.`Count`, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id" +
                     " FROM `order` " +
                     "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id  " +
                     "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id" +
@@ -169,30 +170,30 @@ public class OrderDAO {
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
-//            if(resultSet.next()){
-//                order.setOrderStatus(resultSet.getString("Order_Status"));
-//                order.setValue(0);
-//                order.setOrderID(resultSet.getInt("Order_Id"));
-//                order.setAddress(resultSet.getString("Address"));
-//                order.setCustomerID(resultSet.getInt("Customer_Id"));
-//                order.setDeliverID(resultSet.getInt("Deliver_Id"));
-//                order.setOther(resultSet.getString("Other"));
-//                order.setRestAddress(resultSet.getString("Rest_Address"));
-//                order.setStartTime(resultSet.getString("Start_Time"));
-//                order.setTotal(resultSet.getInt("Total"));
-//                order.setRestName(resultSet.getString("Rest_Name"));
-//            }
-            int count =0;
+
+            List<Order.MealsBean> meals = new ArrayList<>();
             while(resultSet.next())
             {
+                order.setOrderStatus(resultSet.getString("Order_Status"));
+                order.setValue(0);
+                order.setOrderID(resultSet.getInt("Order_Id"));
+                order.setAddress(resultSet.getString("Address"));
+                order.setCustomerID(resultSet.getInt("Customer_Id"));
+                order.setDeliverID(resultSet.getInt("Deliver_Id"));
+                order.setOther(resultSet.getString("Other"));
+                order.setRestAddress(resultSet.getString("Rest_Address"));
+                order.setStartTime(resultSet.getString("Start_Time"));
+                order.setTotal(resultSet.getInt("Total"));
+                order.setTypeCount(resultSet.getInt("Type_Count"));
+                order.setRestName(resultSet.getString("Rest_Name"));
                 Order.MealsBean meal = new Order.MealsBean();
-                System.out.println(resultSet.getString("Food_Name"));
-                System.out.println(resultSet.getString("Cost"));
-                System.out.println(count);
-//                order.setMeals();
-                count++;
-                orders.add(order);
+                meal.setFoodID(resultSet.getInt("Food_Id"));
+                meal.setFoodName(resultSet.getString("Food_Name"));
+                meal.setCount(resultSet.getInt("Count"));
+                meals.add(meal);
             }
+            orders.add(order);
+            order.setMeals(meals);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
