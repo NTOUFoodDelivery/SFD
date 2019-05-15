@@ -4,7 +4,7 @@ function import_menu(n1, n2) {
         ({
             Rest_Name: n1, Rest_Address: n2
         });
-        var showmenutemp=document.getElementById("extra").value;
+        var showmenutemp="";
     $.ajax({
         url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
         type: "POST",
@@ -13,12 +13,11 @@ function import_menu(n1, n2) {
         contentType: 'application/json; charset=UTF-8',
         data: sJson,
         success: function (JData_menu) {
-
-            alert("menu_SUCCESS!!!" + n1 + n2);
             $.each(JData_menu, function () {
                 var NumOfJData_menu = JData_menu.result.length;
                 var stringJData_menu = JSON.stringify(JData_menu);
                 var m1, m2, m3,m4;
+                var foodimg;
                 var addtocart;
                 $("body").append("<tr>" + stringJData_menu + "</tr>");
                 for (var i = 0; i < NumOfJData_menu; i++) {
@@ -28,15 +27,23 @@ function import_menu(n1, n2) {
                     m4 = JData_menu.result[i]["Image"];
 
                     var abc = 0;
+                    if (m4 == null) {
+                        foodimg = "images/Logo.jpg";
+    
+                    }
+                    else {
+                        foodimg = m4;
+                    }
                     
 
                     if (i % 3 == 0 && abc % 3 == 0) {
+                      
                         showmenutemp = showmenutemp + '<div class="row no-collapse-1">';
 
 
                         showmenutemp = showmenutemp + '<section class="4u">' +
                             '<a href="#" class="image featured">' +
-                            '<img src="'+m4+'" alt="">' +
+                            '<img src="'+foodimg+'" alt="">' +
                             '</a>' +
                             '<div class="box">' +
                             '<p>' + m1 + "<br>" + m2 + '</p>' +
@@ -45,9 +52,10 @@ function import_menu(n1, n2) {
                             '</section>';
                     }
                     else {
+                       
                         showmenutemp = showmenutemp + '<section class="4u">' +
                         '<a href="#" class="image featured">' +
-                        '<img src="images/pic01.jpg" alt="">' +
+                        '<img src="'+foodimg+'" alt="">' +
                         '</a>' +
                         '<div class="box">' +
                         '<p>' + m1 + "<br>" + m2 + '</p>' +
@@ -60,7 +68,7 @@ function import_menu(n1, n2) {
                 }
                 //JData_menu = JSON.parse(stringJData_menu);
                 //push test
-
+                document.getElementById("extra").innerHTML = showmenutemp;
 
             });
 
