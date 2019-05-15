@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.RestDAO;
+import db.demo.dao.UserDAO;
+import db.demo.javabean.User;
 import order.model.javabean.Order;
 
 import javax.servlet.ServletException;
@@ -33,6 +35,12 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
         for(Order order : idleOrderList){
             System.out.println(gson.toJson(order));
         }
+
+        List<User> idleDeliverList = UserDAO.searchIdleDeliverUser();
+        for(User user : idleDeliverList){
+            System.out.println(gson.toJson(user));
+        }
+
 //        String json = gson.toJson(jsonObject);
 //        PrintWriter out = response.getWriter();
 //        out.print(json);

@@ -287,7 +287,7 @@ public class UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        User user = new User();
+
         //int index = 0;
         try {
             connection = JdbcUtils.getconn();
@@ -297,6 +297,7 @@ public class UserDAO {
             resultSet.getMetaData();
             while(resultSet.next())
             {
+                User user = new User();
                 user.setUserID(resultSet.getLong("User_Id"));
                 user.setAccount(resultSet.getString("Account"));
                 user.setEmail(resultSet.getString("Email"));
