@@ -182,7 +182,7 @@ public class UserDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "UPDATE member SET User_Stauts = ? WHERE User_Id = ?;";
+            String sql = "UPDATE member SET User_Status = ? WHERE User_Id = ?;";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, userStatus);
             preparedStatement.setLong(2, userID);
@@ -250,9 +250,9 @@ public class UserDAO {
         return false;
     }
 
-    // 利用 userID 查詢 全部的空閒的 外送員 
+    // 利用 userID 查詢 全部的空閒的 外送員 ID
     // 已測試成功
-    public static ArrayList<Long> searchIdleDeliver()
+    public static ArrayList<Long> searchIdleDeliverID()
     {
         ArrayList<Long> a = new ArrayList<Long>();
         Connection connection = null;
@@ -278,7 +278,44 @@ public class UserDAO {
         }
         return a;
     }
-    
+
+    // 利用 userID 查詢 全部的空閒的 外送員 User
+    // 已測試成功
+    public static ArrayList<User> searchIdleDeliverUser()
+    {
+        ArrayList<User> users = new ArrayList<User>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = new User();
+        //int index = 0;
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT * FROM member WHERE User_Status = 'DELIVER_ON'";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData();
+            while(resultSet.next())
+            {
+                user.setUserID(resultSet.getLong("User_Id"));
+                user.setAccount(resultSet.getString("Account"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setLastAddress(resultSet.getString("Last_Address"));
+                user.setPassword(resultSet.getString("Password"));
+                user.setPhoneNumber(resultSet.getString("Phone_Number"));
+                user.setUserName(resultSet.getString("User_Name"));
+                user.setUserStatus(resultSet.getString("User_Status"));
+                user.setUserType(resultSet.getString("User_Type"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return users;
+    }
+
     // 食客or外送員  傳送客服回報給 管理者
     public static void addFeedback(Long FeedbackID, Long UserID, String Content)
     {

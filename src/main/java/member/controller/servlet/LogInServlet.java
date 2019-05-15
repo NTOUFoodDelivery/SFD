@@ -2,6 +2,7 @@ package member.controller.servlet;
 
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
+import member.model.javabean.MemberSetting;
 import order.controller.websocket.PushOrderWebSocket;
 
 import javax.servlet.ServletException;
@@ -50,12 +51,34 @@ public class LogInServlet extends HttpServlet {
                 if(user != null){
                     // ------判斷使用者登入狀況------- BEGIN
 //                    if(PushOrderWebSocket.httpSessions.get(session) == null){ // 單個登入
-                        PushOrderWebSocket.httpSessions.put(session,user);
-                        session.setAttribute("login","login");
-                        session.setAttribute("account",account); // account 保存進 session 全域變數中
-                        session.setAttribute("userType",userType); // userType 保存進 session 全域變數中
+                    PushOrderWebSocket.httpSessions.put(session,user);
+                    session.setAttribute("login","login");
+                    session.setAttribute("account",account); // account 保存進 session 全域變數中
+                    session.setAttribute("userType",userType); // userType 保存進 session 全域變數中
 
-                        response.sendRedirect("chatDemo.jsp");
+                    switch (user.getUserType()){
+                        case MemberSetting.UserType.CUSTOMER:{
+                            user.setUserType(MemberSetting.UserStatus.CUSTOMER);
+                            UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.CUSTOMER);
+                            break;
+                        }
+                        case MemberSetting.UserType.CUSTOMER_AND_DELIVER:{
+                            System.out.println("duajsd");
+                            user.setUserType(MemberSetting.UserStatus.DELIVER_ON);
+                            UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.DELIVER_ON);
+                            break;
+                        }
+                        case MemberSetting.UserType.ADMINISTRATOR:{
+                            user.setUserType(MemberSetting.UserStatus.CUSTOMER);
+                            UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.ADMINISTRATOR);
+                            break;
+                        }
+                        default:{
+                            break;
+                        }
+                    }
+
+                    response.sendRedirect("chatDemo.jsp");
 //                    request.getRequestDispatcher("chatDemo.jsp").forward(request,response); // 跳轉回登入頁面
 //                    }
 

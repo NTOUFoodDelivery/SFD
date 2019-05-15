@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.RestDAO;
+import order.model.javabean.Order;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/CalculateDeliveryTimeServlet")
 public class CalculateDeliveryTimeServlet extends HttpServlet {
@@ -26,6 +28,8 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 //        String restID = request.getParameter("Rest_Id");
 //        String address = request.getParameter("address");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
+        List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
 
 //        String json = gson.toJson(jsonObject);
 //        PrintWriter out = response.getWriter();

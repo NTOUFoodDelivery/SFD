@@ -38,6 +38,7 @@ public class PushOrderWebSocket {
                 .get(HttpSession.class.getName());
 
         User user = httpSessions.get(httpSession);
+        System.out.println(user.getUserStatus());
         OrderService.onlineDelivers.put(user.getUserID(),user);
 
         if(UserDAO.showUserIdentity(user.getUserID()).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket

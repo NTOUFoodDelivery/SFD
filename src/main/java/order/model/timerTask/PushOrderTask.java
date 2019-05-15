@@ -29,77 +29,46 @@ public class PushOrderTask extends TimerTask {
         synchronized(PushOrderWebSocket.sessions){
             // Iterate over the connected sessions
             // and broadcast the received message
+            List<User> idleDeliverList = UserDAO.searchIdleDeliverUser(); // 找 閒置的外送員
+            List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
+            if(idleDeliverList.size() > 0 && idleOrderList.size() > 0 ) { // 如果有在線的外送員的話 且有空閒訂單
+                System.out.println("IM UUU");
+//            if(PushOrderWebSocket.sessions.size() > 0 && OrderService.pushOrders.size() > 0){ // 如果有在線的外送員的話 且有空閒訂單
 
-            if(PushOrderWebSocket.sessions.size() > 0 && OrderService.pushOrders.size() > 0){ // 如果有在線的外送員的話 且有空閒訂單
-//                try {
-//                    PushOrderWebSocket.sessions.get(3L).getBasicRemote().sendText("213");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+//                List<Order> entryList = new ArrayList<>(OrderService.pushOrders.values());
+//                // sort idle order value 大到小
+//                Collections.sort(entryList, new Comparator<Order>() {
+//                    @Override
+//                    public int compare(Order order1, Order order2) {
+//                        return order2.getValue() - order1.getValue();
+//                    }
+//                });
 
-                List<Long> idleDeliverList = UserDAO.searchIdleDeliver(); // 找 閒置的外送員
-//                List<JsonObject> idleOrderList = OrderDAO.searchIdelOrder();// 找 閒置的訂單
-
-                List<Order> entryList = new ArrayList<>(OrderService.pushOrders.values());
-                // sort idle order value 大到小
-                Collections.sort(entryList, new Comparator<Order>() {
-                    @Override
-                    public int compare(Order order1, Order order2) {
-                        return order2.getValue() - order1.getValue();
-                    }
-                });
-
-                for(Order order : entryList){
-                    System.out.println(order.getOrderID());
-                    System.out.println(order.getValue());
-
-                    // 如果訂單為空閒
-                    if(order.getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
-                        for (Long idleDeliverID : idleDeliverList) {
-                            User deliver = OrderService.onlineDelivers.get(idleDeliverID);
-                            if(deliver.getUserStatus().equals(MemberSetting.UserStatus.DELIVER_ON)) {
-                                Session idleDeliverSession = PushOrderWebSocket.sessions.get(idleDeliverID);
-                                try {
-                                    idleDeliverSession.getBasicRemote().sendObject(order);
-                                    order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
-                                    deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (EncodeException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-
-                        }
-                    }
-                }
-
-
-//                //idle order
-//                for(JsonObject jsonObject : idleOrderList){
-//                    Order order = gson.fromJson(jsonObject.toString(),Order.class);
-//                    // idle deliver
-//                    for(Long idleDeliverID : idleDeliverList){
-//                        Session idleDeliverSession = PushOrderWebSocket.sessions.get(idleDeliverID);
+//                for(Order order : entryList){
 //
-//                        OrderService.pushOrders.get(order.getOrderID());
-//                        try {
-//                            Date date = new Date();
-//                            idleDeliverSession.getBasicRemote().sendText(gson.toJson(jsonObject));
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
+//                    // 如果訂單為空閒
+//                    if(order.getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
+
+//                for (User user : idleDeliverList) {
+//                    User deliver = OrderService.onlineDelivers.get(user.getUserID());
+//                    if(user!=null) {
+//                        if(deliver.getUserStatus().equals(MemberSetting.UserStatus.DELIVER_ON)) {
+//                            Session idleDeliverSession = PushOrderWebSocket.sessions.get(user.getUserID());
+//
+//                            try {
+//                                idleDeliverSession.getBasicRemote().sendText("sdfsf");
+////                                    order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
+////                                    deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
 //                        }
-//
 //                    }
 //                }
-
-
             }
-
         }
     }
     public void run() {
-        pushOrder();
+//        pushOrder();
     }
 }

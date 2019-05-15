@@ -12,6 +12,7 @@ public class Order {
      * Customer_Id : 243
      * Start_Time : tfdyhj
      * Rest_Address : fdsk
+     * Rest_Name : dsf
      * Address : dslkvmds
      * Type_Count : 1
      * Total : 634
@@ -38,6 +39,9 @@ public class Order {
     @SerializedName("Address")
     @Expose
     private String address;
+    @SerializedName("Rest_Name")
+    @Expose
+    private String restName;
     @SerializedName("Type_Count")
     @Expose
     private int typeCount;
@@ -153,6 +157,14 @@ public class Order {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public String getRestName() {
+        return restName;
+    }
+
+    public void setRestName(String restName) {
+        this.restName = restName;
     }
 
     public static class MealsBean {
