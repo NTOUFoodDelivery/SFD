@@ -42,15 +42,15 @@ public class ResultSetToJson {
                 element = new JsonObject();
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     columnName = rsmd.getColumnName(i + 1);
-                    if(columnName.equals("Image"))
-                    {
-                        if(rs.getString(columnName) != null) {
-                            byte[] bytes = rs.getBytes("Image");
-                            columnValue = Base64.encodeBase64String(bytes);
-                        }
-                    }else{
+//                    if(columnName.equals("Image"))
+//                    {
+//                        if(rs.getString(columnName) != null) {
+//                            byte[] bytes = rs.getBytes("Image");
+//                            columnValue = Base64.encodeBase64String(bytes);
+//                        }
+//                    }else{
                         columnValue = rs.getString(columnName);
-                    }
+//                    }
                     element.addProperty(columnName, columnValue);
                 }
                 ja.add(element);

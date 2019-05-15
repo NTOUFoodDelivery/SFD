@@ -30,7 +30,9 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
-
+        for(Order order : idleOrderList){
+            System.out.println(gson.toJson(order));
+        }
 //        String json = gson.toJson(jsonObject);
 //        PrintWriter out = response.getWriter();
 //        out.print(json);
