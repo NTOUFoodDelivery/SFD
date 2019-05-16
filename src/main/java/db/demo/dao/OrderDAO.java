@@ -403,7 +403,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number, " +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number " +
                     "FROM `order` " +
                     "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
                     "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +

@@ -255,26 +255,23 @@
 <script>
     $('#testSubmit').click(function () {
         // var url="/IdentityRedirectServlet";
-        // var url="/SFD/CalculateDeliveryTimeServlet";
-        // $.ajax({
-        //     xhrFields: {
-        //         withCredentials: true
-        //     },
-        //     async:false,
-        //     crossDomain: true,
-        //     type: "GET",
-        //     url: url,
-        //     dataType: "json",
-        //     success: function(data) {
-        //         console.log(data);
-        //     },
-        //     error: function () {
-        //
-        //     }
-        // })
+        var url="/SFD/ShowDeliveryStaffCurrentOrderServlet";
+        $.ajax({
+            xhrFields: {
+                withCredentials: true
+            },
+            async:false,
+            crossDomain: true,
+            type: "GET",
+            url: url,
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+            },
+            error: function () {
 
-        client.send("123");
-        console.log("asdsa")
+            }
+        })
     })
 </script>
 </html>
