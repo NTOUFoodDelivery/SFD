@@ -21,18 +21,19 @@ import java.util.Date;
 @WebServlet("/ShowDeliveryStaffHistoryOrderServlet")
 public class ShowDeliveryStaffHistoryOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        Long userID = (Long) request.getSession().getAttribute("User_Id");
+//        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        Long userID = Long.parseLong(request.getParameter("userID"));
         // 拿 外送員 歷史訂單
         String json = gson.toJson(DeliverOrderService.getHistoryOrder(userID));
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
 }

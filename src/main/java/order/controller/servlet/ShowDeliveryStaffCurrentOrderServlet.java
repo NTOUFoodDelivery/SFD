@@ -28,8 +28,8 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        Long userID = (Long) request.getSession().getAttribute("User_Id");
-        System.out.println(userID);
+//        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        Long userID = Long.parseLong(request.getParameter("userID"));
         // 拿 外送員 當前訂單
         String json = gson.toJson(DeliverOrderService.getCurrentOrder(userID));
         PrintWriter out = response.getWriter();

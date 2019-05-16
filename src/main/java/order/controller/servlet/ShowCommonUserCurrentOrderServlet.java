@@ -26,8 +26,8 @@ public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        Long userID = (Long) request.getSession().getAttribute("User_Id");
-
+//        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        Long userID = Long.parseLong(request.getParameter("userID"));
         // 拿 食客當前訂單
         String json = gson.toJson(CommonUserOrderService.getCurrentOrder(userID));
 

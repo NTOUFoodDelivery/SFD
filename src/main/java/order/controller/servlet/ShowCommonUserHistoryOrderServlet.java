@@ -25,7 +25,8 @@ public class ShowCommonUserHistoryOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        Long userID = (Long) request.getSession().getAttribute("User_Id");
+//        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        Long userID = Long.parseLong(request.getParameter("userID"));
         String json = gson.toJson(CommonUserOrderService.getHistoryOrder(userID));
         PrintWriter out = response.getWriter();
         out.print(json);
