@@ -4,7 +4,7 @@
 
 
 
-document.ready(function () {
+$(document).ready(function () {
     class WebSocketClient {
 
         constructor(protocol, hostname, port, endpoint) {
@@ -39,11 +39,15 @@ document.ready(function () {
                     var text = 'Test SFD';
                     var notification = new Notification('Hello', { body: text, icon: img });
                     setTimeout(notification.close.bind(notification), 4000);
+					var deliver_order=JSON.parse(event.data);
+					OrderIsComing(deliver_order);
+					//alert(deliver_order	);
+					//TransferDeliverOrder(event);
                     // 客製化-----END
                     // var n = new Notification("Hi! ", {tag: 'soManyNotification'});
-
+					
                     console.log(event);
-
+					
                 }
                 this.webSocket.onclose = function(event) {
                     console.log("onclose::" + JSON.stringify(event, null, 4));
@@ -82,7 +86,7 @@ document.ready(function () {
     }
     // let client = new WebSocketClient("ws", "localhost", 8080, "/SFD/pushOrderEndpoint"); // 測試
 // let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
-    let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com", "", "/SFD/CalculateDeliveryTimeServlet"); // 測試
+    let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com", "", "/testWebsocket"); // 測試
     client.connect();
 
     window.onbeforeunload = function() {

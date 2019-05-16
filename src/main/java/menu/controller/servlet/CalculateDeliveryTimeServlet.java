@@ -8,6 +8,7 @@ import db.demo.dao.OrderDAO;
 import db.demo.dao.RestDAO;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
+import order.controller.websocket.TestWebsocket;
 import order.model.javabean.Order;
 import tool.HttpCommonAction;
 
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -32,13 +34,15 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 //        String address = request.getParameter("address");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-
+        Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
+        TestWebsocket.testPushSession.getBasicRemote().sendText(gson.toJson(order));
 //        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
         PrintWriter out = response.getWriter();
-        out.print(HttpCommonAction.getRequestBody(request.getReader()));
+        out.print(order);
         out.flush();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request,response);
     }
 }
