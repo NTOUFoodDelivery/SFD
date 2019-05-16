@@ -16,43 +16,38 @@ import java.util.List;
 public class FeedbackService {
 
     // 更改 回饋
-    public static void modifyFeedback(CommonRequest commonRequest){
+    public static void modifyFeedback(FeedBack feedBack){
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        String cmd = commonRequest.getQuery().getCommand();
-        List<Object> resultBeans = commonRequest.getResult();
-        List<FeedBack> feedBackList = new ArrayList<>();
-        for(Object object: resultBeans){
-            JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
-            feedBackList.add(gson.fromJson(jsonObject.toString(),FeedBack.class)); // feedBack資料存取
-        }
+        String cmd = feedBack.getQuery().getCommand();
+        List<FeedBack.ResultBean> resultBeans = feedBack.getResult();
 
         switch (cmd){
-            case MemberSetting.Feedback.ADD:{
+            case MemberSetting.Feedback.ADD:{ // session
                 System.out.println("ADD");
-                for(FeedBack feedBack : feedBackList){
-                    UserDAO.addFeedback(feedBack.getFeedBackID(),feedBack.getUserID(),feedBack.getContent());
+                for(FeedBack.ResultBean resultBean : resultBeans){
+                    UserDAO.addFeedback(resultBean.getFacebackID(),resultBean.getUserID(),resultBean.getContent());
                 }
                 break;
             }
             case MemberSetting.Feedback.ADMINISTRATORGET:{
                 System.out.println("ADMINISTRATORGET");
-                for(FeedBack feedBack : feedBackList){
-                    UserDAO.AdministratorGetFeedback(feedBack.getFeedBackID());
+                for(FeedBack.ResultBean resultBean : resultBeans){
+                    UserDAO.AdministratorGetFeedback(resultBean.getFacebackID());
                 }
                 break;
             }
             case MemberSetting.Feedback.REPLY:{
                 System.out.println("REPLY");
-                for(FeedBack feedBack : feedBackList){
-                    UserDAO.replyFeedback(feedBack.getFeedBackID(),feedBack.getContent());
+                for(FeedBack.ResultBean resultBean : resultBeans){
+                    UserDAO.replyFeedback(resultBean.getFacebackID(),resultBean.getBackContent());
                 }
                 break;
             }
             case MemberSetting.Feedback.CUSTOMERORDELIVERGET:{
                 System.out.println("CUSTOMERORDELIVERGET");
-                for(FeedBack feedBack : feedBackList){
-                    UserDAO.CustomerOrDeliverGetFeedback(feedBack.getFeedBackID());
+                for(FeedBack.ResultBean resultBean : resultBeans){
+                    UserDAO.CustomerOrDeliverGetFeedback(resultBean.getFacebackID());
                 }
                 break;
             }

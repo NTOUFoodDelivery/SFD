@@ -25,29 +25,14 @@ public class ShowDeliveryStaffHistoryOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        String parm = request.getParameter("userID");
-        String json = null;
-        Long userID;
-        try {
-            userID = Long.parseLong(parm);
-
-            // 拿 外送員 歷史訂單
-            json = gson.toJson(DeliverOrderService.getHistoryOrder(userID));
-
-        } catch (NumberFormatException e) {
-//            e.printStackTrace();
-            StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-            statusCodeResponse.setStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            statusCodeResponse.setTime(new Date().toString());
-            json = gson.toJson(statusCodeResponse);
-        }
-
+        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        // 拿 外送員 歷史訂單
+        String json = gson.toJson(DeliverOrderService.getHistoryOrder(userID));
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

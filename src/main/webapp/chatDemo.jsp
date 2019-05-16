@@ -106,23 +106,23 @@
 <script>
     $('#testSubmit').click(function () {
         // var url="/IdentityRedirectServlet";
-        var url="/SFD/IdentityRedirectServlet";
-        $.ajax({
-            xhrFields: {
-                withCredentials: true
-            },
-            async:false,
-            crossDomain: true,
-            type: "GET",
-            url: url,
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-            },
-            error: function () {
-
-            }
-        })
+        // var url="/SFD/IdentityRedirectServlet";
+        // $.ajax({
+        //     xhrFields: {
+        //         withCredentials: true
+        //     },
+        //     async:false,
+        //     crossDomain: true,
+        //     type: "GET",
+        //     url: url,
+        //     dataType: "json",
+        //     success: function(data) {
+        //         console.log(data);
+        //     },
+        //     error: function () {
+        //
+        //     }
+        // })
     })
 </script>
 <script type="text/javascript">

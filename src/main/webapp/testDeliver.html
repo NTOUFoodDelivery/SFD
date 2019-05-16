@@ -38,11 +38,11 @@
 
     <!-- ---------   chatBox   ---------- -->
 </section><br>
-<%--<button id="testSubmit">testSubmit</button><br>--%>
-<%--<a href="otherDemo.jsp">網頁跳轉</a><br>--%>
-<%--<img id="img" />--%>
-<%--<input type="file" id = "file">--%>
-<%--<input id="but" value="aa" type="button" onclick="mes()">--%>
+<button id="testSubmit">testSubmit</button><br>
+<a href="otherDemo.jsp">網頁跳轉</a><br>
+<img id="img" />
+<input type="file" id = "file">
+<input id="but" value="aa" type="button" onclick="mes()">
 <script type="text/javascript">
     function mes(){
         var imgs = document.getElementById("file");
@@ -59,53 +59,6 @@
 
     }
 
-</script>
-<%--<script>--%>
-<%--    $(document).ready(function() {--%>
-<%--        let json = `--%>
-<%--        {--%>
-<%--            \t"restName":"Apple203",--%>
-<%--            \t"restAddress":"中正路111號"--%>
-<%--        }`;--%>
-<%--        $.ajax({--%>
-    <%--            type: "POST",--%>
-<%--            url: "/ShowMenuServlet",--%>
-<%--            dataType: "json",--%>
-<%--            data:json,--%>
-<%--            success: function(data) {--%>
-<%--                console.log(data);--%>
-<%--                var img = document.getElementById("img");--%>
-<%--                var Image = data.result[0].Image;--%>
-<%--                var str = "data:image/png;base64,"+Image;--%>
-<%--                img.src = str;--%>
-<%--            },--%>
-<%--            error: function () {--%>
-
-<%--            }--%>
-<%--        })--%>
-<%--    });--%>
-<%--</script>--%>
-<script>
-    $('#testSubmit').click(function () {
-        // var url="/IdentityRedirectServlet";
-        var url="/SFD/IdentityRedirectServlet";
-        $.ajax({
-            xhrFields: {
-                withCredentials: true
-            },
-            async:false,
-            crossDomain: true,
-            type: "GET",
-            url: url,
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-            },
-            error: function () {
-
-            }
-        })
-    })
 </script>
 <script type="text/javascript">
     $(function(){
@@ -124,20 +77,6 @@
         });
     });
 </script>
-<%--// 選取圖片的 input--%>
-<%--<label for="upload">選擇上傳圖檔</label>--%>
-<%--<input id="upload" type="file" accept="image/*" @change="showFile">--%>
-
-<%--// 圖片標題--%>
-<%--<label for="title">圖片名稱</label>--%>
-<%--<input class="form-control" id="title" type="text" v-model="title" @keyup.13="submit" required>--%>
-
-<%--// 圖片描述--%>
-<%--<label for="des">圖片描述</label>--%>
-<%--<input class="form-control" id="des" type="text" v-model="des" @keyup.13="submit" required>--%>
-
-<%--// 上傳按鈕--%>
-<%--<button class="btn btn-primary" type="button" id="upload">上傳</button>--%>
 
 <input type="text" id="myText" />
 <input type="file" id="myFile" accept="image/*" />
@@ -204,9 +143,11 @@
     };
 
     navigator.geolocation.getCurrentPosition(success, error, options);
+
 </script>
 </body>
 <script>
+
     class WebSocketClient {
 
         constructor(protocol, hostname, port, endpoint) {
@@ -287,8 +228,9 @@
             }
         }
     }
-    let client = new WebSocketClient("ws", "localhost", 8080, "/SFD/pushOrderEndpoint"); // 測試
+    // let client = new WebSocketClient("ws", "localhost", 8080, "/SFD/pushOrderEndpoint"); // 測試
     // let client = new WebSocketClient("wss", "ntou-sfd.herokuapp.com","", "/pushOrderEndpoint"); // 正式
+    let client = new WebSocketClient("ws", "localhost",8080, "/SFD/testWebsocket"); // 正式
     client.connect();
 
     window.onbeforeunload = function() {
@@ -307,6 +249,32 @@
         showDialogue[0].scrollTop = showDialogue[0].scrollHeight;
         client.send(JSON.stringify(jsonObject));
         document.getElementById('textInput').value="";
+    })
+</script>
+
+<script>
+    $('#testSubmit').click(function () {
+        // var url="/IdentityRedirectServlet";
+        // var url="/SFD/CalculateDeliveryTimeServlet";
+        // $.ajax({
+        //     xhrFields: {
+        //         withCredentials: true
+        //     },
+        //     async:false,
+        //     crossDomain: true,
+        //     type: "GET",
+        //     url: url,
+        //     dataType: "json",
+        //     success: function(data) {
+        //         console.log(data);
+        //     },
+        //     error: function () {
+        //
+        //     }
+        // })
+
+        client.send("123");
+        console.log("asdsa")
     })
 </script>
 </html>

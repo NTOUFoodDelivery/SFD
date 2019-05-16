@@ -31,63 +31,63 @@ public class MemberService {
         }
 
         switch (cmd){
-            case MemberSetting.Command.USER_BAN:{
+            case MemberSetting.Command.USER_BAN:{ // ban 使用者
                 System.out.println("ban");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.DELETE:{
+            case MemberSetting.Command.DELETE:{ // 刪除 使用者
                 System.out.println("delete");
                 for(User user : userList){
                     UserDAO.delUser(user.getUserID());
                 }
                 break;
             }
-            case MemberSetting.Command.DELIVER_ON:{
+            case MemberSetting.Command.DELIVER_ON:{ // 更改 使用者 為 上線有空
                 System.out.println("deliverOn");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.CUSTOMER:{
+            case MemberSetting.Command.CUSTOMER:{ // 更改 使用者 為 一般使用者
                 System.out.println("customer");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.DELIVER_BUSY:{
+            case MemberSetting.Command.DELIVER_BUSY:{ // 更改 使用者 為 一般使用者
                 System.out.println("deliverBusy");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(),cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.DELIVER_OFF:{
+            case MemberSetting.Command.DELIVER_OFF:{ // 更改 使用者 為 離線
                 System.out.println("deliverOff");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.OFFLINE:{
+            case MemberSetting.Command.OFFLINE:{ // 更改 使用者 為 登出
                 System.out.println("offline");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.ADMINISTRATOR:{
+            case MemberSetting.Command.ADMINISTRATOR:{ // 更改 使用者 為 管理員
                 System.out.println("admin");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
                 break;
             }
-            case MemberSetting.Command.PUSHING:{
+            case MemberSetting.Command.PUSHING:{ // 更改 使用者 為 受到推播訂單
                 System.out.println("pushing");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);

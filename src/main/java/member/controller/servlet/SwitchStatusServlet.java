@@ -28,9 +28,8 @@ public class SwitchStatusServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         UserStatus userStatus = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),UserStatus.class);
-
+        userStatus.setUserID((Long)request.getSession().getAttribute("User_Id"));
         MemberService.switchStatus(userStatus);
-
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
         statusCodeResponse.setTime(new Date().toString());

@@ -8,6 +8,7 @@ import db.demo.dao.RestDAO;
 import db.demo.javabean.Rest;
 import menu.controller.service.RestInfoService;
 import menu.model.response.javabean.RestInfo;
+import order.model.javabean.RestInfoRequest;
 import tool.HttpCommonAction;
 import tool.javabean.CommonRequest;
 import tool.javabean.StatusCodeResponse;
@@ -34,9 +35,9 @@ public class ModifyRestInfoServlet extends HttpServlet {
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
+        RestInfoRequest restInfoRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),RestInfoRequest.class);
 
-        RestInfoService.modifyRestInfo(commonRequest);
+        RestInfoService.modifyRestInfo(restInfoRequest);
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);

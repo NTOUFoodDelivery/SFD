@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -29,6 +30,8 @@ public class SendOrderServlet extends HttpServlet {
 
         Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
 
+        HttpSession session = request.getSession();
+        order.setCustomerID((Long)session.getAttribute("User_Id"));
         // 產生訂單編號 將訂單存入資料庫
         OrderService.addOrder(order);
 

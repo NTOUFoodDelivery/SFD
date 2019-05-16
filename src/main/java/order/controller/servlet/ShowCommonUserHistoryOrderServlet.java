@@ -18,30 +18,17 @@ import java.util.Date;
 @WebServlet("/ShowCommonUserHistoryOrderServlet")
 public class ShowCommonUserHistoryOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        String parm = request.getParameter("userID");
-        String json = null;
-        Long userID;
-        try {
-            userID = Long.parseLong(parm);
-            json = gson.toJson(CommonUserOrderService.getHistoryOrder(userID));
-        } catch (NumberFormatException e) {
-//            e.printStackTrace();
-            StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-            statusCodeResponse.setStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            statusCodeResponse.setTime(new Date().toString());
-            json = gson.toJson(statusCodeResponse);
-        }
-
+        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        String json = gson.toJson(CommonUserOrderService.getHistoryOrder(userID));
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

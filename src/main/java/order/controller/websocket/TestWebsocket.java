@@ -20,6 +20,7 @@ public class TestWebsocket {
 
     @OnMessage
     public void onMessage(Session session, String msg) {
+        System.out.println(msg);
     }
 
     @OnError

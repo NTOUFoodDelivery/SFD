@@ -18,28 +18,28 @@
 <button id="testSubmit">testSubmit</button><br>
 <a href="chatDemo.jsp">網頁跳轉BACK</a><br>
 <a href="LogoutDemo.jsp">Logout</a><br>
-<script>
-    $('#testSubmit').click(function () {
-        // var url="/IdentityRedirectServlet";
-        var url="/SFD/IdentityRedirectServlet";
-        $.ajax({
-            xhrFields: {
-                withCredentials: true
-            },
-            async:false,
-            crossDomain: true,
-            type: "GET",
-            url: url,
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-            },
-            error: function () {
+<%--<script>--%>
+<%--    $('#testSubmit').click(function () {--%>
+<%--        var url="/IdentityRedirectServlet";--%>
+<%--        var url="/SFD/IdentityRedirectServlet";--%>
+<%--        $.ajax({--%>
+<%--            xhrFields: {--%>
+<%--                withCredentials: true--%>
+<%--            },--%>
+<%--            async:false,--%>
+<%--            crossDomain: true,--%>
+<%--            type: "GET",--%>
+<%--            url: url,--%>
+<%--            dataType: "json",--%>
+<%--            success: function(data) {--%>
+<%--                console.log(data);--%>
+<%--            },--%>
+<%--            error: function () {--%>
 
-            }
-        })
-    })
-</script>
+<%--            }--%>
+<%--        })--%>
+<%--    })--%>
+<%--</script>--%>
 <script type="text/javascript">
     $(function(){
         $.ajaxSetup ({

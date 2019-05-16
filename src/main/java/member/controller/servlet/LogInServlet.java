@@ -53,8 +53,15 @@ public class LogInServlet extends HttpServlet {
 //                    if(PushOrderWebSocket.httpSessions.get(session) == null){ // 單個登入
                     PushOrderWebSocket.httpSessions.put(session,user);
                     session.setAttribute("login","login");
-                    session.setAttribute("account",account); // account 保存進 session 全域變數中
-                    session.setAttribute("userType",userType); // userType 保存進 session 全域變數中
+                    session.setAttribute("User_Id",user.getUserID()); // User_Id 保存進 session 全域變數中
+                    session.setAttribute("Account",user.getAccount()); // Account 保存進 session 全域變數中
+                    session.setAttribute("Password",user.getPassword()); // Password 保存進 session 全域變數中
+                    session.setAttribute("User_Name",user.getUserName()); // User_Name 保存進 session 全域變數中
+                    session.setAttribute("Email",user.getEmail()); // Email 保存進 session 全域變數中
+                    session.setAttribute("Phone_Number",user.getPhoneNumber()); // Phone_Number 保存進 session 全域變數中
+                    session.setAttribute("Last_Address",user.getLastAddress()); // Last_Address 保存進 session 全域變數中
+                    session.setAttribute("User_Type",user.getUserType()); // User_Type 保存進 session 全域變數中
+                    session.setAttribute("User_Status",user.getUserStatus()); // User_Status 保存進 session 全域變數中
 
                     switch (user.getUserType()){
                         case MemberSetting.UserType.CUSTOMER:{

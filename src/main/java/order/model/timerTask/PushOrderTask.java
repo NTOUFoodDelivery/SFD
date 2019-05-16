@@ -29,7 +29,7 @@ public class PushOrderTask extends TimerTask {
         synchronized (PushOrderWebSocket.sessions) {
             // Iterate over the connected sessions
             // and broadcast the received message
-            if(PushOrderWebSocket.sessions.size() > 0){
+            if(PushOrderWebSocket.sessions.size() > 0){ // 如果有 外送員在線上
                 List<User> idleDeliverList = UserDAO.searchIdleDeliverUser(); // 找 閒置的外送員
                 List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
                 if (idleDeliverList.size() > 0 && idleOrderList.size() > 0) { // 如果有在線的外送員的話 且有空閒訂單

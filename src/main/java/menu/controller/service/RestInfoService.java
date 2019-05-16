@@ -4,11 +4,13 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import db.demo.connect.JdbcUtils;
 import db.demo.dao.RestDAO;
 import db.demo.javabean.Rest;
 import menu.model.javabean.MenuSetting;
 import menu.model.request.javabean.RestMenuReq;
 import menu.model.response.javabean.Menu;
+import order.model.javabean.RestInfoRequest;
 import tool.javabean.CommonRequest;
 
 import java.util.ArrayList;
@@ -31,30 +33,31 @@ public class RestInfoService {
     }
 
     // 更改 餐廳相關資訊
-    public static void modifyRestInfo(CommonRequest commonRequest){
+    public static void modifyRestInfo(RestInfoRequest restInfoRequest){
 
-        Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        String cmd = commonRequest.getQuery().getCommand(); // 新增 刪除 修改
-        List<Object> resultBeans = commonRequest.getResult();
-        List<Rest> restList = new ArrayList<>();
-        for(Object object: resultBeans){
-            JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
-            restList.add(gson.fromJson(jsonObject.toString(),Rest.class)); // 餐廳資訊物件
-        }
+//        Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+        String cmd = restInfoRequest.getQuery().getCommand(); // 新增 刪除 修改
+        List<RestInfoRequest.ResultBean> resultBeans = restInfoRequest.getResult();
 
         switch (cmd){
             case MenuSetting.Command.ADD:{
                 System.out.println("add");
-                for(Rest rest : restList){
+                for(RestInfoRequest.ResultBean resultBean : resultBeans){
+                    Rest rest = new Rest();
+                    rest.setRestID(JdbcUtils.generateID());
+                    rest.setRestName(resultBean.getRestName());
+                    rest.setRestAddress(resultBean.getRestAddress());
+                    rest.setDescription(resultBean.getDescription());
+                    rest.setRestPhoto(resultBean.getRestPhoto());
                     RestDAO.addRest(rest);
                 }
                 break;
             }
             case MenuSetting.Command.DELETE:{
                 System.out.println("delete");
-                for(Rest rest : restList){
-                    System.out.println(rest.getRestID());
-                    RestDAO.delRest(rest.getRestID());
+                for(RestInfoRequest.ResultBean resultBean : resultBeans){
+                    System.out.println("DELETE");
+                    RestDAO.delRest(resultBean.getRestID());
                 }
                 break;
             }

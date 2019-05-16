@@ -67,10 +67,12 @@ public class PushOrderWebSocket {
         synchronized(sessions) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
             try {
-//                List<Long> msgSessions = (List<Long>)LogInServlet.getKey(sessions,session);
-//                for(Long deliverID : msgSessions){
-                OrderService.dealOrder(gson.fromJson(msg, PushResult.class));
-//                }
+                List<Long> msgSessions = (List<Long>)LogInServlet.getKey(sessions,session);
+                for(Long deliverID : msgSessions){
+                    PushResult pushResult = gson.fromJson(msg,PushResult.class);
+                    pushResult.setDeliverID(deliverID);
+                    OrderService.dealOrder(pushResult);
+                }
             } catch (Exception e) {
             }
         }
