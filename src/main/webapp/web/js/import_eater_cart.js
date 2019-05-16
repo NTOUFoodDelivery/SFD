@@ -12,13 +12,27 @@ var switch_cartpage;
 var watchres;
 sent_meals =
     [{
-        "Food_Id": "Hi",
+        "Food_Id": 31415926535,
         "Food_Name": "foodname",
-        "Count": 0
+        "Count": 0,
+        "FPrice": 0
     }];
 var fime = sent_meals;
 function addtosentmeals(foodid, foodname, foodcount, foodprice) {
-    sent_meals.push(meal(foodid, foodname, foodcount, foodprice));
+    var k=0;
+    var NumOfCartdata = sent_meals.length;
+    if (sent_meals[1] != null) {
+        for (var i = 0; i < NumOfCartdata; i++) {
+            if (foodid == sent_meals[i]["Food_Id"]) {
+                sent_meals[i]["Count"] = Number(sent_meals[i]["Count"]) + Number(foodcount);
+                sent_meals[i]["FPrice"] = Number(sent_meals[i]["FPrice"]) + Number(foodprice);
+                k=1;
+            }
+        }
+    }
+     if(k==0){
+        sent_meals.push(meal(foodid, foodname, foodcount, foodprice));
+    }
 }
 
 function meal(foodid, foodname, foodcount, foodprice) {
@@ -41,8 +55,8 @@ function add_alltosentcart() {
         {
             Customer_Id: sent_customer_id,
             Deliver_Id: 0,
-            Order_Id: 1557915145,
-            Start_Time: sent_time,
+            Order_Id: getorderid(),
+            Start_Time: sent_time =  new Date().Format("yyyy-MM-dd hh:mm:ss"),
             Rest_Address: sent_rest_address,
             Address: sent_address,
             Rest_Name: sent_rest_name,
@@ -72,9 +86,9 @@ function ChangeToCartPage() {
                 '</div>' + '</section>' + '</div>';
             if (i == NumOfCartdata - 1) {
                 switch_cartpage = switch_cartpage + '<section class="12u">' +
-                    '<div class="box">'  +
+                    '<div class="box">' +
                     '<a href="' + '#' + '" class="button"  >送出訂單</a>' +
-                    '<a href="' + 'javascript:changetomenu()' + '" class="button"  >繼續購物</a>'+
+                    '<a href="' + 'javascript:changetomenu()' + '" class="button"  >繼續購物</a>' +
                     '</div>' +
                     '</section>' + '</div>';
             }
@@ -110,3 +124,32 @@ function additemwithoutcount(aitem, bitem, citem) {
     addtosentmeals(citem, tempname, tempcount, tempprice);
 }
 
+function twoDigits(d) {
+    if (0 <= d && d < 10) return "0" + d.toString();
+    if (-10 < d && d < 0) return "-0" + (-1 * d).toString();
+    return d.toString();
+}
+
+
+Date.prototype.Format = function (fmt) { 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
+function getorderid()
+{
+    const dateTime = new Date().getTime();
+    const timestamp = Math.floor(dateTime / 1000);
+    return timestamp;
+}
