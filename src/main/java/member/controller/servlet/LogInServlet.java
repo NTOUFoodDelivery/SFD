@@ -67,18 +67,19 @@ public class LogInServlet extends HttpServlet {
                         case MemberSetting.UserType.CUSTOMER:{
                             user.setUserType(MemberSetting.UserStatus.CUSTOMER);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.CUSTOMER);
+                            response.sendRedirect("web/index_eater.html");
                             break;
                         }
                         case MemberSetting.UserType.CUSTOMER_AND_DELIVER:{
-                            System.out.println("duajsd");
                             user.setUserType(MemberSetting.UserStatus.DELIVER_ON);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.DELIVER_ON);
-                            response.sendRedirect("testDeliver.html");
+                            response.sendRedirect("web/index_deliver.html");
                             break;
                         }
                         case MemberSetting.UserType.ADMINISTRATOR:{
                             user.setUserType(MemberSetting.UserStatus.CUSTOMER);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.ADMINISTRATOR);
+                            response.sendRedirect("web/index_admin.html");
                             break;
                         }
                         default:{
@@ -118,7 +119,7 @@ public class LogInServlet extends HttpServlet {
                     request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
 //                    response.sendRedirect("LoginDemo.jsp");
-                    response.sendRedirect("testLogin.html");
+                    response.sendRedirect("web/login.html");
 //                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
                 }
             } catch (Exception e) {
@@ -128,7 +129,7 @@ public class LogInServlet extends HttpServlet {
             request.setAttribute("info", info); // 保存錯誤訊息
             session.invalidate(); // 銷毀 session
 //            response.sendRedirect("LoginDemo.jsp");
-            request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
+            request.getRequestDispatcher("web/login.html").forward(request,response); // 跳轉回登入頁面
         }
     }
 
