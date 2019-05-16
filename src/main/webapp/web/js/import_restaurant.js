@@ -11,6 +11,7 @@ $.ajax({
         //alert(stringJData);
         //這裡改用.each這個函式來取出JData裡的物件
         $.each(JData, function () {
+            if(JData==null)alert("無法取得餐廳資訊，請重新整理");
 
             var NumOfJData = JData.result.length;
 
@@ -21,6 +22,8 @@ $.ajax({
                 var abc = 0;
                 a1 = "'" + JData.result[i]["Rest_Name"] + "'";
                 a2 = "'" + JData.result[i]["Rest_Address"] + "'";
+                sent_rest_address=a2;
+                sent_rest_name=a1;
                 if (JData.result[i]["Rest_Photo"] == null) {
                     restimg = "images/Logo.jpg";
 
@@ -78,3 +81,15 @@ function changtorest()
     document.getElementById("extra").innerHTML = rest_inner;
 }
 
+function SwitchStatustode()
+{
+    $.ajax({
+        url: "https://ntou-sfd.herokuapp.com/SwitchStatus",
+        type: "POST",
+        async: true,
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: sJson,
+        success: function (JData_menu) {alert("switch to deliver");}
+    });
+}
