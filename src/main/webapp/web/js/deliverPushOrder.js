@@ -39,9 +39,13 @@ $(document).ready(function () {
                     var text = 'Test SFD';
                     var notification = new Notification('Hello', { body: text, icon: img });
                     setTimeout(notification.close.bind(notification), 4000);
+					var deliver_order=JSON.parse(event.data);
+					OrderIsComing(deliver_order);
+					//alert(deliver_order	);
+					//TransferDeliverOrder(event);
                     // 客製化-----END
                     // var n = new Notification("Hi! ", {tag: 'soManyNotification'});
-
+					
                     console.log(event);
 					
                 }
