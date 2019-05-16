@@ -83,90 +83,83 @@ function OrderIsComing(deliver_order) {
         }   
         markers = [];   
     };  
-function post_Order_status(n1, n2) {
-    var JData_menu;
-    var sJson = JSON.stringify
-        ({
-            deliverID: n1, accept: n2
-        });
-        var showmenutemp="";
-    $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
-        type: "POST",
-        async: true,
-        dataType: "json",
-        contentType: 'application/json; charset=UTF-8',
-        data: sJson,
-        success: function (JData_menu) {
-            $.each(JData_menu, function () {
-                var NumOfJData_menu = JData_menu.result.length;
-                var stringJData_menu = JSON.stringify(JData_menu);
-                var m1, m2, m3,m4;
-                var foodimg;
-                var addtocart;
-                $("body").append("<tr>" + stringJData_menu + "</tr>");
-                for (var i = 0; i < NumOfJData_menu; i++) {
-                    m1 = JData_menu.result[i]["Food_Name"];
-                    m2 = JData_menu.result[i]["Cost"];
-                    m3 = JData_menu.result[i]["Description"];
-                    m4 = JData_menu.result[i]["Image"];
+function post_Order_status() {
+var rest_inner;
+$.ajax({
+    url: "https://ntou-sfd.herokuapp.com/ShowRestInfoServlet",
+    type: "GET",
+    dataType: "json",
+    success: function (JData) {
 
-                    var abc = 0;
-                    if (m4 == null) {
-                        foodimg = "images/Logo.jpg";
-    
-                    }
-                    else {
-                        foodimg = m4;
-                    }
-                    
+        //alert("SUCCESS!!!");
+        var i = 0;
+        //var stringJData = JSON.stringify(JData);
+        //alert(stringJData);
+        //這裡改用.each這個函式來取出JData裡的物件
+        $.each(JData, function () {
 
-                    if (i % 3 == 0 && abc % 3 == 0) {
-                      
-                        showmenutemp = showmenutemp + '<div class="row no-collapse-1">';
+            var NumOfJData = JData.result.length;
+
+             rest_inner = document.getElementById("content").value;
+            var a1, a2, restimg;
+            rest_inner = rest_inner + '<div class="container">';
+            for (var i = 0; i < NumOfJData; i++) {
+                var abc = 0;
+                a1 = "'" + JData.result[i]["Rest_Name"] + "'";
+                a2 = "'" + JData.result[i]["Rest_Address"] + "'";
+                if (JData.result[i]["Rest_Photo"] == null) {
+                    restimg = "images/Logo.jpg";
+
+                }
+                else {
+                    restimg = JData.result[i]["Rest_Photo"];
+                }
+                if (i % 3 == 0 && abc % 3 == 0) {
+                    rest_inner = rest_inner + '<div class="row no-collapse-1">';
 
 
-                        showmenutemp = showmenutemp + '<section class="4u">' +
-                            '<a href="#" class="image featured">' +
-                            '<img src="'+foodimg+'" alt="">' +
-                            '</a>' +
-                            '<div class="box">' +
-                            '<p>' + m1 + "<br>" + m2 + '</p>' +
-                            '<a href="#" class="button"  >加入購物車</a>' +
-                            '</div>' +
-                            '</section>';
-                    }
-                    else {
-                       
-                        showmenutemp = showmenutemp + '<section class="4u">' +
+
+                    rest_inner = rest_inner + '<section class="4u">' +
                         '<a href="#" class="image featured">' +
-                        '<img src="'+foodimg+'" alt="">' +
+                        '<img src="' + restimg + '" alt="">' +
                         '</a>' +
                         '<div class="box">' +
-                        '<p>' + m1 + "<br>" + m2 + '</p>' +
-                        '<a href="#" class="button"  >加入購物車</a>' +
+                        '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Rest_Address"] + '</p>' +
+                        '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
                         '</div>' +
                         '</section>';
-                    }
-                    abc++;
-                    if (i % 3 == 2 || i == NumOfJData_menu - 1) { showmenutemp = showmenutemp + '</div>'; }
+
                 }
-                //JData_menu = JSON.parse(stringJData_menu);
-                //push test
-                document.getElementById("extra").innerHTML = showmenutemp;
+                else {
+                    rest_inner = rest_inner + '<section class="4u">' +
+                    '<a href="#" class="image featured">' +
+                    '<img src="' + restimg + '" alt="">' +
+                    '</a>' +
+                    '<div class="box">' +
+                    '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Rest_Address"] + '</p>' +
+                    '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
+                    '</div>' +
+                    '</section>';
+                }
+                abc++;
+                if (i % 3 == 2 || i == NumOfJData - 1) { rest_inner = rest_inner + '</div>'; }
+            }
+            //JData = JSON.parse(stringJData);
+            rest_inner = rest_inner + "</div>";
+            document.getElementById("content").innerHTML = rest_inner;
 
-            });
 
+        });
+    },
 
-        },
+    error: function () {
+        alert("無法取得餐廳資訊，請重新整理");
+    }
+});
 
-        error: function () {
-            alert("無法取得餐廳餐點資訊，請重新整理");
-        }
-
-
-    });
 }
+
+
 function deliver_check_now_order()
 {
 	if(deliver_now_order=="")

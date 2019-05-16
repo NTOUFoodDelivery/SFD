@@ -57,6 +57,7 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<script src="js/admin.js"></script>
 	</head>
 
 	<body>
@@ -97,7 +98,8 @@
 							<p>餐廳照片</p>
 							<input type="text" id="myText" />
 							<input type="file" id="myFile" accept="image/*" />
-							<input data-dismiss="modal" id="upload" type="submit" />
+							<!--<input data-dismiss="modal" id="upload" type="submit" />-->
+							<input type="button" value="前往!" id="go" onclick="upload()"/>
 							<p></p>
 						</div>
 					</div>
