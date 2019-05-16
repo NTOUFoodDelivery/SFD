@@ -28,12 +28,12 @@ function deliverOffline(deliver_status) {
 	}
     return deliver_status;
 }
-	function generatResult(Deliver_Id,accept){
-		return{
-			"Deliver_Id":Deliver_Id,
-			"accept":accept
-		};
-	}
+function generatResult(Deliver_Id,accept){
+	return{
+		"Deliver_Id":Deliver_Id,
+		"accept":accept
+	};
+}
 function OrderIsComing(deliver_order) {
 	
 	var m1,m2,m3,m4,m5,m6;
@@ -73,15 +73,7 @@ function OrderIsComing(deliver_order) {
 		marker.setMap(map);
 	});
 	deliver_now_order=txt;
-	/*if (confirm(txt)) {
-		
-		alert("You pressed OK!");
-		//client.send(generatResult(a,true));
-	} 
-	else {
-		alert( "You pressed Cancel!");
-		//client.send(generatResult(a,false));
-	}*/
+
 
 }
  function DeleteMarkers() {   
@@ -91,28 +83,6 @@ function OrderIsComing(deliver_order) {
         }   
         markers = [];   
     };  
-
-function TransferDeliverOrder(event){
-	//var NumOfJData = event.data.length;
-	var m1,m2,m3,m4;
-	var J_data=JSON.parse(event.data);
-	m1 = J_data["Customer_Id"];
-	alert(m1);
-    m2 = event.data["Cost"];
-    m3 = event.data["Description"];
-    m4 = event.data["Image"];
-                    //var stringJData = JSON.stringify(JData);
-                    /*for (var i = 0; i < NumOfJData; i++) {
-                        /*$("body").append("<tr>" +
-                            "<td>" + JData.result[i]["Rest_Id"] + " </td>" +  //i=0→Wing; i=1→Wind; i=2→Edge
-                            "<td>" + JData.result[i]["Rest_Name"] + " </td>" +   //i=0→20;   i=1→18;   i=2→25
-                            "<td>" + JData.result[i]["Rest_Address"] + " </td>" +
-                            "<td>" + JData.result[i]["Description"] + " </td>" +//i=0→182;  i=1→165;  i=2→171
-                            "<br>" +
-							
-                    }*/
-	return m1;
-}
 function post_Order_status(n1, n2) {
     var JData_menu;
     var sJson = JSON.stringify

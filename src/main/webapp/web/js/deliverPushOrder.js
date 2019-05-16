@@ -53,7 +53,7 @@ $(document).ready(function () {
 					else {
 						deliver_now_order="";
 						alert( "You pressed Cancel!");
-						//client.send(generatResult(a,false));
+						client.send(generatResult(a,false));
 					}
                     console.log(event);
 					
