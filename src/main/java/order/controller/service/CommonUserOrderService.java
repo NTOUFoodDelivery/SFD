@@ -4,18 +4,20 @@ import com.google.gson.JsonObject;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.UserDAO;
 import member.model.javabean.MemberSetting;
+import order.model.javabean.Order;
+
+import java.util.List;
 
 public class CommonUserOrderService {
 
     // 拿到 食客 當前訂單
-    public static JsonObject getCurrentOrder(Long userID) {
-        JsonObject currentOrder = null;
-
+    public static List getCurrentOrder(Long userID) {
+        List currentOrderList = null;
         if (UserDAO.showUserIdentity(userID).equals(MemberSetting.UserStatus.CUSTOMER)) {
             // 查詢 食客 當前訂單
-            currentOrder = OrderDAO.searchEaterOrder(userID);
+            currentOrderList = OrderDAO.searchEaterOrder(userID);
         }
-        return currentOrder;
+        return currentOrderList;
     }
 
     // 拿到 食客 歷史訂單

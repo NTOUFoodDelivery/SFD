@@ -28,6 +28,7 @@ public class ShowCommonUserCurrentOrderServlet extends HttpServlet {
 
 //        Long userID = (Long) request.getSession().getAttribute("User_Id");
         Long userID = Long.parseLong(request.getParameter("userID"));
+        System.out.println(userID);
         // 拿 食客當前訂單
         String json = gson.toJson(CommonUserOrderService.getCurrentOrder(userID));
 

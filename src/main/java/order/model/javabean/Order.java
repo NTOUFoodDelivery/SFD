@@ -19,6 +19,10 @@ public class Order {
      * meals : [{"Food_Name": dc, "Food_Id":1236,"Count":5}]
      * Order_Status : vlcd;sx
      * Other : "asdasd"
+     * DeliverAccount : 12fd
+     * DeliverName : sdlf
+     * DeliverPhone: 098765
+     *
      */
 
     @SerializedName("Customer_Id")
@@ -60,6 +64,15 @@ public class Order {
     @SerializedName("Casting_Prio")
     @Expose
     private int castingPrio;
+    @SerializedName("Account")
+    @Expose
+    private String account;
+    @SerializedName("User_Name")
+    @Expose
+    private String userName;
+    @SerializedName("Phone_Number")
+    @Expose
+    private int phoneNumber;
 
     public Order() {
     }
@@ -170,10 +183,35 @@ public class Order {
         this.castingPrio = castingPrio;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public static class MealsBean {
         /**
          * Food_Id : 1236
          * Food_Name : df
+         * Cost : 3
          * Count : 5
          */
 
@@ -186,6 +224,9 @@ public class Order {
         @SerializedName("Count")
         @Expose
         private int count;
+        @SerializedName("Cost")
+        @Expose
+        private int cost;
 
         public int getFoodID() {
             return foodID;
@@ -209,6 +250,14 @@ public class Order {
 
         public void setFoodName(String foodName) {
             this.foodName = foodName;
+        }
+
+        public int getCost() {
+            return cost;
+        }
+
+        public void setCost(int cost) {
+            this.cost = cost;
         }
     }
 }

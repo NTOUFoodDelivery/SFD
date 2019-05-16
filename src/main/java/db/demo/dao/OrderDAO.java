@@ -264,12 +264,13 @@ public class OrderDAO {
 
         try {
             connection = JdbcUtils.getconn();
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, `order`.Address, `order`.Casting_Prio, member.Account, member.User_Name, member.Phone_Number" +
-                    "FROM `order`" +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Type_Count, `order`.Other, `order`.Address, `order`.Casting_Prio, member.User_Id, member.Account, member.User_Name, member.Phone_Number" +
+                    " FROM `order`" +
                     "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id" +
-                    "INNER JOIN member ON customer_deliver_info.Deliver_Id = member.User_Id " +
+                    " INNER JOIN member ON customer_deliver_info.Deliver_Id = member.User_Id " +
                     " WHERE customer_deliver_info.Customer_Id = ?";
             preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            preparedStatement.setLong(1,userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
 
@@ -277,33 +278,37 @@ public class OrderDAO {
             {
                 Order order = new Order();
                 List<Order.MealsBean> meals = new ArrayList<>();
-                order.setOrderID(resultSet.getInt("`order`.Order_Id")); 
-                order.setTotal(resultSet.getInt("`order`.Total"));
-                order.setOther(resultSet.getString("`order`.Other"));
-                order.setCastingPrio(resultSet.getInt("`order`.Casting_Prio"));
-                order.setDeliverAccount(resultSet.getString("member.Account"));//補涵式  **補完請拿掉註解
-                order.setDeliverName(resultSet.getString("member.User_Name"));//補涵式
-                order.setDeliverPhone(resultSet.getInt("member.Phone_Number"));//補涵式
+                order.setOrderID(resultSet.getLong("Order_Id"));
+                order.setCustomerID(userID);
+                order.setDeliverID(resultSet.getLong("User_Id"));
+                order.setTypeCount(resultSet.getInt("Type_Count"));
+                order.setTotal(resultSet.getInt("Total"));
+                order.setOther(resultSet.getString("Other"));
+                order.setCastingPrio(resultSet.getInt("Casting_Prio"));
+                order.setAccount(resultSet.getString("Account"));//補涵式  **補完請拿掉註解
+                order.setUserName(resultSet.getString("User_Name"));//補涵式
+                order.setPhoneNumber(resultSet.getInt("Phone_Number"));//補涵式
 
                 ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
                 String mealSql = "SELECT order_food.Food_Id, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address" +
-                        "FROM order_food" +
-                        "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id" +
-                        "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id" +
-                        "INNER JOIN customer_deliver_info ON order_food.Order_Id = customer_deliver_info.Order_Id" +
+                        " FROM order_food" +
+                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id" +
+                        " INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id" +
+                        " INNER JOIN customer_deliver_info ON order_food.Order_Id = customer_deliver_info.Order_Id" +
                         " WHERE customer_deliver_info.Customer_Id = ?";
                 preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);
-                preparedStatement.setLong(1, order.getOrderID());
+                preparedStatement.setLong(1, userID);
                 mealResultSet = preparedStatement.executeQuery();
 
                 while(mealResultSet.next()){
-                    order.setRestName(mealResultSet.getString("restaurant_info.Rest_Name"));
-                    order.setRestAddress(mealResultSet.getString("restaurant_info.Rest_Address"));
+                    order.setRestName(mealResultSet.getString("Rest_Name"));
+                    order.setRestAddress(mealResultSet.getString("Rest_Address"));
                     Order.MealsBean meal = new Order.MealsBean();
-                    meal.setFoodID(mealResultSet.getInt("order_food.Food_Id"));
-                    meal.setFoodName(mealResultSet.getString("meal.Food_Name"));
-                    meal.setCount(mealResultSet.getInt("order_food.`Count`"));
-                    meal.setCost(mealResultSet.getInt("meal.Cost"));
+                    meal.setFoodID(mealResultSet.getInt("Food_Id"));
+                    meal.setFoodName(mealResultSet.getString("Food_Name"));
+                    meal.setCount(mealResultSet.getInt("Count"));
+                    meal.setCost(mealResultSet.getInt("Cost"));
+                    System.out.println(meal.getCount());
                     meals.add(meal);
                 }
 
