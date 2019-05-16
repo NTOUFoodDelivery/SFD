@@ -1,4 +1,4 @@
-
+var rest_inner;
 $.ajax({
     url: "https://ntou-sfd.herokuapp.com/ShowRestInfoServlet",
     type: "GET",
@@ -14,9 +14,9 @@ $.ajax({
 
             var NumOfJData = JData.result.length;
 
-            var temp = document.getElementById("extra").value;
+             rest_inner = document.getElementById("extra").value;
             var a1, a2, restimg;
-            temp = temp + '<div class="container">';
+            rest_inner = rest_inner + '<div class="container">';
             for (var i = 0; i < NumOfJData; i++) {
                 var abc = 0;
                 a1 = "'" + JData.result[i]["Rest_Name"] + "'";
@@ -29,11 +29,11 @@ $.ajax({
                     restimg = JData.result[i]["Rest_Photo"];
                 }
                 if (i % 3 == 0 && abc % 3 == 0) {
-                    temp = temp + '<div class="row no-collapse-1">';
+                    rest_inner = rest_inner + '<div class="row no-collapse-1">';
 
 
 
-                    temp = temp + '<section class="4u">' +
+                    rest_inner = rest_inner + '<section class="4u">' +
                         '<a href="#" class="image featured">' +
                         '<img src="' + restimg + '" alt="">' +
                         '</a>' +
@@ -45,7 +45,7 @@ $.ajax({
 
                 }
                 else {
-                    temp = temp + '<section class="4u">' +
+                    rest_inner = rest_inner + '<section class="4u">' +
                     '<a href="#" class="image featured">' +
                     '<img src="' + restimg + '" alt="">' +
                     '</a>' +
@@ -56,11 +56,11 @@ $.ajax({
                     '</section>';
                 }
                 abc++;
-                if (i % 3 == 2 || i == NumOfJData - 1) { temp = temp + '</div>'; }
+                if (i % 3 == 2 || i == NumOfJData - 1) { rest_inner = rest_inner + '</div>'; }
             }
             //JData = JSON.parse(stringJData);
-            temp = temp + "</div>";
-            document.getElementById("extra").innerHTML = temp;
+            rest_inner = rest_inner + "</div>";
+            document.getElementById("extra").innerHTML = rest_inner;
 
 
         });
@@ -70,4 +70,11 @@ $.ajax({
         alert("無法取得餐廳資訊，請重新整理");
     }
 });
+
+
+
+function changtorest()
+{
+    document.getElementById("extra").innerHTML = rest_inner;
+}
 

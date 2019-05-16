@@ -1,5 +1,5 @@
 var sent_cart;
-var sent_customer_id;
+var sent_customer_id=0;
 var sent_time;
 var sent_rest_address;
 var sent_rest_name;
@@ -9,18 +9,27 @@ var sent_Total;
 var sent_meals;
 var sent_other;
 var switch_cartpage;
-sent_meals = null;
-function addtosentmeals(foodid, foodname, foodcount) {
-    sent_meals.push(meal(foodid, foodname, foodcount));
+var watchres;
+sent_meals = 
+[{
+    "Food_Id": "Hi",
+    "Food_Name": "foodname",
+    "Count": 0
+}];
+var fime=sent_meals;
+function addtosentmeals(foodid, foodname, foodcount,foodprice) {
+    sent_meals.push(meal(foodid, foodname, foodcount,foodprice));
 }
 
-function meal(foodid, foodname, foodcount) {
-
+function meal(foodid, foodname, foodcount,foodprice) {
+    foodname='"'+foodname+'"';
+    //alert(foodid+foodname+foodcount+" "+foodprice);
     return Foosent =
         {
             Food_Id: foodid,
             Food_Name: foodname,
-            Count: foodcount
+            Count: foodcount,
+            FPrice:foodprice*foodcount,
         };
 }
 function converttobill() {
@@ -48,40 +57,51 @@ function add_alltosentcart() {
 //預計此頁面的功能有: 顯示目前加入"購物車"的"品項"和"數目"和"單項總額" 總價格 刪除單項 
 //                 : 將目前的"購物車"值轉交到"送出訂單頁面" 
 function ChangeToCartPage() {
-    alert("switch_cartpage");
-    // // if (sent_meals != []&&sent_meals != null) {
-    //      switch_cartpage='<div class="container">';
-    // //     var NumOfCartdata = sent_meals.length;
-    // //     for (var i = 0; i < NumOfCartdata; i++) 
-    // //     {
-    // //         var cartfoodid=sent_meals[i]["Food_Id"];
-    // //         var cartfoodname= sent_meals[i]["Food_Name"];
-    // //         var cartfoodcount= sent_meals[i]["Count"];
-    // //         switch_cartpage=switch_cartpage+'<div class="row no-collapse-1">'+
-    // //         '<section class="9u">'+
-    // //         '<div class="box">'+
-    // //         '</div>'+'</section>'+'</div>';
+    //alert("switch_cartpage");
+     if (sent_meals != []&&sent_meals != fime) {
+         switch_cartpage='<div class="container">';
+        var NumOfCartdata = sent_meals.length;
+        for (var i = 1; i < NumOfCartdata; i++) 
+        {
+            var cartfoodid=sent_meals[i]["Food_Id"];
+            var cartfoodname= sent_meals[i]["Food_Name"];
+            var cartfoodcount= sent_meals[i]["Count"];
+            switch_cartpage=switch_cartpage+'<div class="row no-collapse-1">'+
+            '<section class="12u">'+
+            '<div class="box">'+'品項:'+cartfoodname+'數量: '+cartfoodcount+'總額: '+
+            '</div>'+'</section>'+'</div>';
             
             
             
             
 
-    // //     }
-    // // }else{
-    //     //todo
-    //     switch_cartpage=switch_cartpage+'<section class="4u">'+
-    //     '<div class="box">' +
-    //     '<p>' +'現在購物車裡沒有東西歐'+'</p>' +
-    //     '<a href="#" class="button"  >確定</a>' +
-    //     '</div>' +
-    //     '</section>'+'</div>' ;
+        }
+    }else{
+       // todo
+       switch_cartpage="";
+        switch_cartpage=switch_cartpage+'<section class="12u">'+
+        '<div class="box">' +
+        '<p>' +'現在購物車裡沒有東西歐<3'+'</p>' +
+        '<a href="'+'javascript:changtorest()'+'" class="button"  >確定</a>' +
+        '</div>' +
+        '</section>'+'</div>' ;
         
-    // //}
-    // document.getElementById("extra").innerHTML = switch_cartpage;
+    }
+    document.getElementById("extra").innerHTML = switch_cartpage;
 }
 
 function clearcart()
 {
     sent_meals=null;
+}
+
+function additemwithoutcount(aitem,bitem,citem)
+{
+    var tempid,tempname,tempcount;
+    tempprice=aitem;
+    tempname=bitem;
+    tempcount=document.getElementById("buy_count"+citem).value; 
+    alert("count:"+tempcount);
+    addtosentmeals(citem, tempname, tempcount,tempprice);
 }
 

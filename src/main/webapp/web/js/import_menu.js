@@ -4,7 +4,7 @@ function import_menu(n1, n2) {
         ({
             Rest_Name: n1, Rest_Address: n2
         });
-        var showmenutemp="";
+    var showmenutemp = "";
     $.ajax({
         url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
         type: "POST",
@@ -16,7 +16,7 @@ function import_menu(n1, n2) {
             $.each(JData_menu, function () {
                 var NumOfJData_menu = JData_menu.result.length;
                 var stringJData_menu = JSON.stringify(JData_menu);
-                var m1, m2, m3,m4;
+                var m1, m2, m3, m4;
                 var foodimg;
                 var addtocart;
                 $("body").append("<tr>" + stringJData_menu + "</tr>");
@@ -25,43 +25,52 @@ function import_menu(n1, n2) {
                     m2 = JData_menu.result[i]["Cost"];
                     m3 = JData_menu.result[i]["Description"];
                     m4 = JData_menu.result[i]["Image"];
+                    m5 = JData_menu.result[i]["Food_Id"];
 
                     var abc = 0;
                     if (m4 == null) {
                         foodimg = "images/Logo.jpg";
-    
+
                     }
                     else {
                         foodimg = m4;
                     }
-                    
+
 
                     if (i % 3 == 0 && abc % 3 == 0) {
-                      
+
                         showmenutemp = showmenutemp + '<div class="row no-collapse-1">';
 
 
                         showmenutemp = showmenutemp + '<section class="4u">' +
                             '<a href="#" class="image featured">' +
-                            '<img src="'+foodimg+'" alt="">' +
+                            '<img src="' + foodimg + '" alt="">' +
                             '</a>' +
                             '<div class="box">' +
-                            '<p>' + m1 + "<br>" + m2 + '</p>' +
-                            '<a href="#" class="button"  >加入購物車</a>' +
+                            '<p>' + m1 + "<br>" + '單價  :' + m2 + '數量  :' +
+                            '<input id="buy_count'+m5+'" type="number" min="1" max="500" maxlength="3" value="1">' + '</p>' ;
+                            m1="'"+m1+"'";
+                            m2="'"+m2+"'";
+                            m5="'"+m5+"'";
+                            showmenutemp = showmenutemp +'<a href="#" class="button" onclick="additemwithoutcount(' + m2 + ',' + m1 +',' + m5 + ')" >加入購物車</a>' +
                             '</div>' +
                             '</section>';
                     }
                     else {
-                       
+
                         showmenutemp = showmenutemp + '<section class="4u">' +
-                        '<a href="#" class="image featured">' +
-                        '<img src="'+foodimg+'" alt="">' +
-                        '</a>' +
-                        '<div class="box">' +
-                        '<p>' + m1 + "<br>" + m2 + '</p>' +
-                        '<a href="#" class="button"  >加入購物車</a>' +
-                        '</div>' +
-                        '</section>';
+                            '<a href="#" class="image featured">' +
+                            '<img src="' + foodimg + '" alt="">' +
+                            '</a>' +
+                            '<div class="box">' +
+                            '<p>' + m1 + "<br>" + '單價  :' + m2 + '數量  :' +
+                            '<input id="buy_count'+m5+'" type="number" min="1" max="500" maxlength="3" value="1">' + '</p>' ;
+                            m1="'"+m1+"'";
+                            m2="'"+m2+"'";
+                            m5="'"+m5+"'";
+                            showmenutemp = showmenutemp +'<a href="#" class="button" onclick="additemwithoutcount(' + m2 + ',' + m1 +',' + m5 + ')" >加入購物車</a>' +
+                            '</div>' +
+                            '</section>';//onclick="import_menu(' + a1 + ',' + a2 + ')" 
                     }
                     abc++;
                     if (i % 3 == 2 || i == NumOfJData_menu - 1) { showmenutemp = showmenutemp + '</div>'; }
