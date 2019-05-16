@@ -1,10 +1,11 @@
+var showmenutemp;
 function import_menu(n1, n2) {
     var JData_menu;
     var sJson = JSON.stringify
         ({
             Rest_Name: n1, Rest_Address: n2
         });
-    var showmenutemp = "";
+     showmenutemp = "";
     $.ajax({
         url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
         type: "POST",
@@ -92,4 +93,7 @@ function import_menu(n1, n2) {
     });
 }
 
-
+function changetomenu()
+{
+    document.getElementById("extra").innerHTML = showmenutemp;
+}
