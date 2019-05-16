@@ -29,46 +29,48 @@ public class PushOrderTask extends TimerTask {
         synchronized (PushOrderWebSocket.sessions) {
             // Iterate over the connected sessions
             // and broadcast the received message
-            List<User> idleDeliverList = UserDAO.searchIdleDeliverUser(); // 找 閒置的外送員
-            List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
-            if (idleDeliverList.size() > 0 && idleOrderList.size() > 0) { // 如果有在線的外送員的話 且有空閒訂單
+            if(PushOrderWebSocket.sessions.size() > 0){
+                List<User> idleDeliverList = UserDAO.searchIdleDeliverUser(); // 找 閒置的外送員
+                List<Order> idleOrderList = OrderDAO.searchIdleOrder();// 找 閒置的訂單
+                if (idleDeliverList.size() > 0 && idleOrderList.size() > 0) { // 如果有在線的外送員的話 且有空閒訂單
 
 //            if(PushOrderWebSocket.sessions.size() > 0 && OrderService.pushOrders.size() > 0){ // 如果有在線的外送員的話 且有空閒訂單
 
 //                List<Order> entryList = new ArrayList<>(OrderService.pushOrders.values());
-                // sort idle order value 大到小
-                Collections.sort(idleOrderList, new Comparator<Order>() {
-                    @Override
-                    public int compare(Order order1, Order order2) {
-                        return order2.getCastingPrio() - order1.getCastingPrio();
-                    }
-                });
+                    // sort idle order value 大到小
+                    Collections.sort(idleOrderList, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order order1, Order order2) {
+                            return order2.getCastingPrio() - order1.getCastingPrio();
+                        }
+                    });
 
-                for (Order order : idleOrderList) {
+                    for (Order order : idleOrderList) {
 
-                    // 如果訂單為空閒
-                    if(order.getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
+                        // 如果訂單為空閒
+                        if (order.getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
 
-                        for (User deliver : idleDeliverList) {
+                            for (User deliver : idleDeliverList) {
 //                        User deliver = OrderService.onlineDelivers.get(user.getUserID());
-                            if (deliver.getUserStatus().equals(MemberSetting.UserStatus.DELIVER_ON)) {
-                                Session idleDeliverSession = PushOrderWebSocket.sessions.get(deliver.getUserID());
+                                if (deliver.getUserStatus().equals(MemberSetting.UserStatus.DELIVER_ON)) {
+                                    Session idleDeliverSession = PushOrderWebSocket.sessions.get(deliver.getUserID());
 
-                                try {
-                                    idleDeliverSession.getBasicRemote().sendText(gson.toJson(order));
+                                    try {
+                                        idleDeliverSession.getBasicRemote().sendText(gson.toJson(order));
 //                                    System.out.println(order.getOrderID());
 //                                    System.out.println(deliver.getUserID());
-                                    OrderDAO.modifyOrderStatus(order.getOrderID(), OrderSetting.OrderStatus.PUSHING);
-                                    UserDAO.modifyUserStatus(deliver.getUserID(), MemberSetting.UserStatus.PUSHING);
-                                    order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
-                                    deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
+                                        OrderDAO.modifyOrderStatus(order.getOrderID(), OrderSetting.OrderStatus.PUSHING);
+                                        UserDAO.modifyUserStatus(deliver.getUserID(), MemberSetting.UserStatus.PUSHING);
+                                        order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
+                                        deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
 
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (NullPointerException e){
-                                    e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
-
                             }
                         }
                     }
