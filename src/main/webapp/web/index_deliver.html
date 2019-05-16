@@ -15,9 +15,11 @@
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
-		<script src="js/deliver.js"></script>
+
+		<script src="js/deliverPushOrder.js"></script>
 		<!--reconnect websocket-->
-<!--<script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>-->
+    <script src="js/websocket/reconnecting-websocket.min.js"></script>
+			<script src="js/deliver.js"></script>
 
 <script>
  var directionDisplay;
@@ -29,12 +31,15 @@
     var urPosition;
     var taipei;
 	var deliver_status=0;
+	var rest_address_for_map;
+	var markers = [];  
+	var deliver_now_order="";
  function initialize() {
  
      directionsDisplay = new google.maps.DirectionsRenderer();
      geocoder = new google.maps.Geocoder();
      initialPlace = new google.maps.LatLng(25.147020,121.747046);
-      
+     rest_address_for_map = "海洋大學";
       var myOptions = {
         zoom:16,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -46,7 +51,7 @@
             map: map, 
             position: initialPlace
         });
-      infowindow.setContent("TEST");
+      infowindow.setContent("魚湯好好喝");
       infowindow.open(map, marker);
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(document.getElementById("directionsPanel"));
@@ -123,7 +128,7 @@ function calcRoute() {
 			
              request = {
                 origin: urPosition, 
-                destination: initialPlace,
+                destination: rest_address_for_map,
                 travelMode: google.maps.DirectionsTravelMode.DRIVING
                 };
 				
@@ -137,7 +142,7 @@ function calcRoute() {
             start=document.getElementById("address").value; 
             request = {
                 origin: start, 
-                destination: end,
+                destination: rest_address_for_map,
                 travelMode: google.maps.DirectionsTravelMode[selectedMode]
               };
 			 
@@ -165,13 +170,15 @@ function calcRoute() {
 						<nav id="nav">
 							<ul>
 								
-								<li><a href="index_deliver_offline.html">登出</a></li>
+								<li><a href="index_eater.html">登出</a></li>
 								<li><a href="index_eater.html" >切換身分</a></li>
 								<li><a href="javascript:deliver_status=deliverOffline(deliver_status)" >切換上下線</a></li>
-								<li><a href="#" >目前接收的訂單</a></li>
+								<li><a href="javascript:deliver_check_now_order()" >目前接收的訂單</a></li>
 								<li><a href="#" >配送紀錄</a></li>
+								<li><a href="javascript:deliver_finish_order()" >完成訂單</a></li>
 							</ul>
 						</nav>
+						
 					</div>
 
 				<!-- Banner -->
