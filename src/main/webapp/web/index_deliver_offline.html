@@ -17,7 +17,7 @@
 		<script src="js/init.js"></script>
 		<script src="js/deliver.js"></script>
 		<!--reconnect websocket-->
-<!--<script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>-->
+<script src="assets/js/reconnectingWebSocket/reconnecting-websocket.min.js"></script>
 
 <script>
  var directionDisplay;
@@ -28,9 +28,7 @@
     var browserSupportFlag =  new Boolean();
     var urPosition;
     var taipei;
-	var deliver_status=0;
  function initialize() {
- 
      directionsDisplay = new google.maps.DirectionsRenderer();
      geocoder = new google.maps.Geocoder();
      initialPlace = new google.maps.LatLng(25.147020,121.747046);
@@ -153,7 +151,7 @@ function calcRoute() {
 </head>
 <body onload="initialize()">
 <div class="wrapper style1">
-
+			
 				<!-- Header -->
 					<div id="header" class="skel-panels-fixed">
 						
@@ -165,9 +163,9 @@ function calcRoute() {
 						<nav id="nav">
 							<ul>
 								
-								<li><a href="index_deliver_offline.html">登出</a></li>
+								<li><a href="#">登出</a></li>
 								<li><a href="index_eater.html" >切換身分</a></li>
-								<li><a href="javascript:deliver_status=deliverOffline(deliver_status)" >切換上下線</a></li>
+								<li><a href="index_deliver.html" >切換上下線</a></li>
 								<li><a href="#" >目前接收的訂單</a></li>
 								<li><a href="#" >配送紀錄</a></li>
 							</ul>
@@ -184,24 +182,13 @@ function calcRoute() {
 <div id="wrapper">
 
 
-	<div id="offlineImg"></div>
+	
 	<div id="content"> 
                  
-				 <select id="agree" style = "width:20%;"onchange="getAddress();">
-                      <option value="no">自行輸入地點</option>
-                      <option value="yes">同意本站存取您現在的位置</option>
-                   </select>
-				   <label id="address_lb">出發地
-                     <input id="address" style="width: 100%;"type="text" size="30" id="address"/>
-                  </label>
-                 <select id="mode" style = "margin-top:2px;">
-                      <option value="DRIVING">開車</option>
-                      <option value="WALKING">步行</option>
-                   </select>
-                  <input type="button" value="前往!" id="go" onclick="calcRoute();"style = "margin-left:10px"/><br />
-				   
+				
 				  <div style = "margin-top:-20px">
-                   <div id="map-canvas"style="width: 100%; height: 400px"></div>             
+                   <div id="map-canvas"style="width: 100%; height: 400px;z-index:-1;position:absolute;"></div>  
+<img src="images/unlogin.svg" style="z-index:2;position:absolute;width:100%;" />				   
                   <!--<p style="clear:both" /> -->
               <!-- end center-->
               
@@ -214,6 +201,9 @@ function calcRoute() {
             
             </div> 
             <!-- end content --> 
+          
+
+
 </div>
 
 </body>
