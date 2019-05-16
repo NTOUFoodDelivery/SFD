@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<!--
+	Typify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+<script src="js/jquery.min.js"></script>                    
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>               <!-- 左上方的-->
+		<script src="js/init.js"></script>
+<script>
+		$(function(){
+        $('#bu').click(function(){
+        $('html,body').animate({scrollTop:$('#one').offset().top},800);});
+		});
+		</script>
+	<head>
+		<title>查看食客與外送員的所有歷史訂單</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+
+	<body>
+
+		<!-- Banner -->
+			<section id="banner">
+				<h2><strong>Starburst Food Delivery</strong></h2>
+				<p>查看食客與外送員的所有歷史訂單介面</p>
+				<p>AAAAA管理員</p>
+				<ul class="actions">
+					<li><a id = "bu" href="#" class="button special">開始使用</a></li>
+				</ul>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="wrapper special">
+				<div class="inner">
+					<header class="major">
+						<h2>管理員功能</h2>
+					</header>
+					<div class="features">
+						<div class="feature">
+							<i class="fa fa-copy"></i>
+							<h3><a href="#" onclick="getValue()" class="button special">查看目前訂單</a></h3>
+							<p>查看目前食客與外送員的所有訂單</p>
+						</div>
+						<div class="feature">
+							<i class="fa fa-book"></i>
+							<h3><a href="#" onclick="getValue()" class="button special">查看歷史訂單</a></h3>
+							<p>查看食客與外送員的所有歷史訂單</p>
+						</div>
+						<div class="feature">
+							<i class="fa fa-envelope-o"></i>
+							<h3><a href="#" onclick="getValue()" class="button special">查看客服回報</a></h3>
+							<p>查看食客與外送員所回報的所有問題</p>
+						</div>
+						<div class="feature">
+							<i class="fa fa-edit"></i>
+							<h3><a href="#" onclick="getValue()" class="button special">修改餐廳</a></h3>
+							<p>新增刪除修改餐廳資訊</p>
+						</div>
+						<div class="feature">
+							<i class="fa fa-edit"></i>
+							<h3><a href="#" onclick="getValue()" class="button special">修改菜單</a></h3>
+							<p>新增刪除修改菜單資訊</p>
+						</div>
+					</div>
+				</div>
+			</section>
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="copyright">
+					&copy; 製作: <a href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

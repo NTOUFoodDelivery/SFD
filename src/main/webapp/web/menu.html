@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<!--
+	Typify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+<script src="js/jquery.min.js"></script>                    
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>               <!-- 左上方的-->
+		<script src="js/init.js"></script>
+		<script src="restaurant.js"></script>
+<script>
+		$(function(){
+        $('#bu').click(function(){
+        $('html,body').animate({scrollTop:$('#one').offset().top},800);});
+		});
+		
+		 $("#upload").click(function () {
+
+        const id = '1573e8c523b6e8c'; // 填入 App 的 Client ID
+        const token = '2288b6ecd6c0eb7545b4c083c9e0f212eb6ab9ed'; // 填入 token
+        const album = 'vNnSeO4'; // 若要指定傳到某個相簿，就填入相簿的 ID
+
+        var file_data = $('#myFile').prop('files')[0]; //取得上傳檔案屬性
+        var text_data = $('#myText').val();
+
+        let settings = {
+            async: true,
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            url: 'https://api.imgur.com/3/image',
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+            mimeType: 'multipart/form-data'
+        };
+
+        let form = new FormData();
+        form.append('image', file_data);
+        form.append('title', "123");
+        form.append('description', text_data);
+        form.append('album', album); // 有要指定的相簿就加這行
+
+        settings.data = form;
+
+        $.ajax(settings).done(function(res) {
+            console.log(res); // 可以看見上傳成功後回的值
+            console.log(JSON.parse(res).data.link); // ------------------------- 圖片網址
+            alert('上傳完成，稍待一會兒就可以在底部的列表上看見了。')
+        });
+
+    })
+		</script>
+	<head>
+		<title>新增刪除修改餐廳資訊</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+
+	<body>
+
+		<!-- Banner -->
+			<section id="banner">
+				<h2><strong>Starburst Food Delivery</strong></h2>
+				<p>新增刪除修改餐廳資訊介面</p>
+				<p>AAAAA管理員</p>
+				<ul class="actions">
+					<li><a id = "bu" href="#" class="button special">開始使用</a></li>
+				</ul>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="wrapper special">
+				<div class="inner">
+					<header class="major">
+						<h2>新增菜單</h2>
+					</header>
+					<div class="features">
+						<div class="feature">
+							<p>選擇餐廳</p>
+							<select id='restaurant_select'>
+							</select>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐點名稱</p>
+							<input id="restName" type="text" ></input>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐點單價</p>
+							<input id="restName" type="text" ></input>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐點敘述</p>
+							<input id="restName" type="text" ></input>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐廳照片</p>
+							<input type="text" id="myText" />
+							<input type="file" id="myFile" accept="image/*" />
+							<input data-dismiss="modal" id="upload" type="submit" />
+							<p></p>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			<section id="banner1" class="wrapper special">
+				<div class="inner">
+					<header class="major">
+						<h2>刪除菜單</h2>
+					</header>
+					<div class="features">
+						<div class="feature">
+							<p>選擇餐廳</p>
+							<select id='restaurant_select3'>
+							</select>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>選擇餐點</p>
+							<select id='menu_select'>
+							</select>
+							<p></p>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			<section id="three" class="wrapper special">
+				<div class="inner">
+					<header class="major">
+						<h2>修改餐點</h2>
+					</header>
+					<div class="features">
+						<div class="feature">
+							<p>選擇餐廳</p>
+							<select id='restaurant_select1'>
+							</select>
+							<p></p>
+							<h3><a class="button special">確定</a></h3>
+						</div>
+						<div class="feature">
+							<p>餐點名稱</p>
+							<input id="restName" type="text" ></input>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐點單價</p>
+							<input id="restName" type="text" ></input>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐點敘述</p>
+							<input id="restName" type="text" ></input>
+							<p></p>
+						</div>
+						<div class="feature">
+							<p>餐點照片</p>
+							<input type="text" id="myText" />
+							<input type="file" id="myFile" accept="image/*" />
+							<input data-dismiss="modal" id="upload" type="submit" />
+							<p></p>
+						</div>
+					</div>
+				</div>
+			</section>
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="copyright">
+					&copy; 製作: <a href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
