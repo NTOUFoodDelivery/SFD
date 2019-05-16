@@ -30,12 +30,14 @@
     var urPosition;
     var taipei;
 	var deliver_status=0;
+	var rest_address_for_map;
+	var markers = [];   
  function initialize() {
  
      directionsDisplay = new google.maps.DirectionsRenderer();
      geocoder = new google.maps.Geocoder();
      initialPlace = new google.maps.LatLng(25.147020,121.747046);
-      
+     rest_address_for_map = "海洋大學";
       var myOptions = {
         zoom:16,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -124,7 +126,7 @@ function calcRoute() {
 			
              request = {
                 origin: urPosition, 
-                destination: initialPlace,
+                destination: rest_address_for_map,
                 travelMode: google.maps.DirectionsTravelMode.DRIVING
                 };
 				
@@ -138,7 +140,7 @@ function calcRoute() {
             start=document.getElementById("address").value; 
             request = {
                 origin: start, 
-                destination: end,
+                destination: rest_address_for_map,
                 travelMode: google.maps.DirectionsTravelMode[selectedMode]
               };
 			 
