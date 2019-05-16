@@ -45,7 +45,16 @@ $(document).ready(function () {
 					//TransferDeliverOrder(event);
                     // 客製化-----END
                     // var n = new Notification("Hi! ", {tag: 'soManyNotification'});
-					
+					if (confirm(deliver_now_order)) {
+		
+						alert("You pressed OK!");
+						client.send(generatResult(a,true));
+					} 
+					else {
+						deliver_now_order="";
+						alert( "You pressed Cancel!");
+						//client.send(generatResult(a,false));
+					}
                     console.log(event);
 					
                 }

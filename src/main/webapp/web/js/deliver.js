@@ -1,3 +1,5 @@
+
+
 function deliverOffline(deliver_status) {
 	if(deliver_now_order==""){
 	var deliver_temp="";
@@ -26,9 +28,15 @@ function deliverOffline(deliver_status) {
 	}
     return deliver_status;
 }
+	function generatResult(Deliver_Id,accept){
+		return{
+			"Deliver_Id":Deliver_Id,
+			"accept":accept
+		};
+	}
 function OrderIsComing(deliver_order) {
 	
-	var m1,m2,m3,m4,m5,m6,a;
+	var m1,m2,m3,m4,m5,m6;
 	m1 = deliver_order["Rest_Name"];
 	m2 = deliver_order["Rest_Address"];
 	m3 = deliver_order["Address"];
@@ -39,12 +47,7 @@ function OrderIsComing(deliver_order) {
 	rest_address_for_map=m2;
 	DeleteMarkers();
 	//var test=new string(m2);
-	function generatResult(Deliver_Id,accept){
-		return{
-			"Deliver_Id":Deliver_Id,
-			"accept":accept
-		};
-	}
+
 	var txt="餐廳:"+m1+'\n餐廳地址:'+m2+'\n目的地:'+m3+'\n代付額:'+m4+'元\n外送費:50元\n訂單明細:\n';
 	for(var i=0;i<m6;i++)
 	{
@@ -69,16 +72,16 @@ function OrderIsComing(deliver_order) {
 		//alert("clear");		
 		marker.setMap(map);
 	});
-
-	if (confirm(txt)) {
-		deliver_now_order=txt;
+	deliver_now_order=txt;
+	/*if (confirm(txt)) {
+		
 		alert("You pressed OK!");
 		//client.send(generatResult(a,true));
 	} 
 	else {
 		alert( "You pressed Cancel!");
 		//client.send(generatResult(a,false));
-	}
+	}*/
 
 }
  function DeleteMarkers() {   
