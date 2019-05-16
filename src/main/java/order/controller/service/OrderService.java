@@ -31,13 +31,30 @@ public class OrderService {
 //        pushOrders.put(order.getOrderID(),order);
     }
 
-    // 雙方 完成訂單
+    // 外送員 食客
+    //
+    // 完成訂單
     public static void confirmOrder(PushResult pushResult){
         Long orderID = pushResult.getOrderID();
         Long deliverID = pushResult.getDeliverID();
         String status = OrderDAO.getOrderStatus(orderID);
-        System.out.println(status);
-//        if9s0
+        switch (status){
+            case OrderSetting.OrderStatus.DEALING:{
+                OrderDAO.modifyOrderStatus(orderID,OrderSetting.OrderStatus.CONFIRMING);
+                break;
+            }
+            case OrderSetting.OrderStatus.CONFIRMING:{
+                OrderDAO.modifyOrderStatus(orderID,OrderSetting.OrderStatus.FINISH);
+                break;
+            }
+            case OrderSetting.OrderStatus.FINISH:{
+                OrderDAO.ordertoHistory(orderID);
+                break;
+            }
+            default:{
+                break;
+            }
+        }
     }
 
     // 處理訂單 接受與否 以及 外送員、訂單狀態 轉換
@@ -46,6 +63,10 @@ public class OrderService {
         Long deliverID = pushResult.getDeliverID();
         boolean isAccept = pushResult.isAccept();
         if (isAccept) { // 訂單被接受
+            Order order = new Order();
+            order.setDeliverID(deliverID);
+            order.setOrderID(orderID);
+            OrderDAO.insertDtoOCD(order);
 //            pushOrders.remove(orderID);
             // 去資料庫 修改訂單狀態成"被接受之類的"
             OrderDAO.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DEALING);
