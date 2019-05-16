@@ -31,7 +31,8 @@
     var taipei;
 	var deliver_status=0;
 	var rest_address_for_map;
-	var markers = [];   
+	var markers = [];  
+	var deliver_now_order="";
  function initialize() {
  
      directionsDisplay = new google.maps.DirectionsRenderer();
@@ -171,8 +172,9 @@ function calcRoute() {
 								<li><a href="index_eater.html">登出</a></li>
 								<li><a href="index_eater.html" >切換身分</a></li>
 								<li><a href="javascript:deliver_status=deliverOffline(deliver_status)" >切換上下線</a></li>
-								<li><a href="#" >目前接收的訂單</a></li>
+								<li><a href="javascript:deliver_check_now_order()" >目前接收的訂單</a></li>
 								<li><a href="#" >配送紀錄</a></li>
+								<li><a href="javascript:deliver_finish_order()" >訂單完成</a></li>
 							</ul>
 						</nav>
 					</div>

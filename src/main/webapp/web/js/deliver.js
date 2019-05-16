@@ -46,6 +46,7 @@ function OrderIsComing(deliver_order) {
 	{
 		txt=txt+deliver_order["meals"][i]["Food_Name"]+':'+deliver_order["meals"][i]["Count"]+"個\n";
 	}
+	deliver_now_order=txt;
 	//import_Order_menu(m1,m2,txt);
 	//initialPlace = new google.maps.LatLng(25.150892, 121.772461);
 	var geocoder = new google.maps.Geocoder();
@@ -187,4 +188,27 @@ function post_Order_status(n1, n2) {
 
 
     });
+}
+function deliver_check_now_order()
+{
+	if(deliver_now_order=="")
+	{
+		alert("你現在沒有訂單喔<3")
+	}
+	else
+	{
+		alert(deliver_now_order);
+	}
+}
+function deliver_finish_order()
+{
+	if (confirm('完成以下訂單?\n'+deliver_now_order+'\n')) {
+		alert("訂單完成!");
+		deliver_now_order="";
+		//client.send(generatResult(a,true));
+	} 
+	else {
+		alert( "訂單尚未完成，同志尚須努力");
+		//client.send(generatResult(a,false));
+	}
 }
