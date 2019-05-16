@@ -118,10 +118,10 @@ public class OrderDAO {
 //            JdbcUtils.close(preparedStatement,connection);
 //        }
 //    }
-
-    // 找出 未推播 訂單 並回傳詳細資訊
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    // 找出 未推播 訂單 並回傳詳細資訊   5/17版本更新完畢
     // 暴風製造              請渣炸眨詐過目檢查OK
-    public static ArrayList<JsonObject> searchIdleOrderJsonObject()
+   /* public static ArrayList<JsonObject> searchIdleOrderJsonObject()
     {
         ArrayList<JsonObject> a = new ArrayList<JsonObject>();
         Connection connection = null;
@@ -148,10 +148,9 @@ public class OrderDAO {
             JdbcUtils.close(preparedStatement,connection);
         }
         return a;
-    }
+    }*/
+// 以上不用
 
-    // 找出 未推播 訂單 並回傳詳細資訊 Order
-    // 暴風製造              請渣炸眨詐過目檢查OK
     public static ArrayList<Order> searchIdleOrder()
     {
         ArrayList<Order> orders = new ArrayList<Order>();
@@ -189,13 +188,12 @@ public class OrderDAO {
                 order.setCastingPrio(resultSet.getInt("Casting_Prio"));
 
 
-                ResultSet mealResultSet = null;
+                ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
                 String mealSql = "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n" +
-                        "FROM `order`" +
-                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id  \n" +
+                        "FROM order_food" +
                         "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
-                        "WHERE `order`.Order_Id = ?";
+                        "WHERE order_food.Order_Id = ?";
                 preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);
                 preparedStatement.setLong(1, order.getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
@@ -206,7 +204,8 @@ public class OrderDAO {
                     Order.MealsBean meal = new Order.MealsBean();
                     meal.setFoodID(mealResultSet.getInt("Food_Id"));
                     meal.setFoodName(mealResultSet.getString("Food_Name"));
-                    meal.setCount(mealResultSet.getInt("Count"));
+                    meal.setCount(mealResultSet.getInt("order_food.`Count`"));
+                    meal.setCost(mealResultSet.getInt("meal.Cost"));//補涵式
                     meals.add(meal);
                 }
 
@@ -222,9 +221,9 @@ public class OrderDAO {
         return orders;
     }
     /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    // 利用 userID 查詢 食客 當前訂單
+    // 利用 userID 查詢 食客 當前訂單  5/17版本更新完畢
     // OK
-    public static JsonObject searchEaterOrder(Long userID)
+   /* public static JsonObject searchEaterOrder(Long userID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -233,7 +232,7 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, `order`.Casting_Prio, member.Account, member.User_Name, member.Phone_Number, " +
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, `order`.Casting_Prio, member.Account, member.User_Name, member.Phone_Number " +
                     "FROM `order` " +
                     "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
                     "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
@@ -254,8 +253,71 @@ public class OrderDAO {
         }
         return jsonString;
     }
+*/
+    //以上不用
+    public static ArrayList<Order> searchEaterOrder(Long userID)
+    {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
+        try {
+            connection = JdbcUtils.getconn();
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, `order`.Address, `order`.Casting_Prio, member.Account, member.User_Name, member.Phone_Number" +
+                    "FROM `order`" +
+                    "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id" +
+                    "INNER JOIN member ON customer_deliver_info.Deliver_Id = member.User_Id " +
+                    " WHERE customer_deliver_info.Customer_Id = ?";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData();
 
+            while(resultSet.next())
+            {
+                Order order = new Order();
+                List<Order.MealsBean> meals = new ArrayList<>();
+                order.setOrderID(resultSet.getInt("`order`.Order_Id")); 
+                order.setTotal(resultSet.getInt("`order`.Total"));
+                order.setOther(resultSet.getString("`order`.Other"));
+                order.setCastingPrio(resultSet.getInt("`order`.Casting_Prio"));
+                order.setDeliverAccount(resultSet.getString("member.Account"));//補涵式  **補完請拿掉註解
+                order.setDeliverName(resultSet.getString("member.User_Name"));//補涵式
+                order.setDeliverPhone(resultSet.getInt("member.Phone_Number"));//補涵式
+
+                ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
+                String mealSql = "SELECT order_food.Food_Id, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address" +
+                        "FROM order_food" +
+                        "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id" +
+                        "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id" +
+                        "INNER JOIN customer_deliver_info ON order_food.Order_Id = customer_deliver_info.Order_Id" +
+                        " WHERE customer_deliver_info.Customer_Id = ?";
+                preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, order.getOrderID());
+                mealResultSet = preparedStatement.executeQuery();
+
+                while(mealResultSet.next()){
+                    order.setRestName(mealResultSet.getString("restaurant_info.Rest_Name"));
+                    order.setRestAddress(mealResultSet.getString("restaurant_info.Rest_Address"));
+                    Order.MealsBean meal = new Order.MealsBean();
+                    meal.setFoodID(mealResultSet.getInt("order_food.Food_Id"));
+                    meal.setFoodName(mealResultSet.getString("meal.Food_Name"));
+                    meal.setCount(mealResultSet.getInt("order_food.`Count`"));
+                    meal.setCost(mealResultSet.getInt("meal.Cost"));
+                    meals.add(meal);
+                }
+
+                order.setMeals(meals);
+                orders.add(order);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JdbcUtils.close(preparedStatement,connection);
+        }
+        return orders;
+    }
 
     /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
