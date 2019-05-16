@@ -9,6 +9,7 @@ import db.demo.dao.RestDAO;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
 import order.model.javabean.Order;
+import tool.HttpCommonAction;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,10 +33,10 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
 
-//        String json = gson.toJson(jsonObject);
-//        PrintWriter out = response.getWriter();
-//        out.print(json);
-//        out.flush();
+//        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
+        PrintWriter out = response.getWriter();
+        out.print(HttpCommonAction.getRequestBody(request.getReader()));
+        out.flush();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
