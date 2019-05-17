@@ -104,38 +104,23 @@ $.ajax({
             var a1, a2, restimg;
             rest_inner = rest_inner + '<div class="container">';
 			// a1 = "'" + JData.result[0]["Rest_Name"] + "'";
-            for (var i = 0; i < NumOfJData; i++) {
-                var abc = 0;
-                a1 = "'" + JData.result[i]["Rest_Name"] + "'";
-                //a2 = "'" + JData.result[i]["Rest_Address"] + "'";
-                  restimg = "images/Logo.jpg";
-                if (i % 3 == 0 && abc % 3 == 0) {
-                    rest_inner = rest_inner + '<div class="row no-collapse-1">';
-
-
-
+			 restimg = "images/Logo.jpg";
+			                     rest_inner = rest_inner + '<div class="row no-collapse-1">';
                     rest_inner = rest_inner + '<section class="4u">' +
                         '<a href="#" class="image featured">' +
                         '<img src="' + restimg + '" alt="">' +
                         '</a>' +
-                        '<div class="box">' +
-                        '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Food_Name"] + '</p>' +
+                        '<div class="box">' +'<br>顧客名稱:'+JData.result[0]["User_Name"]+'<br>餐廳:'+ JData.result[0]["Rest_Name"] + "<br>" ;
+            for (var i = 0; i < NumOfJData; i++) {
+                var abc = 0;
+                a1 = "'" + JData.result[i]["Rest_Name"] + "'";
+                //a2 = "'" + JData.result[i]["Rest_Address"] + "'";
+						rest_inner = rest_inner +
+                        '<p>' + JData.result[i]["Food_Name"] +'<br>數量:'+ JData.result[i]["Count"] +'</p>' 
                         '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
                         '</div>' +
                         '</section>';
 
-                }
-                else {
-                    rest_inner = rest_inner + '<section class="4u">' +
-                    '<a href="#" class="image featured">' +
-                    '<img src="' + restimg + '" alt="">' +
-                    '</a>' +
-                    '<div class="box">' +
-                    '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Food_Name"] + '</p>' +
-                    '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
-                    '</div>' +
-                    '</section>';
-                }
                 abc++;
                 if (i % 3 == 2 || i == NumOfJData - 1) { rest_inner = rest_inner + '</div>'; }
             }
