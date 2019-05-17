@@ -86,7 +86,7 @@ function OrderIsComing(deliver_order) {
 function post_Order_status() {
 var rest_inner;
 $.ajax({
-    url: "https://ntou-sfd.herokuapp.com/ShowRestInfoServlet",
+    url: "https://ntou-sfd.herokuapp.com/ShowDeliveryStaffCurrentOrderServlet?userID=3",
     type: "GET",
     dataType: "json",
     success: function (JData) {
@@ -103,17 +103,12 @@ $.ajax({
              rest_inner = document.getElementById("content").value;
             var a1, a2, restimg;
             rest_inner = rest_inner + '<div class="container">';
+			// a1 = "'" + JData.result[0]["Rest_Name"] + "'";
             for (var i = 0; i < NumOfJData; i++) {
                 var abc = 0;
                 a1 = "'" + JData.result[i]["Rest_Name"] + "'";
-                a2 = "'" + JData.result[i]["Rest_Address"] + "'";
-                if (JData.result[i]["Rest_Photo"] == null) {
-                    restimg = "images/Logo.jpg";
-
-                }
-                else {
-                    restimg = JData.result[i]["Rest_Photo"];
-                }
+                //a2 = "'" + JData.result[i]["Rest_Address"] + "'";
+                  restimg = "images/Logo.jpg";
                 if (i % 3 == 0 && abc % 3 == 0) {
                     rest_inner = rest_inner + '<div class="row no-collapse-1">';
 
@@ -124,7 +119,7 @@ $.ajax({
                         '<img src="' + restimg + '" alt="">' +
                         '</a>' +
                         '<div class="box">' +
-                        '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Rest_Address"] + '</p>' +
+                        '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Food_Name"] + '</p>' +
                         '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
                         '</div>' +
                         '</section>';
@@ -136,7 +131,7 @@ $.ajax({
                     '<img src="' + restimg + '" alt="">' +
                     '</a>' +
                     '<div class="box">' +
-                    '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Rest_Address"] + '</p>' +
+                    '<p>' + JData.result[i]["Rest_Name"] + "<br>" + JData.result[i]["Food_Name"] + '</p>' +
                     '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
                     '</div>' +
                     '</section>';
