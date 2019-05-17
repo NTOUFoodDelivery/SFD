@@ -53,7 +53,7 @@ function import_menu(n1, n2) {
                             m1="'"+m1+"'";
                             m2="'"+m2+"'";
                             m5="'"+m5+"'";
-                            showmenutemp = showmenutemp +'<a href="#" class="button" onclick="additemwithoutcount(' + m2 + ',' + m1 +',' + m5 + ')" >加入購物車</a>' +
+                            showmenutemp = showmenutemp +'<a href="" class="button" onclick="additemwithoutcount(' + m2 + ',' + m1 +',' + m5 + ')" >加入購物車</a>' +
                             '</div>' +
                             '</section>';
                     }
