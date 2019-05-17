@@ -35,7 +35,7 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
         TestWebsocket.testPushSession.getBasicRemote().sendText(gson.toJson(order));
 //        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
         PrintWriter out = response.getWriter();
-        out.print(order);
+        out.print(gson.toJson(order));
         out.flush();
     }
 

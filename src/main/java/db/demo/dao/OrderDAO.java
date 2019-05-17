@@ -428,35 +428,93 @@ public class OrderDAO {
         }
     }
     /*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+//    // 利用 userID 查詢 食客 歷史訂單
+//    // 暴風製造
+//    public static JsonObject searchEaterHistoryOrder(Long userID)
+//    {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        JsonObject jsonString = null;
+//        try {
+//            connection = JdbcUtils.getconn();
+//            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name,"
+//                    + " history_food.Count, member.Account, member.User_Name, history_food.Rest_Name" +
+//                    " FROM history " +
+//                    "INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
+//                    "INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id " +
+//                    "INNER JOIN member ON history_customer_deliver_info.Deliver_Id = member.User_Id " +
+//                    "WHERE history_customer_deliver_info.Customer_Id = ?";
+//            //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+//            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setLong(1, userID);
+//            resultSet = preparedStatement.executeQuery();
+//            resultSet.getMetaData(); //取得Query資料
+//            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }finally{
+//            JdbcUtils.close(preparedStatement,connection);
+//        }
+//        return jsonString;
+//    }
+
     // 利用 userID 查詢 食客 歷史訂單
     // 暴風製造
-    public static JsonObject searchEaterHistoryOrder(Long userID)
+    public static List<Order> searchEaterHistoryOrder(Long userID)
     {
+        List<Order> orderList = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name,"
-                    + " history_food.Count,  member.Accout, member.User_Name, history_food.Rest_Name" +
-                    "FROM history " +
-                    "INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
-                    "INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " +
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, member.Account, member.User_Name " +
+                    " FROM history "+
+                    " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id  " +
                     "INNER JOIN member ON history_customer_deliver_info.Deliver_Id = member.User_Id " +
-                    "WHERE history_customer_deliver_info.Customer_Id = ?";
+                    "WHERE history_customer_deliver_info.Customer_Id = ? ";
             //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
+            while(resultSet.next()) {
+                Order order = new Order();
+                List<Order.MealsBean> mealsBeanList = new ArrayList<>();
+                order.setOrderID(resultSet.getLong("History_Id"));
+                order.setStartTime(resultSet.getString("Start_Time"));
+                order.setTotal(resultSet.getInt("Total"));
+                order.setAddress(resultSet.getString("Address"));
+                order.setOther(resultSet.getString("Other"));
+                order.setAccount(resultSet.getString("Account"));
+                order.setUserName(resultSet.getString("User_Name"));
+
+                ResultSet mealResultSet = null;
+                String mealSql = "SELECT history_food.Food_Name,history_food.Count" +
+                        " FROM history" +
+                        " INNER JOIN history_food ON history.History_Id = history_food.History_Id" +
+                        " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id" +
+                        " WHERE history_customer_deliver_info.Customer_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, userID);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.MealsBean mealsBean = new Order.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBeanList.add(mealsBean);
+                }
+                order.setMeals(mealsBeanList);
+                orderList.add(order);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-        return jsonString;
+        return orderList;
     }
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // 利用 userID 查詢 外送員 當前訂單
