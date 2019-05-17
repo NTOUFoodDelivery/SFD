@@ -1,20 +1,15 @@
 package db.demo.dao;
 
+import com.google.gson.JsonObject;
 import db.demo.connect.JdbcUtils;
-import db.demo.javabean.User;
 import order.model.javabean.Order;
-//import testsfd_db.connect;
-import tool.ResultSetToJson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.JsonObject;
 
 public class OrderDAO {
 
@@ -287,7 +282,7 @@ public class OrderDAO {
                 order.setCastingPrio(resultSet.getInt("Casting_Prio"));
                 order.setAccount(resultSet.getString("Account"));//補涵式  **補完請拿掉註解
                 order.setUserName(resultSet.getString("User_Name"));//補涵式
-                order.setPhoneNumber(resultSet.getInt("Phone_Number"));//補涵式
+                order.setPhoneNumber(resultSet.getString("Phone_Number"));//補涵式
 
                 ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
                 String mealSql = "SELECT order_food.Food_Id, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address" +
@@ -460,7 +455,7 @@ public class OrderDAO {
 //    }
 
     // 利用 userID 查詢 食客 歷史訂單
-    // 暴風製造
+    // BerSerKer製造
     public static List<Order> searchEaterHistoryOrder(Long userID)
     {
         List<Order> orderList = new ArrayList<>();
@@ -517,10 +512,44 @@ public class OrderDAO {
         return orderList;
     }
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+//    // 利用 userID 查詢 外送員 當前訂單
+//    // OK
+//    public static JsonObject searchDeliverOrder(Long userID)
+//    {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        JsonObject jsonString = null;
+//        try {
+//            connection = JdbcUtils.getconn();
+//
+//            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number " +
+//                    "FROM `order` " +
+//                    "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
+//                    "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
+//                    "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
+//                    "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
+//                    "INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id " +
+//                    "WHERE customer_deliver_info.Deliver_Id = ?";
+//            //String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+//            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setLong(1, userID);
+//            resultSet = preparedStatement.executeQuery();
+//            resultSet.getMetaData(); //取得Query資料
+//            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }finally{
+//            JdbcUtils.close(preparedStatement,connection);
+//        }
+//        return jsonString;
+//    }
+
     // 利用 userID 查詢 外送員 當前訂單
-    // OK
-    public static JsonObject searchDeliverOrder(Long userID)
+    // BerSerKer製造
+    public static List searchDeliverOrder(Long userID)
     {
+        List<Order> orderList = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -528,60 +557,148 @@ public class OrderDAO {
         try {
             connection = JdbcUtils.getconn();
 
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address, `order`.Address, member.Account, member.User_Name, member.Phone_Number " +
-                    "FROM `order` " +
-                    "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
-                    "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
-                    "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
-                    "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
-                    "INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id " +
-                    "WHERE customer_deliver_info.Deliver_Id = ?";
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, `order`.Address, member.Account, member.User_Name, member.Phone_Number " +
+                    " FROM `order`" +
+                    " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
+                    " INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id" +
+                    " WHERE customer_deliver_info.Deliver_Id = ?";
             //String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(resultSet);
+            while(resultSet.next()) {
+                Order order = new Order();
+                List<Order.MealsBean> mealsBeanList = new ArrayList<>();
+                order.setOrderID(resultSet.getLong("Order_Id"));
+                order.setTotal(resultSet.getInt("Total"));
+                order.setAddress(resultSet.getString("Address"));
+                order.setOther(resultSet.getString("Other"));
+                order.setAccount(resultSet.getString("Account"));
+                order.setUserName(resultSet.getString("User_Name"));
+                order.setPhoneNumber(resultSet.getString("Phone_Number"));
+
+                ResultSet mealResultSet = null;
+                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost " +
+                        "FROM `order`" +
+                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
+                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
+                        "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
+                        " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
+                        " WHERE customer_deliver_info.Deliver_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, userID);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.MealsBean mealsBean = new Order.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBean.setCost(mealResultSet.getInt("Cost"));
+                    mealsBeanList.add(mealsBean);
+                }
+                order.setMeals(mealsBeanList);
+                orderList.add(order);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             JdbcUtils.close(preparedStatement,connection);
         }
-        return jsonString;
+        return orderList;
     }
     /*---------------------------------------------------------------------------------------------------------------------------------------------------------*/
+//    // 利用 userID 查詢 外送員 歷史訂單
+//    public static JsonObject searchDeliverHistoryOrder(Long deliverId){
+//        Connection con = null;
+//        PreparedStatement pst = null;
+//        ResultSet rs = null;
+//        JsonObject jsonString = null;
+//        try {
+//            con = JdbcUtils.getconn();
+//
+//            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number, history_food.Rest_Address" +
+//                    "FROM history " +
+//                    "INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
+//                    "INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " +
+//                    "INNER JOIN member ON history_customer_deliver_info.Customer_Id = member.User_Id " +
+//                    "WHERE customer_deliver_info.Deliver_Id = ?";
+//            //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+//            pst = (PreparedStatement)con.prepareStatement(sql);
+//            pst.setLong(1, deliverId);
+//            rs = pst.executeQuery();
+//            rs.getMetaData(); //取得Query資料
+//            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
+//         /*while(rs.next()) {
+//				int na = rs.getInt("History_Id");
+//
+//				System.out.println(na );
+//			}*/
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }finally{
+//            JdbcUtils.close(pst,con);
+//        }
+//        return jsonString;
+//    }
+
     // 利用 userID 查詢 外送員 歷史訂單
-    public static JsonObject searchDeliverHistoryOrder(Long deliverId){
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
+    // BerSerKer 製造
+    public static List searchDeliverHistoryOrder(Long deliverId){
+        List<Order> orderList = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         JsonObject jsonString = null;
         try {
-            con = JdbcUtils.getconn();
+            connection = JdbcUtils.getconn();
 
-            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, history_food.Food_Name, history_food.Count, member.Accout, member.User_Name, member.Phone_Number, history_food.Rest_Address" +
-                    "FROM history " +
-                    "INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
-                    "INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.Order_Id " +
-                    "INNER JOIN member ON history_customer_deliver_info.Customer_Id = member.User_Id " +
-                    "WHERE customer_deliver_info.Deliver_Id = ?";
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number " +
+                    "FROM history" +
+                    " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id " +
+                    " INNER JOIN member ON history_customer_deliver_info.Customer_Id = member.User_Id " +
+                    " WHERE history_customer_deliver_info.Deliver_Id = ?";
             //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
-            pst = (PreparedStatement)con.prepareStatement(sql);
-            pst.setLong(1, deliverId);
-            rs = pst.executeQuery();
-            rs.getMetaData(); //取得Query資料
-            jsonString = ResultSetToJson.ResultSetToJsonObject(rs);
-         /*while(rs.next()) {
-				int na = rs.getInt("History_Id");
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            preparedStatement.setLong(1, deliverId);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            while(resultSet.next()) {
+                Order order = new Order();
+                List<Order.MealsBean> mealsBeanList = new ArrayList<>();
+                order.setOrderID(resultSet.getLong("History_Id"));
+                order.setStartTime(resultSet.getString("Start_Time"));
+                order.setTotal(resultSet.getInt("Total"));
+                order.setAddress(resultSet.getString("Address"));
+                order.setOther(resultSet.getString("Other"));
+                order.setAccount(resultSet.getString("Account"));
+                order.setUserName(resultSet.getString("User_Name"));
+                order.setPhoneNumber(resultSet.getString("Phone_Number"));
 
-				System.out.println(na );
-			}*/
+                ResultSet mealResultSet = null;
+                String mealSql = "SELECT history_food.Food_Name, history_food.Count, history_food.Rest_Name " +
+                        "  FROM history " +
+                        " INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
+                        " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id " +
+                        " WHERE history_customer_deliver_info.Deliver_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, deliverId);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.MealsBean mealsBean = new Order.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    order.setRestName(mealResultSet.getString("Rest_Name"));
+                    mealsBeanList.add(mealsBean);
+                }
+                order.setMeals(mealsBeanList);
+                orderList.add(order);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
-            JdbcUtils.close(pst,con);
+            JdbcUtils.close(preparedStatement,connection);
         }
-        return jsonString;
+        return orderList;
     }
     /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     //  更改orderStatus
@@ -681,9 +798,4 @@ public class OrderDAO {
         return castingPrio;
     }
 
-    //測試區
-//    public static void main(String args[]) {
-//    	searchDeliverHistoryOrder_Food(0);
-//
-//	}
 }

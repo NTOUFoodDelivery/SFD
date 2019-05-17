@@ -72,7 +72,7 @@ public class Order {
     private String userName;
     @SerializedName("Phone_Number")
     @Expose
-    private int phoneNumber;
+    private String phoneNumber;
 
     public Order() {
     }
@@ -199,11 +199,11 @@ public class Order {
         this.userName = userName;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
