@@ -24,7 +24,7 @@ public class OrderService {
 
     // 產生訂單編號 將訂單存入資料庫
     public static void addOrder(Order order){
-        order.setOrderID(JdbcUtils.generateID()); // 產生訂單 ID
+//        order.setOrderID(JdbcUtils.generateID()); // 產生訂單 ID
         order.setCastingPrio(0);
         order.setOrderStatus(OrderSetting.OrderStatus.WAIT);
         OrderDAO.addOrder(order); // 訂單加入資料庫
