@@ -119,7 +119,7 @@ public class LogInServlet extends HttpServlet {
                     request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
 //                    response.sendRedirect("LoginDemo.jsp");
-                    response.sendRedirect("web/login.html");
+                    response.sendRedirect("testLogin.html");
 //                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
                 }
             } catch (Exception e) {
@@ -129,7 +129,7 @@ public class LogInServlet extends HttpServlet {
             request.setAttribute("info", info); // 保存錯誤訊息
             session.invalidate(); // 銷毀 session
 //            response.sendRedirect("LoginDemo.jsp");
-            request.getRequestDispatcher("web/login.html").forward(request,response); // 跳轉回登入頁面
+            request.getRequestDispatcher("testLogin.html").forward(request,response); // 跳轉回登入頁面
         }
     }
 
