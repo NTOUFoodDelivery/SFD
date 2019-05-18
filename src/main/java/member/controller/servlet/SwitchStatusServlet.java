@@ -28,10 +28,16 @@ public class SwitchStatusServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         UserStatus userStatus = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),UserStatus.class);
-        userStatus.setUserID((Long)request.getSession().getAttribute("User_Id"));
-        MemberService.switchStatus(userStatus);
+        //        Long userID = (Long) request.getSession().getAttribute("User_Id");
+        Long userID = Long.parseLong(request.getParameter("userID"));
+        userStatus.setUserID(userID);
+        boolean success = MemberService.switchStatus(userStatus);
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-        statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
+        if(success){
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
+        }else{
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_ACCEPTABLE);
+        }
         statusCodeResponse.setTime(new Date().toString());
         String json = gson.toJson(statusCodeResponse);
         PrintWriter out = response.getWriter();

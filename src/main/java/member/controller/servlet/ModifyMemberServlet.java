@@ -36,9 +36,13 @@ public class ModifyMemberServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
-        MemberService.modifyMemberStatus(commonRequest);
+        boolean success = MemberService.modifyMemberStatus(commonRequest);
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-        statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
+        if(success){
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
+        }else{
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_ACCEPTABLE);
+        }
         statusCodeResponse.setTime(new Date().toString());
         String json = gson.toJson(statusCodeResponse);
         PrintWriter out = response.getWriter();

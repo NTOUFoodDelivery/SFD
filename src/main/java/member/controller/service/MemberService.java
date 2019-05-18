@@ -20,7 +20,7 @@ import java.util.List;
 public class MemberService {
 
     // 管理員 更改使用者狀態
-    public static void modifyMemberStatus(CommonRequest commonRequest){
+    public static boolean modifyMemberStatus(CommonRequest commonRequest){
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         String cmd = commonRequest.getQuery().getCommand();
         List<Object> resultBeans = commonRequest.getResult();
@@ -30,12 +30,14 @@ public class MemberService {
             userList.add(gson.fromJson(jsonObject.toString(),User.class)); // 使用者物件
         }
 
+        boolean success = false;
         switch (cmd){
             case MemberSetting.Command.USER_BAN:{ // ban 使用者
                 System.out.println("ban");
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.DELETE:{ // 刪除 使用者
@@ -43,6 +45,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.delUser(user.getUserID());
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.DELIVER_ON:{ // 更改 使用者 為 上線有空
@@ -50,6 +53,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.CUSTOMER:{ // 更改 使用者 為 一般使用者
@@ -57,6 +61,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.DELIVER_BUSY:{ // 更改 使用者 為 一般使用者
@@ -64,6 +69,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(),cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.DELIVER_OFF:{ // 更改 使用者 為 離線
@@ -71,6 +77,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.OFFLINE:{ // 更改 使用者 為 登出
@@ -78,6 +85,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.ADMINISTRATOR:{ // 更改 使用者 為 管理員
@@ -85,6 +93,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             case MemberSetting.Command.PUSHING:{ // 更改 使用者 為 受到推播訂單
@@ -92,6 +101,7 @@ public class MemberService {
                 for(User user : userList){
                     UserDAO.modifyUserStatus(user.getUserID(), cmd);
                 }
+                success = true;
                 break;
             }
             default:{
@@ -99,47 +109,54 @@ public class MemberService {
                 break;
             }
         }
+
+        return success;
     }
 
     // 轉換上下線 切換身份
     // 討論！！
-    public static void switchStatus(UserStatus userStatus){
+    public static boolean switchStatus(UserStatus userStatus){
 
         String status = userStatus.getUserStatus();
-
+        boolean success = false;
         switch (status){
             case MemberSetting.UserStatus.DELIVER_ON:{
-                String identity = UserDAO.showUserIdentity(userStatus.getUserID());
-                if(identity.equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){
+//                String identity = UserDAO.showUserIdentity(userStatus.getUserID());
+//                if(identity.equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){
                     UserDAO.modifyUserStatus(userStatus.getUserID(),status);
-                }
+                success = true;
+//                }
                 break;
             }
             case MemberSetting.UserStatus.DELIVER_OFF:{
-                String identity = UserDAO.showUserIdentity(userStatus.getUserID());
-                if(identity.equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){
+//                String identity = UserDAO.showUserIdentity(userStatus.getUserID());
+//                if(identity.equals(MemberSetting.UserType.CUSTOMER_AND_DELIVER)){
                     UserDAO.modifyUserStatus(userStatus.getUserID(),status);
-                }
+                success = true;
+//                }
                 break;
             }
             case MemberSetting.UserStatus.OFFLINE:{
                 // 如果目前有接單，收回
-                String currentUserStatus = UserDAO.showUserType(userStatus.getUserID());
-                if(currentUserStatus.equals(MemberSetting.UserStatus.DELIVER_BUSY)){}
+//                String currentUserStatus = UserDAO.showUserType(userStatus.getUserID());
+//                if(currentUserStatus.equals(MemberSetting.UserStatus.DELIVER_BUSY)){}
                 // 如果目前有推播訂單，收回
 //                String currentUserStatus = UserDAO.showUserType(userStatus.getUser_Id());
 //                if(currentUserStatus.equals(MemberSetting.UserStatus.DELIVER_ON)){}
                 UserDAO.modifyUserStatus(userStatus.getUserID(),status);
+                success = true;
                 break;
             }
             case MemberSetting.UserStatus.CUSTOMER:{
                 UserDAO.modifyUserStatus(userStatus.getUserID(),status);
+                success = true;
                 break;
             }
             default:{
                 break;
             }
         }
+        return success;
     }
 
     // 註冊
