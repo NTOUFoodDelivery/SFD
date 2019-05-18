@@ -63,6 +63,7 @@ public class LogInServlet extends HttpServlet {
                     session.setAttribute("User_Type",user.getUserType()); // User_Type 保存進 session 全域變數中
                     session.setAttribute("User_Status",user.getUserStatus()); // User_Status 保存進 session 全域變數中
 
+
                     switch (user.getUserType()){
                         case MemberSetting.UserType.CUSTOMER:{
                             user.setUserType(MemberSetting.UserStatus.CUSTOMER);
@@ -112,15 +113,14 @@ public class LogInServlet extends HttpServlet {
 //                        }
 //                    }
 
-
                     // ------判斷使用者登入狀況------- END
                 }else {
                     info.add("登入失敗，錯誤的帳號、密碼或userType");
                     request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
 //                    response.sendRedirect("LoginDemo.jsp");
-                    response.sendRedirect("testLogin.html");
-//                    request.getRequestDispatcher("LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
+                    response.sendRedirect("login.html");
+//                    request.getRequestDispatcher("login.jsp").forward(request,response); // 跳轉回登入頁面
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,8 +128,9 @@ public class LogInServlet extends HttpServlet {
         }else {
             request.setAttribute("info", info); // 保存錯誤訊息
             session.invalidate(); // 銷毀 session
-//            response.sendRedirect("LoginDemo.jsp");
-            request.getRequestDispatcher("testLogin.html").forward(request,response); // 跳轉回登入頁面
+//            response.sendRedirect("login.jsp");
+            response.sendRedirect("login.html");
+//            request.getRequestDispatcher("login.html").forward(request,response); // 跳轉回登入頁面
         }
     }
 
