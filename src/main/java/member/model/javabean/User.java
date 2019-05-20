@@ -2,6 +2,7 @@ package member.model.javabean;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class User {
 
@@ -102,4 +103,18 @@ public class User {
         this.userStatus = userStatus;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("userID", userID)
+                .append("account", account)
+                .append("password", password)
+                .append("userName", userName)
+                .append("email", email)
+                .append("phoneNumber", phoneNumber)
+                .append("lastAddress", lastAddress)
+                .append("userType", userType)
+                .append("userStatus", userStatus)
+                .toString();
+    }
 }

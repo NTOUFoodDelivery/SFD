@@ -1,6 +1,7 @@
 package member.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class FeedbackRes {
     /**
@@ -49,5 +50,15 @@ public class FeedbackRes {
 
     public void setBackContent(String backContent) {
         this.backContent = backContent;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("feedbackID", feedbackID)
+                .append("userID", userID)
+                .append("content", content)
+                .append("backContent", backContent)
+                .toString();
     }
 }

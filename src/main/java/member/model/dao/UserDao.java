@@ -13,7 +13,7 @@ public interface UserDao {
     // 註冊
     boolean addUser(User user);
     // 查看 使用者目前身份
-    String showUserIdentity(Long userID);
+    String showUserStatus(Long userID);
     // 查看 使用者目前Type
     String showUserType(Long userID);
     // 刪除 使用者
@@ -32,6 +32,10 @@ public interface UserDao {
     // 管理者 回覆客服
     boolean replyFeedback(Long FeedbackID, String BackContent);
     // 可能須合併 ------------------------------------------------------ END
-    // 使用者 拿到feedback資訊
+    // 可能須合併 ------------------------------------------------------ BEGIN
+    // 食客/外送員 拿到feedback資訊
     List<FeedbackRes> searchFeedback(Long userID);
+    // 管理員 拿到feedback資訊
+    List<FeedbackRes> searchFeedback();
+    // 可能須合併 ------------------------------------------------------ END
 }

@@ -130,7 +130,7 @@ public class UserDaoImpl implements UserDao
      * @return java.lang.String
      */
     @Override
-    public String showUserIdentity(Long userID) {
+    public String showUserStatus(Long userID) {
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
         ResultSet resultSet;
@@ -255,7 +255,7 @@ public class UserDaoImpl implements UserDao
     public boolean modifyUserType(Long userID, String userType) {
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
-        String sql = "UPDATE member SET User_Typr = ? WHERE User_Id = ?;";
+        String sql = "UPDATE member SET User_Type = ? WHERE User_Id = ?;";
         boolean success = false;
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -412,7 +412,7 @@ public class UserDaoImpl implements UserDao
 
     /**
      *
-     * @description: 使用者 拿到feedback資訊
+     * @description: 食客/外送員 拿到feedback資訊
      * @author BerSerKer
      * @date 2019-05-20 23:52
      * @param [userID]
@@ -449,4 +449,41 @@ public class UserDaoImpl implements UserDao
         return feedbackList;
     }
 
+    /**
+     *  
+     * @description: 管理員 拿到feedback資訊
+     * @author BerSerKer
+     * @date 2019-05-21 00:41
+     * @param []
+     * @return java.util.List<member.model.javabean.FeedbackRes>
+     */
+    @Override
+    public List<FeedbackRes> searchFeedback() {
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        String sql = "SELECT * FROM feedback";
+        List <FeedbackRes> feedbackList = new ArrayList<>();
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                FeedbackRes feedbackRes = new FeedbackRes();
+                feedbackRes.setFeedbackID(resultSet.getLong("Feedback_Id"));
+                feedbackRes.setUserID(resultSet.getLong("User_Id"));
+                feedbackRes.setContent(resultSet.getString("Content"));
+                feedbackRes.setBackContent(resultSet.getString("Back_Content"));
+                feedbackList.add(feedbackRes);
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            C3P0Util.close(connection);
+        }
+        return feedbackList;
+    }
 }
