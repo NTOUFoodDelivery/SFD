@@ -1,11 +1,9 @@
-package tool;
+package util;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import com.google.gson.*;
-import org.apache.commons.codec.binary.Base64;
 
 public class ResultSetToJson {
     public static final JsonArray ResultSetToJsonArray(ResultSet rs) {

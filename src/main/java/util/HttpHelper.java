@@ -1,4 +1,4 @@
-package tool;
+package util;
 
 import javax.servlet.ServletRequest;
 import java.io.BufferedReader;

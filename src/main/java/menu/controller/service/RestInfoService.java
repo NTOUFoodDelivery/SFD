@@ -11,7 +11,7 @@ import menu.model.javabean.MenuSetting;
 import menu.model.request.javabean.RestMenuReq;
 import menu.model.response.javabean.Menu;
 import order.model.javabean.RestInfoRequest;
-import tool.javabean.CommonRequest;
+import util.javabean.CommonRequest;
 
 import java.util.ArrayList;
 import java.util.List;

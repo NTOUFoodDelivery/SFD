@@ -5,8 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import db.demo.javabean.User;
 import member.controller.service.MemberService;
-import tool.HttpCommonAction;
-import tool.javabean.StatusCodeResponse;
+import util.HttpCommonAction;
+import util.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

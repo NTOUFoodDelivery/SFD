@@ -186,7 +186,7 @@ public class OrderDAO {
                 ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
                 String mealSql = "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n" +
                         "FROM order_food" +
-                        "INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
+                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
                         "WHERE order_food.Order_Id = ?";
                 preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);

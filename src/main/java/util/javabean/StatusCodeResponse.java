@@ -1,4 +1,4 @@
-package tool.javabean;
+package util.javabean;
 
 public class StatusCodeResponse {
     /**

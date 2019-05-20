@@ -19,6 +19,7 @@ public class JdbcUtils {
 
         try {
             prop.load(in);
+            in.close();
             url = prop.getProperty("url");
             user = prop.getProperty("user");
             password = prop.getProperty("password");

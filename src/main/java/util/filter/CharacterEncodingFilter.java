@@ -1,14 +1,7 @@
-package filter;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import tool.HttpCommonAction;
-import tool.MultiReadHttpServletRequest;
+package util.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @WebFilter("/CharacterEncodingFilter")

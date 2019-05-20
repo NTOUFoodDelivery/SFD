@@ -38,6 +38,7 @@ public class UserDAO {
         }
         return userID;
     }
+    //--------------------------------------------
 
     // 登入 return User Object
     public static User loginUser(String account, String password, String userType){

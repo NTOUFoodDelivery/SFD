@@ -1,19 +1,16 @@
-package order.model.timerTask;
+package order.controller.timerTask;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import db.demo.dao.OrderDAO;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
 import member.model.javabean.MemberSetting;
-import order.controller.service.OrderService;
 import order.controller.websocket.PushOrderWebSocket;
 import order.model.javabean.Order;
 import order.model.javabean.OrderSetting;
 
-import javax.websocket.EncodeException;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.*;

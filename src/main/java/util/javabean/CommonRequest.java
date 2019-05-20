@@ -1,6 +1,4 @@
-package tool.javabean;
-
-import com.google.gson.JsonObject;
+package util.javabean;
 
 import java.util.List;
 

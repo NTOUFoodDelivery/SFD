@@ -3,13 +3,10 @@ package member.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import db.demo.dao.UserDAO;
 import member.controller.service.MemberService;
-import member.model.javabean.MemberSetting;
 import member.model.javabean.UserStatus;
-import order.model.javabean.PushResult;
-import tool.HttpCommonAction;
-import tool.javabean.StatusCodeResponse;
+import util.HttpCommonAction;
+import util.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

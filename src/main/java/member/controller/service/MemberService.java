@@ -8,12 +8,8 @@ import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
 import member.model.javabean.MemberSetting;
 import member.model.javabean.UserStatus;
-import order.controller.websocket.PushOrderWebSocket;
-import tool.javabean.CommonRequest;
+import util.javabean.CommonRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 

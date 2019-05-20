@@ -3,14 +3,12 @@ package order.controller.websocket;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import configurator.GetHttpSessionConfigurator;
-import db.demo.dao.OrderDAO;
+import util.configurator.GetHttpSessionConfigurator;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
 import member.controller.servlet.LogInServlet;
 import member.model.javabean.MemberSetting;
 import order.controller.service.OrderService;
-import order.model.javabean.OrderSetting;
 import order.model.javabean.PushResult;
 
 import javax.servlet.http.HttpSession;

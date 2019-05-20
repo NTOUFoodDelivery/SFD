@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import db.demo.connect.JdbcUtils;
 import db.demo.javabean.Rest;
 import menu.model.response.javabean.Menu;
-import tool.ResultSetToJson;
+import util.ResultSetToJson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

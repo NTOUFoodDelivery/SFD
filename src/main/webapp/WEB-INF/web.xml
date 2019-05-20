@@ -7,7 +7,7 @@
 
   <filter>
     <filter-name>CORSFilter</filter-name>
-    <filter-class>filter.CORSFilter</filter-class>
+    <filter-class>util.filter.CORSFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>CORSFilter</filter-name>
@@ -16,7 +16,7 @@
   </filter-mapping>
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
-    <filter-class>filter.CharacterEncodingFilter</filter-class>
+    <filter-class>util.filter.CharacterEncodingFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>CharacterEncodingFilter</filter-name>
@@ -25,7 +25,7 @@
   </filter-mapping>
   <filter>
     <filter-name>LogFilter</filter-name>
-    <filter-class>member.model.filter.LogFilter</filter-class>
+    <filter-class>member.util.filter.LogFilter</filter-class>
     <init-param>
       <param-name>excludedUrls</param-name>
       <param-value>/LogInServlet</param-value>
@@ -38,13 +38,13 @@
   </filter-mapping>
 
 <!--  <listener>-->
-<!--    <listener-class>listener.DBConnectionListener</listener-class>-->
+<!--    <listener-class>DBConnectionListener</listener-class>-->
 <!--  </listener>-->
   <listener>
-    <listener-class>listener.RequestListener</listener-class>
+    <listener-class>util.listener.RequestListener</listener-class>
   </listener>
   <listener>
-    <listener-class>order.model.listener.PushOrderListener</listener-class>
+    <listener-class>order.util.listener.PushOrderListener</listener-class>
   </listener>
 
   <session-config>

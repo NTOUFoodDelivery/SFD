@@ -146,7 +146,7 @@ tmp/
 .loadpath
 .recommenders
 
-# External tool builders
+# External util builders
 .externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
@@ -944,7 +944,7 @@ ASALocalRun/
 # NVidia Nsight GPU debugger configuration file
 *.nvuser
 
-# MFractors (Xamarin productivity tool) working folder
+# MFractors (Xamarin productivity util) working folder
 .mfractor/
 
 # Local History for Visual Studio
@@ -953,7 +953,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# Backup folder for Package Reference Convert tool in Visual Studio 2017
+# Backup folder for Package Reference Convert util in Visual Studio 2017
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/vim,java,maven,macos,linux,gradle,windows,eclipse,netbeans,java-web,code-java,notepadpp,sublimetext,intellij+all,webstorm+all,visualstudio,jetbrains+all,androidstudio,visualstudiocode,openframeworks+visualstudio

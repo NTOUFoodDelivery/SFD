@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c3p0-config>
+    <!-- 雖然是預設，但我們就拿來當專案的資料庫設定吧 -->
+    <default-config>
+        <!-- 連線超時 30秒 -->
+        <property name="checkoutTimeout">3000</property>
+        <!-- 30秒檢查一次connection 的空閒 -->
+        <property name="idleConnectionTestPeriod">30</property>
+        <property name="initialPoolSize">2</property>
+        <property name="maxIdleTime">30</property>
+        <property name="maxPoolSize">5</property>
+        <property name="minPoolSize">2</property>
+        <property name="maxStatements">50</property>
+        <!-- 每次增加的連接數 -->
+        <property name="acquireIncrement">3</property>
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+        <property name="jdbcUrl">
+            <![CDATA[jdbc:mysql://b13568559a2078:c511925d@us-cdbr-iron-east-02.cleardb.net/heroku_9519aa67df829c7?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8]]>
+        </property>
+        <property name="user">b13568559a2078</property>
+        <property name="password">c511925d</property>
+    </default-config>
+
+    <!-- 這是我的本地端設定 -->
+    <named-config name="BerSerKer">
+        <property name="checkoutTimeout">3000</property>
+        <property name="idleConnectionTestPeriod">30</property>
+        <property name="initialPoolSize">2</property>
+        <property name="maxIdleTime">30</property>
+        <property name="maxPoolSize">5</property>
+        <property name="minPoolSize">2</property>
+        <property name="maxStatements">50</property>
+        <property name="acquireIncrement">3</property>
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+        <property name="jdbcUrl">
+            <![CDATA[jdbc:mysql://127.0.0.1:3306/tmpSFD?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8]]>
+        </property>
+        <property name="user">root</property>
+        <property name="password">bsqo9103</property>
+    </named-config>
+
+</c3p0-config>

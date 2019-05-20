@@ -3,8 +3,6 @@ package menu.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import db.demo.dao.RestDAO;
 import menu.controller.service.RestInfoService;
 
 import javax.servlet.ServletException;
