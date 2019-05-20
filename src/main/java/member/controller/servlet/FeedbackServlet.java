@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import member.controller.service.FeedbackService;
-import member.model.javabean.FeedBack;
+import member.model.javabean.FeedbackReq;
 import util.HttpCommonAction;
 import util.javabean.StatusCodeResponse;
 
@@ -26,7 +26,7 @@ public class FeedbackServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        FeedBack feedBack = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),FeedBack.class);
+        FeedbackReq feedBack = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()), FeedbackReq.class);
 
 
 //        if(request.getSession().getAttribute("User_Type").equals(MemberSetting.UserType.ADMINISTRATOR))

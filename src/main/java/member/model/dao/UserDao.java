@@ -1,8 +1,9 @@
 package member.model.dao;
 
 import db.demo.javabean.User;
+import member.model.javabean.FeedbackRes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface UserDao {
     // 登入
@@ -24,14 +25,13 @@ public interface UserDao {
     // 找尋 有無該使用者
     boolean searchUser(Long userID);
     // 查詢 全部的空閒的 外送員
-    ArrayList<User> searchIdleDeliverUser();
-    // 使用者  傳送客服 給 管理者----------------
+    List<User> searchIdleDeliverUser();
+    // 可能須合併 ------------------------------------------------------ BEGIN
+    // 食客/外送員 傳送客服 給 管理者
     boolean addFeedback(Long FeedbackID, Long UserID, String Content);
-    // 管理者拿到feedback資訊----------------
-    void AdministratorGetFeedback(Long FeedbackID);
-    // 管理者  傳送客服 給 使用者----------------
-    void replyFeedback(Long FeedbackID, String BackContent);
-    // 使用者 拿到feedback資訊----------------
-    void CustomerOrDeliverGetFeedback(Long FeedbackID);
-
+    // 管理者 回覆客服
+    boolean replyFeedback(Long FeedbackID, String BackContent);
+    // 可能須合併 ------------------------------------------------------ END
+    // 使用者 拿到feedback資訊
+    List<FeedbackRes> searchFeedback(Long userID);
 }
