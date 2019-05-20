@@ -1,10 +1,8 @@
 package member.model.daoImpl;
 
-import db.demo.connect.JdbcUtils;
-import db.demo.javabean.User;
 import member.model.dao.UserDao;
-import member.model.javabean.FeedbackReq;
 import member.model.javabean.FeedbackRes;
+import member.model.javabean.User;
 import util.db.C3P0Util;
 
 import java.sql.Connection;

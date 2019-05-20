@@ -1,6 +1,6 @@
 package member.model.dao;
 
-import db.demo.javabean.User;
+import member.model.javabean.User;
 import member.model.javabean.FeedbackRes;
 
 import java.util.List;
