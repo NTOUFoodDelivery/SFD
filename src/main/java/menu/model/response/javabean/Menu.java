@@ -2,6 +2,7 @@ package menu.model.response.javabean;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Menu {
     /**
@@ -81,4 +82,15 @@ public class Menu {
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("restID", restID)
+                .append("foodID", foodID)
+                .append("Food_Name", Food_Name)
+                .append("cost", cost)
+                .append("description", description)
+                .append("image", image)
+                .toString();
+    }
 }
