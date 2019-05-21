@@ -71,7 +71,7 @@ public class RestDaoImpl implements RestDao {
             preparedStatement.setString(4, rest.getDescription());
             preparedStatement.setString(5, rest.getRestPhoto());
             preparedStatement.executeUpdate();
-            success = success;
+            success = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{

@@ -3,10 +3,6 @@ package menu.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import member.model.daoImpl.UserDaoImpl;
-import member.model.javabean.FeedbackRes;
-import member.model.javabean.MemberSetting;
-import member.model.javabean.User;
 import order.controller.websocket.TestWebsocket;
 import order.model.javabean.Order;
 import util.HttpCommonAction;
@@ -43,6 +39,23 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 //
 //        UserDaoImpl userDao = new UserDaoImpl();
 //        System.out.println(userDao.searchFeedback());
+
+//        Rest rest = new Rest();
+//        rest.setRestID(2561273L);
+//        rest.setRestName("Test Rest");
+//        rest.setRestAddress("Test Rest");
+//        rest.setDescription("Test Rest");
+//        rest.setRestPhoto("Test Rest");
+//        RestDaoImpl restDao = new RestDaoImpl();
+//        MenuDaoImpl menuDao = new MenuDaoImpl();
+//        Menu menu = new Menu();
+//        menu.setFoodID(876543L);
+//        menu.setFoodName("Test Menu");
+//        menu.setRestID(2561273L);
+//        menu.setCost(678);
+//        menu.setDescription("Test Menu");
+//        menu.setImage("Test Menu");
+//        System.out.println(menuDao.searchRestMenu(menu.getRestID()));
 
         Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
         TestWebsocket.testPushSession.getBasicRemote().sendText(gson.toJson(order));
