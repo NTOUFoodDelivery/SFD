@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrderDao {
     // 把訂單加入資料庫
     boolean addOrder(Order order);
-    // 刪除 訂單
+    // 刪除 訂單------------------- 修改
     boolean delOrder(Long orderID);
     // 找出 未推播 訂單 並回傳詳細資訊
     ArrayList<Order> searchIdleOrder();

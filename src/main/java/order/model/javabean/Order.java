@@ -1,6 +1,7 @@
 package order.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 
@@ -12,8 +13,11 @@ public class Order {
      * Order : {"Order_Id":2536,"Total":50,"Type_Count":2,"Meals":[{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":1},{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}],"Start_Time":"2019-05-15 03:31:00","Order_Status":"WAIT","Casting_Prio":0}
      */
 
+    @SerializedName("Customer")
     private CustomerBean customer;
+    @SerializedName("Deliver")
     private DeliverBean deliver;
+    @SerializedName("Order")
     private OrderBean order;
 
     public CustomerBean getCustomer() {
@@ -38,6 +42,15 @@ public class Order {
 
     public void setOrder(OrderBean order) {
         this.order = order;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("customer", customer)
+                .append("deliver", deliver)
+                .append("order", order)
+                .toString();
     }
 
     public static class CustomerBean {
@@ -110,6 +123,18 @@ public class Order {
         public void setAccount(String account) {
             this.account = account;
         }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("userID", userID)
+                    .append("account", account)
+                    .append("userName", userName)
+                    .append("address", address)
+                    .append("other", other)
+                    .append("phoneNumber", phoneNumber)
+                    .toString();
+        }
     }
 
     public static class DeliverBean {
@@ -159,6 +184,16 @@ public class Order {
 
         public void setAccount(String account) {
             this.account = account;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("userID", userID)
+                    .append("account", account)
+                    .append("userName", userName)
+                    .append("phoneNumber", phoneNumber)
+                    .toString();
         }
     }
 
@@ -244,6 +279,19 @@ public class Order {
             this.meals = meals;
         }
 
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("orderID", orderID)
+                    .append("total", total)
+                    .append("typeCount", typeCount)
+                    .append("startTime", startTime)
+                    .append("orderStatus", orderStatus)
+                    .append("castingPrio", castingPrio)
+                    .append("meals", meals)
+                    .toString();
+        }
+
         public static class MealsBean {
             /**
              * Rest_Name : 阿MAN 早午餐
@@ -313,6 +361,18 @@ public class Order {
 
             public void setCount(int count) {
                 this.count = count;
+            }
+
+            @Override
+            public String toString() {
+                return new ToStringBuilder(this)
+                        .append("restName", restName)
+                        .append("restAddress", restAddress)
+                        .append("foodID", foodID)
+                        .append("foodName", foodName)
+                        .append("cost", cost)
+                        .append("count", count)
+                        .toString();
             }
         }
     }

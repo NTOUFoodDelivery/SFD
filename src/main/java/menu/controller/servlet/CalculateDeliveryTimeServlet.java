@@ -1,4 +1,7 @@
 package menu.controller.servlet;
+import order.model.javabean.Order.CustomerBean;
+import order.model.javabean.Order.DeliverBean;
+import order.model.javabean.Order.OrderBean;
 
 import java.util.ArrayList;
 
@@ -6,6 +9,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import order.controller.websocket.TestWebsocket;
+import order.model.daoImpl.OrderDaoImpl;
 import order.model.javabean.Order;
 import util.HttpCommonAction;
 
@@ -60,10 +64,15 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 //        menu.setImage("Test Menu");
 //        System.out.println(menuDao.searchRestMenu(menu.getRestID()));
 
-        Order order = new Order();
 
 
-//        Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
+
+        Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
+        OrderDaoImpl orderDao = new OrderDaoImpl();
+
+        System.out.println(orderDao.ordertoHistory(order.getOrder().getOrderID()));
+
+//        String json = gson.toJson(orderDao.searchIdleOrder());
 //        TestWebsocket.testPushSession.getBasicRemote().sendText(gson.toJson(order));
 ////        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
         PrintWriter out = response.getWriter();

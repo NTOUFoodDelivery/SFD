@@ -164,6 +164,10 @@ public class OrderDAO {
             while(resultSet.next())
             {
                 Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
                 List<Order.OrderBean.MealsBean> meals = new ArrayList<>();
                 order.getOrder().setOrderStatus(resultSet.getString("Order_Status"));
                 order.getOrder().setCastingPrio(0);
@@ -281,6 +285,10 @@ public class OrderDAO {
             while(resultSet.next())
             {
                 Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
                 order.getCustomer().setUserName(eaterUserName);
                 order.getCustomer().setAccount(eaterAccount);
                 order.getCustomer().setPhoneNumber(eaterPhoneNumber);
@@ -418,7 +426,7 @@ public class OrderDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = JdbcUtils.getconn();
-            String sql = "UPDATE customer_deliver_info SET Deliver_Id = ? WHERE Order_Id LIKE ?";
+            String sql = "UPDATE customer_deliver_info SET Deliver_Id = ? WHERE Order_Id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, order.getDeliver().getUserID());
             preparedStatement.setLong(2, order.getOrder().getOrderID());
@@ -488,6 +496,10 @@ public class OrderDAO {
             resultSet.getMetaData(); //取得Query資料
             while(resultSet.next()) {
                 Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
                 List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
                 order.getOrder().setOrderID(resultSet.getLong("History_Id"));
                 order.getOrder().setStartTime(resultSet.getString("Start_Time"));
@@ -580,6 +592,10 @@ public class OrderDAO {
             resultSet.getMetaData(); //取得Query資料
             while(resultSet.next()) {
                 Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
                 List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
                 order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
                 order.getOrder().setTotal(resultSet.getInt("Total"));
@@ -675,6 +691,10 @@ public class OrderDAO {
             resultSet.getMetaData(); //取得Query資料
             while(resultSet.next()) {
                 Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
                 List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
                 order.getOrder().setOrderID(resultSet.getLong("History_Id"));
                 order.getOrder().setStartTime(resultSet.getString("Start_Time"));
