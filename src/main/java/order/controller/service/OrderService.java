@@ -25,8 +25,8 @@ public class OrderService {
     // 產生訂單編號 將訂單存入資料庫
     public static void addOrder(Order order){
 //        order.setOrderID(JdbcUtils.generateID()); // 產生訂單 ID
-        order.setCastingPrio(0);
-        order.setOrderStatus(OrderSetting.OrderStatus.WAIT);
+        order.getOrder().setCastingPrio(0);
+        order.getOrder().setOrderStatus(OrderSetting.OrderStatus.WAIT);
         OrderDAO.addOrder(order); // 訂單加入資料庫
 //        pushOrders.put(order.getOrderID(),order);
     }
@@ -64,8 +64,8 @@ public class OrderService {
         boolean isAccept = pushResult.isAccept();
         if (isAccept) { // 訂單被接受
             Order order = new Order();
-            order.setDeliverID(deliverID);
-            order.setOrderID(orderID);
+            order.getDeliver().setUserID(deliverID);
+            order.getOrder().setOrderID(orderID);
             OrderDAO.insertDtoOCD(order);
 //            pushOrders.remove(orderID);
             // 去資料庫 修改訂單狀態成"被接受之類的"

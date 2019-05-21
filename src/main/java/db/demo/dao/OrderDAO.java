@@ -23,33 +23,32 @@ public class OrderDAO {
             // set order table ----- BEGIN<33333333
             String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other, Casting_Prio) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
-            preparedStatement.setLong(1,order.getOrderID());
-            preparedStatement.setString(2,order.getStartTime());
-            preparedStatement.setInt(3,order.getTypeCount());
-            preparedStatement.setInt(4,order.getTotal());
-            preparedStatement.setString(5,order.getOrderStatus());
-            preparedStatement.setString(6,order.getAddress());
-            preparedStatement.setString(7,order.getOther());
-            preparedStatement.setInt(8,order.getCastingPrio());
+            preparedStatement.setLong(1,order.getOrder().getOrderID());
+            preparedStatement.setString(2,order.getOrder().getStartTime());
+            preparedStatement.setInt(3,order.getOrder().getTypeCount());
+            preparedStatement.setInt(4,order.getOrder().getTotal());
+            preparedStatement.setString(5,order.getOrder().getOrderStatus());
+            preparedStatement.setString(6,order.getCustomer().getAddress());
+            preparedStatement.setString(7,order.getCustomer().getOther());
+            preparedStatement.setInt(8,order.getOrder().getCastingPrio());
             preparedStatement.executeUpdate();
             // set order table ----- END
             // set OCD table ----- BEGIN
             String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id) VALUES(?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(OC_sql);
-            preparedStatement.setLong(1,order.getOrderID());
-            preparedStatement.setLong(2,order.getCustomerID());
+            preparedStatement.setLong(1,order.getOrder().getOrderID());
+            preparedStatement.setLong(2,order.getCustomer().getUserID());
             preparedStatement.executeUpdate();
-
             // set OCD table ----- END
             // set order_food table ----- BEGIN
             String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`) VALUES(?, (SELECT Order_Id FROM `order` WHERE `order`.Order_Id = ?), (SELECT Food_Id FROM meal WHERE meal.Food_Id = ?), ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
-            for(Order.MealsBean meal : order.getMeals()) {
-                String str = order.getOrderID()+""+meal.getFoodID();
+            for(Order.OrderBean.MealsBean meal : order.getOrder().getMeals()) {
+                String str = order.getOrder().getOrderID()+""+meal.getFoodID();
                 Long orderSerial = Long.parseLong(str.trim(),10);
                 preparedStatement.setLong(1, orderSerial);
-                preparedStatement.setLong(2, order.getOrderID());
-                preparedStatement.setInt(3, meal.getFoodID());
+                preparedStatement.setLong(2, order.getOrder().getOrderID());
+                preparedStatement.setLong(3, meal.getFoodID());
                 preparedStatement.setInt(4, meal.getCount());
                 preparedStatement.executeUpdate();
             }
@@ -152,7 +151,6 @@ public class OrderDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-
         try {
             connection = JdbcUtils.getconn();
             String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id " +
@@ -166,21 +164,21 @@ public class OrderDAO {
             while(resultSet.next())
             {
                 Order order = new Order();
-                List<Order.MealsBean> meals = new ArrayList<>();
-                order.setOrderStatus(resultSet.getString("Order_Status"));
-                order.setCastingPrio(0);
+                List<Order.OrderBean.MealsBean> meals = new ArrayList<>();
+                order.getOrder().setOrderStatus(resultSet.getString("Order_Status"));
+                order.getOrder().setCastingPrio(0);
 
-                order.setOrderID(resultSet.getInt("Order_Id"));
-                order.setTotal(resultSet.getInt("Total"));
-                order.setStartTime(resultSet.getString("Start_Time"));
-                order.setOther(resultSet.getString("Other"));
-                order.setTypeCount(resultSet.getInt("Type_Count"));
-                order.setAddress(resultSet.getString("Address"));
+                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getOrder().setStartTime(resultSet.getString("Start_Time"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getOrder().setTypeCount(resultSet.getInt("Type_Count"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
 
 
-                order.setCustomerID(resultSet.getInt("Customer_Id"));
-                order.setDeliverID(resultSet.getInt("Deliver_Id"));
-                order.setCastingPrio(resultSet.getInt("Casting_Prio"));
+                order.getCustomer().setUserID(resultSet.getLong("Customer_Id"));
+                order.getDeliver().setUserID(resultSet.getLong("Deliver_Id"));
+                order.getOrder().setCastingPrio(resultSet.getInt("Casting_Prio"));
 
 
                 ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
@@ -190,21 +188,20 @@ public class OrderDAO {
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
                         "WHERE order_food.Order_Id = ?";
                 preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);
-                preparedStatement.setLong(1, order.getOrderID());
+                preparedStatement.setLong(1, order.getOrder().getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
 
                 while(mealResultSet.next()){
-                    order.setRestName(mealResultSet.getString("Rest_Name"));
-                    order.setRestAddress(mealResultSet.getString("Rest_Address"));
-                    Order.MealsBean meal = new Order.MealsBean();
-                    meal.setFoodID(mealResultSet.getInt("Food_Id"));
+                    Order.OrderBean.MealsBean meal = new Order.OrderBean.MealsBean();
+                    meal.setRestName(mealResultSet.getString("Rest_Name"));
+                    meal.setRestAddress(mealResultSet.getString("Rest_Address"));
+                    meal.setFoodID(mealResultSet.getLong("Food_Id"));
                     meal.setFoodName(mealResultSet.getString("Food_Name"));
                     meal.setCount(mealResultSet.getInt("order_food.`Count`"));
                     meal.setCost(mealResultSet.getInt("meal.Cost"));//補涵式
                     meals.add(meal);
                 }
-
-                order.setMeals(meals);
+                order.getOrder().setMeals(meals);
                 orders.add(order);
             }
 
@@ -257,8 +254,20 @@ public class OrderDAO {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
+        String eaterAccount = null;
+        String eaterUserName = null;
+        String eaterPhoneNumber = null;
         try {
             connection = JdbcUtils.getconn();
+            String selfInfoSql = "SELECT Account, User_Name, Phone_Number FROM member WHERE User_Id = ?";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(selfInfoSql);
+            preparedStatement.setLong(1,userID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                eaterAccount = resultSet.getString("Account");
+                eaterUserName = resultSet.getString("User_Name");
+                eaterPhoneNumber = resultSet.getString("Phone_Number");
+            }
             String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Type_Count, `order`.Other, `order`.Address, `order`.Casting_Prio, member.User_Id, member.Account, member.User_Name, member.Phone_Number" +
                     " FROM `order`" +
                     "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id" +
@@ -272,17 +281,20 @@ public class OrderDAO {
             while(resultSet.next())
             {
                 Order order = new Order();
-                List<Order.MealsBean> meals = new ArrayList<>();
-                order.setOrderID(resultSet.getLong("Order_Id"));
-                order.setCustomerID(userID);
-                order.setDeliverID(resultSet.getLong("User_Id"));
-                order.setTypeCount(resultSet.getInt("Type_Count"));
-                order.setTotal(resultSet.getInt("Total"));
-                order.setOther(resultSet.getString("Other"));
-                order.setCastingPrio(resultSet.getInt("Casting_Prio"));
-                order.setAccount(resultSet.getString("Account"));//補涵式  **補完請拿掉註解
-                order.setUserName(resultSet.getString("User_Name"));//補涵式
-                order.setPhoneNumber(resultSet.getString("Phone_Number"));//補涵式
+                order.getCustomer().setUserName(eaterUserName);
+                order.getCustomer().setAccount(eaterAccount);
+                order.getCustomer().setPhoneNumber(eaterPhoneNumber);
+                List<Order.OrderBean.MealsBean> meals = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
+                order.getCustomer().setUserID(userID);
+                order.getDeliver().setUserID(resultSet.getLong("User_Id"));
+                order.getOrder().setTypeCount(resultSet.getInt("Type_Count"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getOrder().setCastingPrio(resultSet.getInt("Casting_Prio"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));//補涵式  **補完請拿掉註解
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));//補涵式
+                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));//補涵式
 
                 ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
                 String mealSql = "SELECT order_food.Food_Id, order_food.`Count`, meal.Food_Name, meal.Cost, restaurant_info.Rest_Name, restaurant_info.Rest_Address" +
@@ -296,18 +308,17 @@ public class OrderDAO {
                 mealResultSet = preparedStatement.executeQuery();
 
                 while(mealResultSet.next()){
-                    order.setRestName(mealResultSet.getString("Rest_Name"));
-                    order.setRestAddress(mealResultSet.getString("Rest_Address"));
-                    Order.MealsBean meal = new Order.MealsBean();
-                    meal.setFoodID(mealResultSet.getInt("Food_Id"));
+                    Order.OrderBean.MealsBean meal = new Order.OrderBean.MealsBean();
+                    meal.setRestName(mealResultSet.getString("Rest_Name"));
+                    meal.setRestAddress(mealResultSet.getString("Rest_Address"));
+                    meal.setFoodID(mealResultSet.getLong("Food_Id"));
                     meal.setFoodName(mealResultSet.getString("Food_Name"));
                     meal.setCount(mealResultSet.getInt("Count"));
                     meal.setCost(mealResultSet.getInt("Cost"));
                     System.out.println(meal.getCount());
                     meals.add(meal);
                 }
-
-                order.setMeals(meals);
+                order.getOrder().setMeals(meals);
                 orders.add(order);
             }
 
@@ -409,8 +420,8 @@ public class OrderDAO {
             connection = JdbcUtils.getconn();
             String sql = "UPDATE customer_deliver_info SET Deliver_Id = ? WHERE Order_Id LIKE ?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, order.getDeliverID());
-            preparedStatement.setLong(2, order.getOrderID());
+            preparedStatement.setLong(1, order.getDeliver().getUserID());
+            preparedStatement.setLong(2, order.getOrder().getOrderID());
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)
@@ -477,14 +488,14 @@ public class OrderDAO {
             resultSet.getMetaData(); //取得Query資料
             while(resultSet.next()) {
                 Order order = new Order();
-                List<Order.MealsBean> mealsBeanList = new ArrayList<>();
-                order.setOrderID(resultSet.getLong("History_Id"));
-                order.setStartTime(resultSet.getString("Start_Time"));
-                order.setTotal(resultSet.getInt("Total"));
-                order.setAddress(resultSet.getString("Address"));
-                order.setOther(resultSet.getString("Other"));
-                order.setAccount(resultSet.getString("Account"));
-                order.setUserName(resultSet.getString("User_Name"));
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("History_Id"));
+                order.getOrder().setStartTime(resultSet.getString("Start_Time"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
 
                 ResultSet mealResultSet = null;
                 String mealSql = "SELECT history_food.Food_Name,history_food.Count" +
@@ -496,12 +507,12 @@ public class OrderDAO {
                 preparedStatement.setLong(1, userID);
                 mealResultSet = preparedStatement.executeQuery();
                 while (mealResultSet.next()){
-                    Order.MealsBean mealsBean = new Order.MealsBean();
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
                     mealsBeanList.add(mealsBean);
                 }
-                order.setMeals(mealsBeanList);
+                order.getOrder().setMeals(mealsBeanList);
                 orderList.add(order);
             }
         } catch (SQLException e) {
@@ -569,14 +580,14 @@ public class OrderDAO {
             resultSet.getMetaData(); //取得Query資料
             while(resultSet.next()) {
                 Order order = new Order();
-                List<Order.MealsBean> mealsBeanList = new ArrayList<>();
-                order.setOrderID(resultSet.getLong("Order_Id"));
-                order.setTotal(resultSet.getInt("Total"));
-                order.setAddress(resultSet.getString("Address"));
-                order.setOther(resultSet.getString("Other"));
-                order.setAccount(resultSet.getString("Account"));
-                order.setUserName(resultSet.getString("User_Name"));
-                order.setPhoneNumber(resultSet.getString("Phone_Number"));
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
+                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
 
                 ResultSet mealResultSet = null;
                 String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost " +
@@ -590,13 +601,13 @@ public class OrderDAO {
                 preparedStatement.setLong(1, userID);
                 mealResultSet = preparedStatement.executeQuery();
                 while (mealResultSet.next()){
-                    Order.MealsBean mealsBean = new Order.MealsBean();
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
                     mealsBean.setCost(mealResultSet.getInt("Cost"));
                     mealsBeanList.add(mealsBean);
                 }
-                order.setMeals(mealsBeanList);
+                order.getOrder().setMeals(mealsBeanList);
                 orderList.add(order);
             }
         } catch (SQLException e) {
@@ -664,15 +675,15 @@ public class OrderDAO {
             resultSet.getMetaData(); //取得Query資料
             while(resultSet.next()) {
                 Order order = new Order();
-                List<Order.MealsBean> mealsBeanList = new ArrayList<>();
-                order.setOrderID(resultSet.getLong("History_Id"));
-                order.setStartTime(resultSet.getString("Start_Time"));
-                order.setTotal(resultSet.getInt("Total"));
-                order.setAddress(resultSet.getString("Address"));
-                order.setOther(resultSet.getString("Other"));
-                order.setAccount(resultSet.getString("Account"));
-                order.setUserName(resultSet.getString("User_Name"));
-                order.setPhoneNumber(resultSet.getString("Phone_Number"));
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("History_Id"));
+                order.getOrder().setStartTime(resultSet.getString("Start_Time"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
+                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
 
                 ResultSet mealResultSet = null;
                 String mealSql = "SELECT history_food.Food_Name, history_food.Count, history_food.Rest_Name " +
@@ -684,13 +695,13 @@ public class OrderDAO {
                 preparedStatement.setLong(1, deliverId);
                 mealResultSet = preparedStatement.executeQuery();
                 while (mealResultSet.next()){
-                    Order.MealsBean mealsBean = new Order.MealsBean();
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
-                    order.setRestName(mealResultSet.getString("Rest_Name"));
+                    mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
                     mealsBeanList.add(mealsBean);
                 }
-                order.setMeals(mealsBeanList);
+                order.getOrder().setMeals(mealsBeanList);
                 orderList.add(order);
             }
         } catch (SQLException e) {

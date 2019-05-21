@@ -30,7 +30,7 @@ public class SendOrderServlet extends HttpServlet {
 //        HttpSession session = request.getSession();
 //        order.setCustomerID((Long)session.getAttribute("User_Id"));
         Long userID = Long.parseLong(request.getParameter("userID"));
-        order.setCustomerID(userID);
+        order.getCustomer().setUserID(userID);
         // 產生訂單編號 將訂單存入資料庫
         OrderService.addOrder(order);
 

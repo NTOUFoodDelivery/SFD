@@ -38,14 +38,14 @@ public class PushOrderTask extends TimerTask {
                     Collections.sort(idleOrderList, new Comparator<Order>() {
                         @Override
                         public int compare(Order order1, Order order2) {
-                            return order2.getCastingPrio() - order1.getCastingPrio();
+                            return order2.getOrder().getCastingPrio() - order1.getOrder().getCastingPrio();
                         }
                     });
 
                     for (Order order : idleOrderList) {
 
                         // 如果訂單為空閒
-                        if (order.getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
+                        if (order.getOrder().getOrderStatus().equals(OrderSetting.OrderStatus.WAIT)) {
 
                             for (User deliver : idleDeliverList) {
 //                        User deliver = OrderService.onlineDelivers.get(user.getUserID());
@@ -56,9 +56,9 @@ public class PushOrderTask extends TimerTask {
                                         idleDeliverSession.getBasicRemote().sendText(gson.toJson(order));
 //                                    System.out.println(order.getOrderID());
 //                                    System.out.println(deliver.getUserID());
-                                        OrderDAO.modifyOrderStatus(order.getOrderID(), OrderSetting.OrderStatus.PUSHING);
+                                        OrderDAO.modifyOrderStatus(order.getOrder().getOrderID(), OrderSetting.OrderStatus.PUSHING);
                                         UserDAO.modifyUserStatus(deliver.getUserID(), MemberSetting.UserStatus.PUSHING);
-                                        order.setOrderStatus(OrderSetting.OrderStatus.PUSHING);
+                                        order.getOrder().setOrderStatus(OrderSetting.OrderStatus.PUSHING);
                                         deliver.setUserStatus(MemberSetting.UserStatus.PUSHING);
 
                                     } catch (IOException e) {
