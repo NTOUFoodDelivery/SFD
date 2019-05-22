@@ -38,5 +38,68 @@
         <property name="user">root</property>
         <property name="password">bsqo9103</property>
     </named-config>
-
+    <named-config name="Yaoder">
+        <property name="checkoutTimeout">3000</property>
+        <property name="idleConnectionTestPeriod">30</property>
+        <property name="initialPoolSize">2</property>
+        <property name="maxIdleTime">30</property>
+        <property name="maxPoolSize">5</property>
+        <property name="minPoolSize">2</property>
+        <property name="maxStatements">0</property>
+        <property name="acquireIncrement">3</property>
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+        <property name="jdbcUrl">
+            <![CDATA[jdbc:mysql://127.0.0.1:3306/newschema?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8]]>
+        </property>
+        <property name="user">root</property>
+        <property name="password">Chang301</property>
+    </named-config>
+    <named-config name="KevinSFD">
+        <property name="checkoutTimeout">3000</property>
+        <property name="idleConnectionTestPeriod">30</property>
+        <property name="initialPoolSize">2</property>
+        <property name="maxIdleTime">30</property>
+        <property name="maxPoolSize">5</property>
+        <property name="minPoolSize">2</property>
+        <property name="maxStatements">50</property>
+        <property name="acquireIncrement">3</property>
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+        <property name="jdbcUrl">
+            <![CDATA[jdbc:mysql://127.0.0.1:3306/localSFD?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8]]>
+        </property>
+        <property name="user">root</property>
+        <property name="password">kevin691423</property>
+    </named-config>
+    <named-config name="thomas205327">
+        <property name="checkoutTimeout">3000</property>
+        <property name="idleConnectionTestPeriod">30</property>
+        <property name="initialPoolSize">2</property>
+        <property name="maxIdleTime">30</property>
+        <property name="maxPoolSize">5</property>
+        <property name="minPoolSize">2</property>
+        <property name="maxStatements">50</property>
+        <property name="acquireIncrement">3</property>
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+        <property name="jdbcUrl">
+            <![CDATA[jdbc:mysql://127.0.0.1:3306/sfd_local?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8]]>
+        </property>
+        <property name="user">root</property>
+        <property name="password">aa641803</property>
+    </named-config>
+    <named-config name="wudishidove">
+        <property name="checkoutTimeout">3000</property>
+        <property name="idleConnectionTestPeriod">30</property>
+        <property name="initialPoolSize">2</property>
+        <property name="maxIdleTime">30</property>
+        <property name="maxPoolSize">5</property>
+        <property name="minPoolSize">2</property>
+        <property name="maxStatements">50</property>
+        <property name="acquireIncrement">3</property>
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+        <property name="jdbcUrl">
+            <![CDATA[jdbc:mysql://127.0.0.1:3306/123?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8]]>
+        </property>
+        <property name="user">root</property>
+        <property name="password">gogo0629+</property>
+    </named-config>
 </c3p0-config>
