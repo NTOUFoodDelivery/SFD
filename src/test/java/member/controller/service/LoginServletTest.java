@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class LogInServletTest {
+public class LoginServletTest {
 
     @Before
     public void setUp() throws Exception {

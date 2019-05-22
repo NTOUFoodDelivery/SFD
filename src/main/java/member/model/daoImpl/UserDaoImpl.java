@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao
      * @author BerSerKer
      * @date 2019-05-20 22:15
      * @param [account, password, userType]
-     * @return db.demo.javabean.User
+     * @return member.model.javabean.User
      */
     @Override
     public User loginUser(String account, String password, String userType) {
@@ -310,7 +310,7 @@ public class UserDaoImpl implements UserDao
      * @author BerSerKer
      * @date 2019-05-20 23:10
      * @param []
-     * @return java.util.List<db.demo.javabean.User>
+     * @return java.util.List<member.model.javabean.User>
      */
     @Override
     public List<User> searchIdleDeliverUser() {

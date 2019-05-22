@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import util.configurator.GetHttpSessionConfigurator;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
-import member.controller.servlet.LogInServlet;
+import member.controller.servlet.LoginServlet;
 import member.model.javabean.MemberSetting;
 import order.controller.service.OrderService;
 import order.model.javabean.PushResult;
@@ -50,7 +50,7 @@ public class PushOrderWebSocket {
     @OnClose
     public void onClose(Session session) {
         System.out.println("PushOrderWebSocket Server close ::"+session.getId());
-        List<Long> closeSessions = (List<Long>)LogInServlet.getKey(sessions,session);
+        List<Long> closeSessions = (List<Long>) LoginServlet.getKey(sessions,session);
         for(Long userID : closeSessions){
             sessions.remove(userID);
             UserDAO.modifyUserStatus(userID, MemberSetting.UserStatus.OFFLINE);
@@ -65,7 +65,7 @@ public class PushOrderWebSocket {
         synchronized(sessions) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
             try {
-                List<Long> msgSessions = (List<Long>)LogInServlet.getKey(sessions,session);
+                List<Long> msgSessions = (List<Long>) LoginServlet.getKey(sessions,session);
                 for(Long deliverID : msgSessions){
                     PushResult pushResult = gson.fromJson(msg,PushResult.class);
                     pushResult.setDeliverID(deliverID);

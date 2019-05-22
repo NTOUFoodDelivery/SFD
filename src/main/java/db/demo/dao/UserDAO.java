@@ -46,7 +46,7 @@ public class UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        User user = new User();
+        User user = null ;
         try {
             connection = JdbcUtils.getconn();
             String sql = "select * from member where account=? and Password=? and User_Type=?";
@@ -56,6 +56,7 @@ public class UserDAO {
             preparedStatement.setString(3,userType);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
+                user = new User();
                 user.setUserID(resultSet.getLong("User_Id"));
                 user.setAccount(resultSet.getString("Account"));
                 user.setEmail(resultSet.getString("Email"));

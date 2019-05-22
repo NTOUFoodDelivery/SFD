@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SFD登入測試</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        #center {
+            position:absolute; top:50%; left:50%;
+            margin-left: -105px;
+            margin-top: -170px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="center">
+    <h1>登入後台測試</h1>
+        <form id="myForm">
+            Username:<input type="text" name="account"><br>
+            Password:<input type="password" name="password"><br>
+            <select class="custom-select" name="userType">
+                <option value="" selected>Choose...</option>
+                <option value="Customer_and_Deliver">外送員</option>
+                <option value="Customer">食客</option>
+                <option value="Administrator">admin</option>
+            </select>
+            <input type="submit" value="Login">
+            <input type="reset" value="reset">
+        </form>
+    <div id="myDiv"></div>
+</div>
+
+<script>
+    $("#myForm").submit(function (event) {
+        $.ajax({
+            url: 'LoginServlet',
+            type: 'POST',
+            data: $('#myForm').serialize(),
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $("#myDiv").append("<p>" + data[0] + "</p>");
+
+            }
+        });
+        event.preventDefault();
+    });
+</script>
+</body>
+</html>

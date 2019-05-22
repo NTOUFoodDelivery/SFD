@@ -1,5 +1,6 @@
 package member.controller.servlet;
 
+import com.google.gson.Gson;
 import db.demo.dao.UserDAO;
 import db.demo.javabean.User;
 import member.model.javabean.MemberSetting;
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/LogInServlet")
-public class LogInServlet extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);
     }
@@ -33,14 +34,17 @@ public class LogInServlet extends HttpServlet {
 
         if(account==null||"".equals(account)){ // account不能空著喔
             info.add("account不能空著喔");
+            System.out.println("account不能空著喔");
         }
 
         if(password==null||"".equals(password)){ // password不能空著喔
             info.add("password不能空著喔");
+            System.out.println("password不能空著喔");
         }
 
         if(userType==null||"".equals(userType)){ // userType不能空著喔
             info.add("userType不能空著喔");
+            System.out.println("userType不能空著喔");
         }
 
         HttpSession session = request.getSession();
@@ -68,19 +72,25 @@ public class LogInServlet extends HttpServlet {
                         case MemberSetting.UserType.CUSTOMER:{
                             user.setUserType(MemberSetting.UserStatus.CUSTOMER);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.CUSTOMER);
-                            response.sendRedirect("web/index_eater.html");
+//                            response.sendRedirect("web/index_eater.html");
+                            Gson gson = new Gson();
+                            response.getWriter().println(gson.toJson(user));
                             break;
                         }
                         case MemberSetting.UserType.CUSTOMER_AND_DELIVER:{
                             user.setUserType(MemberSetting.UserStatus.DELIVER_ON);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.DELIVER_ON);
-                            response.sendRedirect("web/index_deliver.html");
+//                            response.sendRedirect("web/index_deliver.html");
+                            Gson gson = new Gson();
+                            response.getWriter().println(gson.toJson(user));
                             break;
                         }
                         case MemberSetting.UserType.ADMINISTRATOR:{
                             user.setUserType(MemberSetting.UserStatus.CUSTOMER);
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.ADMINISTRATOR);
-                            response.sendRedirect("web/index_admin.html");
+//                            response.sendRedirect("web/index_admin.html");
+                            Gson gson = new Gson();
+                            response.getWriter().println(gson.toJson(user));
                             break;
                         }
                         default:{
@@ -115,22 +125,24 @@ public class LogInServlet extends HttpServlet {
 
                     // ------判斷使用者登入狀況------- END
                 }else {
+                    System.out.println("NININI");
                     info.add("登入失敗，錯誤的帳號、密碼或userType");
-                    request.setAttribute("info", info); // 保存錯誤訊息
+//                    request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
-//                    response.sendRedirect("LoginDemo.jsp");
-                    response.sendRedirect("login.html");
-//                    request.getRequestDispatcher("login.jsp").forward(request,response); // 跳轉回登入頁面
+                    Gson gson = new Gson();
+                    response.getWriter().println(gson.toJson(info));
+                    System.out.println(info);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else {
-            request.setAttribute("info", info); // 保存錯誤訊息
+//            request.setAttribute("info", info); // 保存錯誤訊息
+            Gson gson = new Gson();
+            response.getWriter().println(gson.toJson(info));
+            System.out.println(info);
             session.invalidate(); // 銷毀 session
-//            response.sendRedirect("login.jsp");
-            response.sendRedirect("login.html");
-//            request.getRequestDispatcher("login.html").forward(request,response); // 跳轉回登入頁面
+
         }
     }
 
