@@ -42,12 +42,12 @@ public class FeedbackServlet extends HttpServlet {
         switch (cmd){
             case MemberSetting.Feedback.CREATE:{
                 System.out.println("CREATE");
-                json = gson.toJson(feedbackService.createFeedback(feedback,user));
+                json = gson.toJson(HttpCommonAction.getStatusCodeResponse(feedbackService.createFeedback(feedback,user)));
                 break;
             }
             case MemberSetting.Feedback.REPLY:{
                 System.out.println("REPLY");
-                json = gson.toJson(feedbackService.replyFeedback(feedback));
+                json = gson.toJson(HttpCommonAction.getStatusCodeResponse(feedbackService.replyFeedback(feedback)));
                 break;
             }
             case MemberSetting.Feedback.SHOW:{
