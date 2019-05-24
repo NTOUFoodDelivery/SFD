@@ -20,31 +20,28 @@ import java.util.Map;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
-    }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         String account = request.getParameter("account");
         String password = request.getParameter("password");
         String userType = request.getParameter("userType");
 
+        String url = response.encodeURL("/loginDemo.html");
+        System.out.println(url);
+
         List<String> info=new ArrayList<>(); // 錯誤訊息
 
         if(account==null||"".equals(account)){ // account不能空著喔
             info.add("account不能空著喔");
-            System.out.println("account不能空著喔");
         }
 
         if(password==null||"".equals(password)){ // password不能空著喔
             info.add("password不能空著喔");
-            System.out.println("password不能空著喔");
         }
 
         if(userType==null||"".equals(userType)){ // userType不能空著喔
             info.add("userType不能空著喔");
-            System.out.println("userType不能空著喔");
         }
 
         HttpSession session = request.getSession();
@@ -58,15 +55,15 @@ public class LoginServlet extends HttpServlet {
                     PushOrderWebSocket.httpSessions.put(session,user);
                     session.setAttribute("login","login");
                     session.setAttribute("User_Id",user.getUserID()); // User_Id 保存進 session 全域變數中
-                    session.setAttribute("Account",user.getAccount()); // Account 保存進 session 全域變數中
-                    session.setAttribute("Password",user.getPassword()); // Password 保存進 session 全域變數中
-                    session.setAttribute("User_Name",user.getUserName()); // User_Name 保存進 session 全域變數中
-                    session.setAttribute("Email",user.getEmail()); // Email 保存進 session 全域變數中
-                    session.setAttribute("Phone_Number",user.getPhoneNumber()); // Phone_Number 保存進 session 全域變數中
-                    session.setAttribute("Last_Address",user.getLastAddress()); // Last_Address 保存進 session 全域變數中
-                    session.setAttribute("User_Type",user.getUserType()); // User_Type 保存進 session 全域變數中
-                    session.setAttribute("User_Status",user.getUserStatus()); // User_Status 保存進 session 全域變數中
-
+                    session.setAttribute("User",user);
+//                    session.setAttribute("Account",user.getAccount()); // Account 保存進 session 全域變數中
+//                    session.setAttribute("Password",user.getPassword()); // Password 保存進 session 全域變數中
+//                    session.setAttribute("User_Name",user.getUserName()); // User_Name 保存進 session 全域變數中
+//                    session.setAttribute("Email",user.getEmail()); // Email 保存進 session 全域變數中
+//                    session.setAttribute("Phone_Number",user.getPhoneNumber()); // Phone_Number 保存進 session 全域變數中
+//                    session.setAttribute("Last_Address",user.getLastAddress()); // Last_Address 保存進 session 全域變數中
+//                    session.setAttribute("User_Type",user.getUserType()); // User_Type 保存進 session 全域變數中
+//                    session.setAttribute("User_Status",user.getUserStatus()); // User_Status 保存進 session 全域變數中
 
                     switch (user.getUserType()){
                         case MemberSetting.UserType.CUSTOMER:{
@@ -74,7 +71,8 @@ public class LoginServlet extends HttpServlet {
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.CUSTOMER);
 //                            response.sendRedirect("web/index_eater.html");
                             Gson gson = new Gson();
-                            response.getWriter().println(gson.toJson(user));
+                            info.add("CUSTOMER");
+                            response.getWriter().println(gson.toJson(info));
                             break;
                         }
                         case MemberSetting.UserType.CUSTOMER_AND_DELIVER:{
@@ -82,7 +80,8 @@ public class LoginServlet extends HttpServlet {
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.DELIVER_ON);
 //                            response.sendRedirect("web/index_deliver.html");
                             Gson gson = new Gson();
-                            response.getWriter().println(gson.toJson(user));
+                            info.add("CUSTOMER_AND_DELIVER");
+                            response.getWriter().println(gson.toJson(info));
                             break;
                         }
                         case MemberSetting.UserType.ADMINISTRATOR:{
@@ -90,7 +89,8 @@ public class LoginServlet extends HttpServlet {
                             UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.ADMINISTRATOR);
 //                            response.sendRedirect("web/index_admin.html");
                             Gson gson = new Gson();
-                            response.getWriter().println(gson.toJson(user));
+                            info.add("ADMINISTRATOR");
+                            response.getWriter().println(gson.toJson(info));
                             break;
                         }
                         default:{
@@ -125,8 +125,8 @@ public class LoginServlet extends HttpServlet {
 
                     // ------判斷使用者登入狀況------- END
                 }else {
-                    System.out.println("NININI");
                     info.add("登入失敗，錯誤的帳號、密碼或userType");
+                    info.add(0,"error");
 //                    request.setAttribute("info", info); // 保存錯誤訊息
                     session.invalidate(); // 銷毀 session
                     Gson gson = new Gson();
@@ -137,13 +137,37 @@ public class LoginServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }else {
+            info.add(0,"error");
 //            request.setAttribute("info", info); // 保存錯誤訊息
             Gson gson = new Gson();
+            session.invalidate(); // 銷毀 session
             response.getWriter().println(gson.toJson(info));
             System.out.println(info);
-            session.invalidate(); // 銷毀 session
+
 
         }
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setContentType("text/html;charset=UTF-8");
+
+        List<String> info=new ArrayList<>(); // 錯誤訊息
+        Gson gson = new Gson();
+        HttpSession httpSession = request.getSession();
+        if(httpSession.isNew()){
+            System.out.println("sdsdfsadf");
+            info.add("reload");
+//            httpSession.invalidate(); // 銷毀 session
+            response.getWriter().println(gson.toJson(info));
+        }else{
+            System.out.println("asd");
+            User user = (User)httpSession.getAttribute("User");
+            System.out.println(user.toString());
+            response.getWriter().println(gson.toJson(user));
+        }
+
     }
 
     public static Object getKey(Map map, Object value){

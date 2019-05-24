@@ -31,8 +31,8 @@ public class LogFilter implements Filter {
 //                String errors = "您還沒有登入，或者session已過期。請先登入！";
 //                request.setAttribute("Message", errors);
 //                response.setHeader("sessionstatus", "timeout");
-//                request.getRequestDispatcher("/LoginDemo.jsp").forward(request,response); // 跳轉回登入頁面
 //            } else {
+//
 //                chain.doFilter(request, response);
 //            }
 //        }else {

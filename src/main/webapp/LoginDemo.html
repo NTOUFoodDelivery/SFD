@@ -24,7 +24,6 @@
             justify-content: center;
             min-height: 100vh;
             /*background-color: #ededed;*/
-            visibility:hidden;
         }
 
         .loader {
@@ -98,28 +97,30 @@
 
 <body>
 
-<div id="center" >
+<div id="center" style="visibility:visible;">
     <h1>登入後台測試</h1>
-        <form id="myForm">
-            Username:<input type="text" name="account"><br>
-            Password:<input type="password" name="password"><br>
-            <select class="custom-select" name="userType">
-                <option value="" selected>Choose...</option>
-                <option value="Customer_and_Deliver">外送員</option>
-                <option value="Customer">食客</option>
-                <option value="Administrator">admin</option>
-            </select>
-            <input type="submit" value="Login">
-            <input type="reset" value="reset">
-        </form>
+    <form id="myForm">
+        Username:<input type="text" name="account"><br>
+        Password:<input type="password" name="password"><br>
+        <select class="custom-select" name="userType">
+            <option value="" selected>Choose...</option>
+            <option value="Customer_and_Deliver">外送員</option>
+            <option value="Customer">食客</option>
+            <option value="Administrator">admin</option>
+        </select>
+        <input type="submit" value="Login">
+        <input type="reset" value="reset">
+    </form>
     <div id="myDiv"></div>
+
 </div>
+<div class="card card-body" id="errorStr"></div>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container">
+<div class="container" style="visibility:hidden;">
     <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340">
         <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
         <circle cx="170" cy="170" r="135" stroke="#404041"/>
@@ -128,9 +129,17 @@
     </svg>
 
 </div>
+
+<script>
+    if (!navigator.cookieEnabled) {
+        $("#errorStr").html("瀏覽器已禁用Cookie！");
+    } else {
+        $("#errorStr").html("瀏覽器已開啟Cookie！");
+    }
+</script>
 <script>
     $("#myForm").submit(function (event) {
-        $('#center').hide(0);
+        $("#center").css('visibility','hidden');
         $('.container').css('visibility','visible');
         $.ajax({
             url: 'LoginServlet',
@@ -138,13 +147,42 @@
             data: $('#myForm').serialize(),
             dataType: 'json',
             success: function (data) {
-                console.log(data)
-                $("#myDiv").append("<p>" + data[0] + "</p>");
-                $('.container').delay(3000).css('visibility','hidden');
-                $('#center').delay().show();
+                console.log(data);
+                alert(data)
+                var cmd = data[0];
+                $("#myDiv").empty();
+                for(let i=1;i<data.length;i++){
+                    $("#myDiv").append("<p>" + data[i] + "</p>");
+                }
+                setTimeout(function() {
+                    $(".container").css('visibility','hidden');
+                    $("#center").css('visibility','visible');
+                }, 1000);
+                if (cmd === "CUSTOMER_AND_DELIVER") {
+                    window.location.href='testDeliver.html';
+                }else if (cmd === "CUSTOMER") {
+                    window.location.href='index.html';
+                }else {
+                    $('input[type=password]')[0].value = "";
+                }
             }
         });
         event.preventDefault();
+    });
+</script>
+<script>
+    $.ajaxSetup({
+        complete : function(xhr, textStatus) {
+            console.log("llllll")
+            var sessionid = xhr.getResponseHeader("JSESSIONID");
+            if (!navigator.cookieEnabled){
+                var url = document.URL;
+                url = url.split("?");
+                url = url[0]+"?JSESSIONID="+sessionid;
+                console.log(url)
+                // window.location.replace(url);
+            }
+        }
     });
 </script>
 </body>

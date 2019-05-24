@@ -28,7 +28,7 @@
     <filter-class>member.util.filter.LogFilter</filter-class>
     <init-param>
       <param-name>excludedUrls</param-name>
-      <param-value>/LogInServlet</param-value>
+      <param-value>/LoginServlet</param-value>
     </init-param>
   </filter>
   <filter-mapping>
