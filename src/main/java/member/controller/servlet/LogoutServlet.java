@@ -1,7 +1,8 @@
 package member.controller.servlet;
 
 import db.demo.dao.UserDAO;
-import member.model.javabean.MemberSetting;
+import member.util.setting.UserStatus;
+import member.util.setting.UserType;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +22,8 @@ public class LogoutServlet extends HttpServlet {
         Long userID = (Long)httpSession.getAttribute("User_Id");
         String userType = (String)httpSession.getAttribute("User_Type");
         httpSession.invalidate(); // 註銷 該 session
-        UserDAO.modifyUserStatus(userID,MemberSetting.UserStatus.OFFLINE); // 設定狀態為 下線
-        if(MemberSetting.UserType.ADMINISTRATOR.equals(userType)){
+        UserDAO.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
+        if(UserType.Administrator.toString().equals(userType)){
             response.sendRedirect("login.html"); // 去 管理者 登入介面
         }else{
             response.sendRedirect("login.html"); // 去 食客/外送員 登入介面

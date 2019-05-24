@@ -1,9 +1,11 @@
 package member.controller.servlet;
 
 import com.google.gson.Gson;
-import db.demo.dao.UserDAO;
-import db.demo.javabean.User;
-import member.model.javabean.MemberSetting;
+
+import member.model.daoImpl.UserDaoImpl;
+import member.model.javabean.User;
+import member.util.setting.UserStatus;
+import member.util.setting.UserType;
 import order.controller.websocket.PushOrderWebSocket;
 
 import javax.servlet.ServletException;
@@ -45,7 +47,8 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(info.size()==0){
             try {
-                User user = UserDAO.loginUser(account,password,userType);
+                UserDaoImpl userDao = new UserDaoImpl();
+                User user = userDao.loginUser(account,password,userType);
 
                 if(user != null){
                     // ------判斷使用者登入狀況------- BEGIN
@@ -63,28 +66,30 @@ public class LoginServlet extends HttpServlet {
 //                    session.setAttribute("User_Type",user.getUserType()); // User_Type 保存進 session 全域變數中
 //                    session.setAttribute("User_Status",user.getUserStatus()); // User_Status 保存進 session 全域變數中
 
-                    switch (user.getUserType()){
-                        case MemberSetting.UserType.CUSTOMER:{
-                            user.setUserType(MemberSetting.UserStatus.CUSTOMER);
-                            UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.CUSTOMER);
+                    UserType currentUserType = UserType.getUserType(user.getUserType());
+
+                    switch (currentUserType){
+                        case Customer:{
+                            user.setUserType(UserStatus.CUSTOMER.toString());
+                            userDao.modifyUserStatus(user.getUserID(),UserStatus.CUSTOMER.toString());
 //                            response.sendRedirect("web/index_eater.html");
                             Gson gson = new Gson();
                             info.add("CUSTOMER");
                             response.getWriter().println(gson.toJson(info));
                             break;
                         }
-                        case MemberSetting.UserType.CUSTOMER_AND_DELIVER:{
-                            user.setUserType(MemberSetting.UserStatus.DELIVER_ON);
-                            UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.DELIVER_ON);
+                        case Customer_and_Deliver:{
+                            user.setUserType(UserStatus.DELIVER_ON.toString());
+                            userDao.modifyUserStatus(user.getUserID(),UserStatus.DELIVER_ON.toString());
 //                            response.sendRedirect("web/index_deliver.html");
                             Gson gson = new Gson();
                             info.add("CUSTOMER_AND_DELIVER");
                             response.getWriter().println(gson.toJson(info));
                             break;
                         }
-                        case MemberSetting.UserType.ADMINISTRATOR:{
-                            user.setUserType(MemberSetting.UserStatus.CUSTOMER);
-                            UserDAO.modifyUserStatus(user.getUserID(),MemberSetting.UserStatus.ADMINISTRATOR);
+                        case Administrator:{
+                            user.setUserType(UserStatus.CUSTOMER.toString());
+                            userDao.modifyUserStatus(user.getUserID(),UserStatus.ADMINISTRATOR.toString());
 //                            response.sendRedirect("web/index_admin.html");
                             Gson gson = new Gson();
                             info.add("ADMINISTRATOR");
@@ -95,7 +100,7 @@ public class LoginServlet extends HttpServlet {
                             break;
                         }
                     }
-
+                    userDao = null;
 
 //                    response.sendRedirect("chatDemo.jsp");
 //                    request.getRequestDispatcher("chatDemo.jsp").forward(request,response); // 跳轉回登入頁面

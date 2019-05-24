@@ -1,15 +1,9 @@
 package member.controller.service;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import db.demo.dao.UserDAO;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.Feedback;
-import member.model.javabean.FeedbackReq;
-import member.model.javabean.MemberSetting;
 import member.model.javabean.User;
-import util.javabean.CommonRequest;
+import member.util.setting.UserType;
 
 import java.util.List;
 
@@ -36,7 +30,7 @@ public class FeedbackService {
     public List<Feedback> showFeedback(User user){
         userDao =  new UserDaoImpl();
         List<Feedback> feedbackList;
-        if (user.getUserType().equals(MemberSetting.UserType.ADMINISTRATOR)) {
+        if (user.getUserType().equals(UserType.Administrator.toString())) {
             feedbackList = userDao.searchFeedback();
         }
         else{

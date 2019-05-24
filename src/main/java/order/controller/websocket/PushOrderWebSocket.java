@@ -3,11 +3,12 @@ package order.controller.websocket;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import member.model.daoImpl.UserDaoImpl;
+import member.model.javabean.User;
+import member.util.setting.UserStatus;
 import util.configurator.GetHttpSessionConfigurator;
-import db.demo.dao.UserDAO;
-import db.demo.javabean.User;
+
 import member.controller.servlet.LoginServlet;
-import member.model.javabean.MemberSetting;
 import order.controller.service.OrderService;
 import order.model.javabean.PushResult;
 
@@ -27,6 +28,7 @@ public class PushOrderWebSocket {
 
     private Session session;
     private HttpSession httpSession;
+    private UserDaoImpl userDao = new UserDaoImpl();
 
     @OnOpen
     public void open(Session session, EndpointConfig config) {
@@ -39,7 +41,7 @@ public class PushOrderWebSocket {
         System.out.println(user.getUserStatus());
 //        OrderService.onlineDelivers.put(user.getUserID(),user);
 
-        if(UserDAO.showUserIdentity(user.getUserID()).equals(MemberSetting.UserStatus.DELIVER_ON)){ // 如果外送員 上線且有空 則 連結 websocket
+        if(userDao.showUserStatus(user.getUserID()).equals(UserStatus.DELIVER_ON.toString())){ // 如果外送員 上線且有空 則 連結 websocket
             sessions.put(user.getUserID(),session);
             System.out.println(user.getUserID() + " :: DELIVER_ON");
         }else { // 若外送員 已接單 或 離線 則 斷開 websocket連結
@@ -53,7 +55,7 @@ public class PushOrderWebSocket {
         List<Long> closeSessions = (List<Long>) LoginServlet.getKey(sessions,session);
         for(Long userID : closeSessions){
             sessions.remove(userID);
-            UserDAO.modifyUserStatus(userID, MemberSetting.UserStatus.OFFLINE);
+            userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString());
 //            OrderService.onlineDelivers.remove(user.getUserID());
         }
     }
@@ -69,7 +71,7 @@ public class PushOrderWebSocket {
                 for(Long deliverID : msgSessions){
                     PushResult pushResult = gson.fromJson(msg,PushResult.class);
                     pushResult.setDeliverID(deliverID);
-                    OrderService.dealOrder(pushResult);
+//                    OrderService.dealOrder(pushResult);
                 }
             } catch (Exception e) {
             }

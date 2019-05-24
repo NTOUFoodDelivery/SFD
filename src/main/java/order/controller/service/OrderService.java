@@ -1,29 +1,24 @@
 package order.controller.service;
 
-import db.demo.connect.JdbcUtils;
 import db.demo.dao.OrderDAO;
-import db.demo.dao.UserDAO;
-import db.demo.javabean.User;
-import member.model.javabean.MemberSetting;
-import order.controller.websocket.PushOrderWebSocket;
+
+import member.model.daoImpl.UserDaoImpl;
+import member.util.setting.UserStatus;
 import order.model.javabean.Order;
 import order.model.javabean.OrderSetting;
 import order.model.javabean.PushResult;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static db.demo.dao.OrderDAO.getOrderStatus;
 
 public class OrderService {
 
 //    public static Map<Long, User> onlineDelivers =  new ConcurrentHashMap<Long,User>();
     public static Map<Long, Order> pushOrders =  new ConcurrentHashMap<Long,Order>();
+    private UserDaoImpl userDao;
 
     // 產生訂單編號 將訂單存入資料庫
-    public static void addOrder(Order order){
+    public void addOrder(Order order){
 //        order.setOrderID(JdbcUtils.generateID()); // 產生訂單 ID
         order.getOrder().setCastingPrio(0);
         order.getOrder().setOrderStatus(OrderSetting.OrderStatus.WAIT);
@@ -34,7 +29,7 @@ public class OrderService {
     // 外送員 食客
     //
     // 完成訂單
-    public static void confirmOrder(PushResult pushResult){
+    public void confirmOrder(PushResult pushResult){
         Long orderID = pushResult.getOrderID();
         Long deliverID = pushResult.getDeliverID();
         String status = OrderDAO.getOrderStatus(orderID);
@@ -58,7 +53,8 @@ public class OrderService {
     }
 
     // 處理訂單 接受與否 以及 外送員、訂單狀態 轉換
-    public static void dealOrder(PushResult pushResult){
+    public void dealOrder(PushResult pushResult){
+        userDao = new UserDaoImpl();
         Long orderID = pushResult.getOrderID();
         Long deliverID = pushResult.getDeliverID();
         boolean isAccept = pushResult.isAccept();
@@ -71,7 +67,7 @@ public class OrderService {
             // 去資料庫 修改訂單狀態成"被接受之類的"
             OrderDAO.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DEALING);
             // 將 外送員狀態 改成"已接受訂單之類的"
-            UserDAO.modifyUserStatus(deliverID, MemberSetting.UserStatus.DELIVER_BUSY);
+            userDao.modifyUserStatus(deliverID, UserStatus.DELIVER_BUSY.toString());
         } else {  // 訂單取消
 //            Order order = pushOrders.get(orderID);
 //            order.setValue(order.getValue()+OrderSetting.ORDERSTAGE);
@@ -81,7 +77,8 @@ public class OrderService {
             // 去資料庫 修改訂單狀態成"未推播"
             OrderDAO.modifyOrderStatus(orderID,OrderSetting.OrderStatus.WAIT);
             // 將外送員狀態 改成"空閒之類的"
-            UserDAO.modifyUserStatus(deliverID,MemberSetting.UserStatus.DELIVER_ON);
+            userDao.modifyUserStatus(deliverID,UserStatus.DELIVER_ON.toString());
         }
+        userDao = null;
     }
 }

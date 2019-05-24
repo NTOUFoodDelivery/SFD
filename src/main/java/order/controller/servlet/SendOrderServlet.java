@@ -32,7 +32,7 @@ public class SendOrderServlet extends HttpServlet {
         Long userID = Long.parseLong(request.getParameter("userID"));
         order.getCustomer().setUserID(userID);
         // 產生訂單編號 將訂單存入資料庫
-        OrderService.addOrder(order);
+//        OrderService.addOrder(order);
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);

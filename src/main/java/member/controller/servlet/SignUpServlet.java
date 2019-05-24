@@ -3,8 +3,9 @@ package member.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import db.demo.javabean.User;
+
 import member.controller.service.MemberService;
+import member.model.javabean.User;
 import util.HttpCommonAction;
 import util.javabean.StatusCodeResponse;
 
@@ -28,7 +29,8 @@ public class SignUpServlet extends HttpServlet {
         User user = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),User.class);
 
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-        if(MemberService.signUp(user)){
+        MemberService memberService = new MemberService();
+        if(memberService.signUp(user)){
             statusCodeResponse.setStatusCode(HttpServletResponse.SC_ACCEPTED);
         }else {
             statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_ACCEPTABLE);

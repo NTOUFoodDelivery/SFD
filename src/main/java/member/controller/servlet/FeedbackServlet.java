@@ -6,11 +6,9 @@ import com.google.gson.GsonBuilder;
 
 import member.controller.service.FeedbackService;
 import member.model.javabean.Feedback;
-import member.model.javabean.MemberSetting;
 import member.model.javabean.User;
+import member.util.setting.FeedbackCommand;
 import util.HttpCommonAction;
-import util.javabean.CommonRequest;
-import util.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.List;
 
 @WebServlet("/FeedbackServlet")
 public class FeedbackServlet extends HttpServlet {
@@ -35,24 +31,25 @@ public class FeedbackServlet extends HttpServlet {
         Feedback feedback = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Feedback.class); // feedback
 
         HttpSession httpSession = request.getSession();
-        User user = (User)httpSession.getAttribute("User"); // user
+        User currentUser = (User)httpSession.getAttribute("User"); // current request user
 
         FeedbackService feedbackService = new FeedbackService();
         String json = null;
-        switch (cmd){
-            case MemberSetting.Feedback.CREATE:{
+        FeedbackCommand feedbackCommand = FeedbackCommand.getFeedbackCommand(cmd);
+        switch (feedbackCommand){
+            case CREATE:{
                 System.out.println("CREATE");
-                json = gson.toJson(HttpCommonAction.getStatusCodeResponse(feedbackService.createFeedback(feedback,user)));
+                json = gson.toJson(HttpCommonAction.getStatusCodeResponse(feedbackService.createFeedback(feedback,currentUser)));
                 break;
             }
-            case MemberSetting.Feedback.REPLY:{
+            case REPLY:{
                 System.out.println("REPLY");
                 json = gson.toJson(HttpCommonAction.getStatusCodeResponse(feedbackService.replyFeedback(feedback)));
                 break;
             }
-            case MemberSetting.Feedback.SHOW:{
+            case SHOW:{
                 System.out.println("SHOW");
-                json = gson.toJson(feedbackService.showFeedback(user));
+                json = gson.toJson(feedbackService.showFeedback(currentUser));
                 break;
             }
             default:{
