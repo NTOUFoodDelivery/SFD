@@ -27,8 +27,6 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         String userType = request.getParameter("userType");
 
-        String url = response.encodeURL("/loginDemo.html");
-        System.out.println(url);
 
         List<String> info=new ArrayList<>(); // 錯誤訊息
 
@@ -157,12 +155,10 @@ public class LoginServlet extends HttpServlet {
         Gson gson = new Gson();
         HttpSession httpSession = request.getSession();
         if(httpSession.isNew()){
-            System.out.println("sdsdfsadf");
             info.add("reload");
 //            httpSession.invalidate(); // 銷毀 session
             response.getWriter().println(gson.toJson(info));
         }else{
-            System.out.println("asd");
             User user = (User)httpSession.getAttribute("User");
             System.out.println(user.toString());
             response.getWriter().println(gson.toJson(user));

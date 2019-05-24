@@ -28,9 +28,8 @@ public class MemberSetting {
         public static final String PUSHING = "PUSHING";
     }
     public class Feedback {
-        public static final String ADD = "Add";
-        public static final String ADMINISTRATORGET = "ADMINISTRATORGET";
+        public static final String CREATE = "CREATE";
         public static final String REPLY = "REPLY";
-        public static final String CUSTOMERORDELIVERGET = "CUSTOMERORDELIVERGET";
+        public static final String SHOW = "SHOW";
     }
 }

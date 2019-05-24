@@ -148,7 +148,6 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-                alert(data)
                 var cmd = data[0];
                 $("#myDiv").empty();
                 for(let i=1;i<data.length;i++){
@@ -159,9 +158,9 @@
                     $("#center").css('visibility','visible');
                 }, 1000);
                 if (cmd === "CUSTOMER_AND_DELIVER") {
-                    window.location.href='testDeliver.html';
+                    window.location.href='web/index_deliver.html';
                 }else if (cmd === "CUSTOMER") {
-                    window.location.href='index.html';
+                    window.location.href='web/index_eater.html';
                 }else {
                     $('input[type=password]')[0].value = "";
                 }

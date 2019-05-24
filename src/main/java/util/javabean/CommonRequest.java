@@ -1,15 +1,18 @@
 package util.javabean;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.List;
 
 public class CommonRequest {
+
     /**
      * query : {"command":"add","what":"menu"}
      * result : [{}]
      */
 
     private QueryBean query;
-    private List<Object> result;
+    private List<?> result;
 
     public QueryBean getQuery() {
         return query;
@@ -19,12 +22,20 @@ public class CommonRequest {
         this.query = query;
     }
 
-    public List<Object> getResult() {
+    public List<?> getResult() {
         return result;
     }
 
-    public void setResult(List<Object> result) {
+    public void setResult(List<?> result) {
         this.result = result;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("query", query)
+                .append("result", result)
+                .toString();
     }
 
     public static class QueryBean {

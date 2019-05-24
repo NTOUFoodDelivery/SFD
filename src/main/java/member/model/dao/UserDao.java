@@ -1,7 +1,7 @@
 package member.model.dao;
 
+import member.model.javabean.Feedback;
 import member.model.javabean.User;
-import member.model.javabean.FeedbackRes;
 
 import java.util.List;
 
@@ -110,16 +110,16 @@ public interface UserDao {
      *
      * @description: 食客/外送員 拿到feedback資訊
      * @param [userID]
-     * @return java.util.List<member.model.javabean.FeedbackRes>
+     * @return java.util.List<member.model.javabean.Feedback>
      */
-    List<FeedbackRes> searchFeedback(Long userID);
+    List<Feedback> searchFeedback(Long userID);
 
     /**
      *
      * @description: 管理員 拿到feedback資訊
      * @param []
-     * @return java.util.List<member.model.javabean.FeedbackRes>
+     * @return java.util.List<member.model.javabean.Feedback>
      */
-    List<FeedbackRes> searchFeedback();
+    List<Feedback> searchFeedback();
     // 在 service 層 須合併 ------------------------------------------------------ END
 }

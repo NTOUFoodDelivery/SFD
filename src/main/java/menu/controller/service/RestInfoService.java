@@ -77,7 +77,7 @@ public class RestInfoService {
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         String cmd = commonRequest.getQuery().getCommand(); // 新增 刪除 修改
-        List<Object> resultBeans = commonRequest.getResult();
+        List<?> resultBeans = commonRequest.getResult();
         List<Menu> MenuList = new ArrayList<>();
         for(Object object: resultBeans){
             JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();

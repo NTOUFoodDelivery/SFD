@@ -38,7 +38,7 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 //        user.setPhoneNumber("asdasd");
 //        user.setUserType("asdasd");
 //        user.setUserStatus("ldsmlks");
-//        FeedbackRes feedbackRes = new FeedbackRes();
+//        Feedback feedbackRes = new Feedback();
 //        feedbackRes.setFeedbackID(3456540L);
 //        feedbackRes.setUserID(123213L);
 //        feedbackRes.setContent("TEST Content");

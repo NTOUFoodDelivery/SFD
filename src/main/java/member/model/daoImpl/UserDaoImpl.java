@@ -1,7 +1,7 @@
 package member.model.daoImpl;
 
 import member.model.dao.UserDao;
-import member.model.javabean.FeedbackRes;
+import member.model.javabean.Feedback;
 import member.model.javabean.User;
 import util.db.C3P0Util;
 
@@ -416,21 +416,21 @@ public class UserDaoImpl implements UserDao
      * @author BerSerKer
      * @date 2019-05-20 23:52
      * @param [userID]
-     * @return java.util.List<member.model.javabean.FeedbackRes>
+     * @return java.util.List<member.model.javabean.Feedback>
      */
     @Override
-    public List<FeedbackRes> searchFeedback(Long userID) {
+    public List<Feedback> searchFeedback(Long userID) {
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         String sql = "SELECT * FROM feedback WHERE User_Id = ?";
-        List <FeedbackRes> feedbackList = new ArrayList<>();
+        List <Feedback> feedbackList = new ArrayList<>();
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1,userID);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                FeedbackRes feedbackRes = new FeedbackRes();
+                Feedback feedbackRes = new Feedback();
                 feedbackRes.setFeedbackID(resultSet.getLong("Feedback_Id"));
                 feedbackRes.setUserID(resultSet.getLong("User_Id"));
                 feedbackRes.setContent(resultSet.getString("Content"));
@@ -455,20 +455,20 @@ public class UserDaoImpl implements UserDao
      * @author BerSerKer
      * @date 2019-05-21 00:48
      * @param []
-     * @return java.util.List<member.model.javabean.FeedbackRes>
+     * @return java.util.List<member.model.javabean.Feedback>
      */
     @Override
-    public List<FeedbackRes> searchFeedback() {
+    public List<Feedback> searchFeedback() {
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         String sql = "SELECT * FROM feedback";
-        List <FeedbackRes> feedbackList = new ArrayList<>();
+        List <Feedback> feedbackList = new ArrayList<>();
         try {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                FeedbackRes feedbackRes = new FeedbackRes();
+                Feedback feedbackRes = new Feedback();
                 feedbackRes.setFeedbackID(resultSet.getLong("Feedback_Id"));
                 feedbackRes.setUserID(resultSet.getLong("User_Id"));
                 feedbackRes.setContent(resultSet.getString("Content"));

@@ -19,7 +19,7 @@ public class MemberService {
     public static boolean modifyMemberStatus(CommonRequest commonRequest){
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         String cmd = commonRequest.getQuery().getCommand();
-        List<Object> resultBeans = commonRequest.getResult();
+        List<?> resultBeans = commonRequest.getResult();
         List<User> userList = new ArrayList<>();
         for(Object object: resultBeans){
             JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
