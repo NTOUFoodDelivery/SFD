@@ -1,13 +1,8 @@
 package member.controller.servlet;
 
 import com.google.gson.Gson;
-
 import member.controller.service.MemberService;
-import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
-import member.util.setting.UserStatus;
-import member.util.setting.UserType;
-import order.controller.websocket.PushOrderWebSocket;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -35,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
         MemberService memberService = new MemberService();
         String json = gson.toJson(memberService.login(session,account,password,userType));
-
+        memberService = null;
         PrintWriter out = response.getWriter();
         out.println(json);
         out.flush();

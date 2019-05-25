@@ -223,7 +223,7 @@ public class MemberService {
         return info;
     }
     // 註冊
-    public  boolean signUp(User user){
+    public boolean signUp(User user){
         userDao = new UserDaoImpl();
         boolean success = false;
         if(userDao.searchUser(user.getUserID())){ // 已註冊

@@ -33,6 +33,7 @@ public class SignUpServlet extends HttpServlet {
         }else {
             statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_ACCEPTABLE);
         }
+        memberService = null;
         statusCodeResponse.setTime(new Date().toString());
         String json = gson.toJson(statusCodeResponse);
         PrintWriter out = response.getWriter();

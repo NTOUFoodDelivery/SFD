@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@WebFilter("/LogFilter")
-public class LogFilter implements Filter {
+@WebFilter("/LoginFilter")
+public class LoginFilter implements Filter {
 
     private List<String> excludedUrls;
 

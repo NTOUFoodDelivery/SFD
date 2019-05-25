@@ -3,7 +3,10 @@ package order.controller.service;
 import db.demo.dao.OrderDAO;
 
 import member.model.daoImpl.UserDaoImpl;
+import member.model.javabean.User;
 import member.util.setting.UserStatus;
+import member.util.setting.UserType;
+import order.model.daoImpl.OrderDaoImpl;
 import order.model.javabean.Order;
 import order.model.javabean.OrderSetting;
 import order.model.javabean.PushResult;
@@ -13,9 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class OrderService {
 
-//    public static Map<Long, User> onlineDelivers =  new ConcurrentHashMap<Long,User>();
+    //    public static Map<Long, User> onlineDelivers =  new ConcurrentHashMap<Long,User>();
     public static Map<Long, Order> pushOrders =  new ConcurrentHashMap<Long,Order>();
     private UserDaoImpl userDao;
+    private OrderDaoImpl orderDao;
 
     // 產生訂單編號 將訂單存入資料庫
     public void addOrder(Order order){
@@ -81,4 +85,50 @@ public class OrderService {
         }
         userDao = null;
     }
+
+
+    public Object showCurrentOrder(User currentUser){
+        orderDao = new OrderDaoImpl();
+        UserType userType = currentUser.getUserType();
+        Object result = null;
+        switch (userType) {
+            case Customer: {
+                result = orderDao.searchEaterOrder(currentUser.getUserID());
+                break;
+            }
+            case Customer_and_Deliver: {
+                result = orderDao.searchDeliverOrder(currentUser.getUserID());
+                break;
+            }
+            case Administrator:{
+
+                break;
+            }
+        }
+        orderDao = null;
+        return result;
+    }
+
+    public Object showHistoryOrder(User currentUser){
+        orderDao = new OrderDaoImpl();
+        UserType userType = currentUser.getUserType();
+        Object result = null;
+        switch (userType) {
+            case Customer: {
+                result = orderDao.searchEaterHistoryOrder(currentUser.getUserID());
+                break;
+            }
+            case Customer_and_Deliver: {
+                result = orderDao.searchDeliverHistoryOrder(currentUser.getUserID());
+                break;
+            }
+            case Administrator:{
+
+                break;
+            }
+        }
+        orderDao = null;
+        return result;
+    }
+
 }

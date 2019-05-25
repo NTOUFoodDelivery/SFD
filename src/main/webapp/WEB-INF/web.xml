@@ -15,15 +15,15 @@
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
   <filter>
-    <filter-name>LogFilter</filter-name>
-    <filter-class>member.util.filter.LogFilter</filter-class>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>member.util.filter.LoginFilter</filter-class>
     <init-param>
       <param-name>excludedUrls</param-name>
       <param-value>/LoginServlet</param-value>
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>LogFilter</filter-name>
+    <filter-name>LoginFilter</filter-name>
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
