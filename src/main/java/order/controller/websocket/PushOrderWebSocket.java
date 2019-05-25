@@ -3,14 +3,12 @@ package order.controller.websocket;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import member.controller.service.MemberService;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.UserStatus;
-import util.configurator.GetHttpSessionConfigurator;
-
-import member.controller.servlet.LoginServlet;
-import order.controller.service.OrderService;
 import order.model.javabean.PushResult;
+import util.configurator.GetHttpSessionConfigurator;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -23,8 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PushOrderWebSocket {
 
 
-    public static Map<HttpSession, User> httpSessions =  new ConcurrentHashMap<HttpSession,User>();
-    public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>();
+    public static Map<HttpSession, User> httpSessions =  new ConcurrentHashMap<HttpSession,User>(); // 紀錄 所有 連接 websocket 外送員 的 request session
+    public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>(); // 紀錄 所有 連接 websocket 外送員 的 websocket session
 
     private Session session;
     private HttpSession httpSession;
@@ -52,7 +50,7 @@ public class PushOrderWebSocket {
     @OnClose
     public void onClose(Session session) {
         System.out.println("PushOrderWebSocket Server close ::"+session.getId());
-        List<Long> closeSessions = (List<Long>) LoginServlet.getKey(sessions,session);
+        List<Long> closeSessions = (List<Long>) MemberService.getKey(sessions,session);
         for(Long userID : closeSessions){
             sessions.remove(userID);
             userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString());
@@ -67,7 +65,7 @@ public class PushOrderWebSocket {
         synchronized(sessions) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
             try {
-                List<Long> msgSessions = (List<Long>) LoginServlet.getKey(sessions,session);
+                List<Long> msgSessions = (List<Long>) MemberService.getKey(sessions,session);
                 for(Long deliverID : msgSessions){
                     PushResult pushResult = gson.fromJson(msg,PushResult.class);
                     pushResult.setDeliverID(deliverID);

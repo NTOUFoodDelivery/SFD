@@ -2,6 +2,8 @@ package member.model.javabean;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import member.util.setting.UserStatus;
+import member.util.setting.UserType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class User {
@@ -29,10 +31,10 @@ public class User {
     private String lastAddress;
     @SerializedName("User_Type")
     @Expose
-    private String userType;
+    private UserType userType;
     @SerializedName("User_Status")
     @Expose
-    private String userStatus;
+    private UserStatus userStatus;
 
 
     public long getUserID() {
@@ -87,19 +89,19 @@ public class User {
         this.lastAddress = lastAddress;
     }
 
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
-    public String getUserStatus() {
+    public UserStatus getUserStatus() {
         return userStatus;
     }
 
-    public void setUserStatus(String userStatus) {
+    public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
 

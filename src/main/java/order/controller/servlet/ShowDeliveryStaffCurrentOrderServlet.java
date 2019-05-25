@@ -19,9 +19,7 @@ public class ShowDeliveryStaffCurrentOrderServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 //        Long userID = (Long) request.getSession().getAttribute("User_Id");
         Long userID = Long.parseLong(request.getParameter("userID"));

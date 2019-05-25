@@ -3,7 +3,6 @@ package order.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import order.controller.service.OrderService;
 import order.model.javabean.Order;
 import util.HttpCommonAction;
 import util.javabean.StatusCodeResponse;

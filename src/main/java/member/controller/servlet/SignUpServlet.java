@@ -21,9 +21,7 @@ import java.util.Date;
 @WebServlet("/SignUpServlet")
 public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         User user = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),User.class);

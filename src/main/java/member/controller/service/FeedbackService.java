@@ -3,7 +3,9 @@ package member.controller.service;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.Feedback;
 import member.model.javabean.User;
+import member.util.setting.FeedbackCommand;
 import member.util.setting.UserType;
+import util.HttpCommonAction;
 
 import java.util.List;
 
@@ -11,31 +13,55 @@ public class FeedbackService {
 
     private UserDaoImpl userDao;
 
-    public boolean createFeedback(Feedback feedback ,User user){
-        userDao =  new UserDaoImpl();
-        boolean success;
-        success = userDao.addFeedback(feedback.getFeedbackID(),user.getUserID(),feedback.getContent());
+    public Object handleFeedback(User currentUser ,FeedbackCommand feedbackCommand ,Feedback feedback){
+        userDao = new UserDaoImpl();
+        Object result = null;
+        if(feedbackCommand != null) { // 有這個指令
+            String msg = "command :: "+feedbackCommand.toString()+" Feedback";
+            switch (feedbackCommand) {
+                case CREATE:
+                case REPLY: {
+                    boolean success = writeFeedback(feedback,currentUser);
+                    if(success){
+                        msg = msg +" work!!";
+                    }else{
+                        msg = msg +" do not work!!";
+                    }
+                    result = HttpCommonAction.generateStatusResponse(success,msg);
+                    break;
+                }
+                case SHOW: {
+                    List feedbackList = showFeedback(currentUser);
+                    if(feedbackList.size() > 0){
+                        result = feedbackList;
+                    }else {
+                        result = HttpCommonAction.generateStatusResponse(false,msg+" size is 0");
+                    }
+                    break;
+                }
+            }
+
+        }else{ // 沒有這個指令
+            result = HttpCommonAction.generateStatusResponse(false,"Command not found");
+        }
         userDao = null;
-        return success;
+        return result ;
     }
 
-    public boolean replyFeedback(Feedback feedback){
-        userDao =  new UserDaoImpl();
-        boolean success;
-        success = userDao.replyFeedback(feedback.getFeedbackID(),feedback.getBackContent());
-        userDao = null;
-        return success;
+    private boolean writeFeedback(Feedback feedback ,User user){
+        if(user.getUserType().equals(UserType.Administrator)) { // 管理員回訊息
+            return userDao.replyFeedback(feedback.getFeedbackID(), feedback.getBackContent());
+        }else { // 使用者 創 訊息
+            return userDao.addFeedback(feedback.getFeedbackID(), user.getUserID(), feedback.getContent());
+        }
     }
 
-    public List<Feedback> showFeedback(User user){
-        userDao =  new UserDaoImpl();
-        List<Feedback> feedbackList;
-        if (user.getUserType().equals(UserType.Administrator.toString())) {
-            feedbackList = userDao.searchFeedback();
+    private List<Feedback> showFeedback(User user){
+        if (user.getUserType().equals(UserType.Administrator)) { // 管理員 拿到所有 訊息
+            return userDao.searchFeedback();
         }
-        else{
-            feedbackList = userDao.searchFeedback(user.getUserID());
+        else{ // 使用者 拿到 他自己的 訊息
+            return userDao.searchFeedback(user.getUserID());
         }
-        return feedbackList;
     }
 }

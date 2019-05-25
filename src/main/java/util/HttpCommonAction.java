@@ -20,13 +20,14 @@ public class HttpCommonAction {
         return jb.toString();
     }
 
-    public static StatusCodeResponse getStatusCodeResponse(boolean success){
+    public static StatusCodeResponse generateStatusResponse(boolean success, String msg){
         StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         if(success){
             statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
         }else{
-            statusCodeResponse.setStatusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_FOUND);
         }
+        statusCodeResponse.setMessage(msg);
         statusCodeResponse.setTime(new Date().toString());
         return statusCodeResponse;
     }

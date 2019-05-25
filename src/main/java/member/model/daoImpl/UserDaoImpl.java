@@ -3,6 +3,8 @@ package member.model.daoImpl;
 import member.model.dao.UserDao;
 import member.model.javabean.Feedback;
 import member.model.javabean.User;
+import member.util.setting.UserStatus;
+import member.util.setting.UserType;
 import util.db.C3P0Util;
 
 import java.sql.Connection;
@@ -42,8 +44,8 @@ public class UserDaoImpl implements UserDao
             e.printStackTrace();
         } finally {
             C3P0Util.close(connection);
+            return userID;
         }
-        return userID;
     }
     /**
      *
@@ -75,15 +77,15 @@ public class UserDaoImpl implements UserDao
                 user.setPassword(resultSet.getString("Password"));
                 user.setPhoneNumber(resultSet.getString("Phone_Number"));
                 user.setUserName(resultSet.getString("User_Name"));
-                user.setUserStatus(resultSet.getString("User_Status"));
-                user.setUserType(resultSet.getString("User_Type"));
+                user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+                user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             C3P0Util.close(connection);
+            return user;
         }
-        return user;
     }
 
     /**
@@ -109,16 +111,16 @@ public class UserDaoImpl implements UserDao
             preparedStatement.setString(5,user.getEmail());
             preparedStatement.setString(6,user.getPhoneNumber());
             preparedStatement.setString(7,user.getLastAddress());
-            preparedStatement.setString(8,user.getUserType());
-            preparedStatement.setString(9,user.getUserStatus());
+            preparedStatement.setString(8,user.getUserType().toString());
+            preparedStatement.setString(9,user.getUserStatus().toString());
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     /**
@@ -147,8 +149,8 @@ public class UserDaoImpl implements UserDao
             e.printStackTrace();
         } finally {
             C3P0Util.close(connection);
+            return identity;
         }
-        return identity;
     }
     /**
      *
@@ -176,8 +178,8 @@ public class UserDaoImpl implements UserDao
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return userType;
         }
-        return userType;
     }
 
     /**
@@ -207,8 +209,8 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     /**
@@ -239,8 +241,8 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     /**
@@ -271,8 +273,9 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
+
     }
 
     /**
@@ -300,8 +303,8 @@ public class UserDaoImpl implements UserDao
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
     
     /**
@@ -333,16 +336,16 @@ public class UserDaoImpl implements UserDao
                 user.setPassword(resultSet.getString("Password"));
                 user.setPhoneNumber(resultSet.getString("Phone_Number"));
                 user.setUserName(resultSet.getString("User_Name"));
-                user.setUserStatus(resultSet.getString("User_Status"));
-                user.setUserType(resultSet.getString("User_Type"));
+                user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+                user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
                 userList.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return userList;
         }
-        return userList;
     }
 
     /**
@@ -374,8 +377,8 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     /**
@@ -406,8 +409,8 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     /**
@@ -445,8 +448,8 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return feedbackList;
         }
-        return feedbackList;
     }
 
     /**
@@ -483,7 +486,7 @@ public class UserDaoImpl implements UserDao
         finally
         {
             C3P0Util.close(connection);
+            return feedbackList;
         }
-        return feedbackList;
     }
 }

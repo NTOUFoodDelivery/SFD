@@ -18,6 +18,7 @@ public class LogoutServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json;charset=UTF-8");
         HttpSession httpSession = request.getSession();
         Long userID = (Long)httpSession.getAttribute("User_Id");
         String userType = (String)httpSession.getAttribute("User_Type");
