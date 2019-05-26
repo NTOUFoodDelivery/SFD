@@ -57,8 +57,8 @@ public class OrderDaoImpl implements OrderDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     @Override
@@ -81,8 +81,8 @@ public class OrderDaoImpl implements OrderDao {
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     @Override
@@ -152,8 +152,8 @@ public class OrderDaoImpl implements OrderDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return orders;
         }
-        return orders;
     }
 
     @Override
@@ -238,8 +238,8 @@ public class OrderDaoImpl implements OrderDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return orders;
         }
-        return orders;
     }
 
     @Override
@@ -330,8 +330,8 @@ public class OrderDaoImpl implements OrderDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     @Override
@@ -353,43 +353,282 @@ public class OrderDaoImpl implements OrderDao {
         }
         finally
         {
-            JdbcUtils.close(preparedStatement,connection);
+            C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     @Override
     public List<Order> searchEaterHistoryOrder(Long userID) {
-        return null;
+        List<Order> orderList = new ArrayList<>();
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        try {
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, member.Account, member.User_Name " +
+                    " FROM history "+
+                    " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id  " +
+                    "INNER JOIN member ON history_customer_deliver_info.Deliver_Id = member.User_Id " +
+                    "WHERE history_customer_deliver_info.Customer_Id = ? ";
+            //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Customer_Id = ?)";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            while(resultSet.next()) {
+                Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("History_Id"));
+                order.getOrder().setStartTime(resultSet.getString("Start_Time"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
+
+                ResultSet mealResultSet;
+                String mealSql = "SELECT history_food.Food_Name,history_food.Count" +
+                        " FROM history" +
+                        " INNER JOIN history_food ON history.History_Id = history_food.History_Id" +
+                        " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id" +
+                        " WHERE history_customer_deliver_info.Customer_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, userID);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBeanList.add(mealsBean);
+                }
+                order.getOrder().setMeals(mealsBeanList);
+                orderList.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            C3P0Util.close(connection);
+            return orderList;
+        }
     }
 
     @Override
     public List searchDeliverOrder(Long userID) {
-        return null;
+        List<Order> orderList = new ArrayList<>();
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        try {
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Other, `order`.Address, member.Account, member.User_Name, member.Phone_Number " +
+                    " FROM `order`" +
+                    " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
+                    " INNER JOIN member ON customer_deliver_info.Customer_Id = member.User_Id" +
+                    " WHERE customer_deliver_info.Deliver_Id = ?";
+            //String search_history_sql = "SELECT * FROM `order` WHERE Order_Id = (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            while(resultSet.next()) {
+                Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
+                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
+
+                ResultSet mealResultSet = null;
+                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost " +
+                        "FROM `order`" +
+                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
+                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
+                        "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
+                        " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
+                        " WHERE customer_deliver_info.Deliver_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, userID);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBean.setCost(mealResultSet.getInt("Cost"));
+                    mealsBeanList.add(mealsBean);
+                }
+                order.getOrder().setMeals(mealsBeanList);
+                orderList.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            C3P0Util.close(connection);
+            return orderList;
+        }
     }
 
     @Override
     public List searchDeliverHistoryOrder(Long deliverId) {
-        return null;
+        List<Order> orderList = new ArrayList<>();
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        try {
+            String sql ="SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number " +
+                    "FROM history" +
+                    " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id " +
+                    " INNER JOIN member ON history_customer_deliver_info.Customer_Id = member.User_Id " +
+                    " WHERE history_customer_deliver_info.Deliver_Id = ?";
+            //String search_history_sql = "SELECT History_Id, Start_Time, Total, Final_Status FROM History WHERE History_Id LIKE (SELECT Order_Id FROM customer_deliver_info WHERE Deliver_Id = ?)";
+            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            preparedStatement.setLong(1, deliverId);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.getMetaData(); //取得Query資料
+            while(resultSet.next()) {
+                Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("History_Id"));
+                order.getOrder().setStartTime(resultSet.getString("Start_Time"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
+                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
+
+                ResultSet mealResultSet = null;
+                String mealSql = "SELECT history_food.Food_Name, history_food.Count, history_food.Rest_Name " +
+                        "  FROM history " +
+                        " INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
+                        " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id " +
+                        " WHERE history_customer_deliver_info.Deliver_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, deliverId);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
+                    mealsBeanList.add(mealsBean);
+                }
+                order.getOrder().setMeals(mealsBeanList);
+                orderList.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            C3P0Util.close(connection);
+            return orderList;
+        }
     }
 
     @Override
     public boolean modifyOrderStatus(Long orderID, String OrderStatus) {
-        return false;
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        boolean success = false;
+        try {
+            String sql = "UPDATE `order` SET Order_Status = ? WHERE Order_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, OrderStatus);
+            preparedStatement.setLong(2, orderID);
+            preparedStatement.executeUpdate();
+            success = true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            C3P0Util.close(connection);
+            return success;
+        }
     }
 
     @Override
     public String getOrderStatus(Long orderID) {
-        return null;
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        String status = null;
+        try {
+            String sql = "SELECT Order_Status FROM `order` WHERE Order_Id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1,orderID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                status = resultSet.getString("Order_Status");
+                //System.out.println(identity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            C3P0Util.close(connection);
+            return status;
+        }
     }
 
     @Override
     public boolean modifyOrderCastingPrio(Long orderID, int castingPrio) {
-        return false;
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        boolean success = false;
+        try {
+            String sql = "UPDATE `order` SET Casting_Prio = ? WHERE Order_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, orderID);
+            preparedStatement.setInt(2, castingPrio);
+            preparedStatement.executeUpdate();
+            success = true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            C3P0Util.close(connection);
+            return success;
+        }
     }
 
     @Override
     public int getOrderCastingPrio(Long orderID) {
-        return 0;
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        int castingPrio = 0;
+        try {
+            String sql = "SELECT Casting_Prio FROM `order` WHERE Order_Id = ?;";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, orderID);
+            resultSet = preparedStatement.executeQuery();
+            castingPrio = resultSet.getInt("Casting_Prio");
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            C3P0Util.close(connection);
+            return castingPrio;
+        }
     }
 }

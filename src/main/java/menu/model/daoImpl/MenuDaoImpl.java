@@ -47,8 +47,8 @@ public class MenuDaoImpl implements MenuDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return menuList;
         }
-        return menuList;
     }
 
     /**
@@ -86,8 +86,8 @@ public class MenuDaoImpl implements MenuDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return menuList;
         }
-        return menuList;
     }
 
     /**
@@ -122,8 +122,8 @@ public class MenuDaoImpl implements MenuDao {
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 
     /**
@@ -153,7 +153,7 @@ public class MenuDaoImpl implements MenuDao {
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 }
