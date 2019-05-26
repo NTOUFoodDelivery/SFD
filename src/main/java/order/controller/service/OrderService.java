@@ -35,7 +35,7 @@ public class OrderService {
 
     // 外送員 食客
     // 完成訂單
-    synchronized public Object confirmOrder(User user, Long orderID){
+     public synchronized Object confirmOrder(User user, Long orderID){
         UserType userType = user.getUserType();
         String msg = null;
         switch (userType){
