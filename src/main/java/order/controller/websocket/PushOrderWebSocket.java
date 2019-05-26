@@ -51,14 +51,17 @@ public class PushOrderWebSocket {
     @OnMessage
     public void onMessage(Session session, String msg) {
         // 處理 訂單 接受與否
+        // lock websocket sessions
+        // 以免推播訂單時 拿到不完全的 用戶、訂單資訊
         synchronized(sessions) {
             User user = (User)httpSessions.get(session).getAttribute("User"); // deliver
             PushResult pushResult = gson.fromJson(msg,PushResult.class); // 訂單 處理 訊息
-            orderService.dealOrder(pushResult,user);
+            orderService.dealOrder(pushResult,user); // 處理 訂單
         }
     }
 
     @OnError
     public void onError(Throwable t) {
+        System.out.println(t.getMessage());
     }
 }
