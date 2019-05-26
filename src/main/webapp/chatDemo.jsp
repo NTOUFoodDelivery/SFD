@@ -57,7 +57,7 @@
     <!-- ---------   chatBox   ---------- -->
 </section><br>
 <%--<button id="testSubmit">testSubmit</button><br>--%>
-<%--<a href="otherDemo.jsp">網頁跳轉</a><br>--%>
+<%--<a href="testEater.html">網頁跳轉</a><br>--%>
 <%--<img id="img" />--%>
 <%--<input type="file" id = "file">--%>
 <%--<input id="but" value="aa" type="button" onclick="mes()">--%>

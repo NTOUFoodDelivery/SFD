@@ -41,7 +41,7 @@
 </section><br>
 <div class="card card-body" id="errorStr"></div>
 <button id="testSubmit">testSubmit</button><br>
-<a href="otherDemo.jsp">網頁跳轉</a><br>
+<a href="testEater.html">網頁跳轉</a><br>
 <img id="img" />
 <input type="file" id = "file">
 <input id="but" value="aa" type="button" onclick="mes()">
@@ -266,14 +266,14 @@
 <script>
     $('#testSubmit').click(function () {
         // var url="/IdentityRedirectServlet";
-        var url="ShowRestInfoServlet";
+        var url="FeedbackServlet?cmd=CREATE";
         $.ajax({
-            // xhrFields: {
-            //     withCredentials: true
-            // },
-            // async:false,
-            // crossDomain: true,
-            type: "GET",
+            xhrFields: {
+                withCredentials: true
+            },
+            async:false,
+            crossDomain: true,
+            type: "Post",
             url: url,
             dataType: "json",
             success: function(data) {

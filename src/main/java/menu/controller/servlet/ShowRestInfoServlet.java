@@ -19,12 +19,8 @@ public class ShowRestInfoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
         String json = gson.toJson(RestInfoService.getRestInfo());  // 拿到所有餐廳
         PrintWriter out = response.getWriter();
         out.print(json);

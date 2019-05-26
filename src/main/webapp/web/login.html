@@ -3,15 +3,16 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <title>國立台灣海洋大學 - CAS - Central Authentication Service</title>
+  <title>SFD - login</title>
 
 
   <link rel="stylesheet" href="./css/cas.css">
   <link rel="stylesheet" href="./css/cas-ext.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="icon" href="https://tccas.ntou.edu.tw/cas/images/favicon.ico;jsessionid=579C5B90EDD1978D07074A7D609F1CB5" type="image/x-icon">
-  <!--[if lt IE 9]>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js" type="text/javascript"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <style>
     select#soflow{
       -webkit-appearance: button;
@@ -33,18 +34,88 @@
       width: 300px;
     }
   </style>
+  <style>
+
+    .loader {
+      position:absolute; top:50%; left:50%;
+      margin-left: -105px;
+      margin-top: -170px;
+      max-width: 15rem;
+      width: 100%;
+      height: auto;
+      stroke-linecap: round;
+    }
+
+    circle {
+      fill: none;
+      stroke-width: 3.5;
+      -webkit-animation-name: preloader;
+      animation-name: preloader;
+      -webkit-animation-duration: 3s;
+      animation-duration: 3s;
+      -webkit-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+      -webkit-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-transform-origin: 170px 170px;
+      transform-origin: 170px 170px;
+      will-change: transform;
+    }
+    circle:nth-of-type(1) {
+      stroke-dasharray: 550;
+    }
+    circle:nth-of-type(2) {
+      stroke-dasharray: 500;
+    }
+    circle:nth-of-type(3) {
+      stroke-dasharray: 450;
+    }
+    circle:nth-of-type(4) {
+      stroke-dasharray: 300;
+    }
+    circle:nth-of-type(1) {
+      -webkit-animation-delay: -0.15s;
+      animation-delay: -0.15s;
+    }
+    circle:nth-of-type(2) {
+      -webkit-animation-delay: -0.3s;
+      animation-delay: -0.3s;
+    }
+    circle:nth-of-type(3) {
+      -webkit-animation-delay: -0.45s;
+      -moz-animation-delay:  -0.45s;
+      animation-delay: -0.45s;
+    }
+    circle:nth-of-type(4) {
+      -webkit-animation-delay: -0.6s;
+      -moz-animation-delay: -0.6s;
+      animation-delay: -0.6s;
+    }
+
+    @-webkit-keyframes preloader {
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes preloader {
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 <body id="cas" style="">
 <div id="container">
   <div id="content">
 
-
-
     <div class="box" id="login">
       <div class="logo"></div>
 
-      <form id="fm1" action="../LogInServlet" method="post">
-
+      <form id="fm1" style="display:block;">
+        <div id="myDiv"></div>
         <section class="row">
           <label for="account">帳　號:
             <span id="username-warning" style="display:none;">請輸入用戶名</span>
@@ -66,17 +137,13 @@
 
         <section class="row">
           <select id="soflow" name="userType">
-            <option selected>選擇登入身份</option>
+            <option value="" selected>選擇登入身份</option>
             <option value="Customer_and_Deliver">外送員</option>
             <option value="Customer">一般使用者</option>
           </select>
         </section>
 
         <section class="row btn-row">
-
-          <input type="hidden" name="lt" value="LT-126647-4WbRtgdr7cO2yWPfkFDcIqagpnTXmM-cas.ntou.edu.tw">
-          <input type="hidden" name="execution" value="e1s1">
-          <input type="hidden" name="_eventId" value="submit">
 
           <input class="btn-submit" name="submit" accesskey="l" value="登錄" tabindex="4" type="submit">
         </section>
@@ -85,8 +152,48 @@
         </section>
 
       </form>
+        <svg  id="loader" class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340" style="display:none;">
+          <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
+          <circle cx="170" cy="170" r="135" stroke="#404041"/>
+          <circle cx="170" cy="170" r="110" stroke="#E2007C"/>
+          <circle cx="170" cy="170" r="85" stroke="#404041"/>
+        </svg>
     </div>
   </div> <!-- END #content -->
+
 </div> <!-- END #container -->
+
+<script>
+  $("#fm1").submit(function (event) {
+    $("#fm1").css('display','none');
+    $('#loader').css('display','block');
+    $.ajax({
+      url: '/SFD/LoginServlet',
+      type: 'POST',
+      data: $('#fm1').serialize(),
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        var cmd = data[0];
+        $("#myDiv").empty();
+        for(let i=1;i<data.length;i++){
+          $("#myDiv").append("<span class='badge badge-pill badge-info'>" + data[i] + "</span><br>");
+        }
+        setTimeout(function() {
+          $("#loader").css('display','none');
+          $("#fm1").css('display','block');
+        }, 1000);
+        if (cmd === "CUSTOMER_AND_DELIVER") {
+          window.location.href='index_deliver.html';
+        }else if (cmd === "CUSTOMER") {
+          window.location.href='index_eater.html';
+        }else {
+          $('input[type=password]')[0].value = "";
+        }
+      }
+    });
+    event.preventDefault();
+  });
+</script>
 </body>
 </html>

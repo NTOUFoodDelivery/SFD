@@ -1,0 +1,62 @@
+
+<head>
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="assets/js/testEater.js"></script>
+</head>
+<body>
+<h1>OOSOSOSO</h1>
+<p id="welcome_userName"></p>
+<p id="welcome_userType"></p>
+<p id="welcome_userID"></p>
+
+<button id="testCreateFeedback">testCreateFeedback</button><br>
+<button id="testSwitchDeliver">testSwitchDeliver</button><br>
+
+
+<script>
+    window.onload = function()
+    {
+        $.ajax({
+            url: 'LoginServlet',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var cmd = data[0];
+                if (cmd === "reload") {
+                    window.location.href = 'LoginDemo.html';
+                } else {
+                    var userName = data.User_Name;
+                    var userType = data.User_Type;
+                    var userID = data.User_Id;
+
+                    $('#welcome_userName')[0].innerHTML = "名字 :: "+userName;
+                    $('#welcome_userType')[0].innerHTML = "type :: "+userType;
+                    $('#welcome_userID')[0].innerHTML = "ID :: "+userID;
+                }
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    $(function(){
+        $.ajaxSetup ({
+            cache: false, //關掉AJAX 緩存
+            async:false, //同步請求
+            contentType:"application/x-www-form-urlencoded;charset=utf-8",
+            complete:function(XMLHttpRequest,textStatus){
+                // 用 XMLHttpRequest 拿 header，sessionstatus，
+                var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
+                if(sessionstatus=="timeout"){
+                    alert("重複登入或長時間無操作～請重新登入！！");
+                    parent.location.href = "LoginDemo.html";
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>SFD登入測試</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
@@ -97,7 +98,7 @@
 
 <body>
 
-<div id="center" style="visibility:visible;">
+<div id="center" style="display:block;">
     <h1>登入後台測試</h1>
     <form id="myForm">
         Username:<input type="text" name="account"><br>
@@ -120,14 +121,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container" style="visibility:hidden;">
+<div class="container" style="display:none;">
     <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340">
         <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
         <circle cx="170" cy="170" r="135" stroke="#404041"/>
         <circle cx="170" cy="170" r="110" stroke="#E2007C"/>
         <circle cx="170" cy="170" r="85" stroke="#404041"/>
     </svg>
-
 </div>
 
 <script>
@@ -139,8 +139,8 @@
 </script>
 <script>
     $("#myForm").submit(function (event) {
-        $("#center").css('visibility','hidden');
-        $('.container').css('visibility','visible');
+        $("#center").css('display','none');
+        $('.container').css('display','block');
         $.ajax({
             url: 'LoginServlet',
             type: 'POST',
@@ -154,13 +154,13 @@
                     $("#myDiv").append("<p>" + data[i] + "</p>");
                 }
                 setTimeout(function() {
-                    $(".container").css('visibility','hidden');
-                    $("#center").css('visibility','visible');
+                    $(".container").css('display','none');
+                    $("#center").css('display','block');
                 }, 1000);
                 if (cmd === "CUSTOMER_AND_DELIVER") {
-                    window.location.href='web/index_deliver.html';
+                    window.location.href='testDeliver.html';
                 }else if (cmd === "CUSTOMER") {
-                    window.location.href='web/index_eater.html';
+                    window.location.href='testEater.html';
                 }else {
                     $('input[type=password]')[0].value = "";
                 }

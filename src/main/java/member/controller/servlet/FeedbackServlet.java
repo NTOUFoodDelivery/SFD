@@ -26,11 +26,11 @@ public class FeedbackServlet extends HttpServlet {
 
         FeedbackCommand feedbackCommand = FeedbackCommand.getFeedbackCommand(request.getParameter("cmd")); // command
         Feedback feedback = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Feedback.class); // feedback
-//        User currentUser = (User)request.getSession().getAttribute("User"); // current request user
+        User currentUser = (User)request.getSession().getAttribute("User"); // current request user
 
-        User currentUser = new User(); // test user
-        currentUser.setUserID(1L); // test user
-        currentUser.setUserType(UserType.Customer); // test user
+//        User currentUser = new User(); // test user
+//        currentUser.setUserID(1L); // test user
+//        currentUser.setUserType(UserType.Customer); // test user
 
         feedback.setUserID(currentUser.getUserID());
         FeedbackService feedbackService = new FeedbackService();

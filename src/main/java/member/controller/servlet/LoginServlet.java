@@ -44,10 +44,17 @@ public class LoginServlet extends HttpServlet {
             info.add("reload");
 //            httpSession.invalidate(); // 銷毀 session
             json = gson.toJson(info);
+
         }else{
             User user = (User)httpSession.getAttribute("User");
-            System.out.println(user.toString());
-            json = gson.toJson(user);
+            if(user == null){
+                info.add("reload");
+//                httpSession.invalidate(); // 銷毀 session
+                json = gson.toJson(info);
+            }else {
+                System.out.println(user.toString());
+                json = gson.toJson(user);
+            }
         }
         PrintWriter out = response.getWriter();
         out.println(json);

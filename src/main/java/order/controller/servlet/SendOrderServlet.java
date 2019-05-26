@@ -40,10 +40,12 @@ public class SendOrderServlet extends HttpServlet {
         out.flush();
     }
 
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 
         User currentUser = (User)request.getSession().getAttribute("User"); // current request user
+        // 應該不會在這邊產生亂碼吧
         Long orderID = Long.parseLong(request.getParameter("orderID")); // order id
 
         OrderService orderService = new OrderService();
