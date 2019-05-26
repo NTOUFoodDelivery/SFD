@@ -3,9 +3,10 @@ package order.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import member.model.javabean.User;
+import order.controller.service.OrderService;
 import order.model.javabean.Order;
 import util.HttpCommonAction;
-import util.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,34 +15,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 
 @WebServlet("/SendOrderServlet")
 public class SendOrderServlet extends HttpServlet {
+    Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
+        Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class); // 訂單
+        User currentUser = (User)request.getSession().getAttribute("User"); // current request user
+//        Long userID = Long.parseLong(request.getParameter("userID")); // test user
+        Long userID = currentUser.getUserID();
 
-//        HttpSession session = request.getSession();
-//        order.setCustomerID((Long)session.getAttribute("User_Id"));
-        Long userID = Long.parseLong(request.getParameter("userID"));
         order.getCustomer().setUserID(userID);
-        // 產生訂單編號 將訂單存入資料庫
-//        OrderService.addOrder(order);
+        OrderService orderService = new OrderService();
 
-        StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-        statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
-        statusCodeResponse.setTime(new Date().toString());
-        String json = gson.toJson(statusCodeResponse);
+        // 將訂單存入資料庫
+        String json = gson.toJson(orderService.addOrder(order));
+        orderService = null;
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json;charset=UTF-8");
+
+        User currentUser = (User)request.getSession().getAttribute("User"); // current request user
+        Long orderID = Long.parseLong(request.getParameter("orderID")); // order id
+
+        OrderService orderService = new OrderService();
+        String json = gson.toJson(orderService.confirmOrder(currentUser,orderID)); // 食客或外送員 確認訂單
+        orderService = null;
+
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
     }
 }

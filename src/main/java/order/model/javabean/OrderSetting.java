@@ -10,6 +10,8 @@ public class OrderSetting {
         public static final String FINISH = "FINISH"; // 二個人按
         public static final String CONFIRMING = "CONFIRMING"; // 一個人按
         public static final String PUSHING = "PUSHING";
+        public static final String CUSTOMER_CONFIRMING ="CUSTOMER_CONFIRMING"; // 食客 按
+        public static final String DELIVER_CONFIRMING ="DELIVER_CONFIRMING"; // 外送員 按
     }
 
 }

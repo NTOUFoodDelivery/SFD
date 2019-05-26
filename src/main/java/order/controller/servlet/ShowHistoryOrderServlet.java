@@ -21,9 +21,7 @@ public class ShowHistoryOrderServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
 //        User currentUser = (User)request.getSession().getAttribute("User");
@@ -34,7 +32,7 @@ public class ShowHistoryOrderServlet extends HttpServlet {
 
         OrderService orderService = new OrderService();
         String json = gson.toJson(orderService.showHistoryOrder(currentUser));
-
+        orderService = null;
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

@@ -164,7 +164,6 @@ public class MemberService {
                             break;
                         }
                         case Customer_and_Deliver:{
-                            PushOrderWebSocket.httpSessions.put(session,user);
                             user.setUserStatus(UserStatus.DELIVER_ON);
                             userDao.modifyUserStatus(user.getUserID(),UserStatus.DELIVER_ON.toString());
                             info.add("CUSTOMER_AND_DELIVER");
