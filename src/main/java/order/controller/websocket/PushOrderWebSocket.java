@@ -20,16 +20,15 @@ public class PushOrderWebSocket {
 
     public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>(); // 紀錄 所有 連接 websocket 外送員 的 websocket session
     public static Map<Session,HttpSession> httpSessions =  new ConcurrentHashMap<Session,HttpSession>(); // 紀錄 所有 連接 websocket 外送員 的 http session
-    private Session session;
-    private HttpSession httpSession;
+
     private Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     private OrderService orderService = new OrderService();
 
     @OnOpen
     public void open(Session session, EndpointConfig config) {
         System.out.println("PushOrderWebSocket Server open ::"+session.getId());
-        this.session = session;
-        this.httpSession = (HttpSession) config.getUserProperties()
+
+        HttpSession httpSession = (HttpSession) config.getUserProperties()
                 .get(HttpSession.class.getName());
 
         User user = (User)httpSession.getAttribute("User");
