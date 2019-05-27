@@ -4,6 +4,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import menu.controller.service.RestInfoService;
+import menu.model.javabean.Menu;
+import menu.util.setting.RestCommand;
 import util.HttpCommonAction;
 import util.javabean.CommonRequest;
 import util.javabean.StatusCodeResponse;
@@ -20,16 +22,13 @@ import java.util.Date;
 @WebServlet("/ModifyMenuServlet")
 public class ModifyMenuServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        CommonRequest commonRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),CommonRequest.class);
-        RestInfoService.modifyRestMenu(commonRequest);
-        StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-        statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
-        statusCodeResponse.setTime(new Date().toString());
-        String json = gson.toJson(statusCodeResponse);
+        RestCommand restCommand = RestCommand.getRestCommand(request.getParameter("cmd")); // cmd
+        Menu menu = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Menu.class); // menu
+        RestInfoService restInfoService = new RestInfoService();
+        String json = gson.toJson(restInfoService.modifyRestMenu(restCommand,menu));
+        restInfoService = null;
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

@@ -18,9 +18,10 @@ public class MemberService {
     private UserDaoImpl userDao;
     // 管理員 更改 使用者 狀態 之類的
     public Object modifyMember(Long userID,MemberCommand memberCommand){
-        userDao = new UserDaoImpl();
+
         Object result = null;
         if (memberCommand != null) { // 有這個指令
+            userDao = new UserDaoImpl();
             String msg = "command :: " + memberCommand.toString() + " Member";
             switch (memberCommand) {
                 case USER_BAN: { // ban 使用者
@@ -48,19 +49,20 @@ public class MemberService {
                     break;
                 }
             }
+            userDao = null;
         }else { // 沒有這個指令
             result = HttpCommonAction.generateStatusResponse(false,"Command not found");
         }
-        userDao = null;
         return result;
     }
 
     public Object switchStatus(User currentUser,UserStatus userStatus){
-        userDao = new UserDaoImpl();
+
         UserType currentUserType = currentUser.getUserType();
         Object result = null;
         String msg = "command :: " + userStatus + " "+ currentUserType.toString();
         if(currentUser != null) { // 有提供這個 狀態
+            userDao = new UserDaoImpl();
             switch (currentUserType) {
                 case Customer_and_Deliver: {
                     boolean success;
@@ -85,8 +87,8 @@ public class MemberService {
                     break;
                 }
             }
+            userDao = null;
         }
-        userDao = null;
         return result;
     }
 
@@ -136,7 +138,7 @@ public class MemberService {
 
         if(info.size()==0){
             try {
-                UserDaoImpl userDao = new UserDaoImpl();
+                userDao = new UserDaoImpl();
                 User user = userDao.loginUser(account,password,userType);
 
                 if(user != null){ // 有這個使用者
@@ -211,6 +213,8 @@ public class MemberService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                userDao = null;
             }
         }else {
             info.add(0,"error");

@@ -4,6 +4,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import menu.controller.service.RestInfoService;
+import menu.model.javabean.Rest;
+import menu.util.setting.RestCommand;
 import order.model.javabean.RestInfoRequest;
 import util.HttpCommonAction;
 import util.javabean.StatusCodeResponse;
@@ -20,20 +22,15 @@ import java.util.Date;
 @WebServlet("/ModifyRestInfoServlet")
 public class ModifyRestInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+        RestCommand restCommand = RestCommand.getRestCommand(request.getParameter("cmd")); // cmd
+        Rest rest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Rest.class); // rest
 
-        RestInfoRequest restInfoRequest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),RestInfoRequest.class);
-
-        RestInfoService.modifyRestInfo(restInfoRequest);
-
-        StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
-        statusCodeResponse.setStatusCode(HttpServletResponse.SC_OK);
-        statusCodeResponse.setTime(new Date().toString());
-        String json = gson.toJson(statusCodeResponse);
+        RestInfoService restInfoService = new RestInfoService();
+        String json = gson.toJson(restInfoService.modifyRestInfo(restCommand,rest));
+        restInfoService = null;
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

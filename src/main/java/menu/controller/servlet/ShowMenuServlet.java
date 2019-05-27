@@ -25,7 +25,9 @@ public class ShowMenuServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         RestMenuReq restMenuReq = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),RestMenuReq.class);
 
-        String json = gson.toJson(RestInfoService.getRestMenu(restMenuReq)); // 拿到 一家餐廳 的菜單
+        RestInfoService restInfoService = new RestInfoService();
+        String json = gson.toJson(restInfoService.getRestMenu(restMenuReq)); // 拿到 一家餐廳 的菜單
+        restInfoService = null;
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

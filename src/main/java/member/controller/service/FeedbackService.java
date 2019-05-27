@@ -14,9 +14,10 @@ public class FeedbackService {
     private UserDaoImpl userDao;
 
     public Object handleFeedback(User currentUser ,FeedbackCommand feedbackCommand ,Feedback feedback){
-        userDao = new UserDaoImpl();
+
         Object result = null;
         if(feedbackCommand != null) { // 有這個指令
+            userDao = new UserDaoImpl();
             String msg = "command :: "+feedbackCommand.toString()+" Feedback";
             switch (feedbackCommand) {
                 case CREATE:
@@ -40,11 +41,10 @@ public class FeedbackService {
                     break;
                 }
             }
-
+            userDao = null;
         }else{ // 沒有這個指令
             result = HttpCommonAction.generateStatusResponse(false,"Command not found");
         }
-        userDao = null;
         return result ;
     }
 

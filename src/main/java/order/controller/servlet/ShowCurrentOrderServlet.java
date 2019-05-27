@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import member.model.javabean.User;
 import member.util.setting.UserType;
-import order.controller.service.CommonUserOrderService;
-import order.controller.service.DeliverOrderService;
 import order.controller.service.OrderService;
 
 import javax.servlet.ServletException;
