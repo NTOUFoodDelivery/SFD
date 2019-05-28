@@ -3,11 +3,9 @@ package member.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import member.controller.service.MemberService;
 import member.model.javabean.User;
 import util.HttpCommonAction;
-import util.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 
 @WebServlet("/SignUpServlet")
 public class SignUpServlet extends HttpServlet {
@@ -26,16 +23,10 @@ public class SignUpServlet extends HttpServlet {
 
         User user = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),User.class);
 
-        StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
         MemberService memberService = new MemberService();
-        if(memberService.signUp(user)){
-            statusCodeResponse.setStatusCode(HttpServletResponse.SC_ACCEPTED);
-        }else {
-            statusCodeResponse.setStatusCode(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        }
+        String json = gson.toJson(memberService.signUp(user));
         memberService = null;
-        statusCodeResponse.setTime(new Date().toString());
-        String json = gson.toJson(statusCodeResponse);
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

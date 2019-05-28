@@ -4,7 +4,6 @@ import menu.model.daoImpl.MenuDaoImpl;
 import menu.model.daoImpl.RestDaoImpl;
 import menu.model.javabean.Menu;
 import menu.model.javabean.Rest;
-import menu.model.request.javabean.RestMenuReq;
 import menu.util.setting.RestCommand;
 import util.HttpCommonAction;
 
@@ -21,9 +20,9 @@ public class RestInfoService {
     }
 
     // 拿到 一家餐廳 的菜單
-    public Object getRestMenu(RestMenuReq restMenuReq){
-        String restName = restMenuReq.getRestName();
-        String restAddress = restMenuReq.getRestAddress();
+    public Object getRestMenu(Rest rest){
+        String restName = rest.getRestName();
+        String restAddress = rest.getRestAddress();
         menuDao = new MenuDaoImpl();
         Object result = menuDao.searchRestMenu(restName,restAddress);
         menuDao = null;

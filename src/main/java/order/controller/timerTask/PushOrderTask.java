@@ -3,6 +3,7 @@ package order.controller.timerTask;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import member.controller.service.MemberService;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.UserStatus;
@@ -11,7 +12,6 @@ import order.model.daoImpl.OrderDaoImpl;
 import order.model.javabean.Order;
 import order.model.javabean.OrderSetting;
 
-import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.Collections;
@@ -49,24 +49,21 @@ public class PushOrderTask extends TimerTask {
 
                     for (Order order : idleOrderList) { // 尋訪每個 閒置 訂單
                         for (User deliver : idleDeliverList) { // 尋訪每個 閒置 外送員
-                            if (deliver.getUserStatus().equals(UserStatus.DELIVER_ON)) {
-                                Session idleDeliverSession = PushOrderWebSocket.sessions.get(deliver.getUserID()); // 拿 websocket session 物件 with user id
-                                HttpSession httpSession = PushOrderWebSocket.httpSessions.get(idleDeliverSession); // 拿 http session 物件 with websocket session
-                                if (httpSession != null) { // 如果該 空閒外送員 在推播的過程中 斷開連線 ( websocket on close() ) 則不推播給他
-                                    User idleDeliver = (User) httpSession.getAttribute("User"); // 拿 http session 裡的 user 物件
+                            if (deliver.getUserStatus().equals(UserStatus.DELIVER_ON)) { // 應該不用這個吧 -----
+                                List<Session> idleDeliverSessionList = (List<Session>) MemberService.getKey(PushOrderWebSocket.sessions,deliver.getUserID()); // 拿 websocket session 物件 with user id
+                                for(Session idleDeliverSession : idleDeliverSessionList) {
                                     try {
                                         idleDeliverSession.getBasicRemote().sendText(gson.toJson(order)); // push order with websocket !!
-                                        orderDao.modifyOrderStatus(order.getOrder().getOrderID(), OrderSetting.OrderStatus.PUSHING); // 改動 資料庫的 order status
-                                        userDao.modifyUserStatus(deliver.getUserID(), UserStatus.PUSHING.toString()); // 改動 資料庫的 user status
-                                        order.getOrder().setOrderStatus(OrderSetting.OrderStatus.PUSHING); // 普通物件裡的 oder
-                                        deliver.setUserStatus(UserStatus.PUSHING); // 普通物件裡的 user
-                                        idleDeliver.setUserStatus(UserStatus.PUSHING); // http session 裡的 user
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     } catch (NullPointerException e) {
                                         e.printStackTrace();
                                     }
                                 }
+                                orderDao.modifyOrderStatus(order.getOrder().getOrderID(), OrderSetting.OrderStatus.PUSHING); // 改動 資料庫的 order status
+                                userDao.modifyUserStatus(deliver.getUserID(), UserStatus.PUSHING.toString()); // 改動 資料庫的 user status
+                                order.getOrder().setOrderStatus(OrderSetting.OrderStatus.PUSHING); // 普通物件裡的 oder
+                                deliver.setUserStatus(UserStatus.PUSHING); // 普通物件裡的 user
                             }
                         }
                     }

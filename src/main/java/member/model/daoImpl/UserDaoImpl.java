@@ -90,6 +90,45 @@ public class UserDaoImpl implements UserDao
 
     /**
      *
+     * @description: 得到使用者資訊
+     * @author BerSerKer
+     * @date 2019-05-28 20:01
+     * @param [userID]
+     * @return member.model.javabean.User
+     */
+    @Override
+    public User showUser(Long userID) {
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        User user = null ;
+        String sql = "select * from member where User_Id =?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1,userID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                user = new User();
+                user.setUserID(resultSet.getLong("User_Id"));
+                user.setAccount(resultSet.getString("Account"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setLastAddress(resultSet.getString("Last_Address"));
+                user.setPassword(resultSet.getString("Password"));
+                user.setPhoneNumber(resultSet.getString("Phone_Number"));
+                user.setUserName(resultSet.getString("User_Name"));
+                user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+                user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            C3P0Util.close(connection);
+            return user;
+        }
+    }
+
+    /**
+     *
      * @description: 註冊
      * @author BerSerKer
      * @date 2019-05-20 22:36

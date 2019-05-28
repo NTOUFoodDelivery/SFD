@@ -25,15 +25,12 @@ public class ShowCurrentOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-//        User currentUser = (User)request.getSession().getAttribute("User");
-
-        User currentUser = new User(); // test user
-        currentUser.setUserType(UserType.Customer); // test user type
-        currentUser.setUserID(1L); // test user id
+        Long currentUserID = (Long)request.getSession().getAttribute("userID");
 
         OrderService orderService = new OrderService();
-        String json = gson.toJson(orderService.showCurrentOrder(currentUser));
+        String json = gson.toJson(orderService.showCurrentOrder(currentUserID));
         orderService = null;
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

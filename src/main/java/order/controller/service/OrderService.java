@@ -35,7 +35,9 @@ public class OrderService {
 
     // 外送員 食客
     // 完成訂單
-     public synchronized Object confirmOrder(User user, Long orderID){
+     public synchronized Object confirmOrder(Long userID, Long orderID){
+        userDao = new UserDaoImpl();
+        User user = userDao.showUser(userID);
         UserType userType = user.getUserType();
         String msg = null;
         switch (userType){
@@ -47,7 +49,11 @@ public class OrderService {
                 msg = eaterConfirmOrder(orderID);
                 break;
             }
+            default:{
+                break;
+            }
         }
+         userDao = null;
         return HttpCommonAction.generateStatusResponse(true,msg);
     }
 
@@ -69,6 +75,9 @@ public class OrderService {
             case OrderSetting.OrderStatus.DELIVER_CONFIRMING:{ // 外送員 已按過 確認
                 orderDao.ordertoHistory(orderID);
                 msg = "雙方皆按下確認";
+                break;
+            }
+            default:{
                 break;
             }
         }
@@ -102,11 +111,10 @@ public class OrderService {
     }
 
     // 處理訂單 接受與否 以及 外送員、訂單狀態 轉換
-    public void dealOrder(PushResult pushResult,User deliver){
+    public void dealOrder(PushResult pushResult,Long deliverID){
         userDao = new UserDaoImpl();
         orderDao = new OrderDaoImpl();
         Long orderID = pushResult.getOrderID();
-        Long deliverID = deliver.getUserID();
         pushResult.setDeliverID(deliverID);
         boolean isAccept = pushResult.isAccept();
         if (isAccept) { // 訂單被接受
@@ -119,7 +127,6 @@ public class OrderService {
             orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DEALING);
             // 將 外送員狀態 改成"已接受訂單之類的"
             userDao.modifyUserStatus(deliverID, UserStatus.DELIVER_BUSY.toString());
-            deliver.setUserStatus(UserStatus.DELIVER_BUSY);
         } else {  // 訂單取消
             // 更改 訂單 權重
             orderDao.modifyOrderCastingPrio(orderID,orderDao.getOrderCastingPrio(orderID)+OrderSetting.ORDERSTAGE);
@@ -127,15 +134,16 @@ public class OrderService {
             orderDao.modifyOrderStatus(orderID,OrderSetting.OrderStatus.WAIT);
             // 將外送員狀態 改成"空閒之類的"
             userDao.modifyUserStatus(deliverID,UserStatus.DELIVER_ON.toString());
-            deliver.setUserStatus(UserStatus.DELIVER_ON);
         }
         userDao = null;
         orderDao = null;
     }
 
 
-    public Object showCurrentOrder(User currentUser){
+    public Object showCurrentOrder(Long userID){
         orderDao = new OrderDaoImpl();
+        userDao = new UserDaoImpl();
+        User currentUser = userDao.showUser(userID);
         UserType userType = currentUser.getUserType();
         Object result = null;
         switch (userType) {
@@ -148,16 +156,21 @@ public class OrderService {
                 break;
             }
             case Administrator:{
-
+                break;
+            }
+            default:{
                 break;
             }
         }
+        userDao = null;
         orderDao = null;
         return result;
     }
 
-    public Object showHistoryOrder(User currentUser){
+    public Object showHistoryOrder(Long userID){
         orderDao = new OrderDaoImpl();
+        userDao = new UserDaoImpl();
+        User currentUser = userDao.showUser(userID);
         UserType userType = currentUser.getUserType();
         Object result = null;
         switch (userType) {
@@ -174,6 +187,7 @@ public class OrderService {
                 break;
             }
         }
+        userDao = null;
         orderDao = null;
         return result;
     }

@@ -5,9 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import member.controller.service.FeedbackService;
 import member.model.javabean.Feedback;
-import member.model.javabean.User;
 import member.util.setting.FeedbackCommand;
-import member.util.setting.UserType;
 import util.HttpCommonAction;
 
 import javax.servlet.ServletException;
@@ -26,15 +24,11 @@ public class FeedbackServlet extends HttpServlet {
 
         FeedbackCommand feedbackCommand = FeedbackCommand.getFeedbackCommand(request.getParameter("cmd")); // command
         Feedback feedback = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Feedback.class); // feedback
-        User currentUser = (User)request.getSession().getAttribute("User"); // current request user
+        Long currentUserID = (Long) request.getSession().getAttribute("userID"); // current request user id
 
-//        User currentUser = new User(); // test user
-//        currentUser.setUserID(1L); // test user
-//        currentUser.setUserType(UserType.Customer); // test user
-
-        feedback.setUserID(currentUser.getUserID());
+        feedback.setUserID(currentUserID);
         FeedbackService feedbackService = new FeedbackService();
-        String json = gson.toJson(feedbackService.handleFeedback(currentUser,feedbackCommand,feedback));
+        String json = gson.toJson(feedbackService.handleFeedback(currentUserID,feedbackCommand,feedback));
         feedbackService = null;
         PrintWriter out = response.getWriter();
         out.print(json);

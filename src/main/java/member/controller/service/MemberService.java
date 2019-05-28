@@ -1,15 +1,16 @@
 package member.controller.service;
 
+import member.controller.servlet.LoginServlet;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.MemberCommand;
 import member.util.setting.UserStatus;
 import member.util.setting.UserType;
-import order.controller.websocket.PushOrderWebSocket;
 import util.HttpCommonAction;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -56,38 +57,45 @@ public class MemberService {
         return result;
     }
 
-    public Object switchStatus(User currentUser,UserStatus userStatus){
+    public Object switchStatus(Long userID,UserStatus userStatus){
 
-        UserType currentUserType = currentUser.getUserType();
         Object result = null;
-        String msg = "command :: " + userStatus + " "+ currentUserType.toString();
-        if(currentUser != null) { // 有提供這個 狀態
+        String msg = "command :: " + userStatus;
+        boolean success = false;
+        if(userStatus != null) {
             userDao = new UserDaoImpl();
+            User currentUser = userDao.showUser(userID);
+            UserType currentUserType = currentUser.getUserType();
             switch (currentUserType) {
                 case Customer_and_Deliver: {
-                    boolean success;
                     success = switchDeliverStatus(currentUser, userStatus);
                     if (success) {
                         msg = msg + " work!!";
                     } else {
                         msg = msg + " do not work!!";
                     }
-                    result = HttpCommonAction.generateStatusResponse(success,msg);
+                    result = HttpCommonAction.generateStatusResponse(success, msg);
                     break;
                 }
                 case Customer: {
-                    boolean success;
                     success = switchCustomerStatus(currentUser, userStatus);
                     if (success) {
                         msg = msg + " work!!";
                     } else {
                         msg = msg + " do not work!!";
                     }
-                    result = HttpCommonAction.generateStatusResponse(success,msg);
+                    result = HttpCommonAction.generateStatusResponse(success, msg);
                     break;
                 }
+                default: {
+                    break;
+                }
+
             }
             userDao = null;
+        }else {
+            msg += "can not found!!";
+            result = HttpCommonAction.generateStatusResponse(false, msg);
         }
         return result;
     }
@@ -122,128 +130,150 @@ public class MemberService {
 
     // 登入
     public Object login(HttpSession session,String account,String password,String userType){
-        List<String> info=new ArrayList<>(); // 錯誤訊息
 
-        if(account==null||"".equals(account)){ // account不能空著喔
-            info.add("account不能空著喔");
-        }
+        Object result;
+        if(session.getAttribute("login") == null) { // 這個session 沒登入過 任何 user
+            List<String> info=new ArrayList<>(); // 錯誤訊息
 
-        if(password==null||"".equals(password)){ // password不能空著喔
-            info.add("password不能空著喔");
-        }
+            if(account==null||"".equals(account)){ // account不能空著喔
+                info.add("account不能空著喔");
+            }
 
-        if(userType==null||"".equals(userType)){ // userType不能空著喔
-            info.add("userType不能空著喔");
-        }
+            if(password==null||"".equals(password)){ // password不能空著喔
+                info.add("password不能空著喔");
+            }
 
-        if(info.size()==0){
-            try {
+            if(userType==null||"".equals(userType)){ // userType不能空著喔
+                info.add("userType不能空著喔");
+            }
+
+            if(info.size()==0){ // 使用者欄位 輸入正常
                 userDao = new UserDaoImpl();
-                User user = userDao.loginUser(account,password,userType);
-
-                if(user != null){ // 有這個使用者
-                    // ------判斷使用者登入狀況------- BEGIN
-//                    if(PushOrderWebSocket.httpSessions.get(session) == null){ // 單個登入
-
-                    session.setAttribute("login","login");
-                    session.setAttribute("User_Id",user.getUserID()); // User_Id 保存進 session 全域變數中
-                    session.setAttribute("User",user);
-//                    session.setAttribute("Account",user.getAccount()); // Account 保存進 session 全域變數中
-//                    session.setAttribute("Password",user.getPassword()); // Password 保存進 session 全域變數中
-//                    session.setAttribute("User_Name",user.getUserName()); // User_Name 保存進 session 全域變數中
-//                    session.setAttribute("Email",user.getEmail()); // Email 保存進 session 全域變數中
-//                    session.setAttribute("Phone_Number",user.getPhoneNumber()); // Phone_Number 保存進 session 全域變數中
-//                    session.setAttribute("Last_Address",user.getLastAddress()); // Last_Address 保存進 session 全域變數中
-//                    session.setAttribute("User_Type",user.getUserType()); // User_Type 保存進 session 全域變數中
-//                    session.setAttribute("User_Status",user.getUserStatus()); // User_Status 保存進 session 全域變數中
-
+                User user = userDao.loginUser(account,password,userType); // 檢查 資料庫 有無此 帳密 使用者 --------
+                if(user != null) { // 資料庫 有這個使用者
+                    session.setAttribute("login","login"); // login 保存進 session
                     UserType currentUserType = user.getUserType();
-                    switch (currentUserType){
+                    switch (currentUserType){ // 設定 登入 初始狀態
                         case Customer:{
-                            user.setUserStatus(UserStatus.CUSTOMER);
-                            userDao.modifyUserStatus(user.getUserID(),UserStatus.CUSTOMER.toString());
+                            LoginServlet.eaterSession.put(session.getId(),user.getUserID()); // 食客 session map
+                            session.setAttribute("userID",user.getUserID()); // User id 保存進 session
                             info.add("CUSTOMER");
                             break;
                         }
                         case Customer_and_Deliver:{
-                            user.setUserStatus(UserStatus.DELIVER_ON);
-                            userDao.modifyUserStatus(user.getUserID(),UserStatus.DELIVER_ON.toString());
+                            LoginServlet.deliverSession.put(session.getId(),user.getUserID()); // 外送員 session map
+                            session.setAttribute("userID",user.getUserID()); // User id 保存進 session
                             info.add("CUSTOMER_AND_DELIVER");
                             break;
                         }
                         case Administrator:{
-                            user.setUserStatus(UserStatus.CUSTOMER);
-                            userDao.modifyUserStatus(user.getUserID(),UserStatus.ADMINISTRATOR.toString());
+                            LoginServlet.adminSession.put(session.getId(),user.getUserID()); // 管理者 session map
+                            session.setAttribute("userID",user.getUserID()); // User id 保存進 session
                             info.add("ADMINISTRATOR");
                             break;
                         }
-                        default:{
-                            break;
-                        }
                     }
-                    userDao = null;
-
-                    List<HttpSession> keyList = (List<HttpSession>)getKey(PushOrderWebSocket.httpSessions,user);
-                    List<HttpSession> oneUserSameKeyList = new ArrayList<>();
-                    int count = 0 ;
-                    for(HttpSession key : keyList){
-                        if(!key.getId().equals(session.getId())){ // 一個使用者 但有多個session，要踢除其他的session
-                            PushOrderWebSocket.httpSessions.remove(key);
-                            key.invalidate(); // 銷毀 session
-                        }else{ // 和目前登入 session 一樣的 放進List 裡
-                            oneUserSameKeyList.add(key);
-                        }
-                        System.out.println(count+" :: "+key.getId());
-                        count++;
-                    }
-//                    if(oneUserSameKeyList.size()>1){ // 如果 相同的 session 登入 多個 同一個使用者
-//                        for(int i =0;i<oneUserSameKeyList.size()-1;i++){ // 剔除 其他session
-//                            PushOrderWebSocket.httpSessions.remove(oneUserSameKeyList.get(i));
-//                            oneUserSameKeyList.get(i).invalidate(); // 銷毀 session
-//                        }
-//                    }
-
-                    // ------判斷使用者登入狀況------- END
                 }else {
                     info.add("登入失敗，錯誤的帳號、密碼或userType");
                     info.add(0,"error");
-//                    request.setAttribute("info", info); // 保存錯誤訊息
-                    session.invalidate(); // 銷毀 session
-                    System.out.println(info);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
                 userDao = null;
+            }else { // 使用者欄位 輸入異常
+                info.add(0,"error");
             }
-        }else {
-            info.add(0,"error");
-//            request.setAttribute("info", info); // 保存錯誤訊息
-            session.invalidate(); // 銷毀 session
-            System.out.println(info);
-
+            result = info;
+        }else { // 這個session 已經有 user 登入了 ---------- 紀錄用 應該不會發生  ---- 因為 在 LoginFilter 會擋掉
+            result = HttpCommonAction.generateStatusResponse(false,"這個session 已經有 user 登入了");
         }
-        return info;
+        return result;
     }
-    // 註冊
-    public boolean signUp(User user){
+
+    public void showOnlineDeliver(){
+        Collection<Long> onlineDeliversID = LoginServlet.deliverSession.values();
+        System.out.println("線上食客 共 :: "+onlineDeliversID.size()+" 個");
+        int count = 0;
         userDao = new UserDaoImpl();
-        boolean success = false;
+        for(Long onlineDeliverID: onlineDeliversID){
+            User onlineDeliver = userDao.showUser(onlineDeliverID);
+            System.out.println("線上外送員 "+count+" :: "+onlineDeliver);
+            count ++;
+        }
+        userDao = null;
+    }
+
+    public void showOnlineEater(){
+        Collection<Long> onlineEatersID = LoginServlet.eaterSession.values();
+        System.out.println("線上食客 共 :: "+onlineEatersID.size()+" 個");
+        int count = 0;
+        userDao = new UserDaoImpl();
+        for(Long onlineEaterID: onlineEatersID){
+            User onlineEater = userDao.showUser(onlineEaterID);
+            System.out.println("線上食客 "+count+" :: "+onlineEater);
+            count ++;
+        }
+        userDao = null;
+    }
+
+    // 註冊
+    public Object signUp(User user){
+        userDao = new UserDaoImpl();
+        Object result = null;
+        boolean success;
         if(userDao.searchUser(user.getUserID())){ // 已註冊
             String currentUserType =  userDao.showUserType(user.getUserID());
             if(currentUserType.equals(UserType.Customer.toString())
                     && user.getUserType().equals(UserType.Customer_and_Deliver.toString())){
                 // 食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)
-                userDao.modifyUserType(user.getUserID(),UserType.Customer_and_Deliver.toString());
-                success = true;
+                success = userDao.modifyUserType(user.getUserID(),UserType.Customer_and_Deliver.toString());
+                result = HttpCommonAction.generateStatusResponse(success,"食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)");
             }
         }else{ // 未註冊
             // 目前直接註冊
-            userDao.addUser(user);
-            success = true;
+            success = userDao.addUser(user);
+            result = HttpCommonAction.generateStatusResponse(success,"未註冊 的 目前直接註冊");
         }
         userDao = null;
-        return success;
+        return result;
+    }
+
+    public Object logout(HttpSession httpSession){
+        Object result;
+        Long userID = (Long) httpSession.getAttribute("userID"); // current request user id
+        userDao = new UserDaoImpl();
+        User user = userDao.showUser(userID);
+        boolean success = false;
+        switch (user.getUserType()){
+            case Administrator:{
+                LoginServlet.adminSession.remove(httpSession.getId());
+                List<String> adminSessionList = (List<String>)MemberService.getKey(LoginServlet.adminSession,userID);
+                if (adminSessionList.size() == 0){ // 沒有其他 session 登這個 user 了
+                    success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
+                }
+                break;
+            }
+            case Customer_and_Deliver:{
+                LoginServlet.deliverSession.remove(httpSession.getId());
+                List<String> deliverSessionList = (List<String>)MemberService.getKey(LoginServlet.deliverSession,userID);
+                if (deliverSessionList.size() == 0){ // 沒有其他 session 登這個 user 了
+                    success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
+                }
+                break;
+            }
+            case Customer:{
+                LoginServlet.eaterSession.remove(httpSession.getId());
+                List<String> eaterSessionList = (List<String>)MemberService.getKey(LoginServlet.eaterSession,userID);
+                if (eaterSessionList.size() == 0){ // 沒有其他 session 登這個 user 了
+                    success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
+                }
+                break;
+            }
+        }
+        httpSession.removeAttribute("login");
+        httpSession.removeAttribute("userID");
+//        httpSession.invalidate(); // 註銷 該 session
+        result = HttpCommonAction.generateStatusResponse(success,"logout!!");
+        userDao = null;
+        return result;
     }
 
     public static Object getKey(Map map, Object value){

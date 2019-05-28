@@ -25,6 +25,16 @@ public interface UserDao {
 
     /**
      *
+     * @description: 得到使用者資訊
+     * @author BerSerKer
+     * @date 2019-05-28 20:01
+     * @param [userID]
+     * @return member.model.javabean.User
+     */
+    User showUser(Long userID);
+
+    /**
+     *
      * @description: 註冊
      * @param [user]
      * @return boolean

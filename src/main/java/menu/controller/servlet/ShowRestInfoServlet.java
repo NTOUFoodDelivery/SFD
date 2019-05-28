@@ -21,9 +21,11 @@ public class ShowRestInfoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
         RestInfoService restInfoService = new RestInfoService();
         String json = gson.toJson(restInfoService.getRestInfo());  // 拿到所有餐廳
         restInfoService = null;
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

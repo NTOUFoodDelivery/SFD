@@ -1,6 +1,7 @@
 
 <head>
     <title>Title</title>
+<!--    <meta http-equiv="refresh" content="5">-->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -14,7 +15,7 @@
 
 <button id="testCreateFeedback">testCreateFeedback</button><br>
 <button id="testSwitchDeliver">testSwitchDeliver</button><br>
-
+<button id="testLogout">testLogout</button><br>
 
 <script>
     window.onload = function()
@@ -40,6 +41,29 @@
             }
         })
     }
+</script>
+</script>
+<script type="text/javascript">
+    $("#testLogout").click(function () {
+        var url = "LogoutServlet";
+        $.ajax({
+            xhrFields: {
+                withCredentials: true
+            },
+            async:false,
+            crossDomain: true,
+            type: "GET",
+            url: url,
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+            },
+            error: function () {
+                console.log("logout error");
+            }
+        })
+    })
+
 </script>
 <script type="text/javascript">
     $(function(){

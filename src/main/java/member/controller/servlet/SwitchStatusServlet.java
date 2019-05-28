@@ -22,16 +22,12 @@ public class SwitchStatusServlet extends HttpServlet {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
         UserStatus userStatus = UserStatus.getUserStatus(request.getParameter("userStatus")); // user Status
-        User currentUser = (User) request.getSession().getAttribute("User"); // current request user
-
-//        User currentUser = new User(); // test user
-//        currentUser.setUserID(1L); // test user id
-//        currentUser.setUserType(UserType.Customer); // test user type
-//        currentUser.setUserStatus(UserStatus.CUSTOMER); // test user status
+        Long currentUserID = (Long) request.getSession().getAttribute("userID"); // current request user id
 
         MemberService memberService = new MemberService();
-        String json = gson.toJson(memberService.switchStatus(currentUser,userStatus));
+        String json = gson.toJson(memberService.switchStatus(currentUserID,userStatus));
         memberService = null;
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

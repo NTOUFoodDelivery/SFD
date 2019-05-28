@@ -3,8 +3,6 @@ package order.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import member.model.javabean.User;
-import member.util.setting.UserType;
 import order.controller.service.OrderService;
 
 import javax.servlet.ServletException;
@@ -24,15 +22,12 @@ public class ShowHistoryOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-//        User currentUser = (User)request.getSession().getAttribute("User");
-
-        User currentUser = new User(); // test user
-        currentUser.setUserType(UserType.Customer); // test user type
-        currentUser.setUserID(1L); // test user id
+        Long currentUserID = (Long) request.getSession().getAttribute("userID");
 
         OrderService orderService = new OrderService();
-        String json = gson.toJson(orderService.showHistoryOrder(currentUser));
+        String json = gson.toJson(orderService.showHistoryOrder(currentUserID));
         orderService = null;
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();

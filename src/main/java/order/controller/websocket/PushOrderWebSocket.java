@@ -3,7 +3,6 @@ package order.controller.websocket;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import member.model.javabean.User;
 import order.controller.service.OrderService;
 import order.model.javabean.PushResult;
 import util.configurator.GetHttpSessionConfigurator;
@@ -18,8 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PushOrderWebSocket {
 
 
-    public static Map<Long,Session> sessions =  new ConcurrentHashMap<Long,Session>(); // 紀錄 所有 連接 websocket 外送員 的 websocket session
-    public static Map<Session,HttpSession> httpSessions =  new ConcurrentHashMap<Session,HttpSession>(); // 紀錄 所有 連接 websocket 外送員 的 http session
+    public static Map<Session,Long> sessions =  new ConcurrentHashMap<>(); // 紀錄 所有 連接 websocket 外送員 的 websocket session
 
     private Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     private OrderService orderService = new OrderService();
@@ -31,20 +29,16 @@ public class PushOrderWebSocket {
         HttpSession httpSession = (HttpSession) config.getUserProperties()
                 .get(HttpSession.class.getName());
 
-        User user = (User)httpSession.getAttribute("User");
-
-        sessions.put(user.getUserID(),session);
-        httpSessions.put(session,httpSession);
-
+        Long userID = (Long)httpSession.getAttribute("userID");
+        if(userID != null){
+            sessions.put(session,userID);
+        }
     }
 
     @OnClose
     public void onClose(Session session) {
         System.out.println("PushOrderWebSocket Server close ::"+session.getId());
-        User user = (User)httpSessions.get(session).getAttribute("User");
-        Long userID = user.getUserID();
-        sessions.remove(userID);
-        httpSessions.remove(session);
+        sessions.remove(session);
     }
 
     @OnMessage
@@ -53,9 +47,9 @@ public class PushOrderWebSocket {
         // lock websocket sessions
         // 以免推播訂單時 拿到不完全的 用戶、訂單資訊
         synchronized(sessions) {
-            User user = (User)httpSessions.get(session).getAttribute("User"); // deliver
+            Long userID = sessions.get(session); // deliver id
             PushResult pushResult = gson.fromJson(msg,PushResult.class); // 訂單 處理 訊息
-            orderService.dealOrder(pushResult,user); // 處理 訂單
+            orderService.dealOrder(pushResult,userID); // 處理 訂單
         }
     }
 

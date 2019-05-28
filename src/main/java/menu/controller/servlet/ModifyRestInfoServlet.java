@@ -23,14 +23,15 @@ import java.util.Date;
 public class ModifyRestInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
         RestCommand restCommand = RestCommand.getRestCommand(request.getParameter("cmd")); // cmd
         Rest rest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Rest.class); // rest
 
         RestInfoService restInfoService = new RestInfoService();
         String json = gson.toJson(restInfoService.modifyRestInfo(restCommand,rest));
         restInfoService = null;
+
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
