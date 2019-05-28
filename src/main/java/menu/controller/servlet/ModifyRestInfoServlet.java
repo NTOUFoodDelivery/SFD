@@ -6,9 +6,7 @@ import com.google.gson.GsonBuilder;
 import menu.controller.service.RestInfoService;
 import menu.model.javabean.Rest;
 import menu.util.setting.RestCommand;
-import order.model.javabean.RestInfoRequest;
 import util.HttpCommonAction;
-import util.javabean.StatusCodeResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 
 @WebServlet("/ModifyRestInfoServlet")
 public class ModifyRestInfoServlet extends HttpServlet {
