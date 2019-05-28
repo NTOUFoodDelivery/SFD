@@ -26,10 +26,7 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-                var cmd = data[0];
-                if (cmd === "reload") {
-                    window.location.href = 'LoginDemo.html';
-                } else {
+                if (data) {
                     var userName = data.User_Name;
                     var userType = data.User_Type;
                     var userID = data.User_Id;
@@ -37,6 +34,9 @@
                     $('#welcome_userName')[0].innerHTML = "名字 :: "+userName;
                     $('#welcome_userType')[0].innerHTML = "type :: "+userType;
                     $('#welcome_userID')[0].innerHTML = "ID :: "+userID;
+
+                } else {
+                    window.location.href = 'LoginDemo.html';
                 }
             }
         })
@@ -50,18 +50,20 @@
             xhrFields: {
                 withCredentials: true
             },
-            async:false,
+            async:true,
             crossDomain: true,
             type: "GET",
             url: url,
             dataType: "json",
             success: function(data) {
                 console.log(data);
+
             },
             error: function () {
                 console.log("logout error");
             }
         })
+        location.reload();
     })
 
 </script>

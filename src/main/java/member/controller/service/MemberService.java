@@ -190,7 +190,7 @@ public class MemberService {
 
     public void showOnlineDeliver(){
         Collection<Long> onlineDeliversID = LoginServlet.deliverSession.values();
-        System.out.println("線上食客 共 :: "+onlineDeliversID.size()+" 個");
+        System.out.println("線上外送員 共 :: "+onlineDeliversID.size()+" 個");
         int count = 0;
         userDao = new UserDaoImpl();
         for(Long onlineDeliverID: onlineDeliversID){

@@ -40,7 +40,7 @@
     <!-- ---------   chatBox   ---------- -->
 </section><br>
 <div class="card card-body" id="errorStr"></div>
-<button id="testSubmit">testSubmit</button><br>
+<button id="testCreateFeedback">testCreateFeedback</button><br>
 <button id="testLogout">testLogout</button><br>
 <a href="testEater.html">網頁跳轉</a><br>
 <img id="img" />
@@ -77,6 +77,7 @@
             dataType: "json",
             success: function(data) {
                 console.log(data);
+                location.reload();
             },
             error: function () {
                 console.log("logout error");
@@ -287,8 +288,13 @@
 </script>
 
 <script>
-    $('#testSubmit').click(function () {
-        // var url="/IdentityRedirectServlet";
+    $('#testCreateFeedback').click(function () {
+
+        let json =`{
+            "Feedback_Id": ${getTimeStamp()},
+            "Content": "ERTGHJK"
+        }`;
+
         var url="FeedbackServlet?cmd=CREATE";
         $.ajax({
             xhrFields: {
@@ -296,14 +302,16 @@
             },
             async:false,
             crossDomain: true,
-            type: "Post",
+            type: "POST",
             url: url,
-            dataType: "json",
+            contentType:'application/json;charset=UTF-8',
+            dataType:"json",
+            data: json,
             success: function(data) {
                 console.log(data);
             },
             error: function () {
-
+                console.log("not thing");
             }
         })
     })
@@ -317,15 +325,16 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-                var cmd = data[0];
-                if (cmd === "reload") {
-                    window.location.href = 'LoginDemo.html';
-                } else {
+
+                if (data) {
                     var userName = data.User_Name;
                     var userType = data.User_Type;
 
                     $('#welcome_userName')[0].innerHTML = userName;
                     $('#welcome_userType')[0].innerHTML = userType;
+
+                } else {
+                    window.location.href = 'LoginDemo.html';
                 }
             }
         })
@@ -354,5 +363,11 @@
             }
         });
     });
+
+    function getTimeStamp() {
+        const dateTime = new Date().getTime();
+        const timestamp = Math.floor(dateTime / 1000);
+        return timestamp;
+    }
 </script>
 </html>

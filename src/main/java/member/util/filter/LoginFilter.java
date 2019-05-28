@@ -1,5 +1,6 @@
 package member.util.filter;
 
+import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 
 import javax.servlet.*;
@@ -35,7 +36,10 @@ public class LoginFilter implements Filter {
                 chain.doFilter(request, response);
             } else { // 該 session 有 user 登入了
                 if(path.equals("/LoginDemo.html")){ // 有登入了 還想進 登入頁面 ------- 把他踢回去
-                    User user = (User)session.getAttribute("User");
+                    Long userID = (Long) session.getAttribute("userID");
+                    System.out.println(userID);
+                    UserDaoImpl userDao = new UserDaoImpl();
+                    User user = userDao.showUser(userID);
                     String retUrl = request.getHeader("Referer");
                     switch (user.getUserType()){
                         case Customer:{
@@ -51,6 +55,7 @@ public class LoginFilter implements Filter {
                             break;
                         }
                     }
+                    userDao = null;
                     response.sendRedirect(retUrl);
                 }else {
                     chain.doFilter(request, response);
