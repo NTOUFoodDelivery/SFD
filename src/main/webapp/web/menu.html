@@ -5,6 +5,9 @@
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
 <html>
+<script src="js/jquery.min.js"></script>
+<script src="js/skel.min.js"></script>
+<script src="js/restaurant.js"></script>
 <script>
 		$(function(){
         $('#bu').click(function(){
@@ -48,6 +51,72 @@
         });
 
     })
+
+		function add()
+		{
+			var optionSelected = $("option:selected", $('#restaurant_select'));
+			var getID = optionSelected[0].id.split("delete")[1];
+			console.log(getID);
+			var restID = getID;
+			console.log(restID);
+			var mealName = $('#restName').val()
+			var mealCost = $('#mealCost').val()
+			var restDescription = $('#restDescription').val()
+			const dateTime = new Date().getTime();
+			const timestamp = Math.floor(dateTime / 1000);
+			var sJson = JSON.stringify
+			({
+				query:{
+					command:"add",
+					what:"menu"
+				},
+				result: [
+					{
+						Food_Id: dateTime,
+						Food_Name: mealName,
+						Rest_Id: restID,
+						Cost: mealCost,
+						Description: restDescription,
+					}
+				]
+			});
+			$.ajax({
+				url: "https://ntou-sfd.herokuapp.com/ModifyMenuServlet",
+				type: "POST",
+				async: true,
+				dataType: "json",
+				contentType: 'application/json; charset=UTF-8',
+				data: sJson,
+				success: function(){alert("Sussess")}		});
+		}
+
+		function delete_menu()
+		{
+			var optionSelected = $("option:selected", $('#menu_select'));
+			var deleteID = optionSelected[0].id.split("delete")[1];
+			var menuID = deleteID;
+			console.log(menuID);
+			var sJson = JSON.stringify
+			({
+				query: {
+					command: "delete",
+					what: "menu"
+				},
+				result: [
+					{
+						Food_Id: menuID
+					}
+				]
+			});
+			$.ajax({
+				url: "https://ntou-sfd.herokuapp.com/ModifyMenuServlet",
+				type: "POST",
+				async: true,
+				dataType: "json",
+				contentType: 'application/json; charset=UTF-8',
+				data: sJson,
+				success: function(){alert("Sussess")}		});
+		}
 		</script>
 	<head>
 		<title>新增刪除修改餐廳資訊</title>
@@ -107,6 +176,7 @@
 						</div>
 					</div>
 				</div>
+				<a href = "javascript:add()" class="button special">確定</a>
 			</section>
 			
 			<section id="banner1" class="wrapper special">
@@ -129,6 +199,7 @@
 						</div>
 					</div>
 				</div>
+				<a href = "javascript:delete_menu()" class="button special">確定</a>
 			</section>
 			
 			<section id="three" class="wrapper special">
@@ -177,11 +248,6 @@
 			</footer>
 
 		<!-- Scripts -->
-			<script src="js/jquery.min.js"></script>
-			<script src="js/skel.min.js"></script>
-			<script src="js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="js/main.js"></script>
 
 	</body>
 </html>

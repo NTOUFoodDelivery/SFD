@@ -31,7 +31,7 @@ function import_menu(n1, n2) {
                     m4 = JData_menu.result[i]["Image"];
 				m5 = JData_menu.result[i]["Food_Id"];
 				}
-			}
+			})
 		}
-	}
+	})
 }

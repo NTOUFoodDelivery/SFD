@@ -6,10 +6,8 @@ $(document).ready(function(){
             url: url,
             dataType: "json",
             success: function(data) {
-				var result = data.result;
-                console.log(result);
-				for(var i = 0;i< result.length;i++){
-					var rest = result[i];
+				for(var i = 0;i< data.length;i++){
+					var rest = data[i];
 					var value = rest.Rest_Id;
 					var name = rest.Rest_Name;
 					var address = rest.Rest_Address;
@@ -39,10 +37,8 @@ $(document).ready(function(){
             url: url,
             dataType: "json",
             success: function(data) {
-				var result = data.result;
-                console.log(result);
-				for(var i = 0;i< result.length;i++){
-					var rest = result[i];
+				for(var i = 0;i< data.length;i++){
+					var rest = data[i];
 					var value = rest.Rest_Id;
 					var name = rest.Rest_Name;
 					var address = rest.Rest_Address;
@@ -79,11 +75,8 @@ function getMenu(Rest_Name,Rest_Address){
             dataType: "json",
 			data:restReq,
             success: function(data) {
-				var result = data.result;
-                console.log(result);
-				
-				for(var i = 0;i< result.length;i++){
-					var meal = result[i];
+				for(var i = 0;i< data.length;i++){
+					var meal = data[i];
 					var value = meal.Food_Id;
 					var name = meal.Food_Name;
 					$('#menu_select').append('<option value ='+value+'>'+name+'</option>');
