@@ -22,8 +22,11 @@ public class ShowHistoryOrderServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        Long currentUserID = (Long) request.getSession().getAttribute("userID");
-
+//        Long currentUserID = (Long) request.getSession().getAttribute("userID");
+        Long currentUserID = Long.parseLong(request.getParameter("userID"));
+        System.out.println(
+                currentUserID
+        );
         OrderService orderService = new OrderService();
         String json = gson.toJson(orderService.showHistoryOrder(currentUserID));
         orderService = null;

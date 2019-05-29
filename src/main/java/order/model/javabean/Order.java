@@ -1,16 +1,16 @@
 package order.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 
 public class Order {
 
+
     /**
-     * Customer : {"User_Id":1,"Account":"a","User_Name":"你好","Address":"我家","Other":"gufjdk","Phone_Number":"02222"}
-     * Deliver : {"User_Id":3,"Account":"d","User_Name":"Testd","Phone_Number":"111111"}
-     * Order : {"Order_Id":2536,"Total":50,"Type_Count":2,"Meals":[{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":1},{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}],"Start_Time":"2019-05-15 03:31:00","Order_Status":"WAIT","Casting_Prio":0}
+     * Customer : {"User_Id":1,"User_Name":"你好","Address":"我家","Other":"gufjdk","Phone_Number":"02222"}
+     * Deliver : {"User_Id":3,"User_Name":"Testd","Phone_Number":"111111"}
+     * Order : {"Order_Id":253678911,"Total":75,"Type_Count":2,"Meals":[{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Meals":[{"Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},{"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]},{"Rest_Name":"OOXX 早午餐","Rest_Address":"基隆市ＸＸ區ＯＯ路ＸＸ號1樓","Meals":[{"Food_Id":5,"Food_Name":"鐵板麵","Cost":25,"Count":2},{"Food_Id":2,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]}],"Start_Time":"2019-05-17 03:31:00","Order_Status":"WAIT","CastingPrio":0}
      */
 
     @SerializedName("Customer")
@@ -44,29 +44,18 @@ public class Order {
         this.order = order;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("customer", customer)
-                .append("deliver", deliver)
-                .append("order", order)
-                .toString();
-    }
-
     public static class CustomerBean {
         /**
          * User_Id : 1
-         * Account : a
          * User_Name : 你好
          * Address : 我家
          * Other : gufjdk
          * Phone_Number : 02222
+         * Account : 34567
          */
 
         @SerializedName("User_Id")
         private Long userID;
-        @SerializedName("Account")
-        private String account;
         @SerializedName("User_Name")
         private String userName;
         @SerializedName("Address")
@@ -75,6 +64,8 @@ public class Order {
         private String other;
         @SerializedName("Phone_Number")
         private String phoneNumber;
+        @SerializedName("Account")
+        private String account;
 
         public Long getUserID() {
             return userID;
@@ -123,36 +114,23 @@ public class Order {
         public void setAccount(String account) {
             this.account = account;
         }
-
-        @Override
-        public String toString() {
-            return new ToStringBuilder(this)
-                    .append("userID", userID)
-                    .append("account", account)
-                    .append("userName", userName)
-                    .append("address", address)
-                    .append("other", other)
-                    .append("phoneNumber", phoneNumber)
-                    .toString();
-        }
     }
 
     public static class DeliverBean {
         /**
          * User_Id : 3
-         * Account : d
          * User_Name : Testd
          * Phone_Number : 111111
          */
 
         @SerializedName("User_Id")
         private Long userID;
-        @SerializedName("Account")
-        private String account;
         @SerializedName("User_Name")
         private String userName;
         @SerializedName("Phone_Number")
         private String phoneNumber;
+        @SerializedName("Account")
+        private String account;
 
         public Long getUserID() {
             return userID;
@@ -185,27 +163,17 @@ public class Order {
         public void setAccount(String account) {
             this.account = account;
         }
-
-        @Override
-        public String toString() {
-            return new ToStringBuilder(this)
-                    .append("userID", userID)
-                    .append("account", account)
-                    .append("userName", userName)
-                    .append("phoneNumber", phoneNumber)
-                    .toString();
-        }
     }
 
     public static class OrderBean {
         /**
-         * Order_Id : 2536
-         * Total : 50
+         * Order_Id : 253678911
+         * Total : 75
          * Type_Count : 2
-         * Meals : [{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":1},{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]
-         * Start_Time : 2019-05-15 03:31:00
+         * Meals : [{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Meals":[{"Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},{"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]},{"Rest_Name":"OOXX 早午餐","Rest_Address":"基隆市ＸＸ區ＯＯ路ＸＸ號1樓","Meals":[{"Food_Id":5,"Food_Name":"鐵板麵","Cost":25,"Count":2},{"Food_Id":2,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]}]
+         * Start_Time : 2019-05-17 03:31:00
          * Order_Status : WAIT
-         * Casting_Prio : 0
+         * CastingPrio : 0
          */
 
         @SerializedName("Order_Id")
@@ -218,10 +186,9 @@ public class Order {
         private String startTime;
         @SerializedName("Order_Status")
         private String orderStatus;
-        @SerializedName("Casting_Prio")
+        @SerializedName("CastingPrio")
         private int castingPrio;
-        @SerializedName("Meals")
-        private List<MealsBean> meals;
+        private List<MealsBeanX> Meals;
 
         public Long getOrderID() {
             return orderID;
@@ -271,49 +238,27 @@ public class Order {
             this.castingPrio = castingPrio;
         }
 
-        public List<MealsBean> getMeals() {
-            return meals;
+        public List<MealsBeanX> getMeals() {
+            return Meals;
         }
 
-        public void setMeals(List<MealsBean> meals) {
-            this.meals = meals;
+        public void setMeals(List<MealsBeanX> Meals) {
+            this.Meals = Meals;
         }
 
-        @Override
-        public String toString() {
-            return new ToStringBuilder(this)
-                    .append("orderID", orderID)
-                    .append("total", total)
-                    .append("typeCount", typeCount)
-                    .append("startTime", startTime)
-                    .append("orderStatus", orderStatus)
-                    .append("castingPrio", castingPrio)
-                    .append("meals", meals)
-                    .toString();
-        }
-
-        public static class MealsBean {
+        public static class MealsBeanX {
             /**
              * Rest_Name : 阿MAN 早午餐
              * Rest_Address : 基隆市中正區中正路822號1樓
-             * Food_Id : 3
-             * Food_Name : 麥克雞塊
-             * Cost : 25
-             * Count : 1
+             * Meals : [{"Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},{"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]
              */
 
             @SerializedName("Rest_Name")
             private String restName;
             @SerializedName("Rest_Address")
             private String restAddress;
-            @SerializedName("Food_Id")
-            private Long foodID;
-            @SerializedName("Food_Name")
-            private String foodName;
-            @SerializedName("Cost")
-            private int cost;
-            @SerializedName("Count")
-            private int count;
+            @SerializedName("Meals")
+            private List<MealsBean> meals;
 
             public String getRestName() {
                 return restName;
@@ -331,48 +276,62 @@ public class Order {
                 this.restAddress = restAddress;
             }
 
-            public Long getFoodID() {
-                return foodID;
+            public List<MealsBean> getMeals() {
+                return meals;
             }
 
-            public void setFoodID(Long foodID) {
-                this.foodID = foodID;
+            public void setMeals(List<MealsBean> meals) {
+                this.meals = meals;
             }
 
-            public String getFoodName() {
-                return foodName;
-            }
+            public static class MealsBean {
+                /**
+                 * Food_Id : 3
+                 * Food_Name : 麥克雞塊
+                 * Cost : 25
+                 * Count : 2
+                 */
 
-            public void setFoodName(String foodName) {
-                this.foodName = foodName;
-            }
+                @SerializedName("Food_Id")
+                private Long foodID;
+                @SerializedName("Food_Name")
+                private String foodName;
+                @SerializedName("Cost")
+                private int cost;
+                @SerializedName("Count")
+                private int count;
 
-            public int getCost() {
-                return cost;
-            }
+                public Long getFoodID() {
+                    return foodID;
+                }
 
-            public void setCost(int cost) {
-                this.cost = cost;
-            }
+                public void setFoodID(Long foodID) {
+                    this.foodID = foodID;
+                }
 
-            public int getCount() {
-                return count;
-            }
+                public String getFoodName() {
+                    return foodName;
+                }
 
-            public void setCount(int count) {
-                this.count = count;
-            }
+                public void setFoodName(String foodName) {
+                    this.foodName = foodName;
+                }
 
-            @Override
-            public String toString() {
-                return new ToStringBuilder(this)
-                        .append("restName", restName)
-                        .append("restAddress", restAddress)
-                        .append("foodID", foodID)
-                        .append("foodName", foodName)
-                        .append("cost", cost)
-                        .append("count", count)
-                        .toString();
+                public int getCost() {
+                    return cost;
+                }
+
+                public void setCost(int cost) {
+                    this.cost = cost;
+                }
+
+                public int getCount() {
+                    return count;
+                }
+
+                public void setCount(int count) {
+                    this.count = count;
+                }
             }
         }
     }

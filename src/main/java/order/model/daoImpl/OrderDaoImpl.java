@@ -92,59 +92,64 @@ public class OrderDaoImpl implements OrderDao {
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         try {
-            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id, customer_deliver_info.Deliver_Id " +
-                    "FROM `order`" +
-                    "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id" +
-                    " WHERE Order_Status = 'WAIT'";
-            preparedStatement = (PreparedStatement)connection.prepareStatement(sql);
+            String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id,member.User_Name,member.Account,member.Phone_Number\n" +
+                    "FROM `order`\n" +
+                    "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id\n" +
+                    "INNER JOIN member ON  `member`.User_Id = customer_deliver_info.Customer_Id\n" +
+                    "WHERE Order_Status = 'WAIT'";
+            preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData();
 
             while(resultSet.next())
             {
                 Order order = new Order();
-                order.setCustomer(new Order.CustomerBean());
-                order.setDeliver(new Order.DeliverBean());
-                order.setOrder(new Order.OrderBean());
+                Order.CustomerBean customerBean = new Order.CustomerBean();
+                customerBean.setUserID(resultSet.getLong("Customer_Id"));
+                customerBean.setUserName(resultSet.getString("User_Name"));
+                customerBean.setAddress(resultSet.getString("Address"));
+                customerBean.setOther(resultSet.getString("Other"));
+                customerBean.setPhoneNumber(resultSet.getString("Phone_Number"));
+                customerBean.setAccount(resultSet.getString("Account"));
 
-                List<Order.OrderBean.MealsBean> meals = new ArrayList<>();
-                order.getOrder().setOrderStatus(resultSet.getString("Order_Status"));
-                order.getOrder().setCastingPrio(0);
+                Order.OrderBean orderBean = new Order.OrderBean();
+                orderBean.setOrderID(resultSet.getLong("Order_Id");
+                orderBean.setTotal(resultSet.getInt("Total"));
+                orderBean.setTypeCount(resultSet.getInt("Type_Count"));
+                orderBean.setStartTime(resultSet.getString("Start_Time"));
+                orderBean.setOrderStatus(resultSet.getString("Order_Status"));
+                orderBean.setCastingPrio(resultSet.getInt("Casting_Prio"));
 
-                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
-                order.getOrder().setTotal(resultSet.getInt("Total"));
-                order.getOrder().setStartTime(resultSet.getString("Start_Time"));
-                order.getCustomer().setOther(resultSet.getString("Other"));
-                order.getOrder().setTypeCount(resultSet.getInt("Type_Count"));
-                order.getCustomer().setAddress(resultSet.getString("Address"));
+                List<Order.OrderBean.MealsBeanX> mealsBeanXList = new ArrayList<>();
 
-
-                order.getCustomer().setUserID(resultSet.getLong("Customer_Id"));
-                order.getDeliver().setUserID(resultSet.getLong("Deliver_Id"));
-                order.getOrder().setCastingPrio(resultSet.getInt("Casting_Prio"));
-
-
-                ResultSet mealResultSet = null;// 為未來預做版本 現階段餐廳地址名稱仍為同一個
+                Order.OrderBean.MealsBeanX mealsBeanX = new Order.OrderBean.MealsBeanX();
+                ResultSet mealResultSet;
                 String mealSql = "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n" +
                         "FROM order_food" +
                         " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
                         "WHERE order_food.Order_Id = ?";
-                preparedStatement = (PreparedStatement)connection.prepareStatement(mealSql);
+                preparedStatement = connection.prepareStatement(mealSql);
                 preparedStatement.setLong(1, order.getOrder().getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
 
+                mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
+                mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));
+
                 while(mealResultSet.next()){
-                    Order.OrderBean.MealsBean meal = new Order.OrderBean.MealsBean();
-                    meal.setRestName(mealResultSet.getString("Rest_Name"));
-                    meal.setRestAddress(mealResultSet.getString("Rest_Address"));
-                    meal.setFoodID(mealResultSet.getLong("Food_Id"));
-                    meal.setFoodName(mealResultSet.getString("Food_Name"));
-                    meal.setCount(mealResultSet.getInt("Count"));
-                    meal.setCost(mealResultSet.getInt("meal.Cost"));//補涵式
-                    meals.add(meal);
+                    Order.OrderBean.MealsBeanX.MealsBean mealsBean = new Order.OrderBean.MealsBeanX.MealsBean();
+
+                    mealsBean.setFoodID(mealResultSet.getLong("Food_Id"));
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBean.setCost(mealResultSet.getInt("Cost"));//補涵式
+
                 }
-                order.getOrder().setMeals(meals);
+                mealsBeanXList.add(mealsBeanX);
+
+                orderBean.setMeals(mealsBeanXList);
+                order.setCustomer(customerBean);
+                order.setOrder(orderBean);
                 orders.add(order);
             }
 
