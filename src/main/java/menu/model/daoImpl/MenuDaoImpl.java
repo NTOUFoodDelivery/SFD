@@ -156,4 +156,41 @@ public class MenuDaoImpl implements MenuDao {
             return success;
         }
     }
+
+    /**
+     *
+     * @description: 修改 指定餐廳 的菜單
+     * @author thomas205327
+     * @date 2019-05-29 20:01
+     * @param [restID, foodID, foodName, cost, description, image]
+     * @return boolean
+     */
+    @Override
+    public boolean fixRestMenu(Long restID, Long foodID, String foodName, int cost, String description, String image)
+    {
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        boolean success = false;
+        String sql = "UPDATE meal SET Food_Name = ?, Cost = ?, Description = ?, Image = ? WHERE Rest_Id = ? AMD Food_Id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, foodName);
+            preparedStatement.setInt(2, cost);
+            preparedStatement.setString(3, description);
+            preparedStatement.setString(4, image);
+            preparedStatement.setLong(5, restID);
+            preparedStatement.setLong(5, foodID);
+            preparedStatement.executeUpdate();
+            success = true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            C3P0Util.close(connection);
+        }
+        return success;
+    }
 }

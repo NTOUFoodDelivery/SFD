@@ -110,4 +110,40 @@ public class RestDaoImpl implements RestDao {
         }
         return success;
     }
+
+    /**
+     *
+     * @description: 修改 餐廳
+     * @author thomas205327
+     * @date 2019-05-29 20:01
+     * @param [restID, restName, restAddress, description, restPhoto]
+     * @return boolean
+     */
+    @Override
+    public boolean fixRest(Long restID, String restName, String restAddress, String description, String restPhoto)
+    {
+        Connection connection = C3P0Util.getConnection();
+        PreparedStatement preparedStatement;
+        boolean success = false;
+        String sql = "UPDATE restaurant_info SET Rest_Name = ?, Rest_Address = ?, Description = ?, Rest_Photo = ? WHERE Rest_Id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, restName);
+            preparedStatement.setString(2, restAddress);
+            preparedStatement.setString(3, description);
+            preparedStatement.setString(4, restPhoto);
+            preparedStatement.setLong(5, restID);
+            preparedStatement.executeUpdate();
+            success = true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            C3P0Util.close(connection);
+        }
+        return success;
+    }
 }
