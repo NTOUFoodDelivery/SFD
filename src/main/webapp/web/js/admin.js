@@ -1,7 +1,51 @@
-function upload()
+function upload(cmd) // upload img and return img_url
 {
 
+    const id = '1573e8c523b6e8c'; // 填入 App 的 Client ID
+    const token = '2288b6ecd6c0eb7545b4c083c9e0f212eb6ab9ed'; // 填入 token
+    const album = 'vNnSeO4'; // 若要指定傳到某個相簿，就填入相簿的 ID
+
+    var fileTarget = "#"+cmd+"File";
+    var file_data = $(fileTarget).prop('files')[0]; //取得上傳檔案屬性
+
+    let settings = {
+        async: true,
+        crossDomain: true,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        url: 'https://api.imgur.com/3/image',
+        headers: {
+            Authorization: 'Bearer ' + token
+        },
+        mimeType: 'multipart/form-data'
+    };
+
+    var restNameTarget = "#"+cmd+"RestName";
+    var restDescriptionTarget = "#"+cmd+"RestDescription";
+
+    var title = $(restNameTarget)[0].value;
+    var description = $(restDescriptionTarget)[0].value;
+
+    let form = new FormData();
+    form.append('image', file_data);
+    form.append('title', title);
+    form.append('description', description);
+    form.append('album', album); // 有要指定的相簿就加這行
+
+    settings.data = form;
+
+    $.ajax(settings).done(function(res) {
+        // console.log(res); // 可以看見上傳成功後回的值
+        var img_url = JSON.parse(res).data.link;
+        console.log(img_url); // ------------------------- 圖片網址
+        var imgUrlTarget = "#"+cmd+"ImgUrl";
+        $(imgUrlTarget)[0].value = img_url;
+        alert('上傳完成，稍待一會兒就可以在底部的列表上看見了。')
+    });
+
 }
+
 function import_menu(n1, n2) {
     var JData_menu;
     var sJson = JSON.stringify
