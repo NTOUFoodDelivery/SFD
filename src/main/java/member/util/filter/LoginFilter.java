@@ -23,17 +23,20 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
         String path = ((HttpServletRequest) req).getServletPath();
+        System.out.println(path);
         if(!excludedUrls.contains(path)){
-//            System.out.println(path);
             HttpServletRequest request = (HttpServletRequest) req;
             HttpServletResponse response = (HttpServletResponse) resp;
             HttpSession session = request.getSession();
             //判斷session是否過期 或 沒登入
             if (session.getAttribute("login") == null) {
                 System.out.println("session died");
-                String errors = "您還沒有登入，或者session已過期。請先登入！";
-                request.setAttribute("Message", errors);
                 response.setHeader("sessionstatus", "timeout");
+                if(path.equals("/LoginDemo.html")){
+
+                }else if(path.equals("/web/Administrator.html")){
+                    response.sendRedirect("/SFD/web/Administrator_Login.html");
+                }
                 chain.doFilter(request, response);
             } else { // 該 session 有 user 登入了
                 if(path.equals("/LoginDemo.html") || path.equals("/web/Administrator_Login.html")){ // 有登入了 還想進 登入頁面 ------- 把他踢回去

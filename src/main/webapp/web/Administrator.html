@@ -90,8 +90,23 @@
 
 </body>
 <script>
-	window.onload =function()
-	{
+	$(document).ready(function(){
+		$(function(){
+			$.ajaxSetup ({
+				cache: false, //關掉AJAX 緩存
+				async:false, //同步請求
+				contentType:"application/x-www-form-urlencoded;charset=utf-8",
+				complete:function(XMLHttpRequest,textStatus){
+					// 用 XMLHttpRequest 拿 header，sessionstatus，
+					var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
+					if(sessionstatus=="timeout"){
+						alert("重複登入或長時間無操作～請重新登入！！");
+						parent.location.href = "LoginDemo.html";
+					}
+				}
+			});
+		});
+
 		const url = "/SFD/LoginServlet"; // test url
 		// const url = "/LoginServlet"; // 正式 url
 		$.ajax({
@@ -104,12 +119,13 @@
 				if(data){
 
 				}else {
-					window.location.href='/SFD/web/Administrator_Login.html'; // test url
+					// window.location.href='/SFD/web/Administrator_Login.html'; // test url
 					// window.location.href='/web/Administrator_Login.html'; // 正式 url
 				}
 			}
 		})
-	}
+	})
+
 </script>
 
 </html>
