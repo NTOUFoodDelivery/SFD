@@ -17,7 +17,7 @@
 			$('html,body').animate({scrollTop:$('#one').offset().top},800);});
 			});
 			</script>
-		<script src="js/z_logintype.js"></script>
+
 
 		<title>Starburst Food Delivery---管理者介面</title>
 		<meta charset="utf-8" />
@@ -89,4 +89,24 @@
 		<!-- Scripts -->
 
 	</body>
+	<script>
+		window.onload =function()
+		{
+			$.ajax({
+				url:'/SFD/LoginServlet',
+				type:'GET',
+				dataType:'json',
+				success:function(data)
+				{
+					console.log(data);
+					if(data){
+
+					}else {
+						window.location.href='/web/Administrator_Login.html';
+					}
+				}
+			})
+		}
+	</script>
+
 </html>
