@@ -1,14 +1,10 @@
 package util.listener;
 
-import db.demo.connect.JdbcUtils;
-
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.*;
-import java.sql.Connection;
+import javax.servlet.http.HttpServletRequest;
 
 @WebListener()
 public class RequestListener implements ServletRequestListener {
@@ -20,8 +16,7 @@ public class RequestListener implements ServletRequestListener {
 
     public void contextInitialized(ServletContextEvent sce) {
       // 連接資料庫
-//        Connection connection = JdbcUtils.getconn();
-//        sce.getServletContext().setAttribute("dbConnection",connection);
+
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

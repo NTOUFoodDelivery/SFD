@@ -1,6 +1,5 @@
 package order.model.daoImpl;
 
-import db.demo.connect.JdbcUtils;
 import order.model.dao.OrderDao;
 import order.model.javabean.Order;
 import util.db.C3P0Util;
@@ -67,7 +66,6 @@ public class OrderDaoImpl implements OrderDao {
         PreparedStatement preparedStatement;
         boolean success = false;
         try {
-            connection = JdbcUtils.getconn();
             String sql = "DELETE FROM `order` WHERE Order_Id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, orderID);
