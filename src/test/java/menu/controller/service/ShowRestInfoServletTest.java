@@ -1,18 +1,10 @@
 package menu.controller.service;
 
-import com.google.gson.JsonObject;
-import db.demo.dao.RestDAO;
-import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.skyscreamer.jsonassert.ArrayValueMatcher;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShowRestInfoServletTest {
