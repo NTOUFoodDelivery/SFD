@@ -14,5 +14,5 @@ public interface MenuDao {
     // 刪除 指定餐廳 的菜單
     boolean delRestMenu(Long foodID);
     // 修改 指定餐廳 的菜單
-    boolean fixRestMenu(Long restID, Long foodID, String foodName, int cost, String description, String image);
+    boolean fixRestMenu(Menu menu);
 }

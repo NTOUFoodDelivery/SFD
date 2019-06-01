@@ -120,7 +120,7 @@ public class RestDaoImpl implements RestDao {
      * @return boolean
      */
     @Override
-    public boolean fixRest(Long restID, String restName, String restAddress, String description, String restPhoto)
+    public boolean fixRest(Rest rest)
     {
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
@@ -128,11 +128,11 @@ public class RestDaoImpl implements RestDao {
         String sql = "UPDATE restaurant_info SET Rest_Name = ?, Rest_Address = ?, Description = ?, Rest_Photo = ? WHERE Rest_Id = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, restName);
-            preparedStatement.setString(2, restAddress);
-            preparedStatement.setString(3, description);
-            preparedStatement.setString(4, restPhoto);
-            preparedStatement.setLong(5, restID);
+            preparedStatement.setString(1, rest.getRestName());
+            preparedStatement.setString(2, rest.getRestAddress());
+            preparedStatement.setString(3, rest.getDescription());
+            preparedStatement.setString(4, rest.getRestPhoto());
+            preparedStatement.setLong(5, rest.getRestID());
             preparedStatement.executeUpdate();
             success = true;
         }

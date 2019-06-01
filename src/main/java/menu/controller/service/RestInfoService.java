@@ -47,20 +47,19 @@ public class RestInfoService {
             restDao = new RestDaoImpl();
             switch (restCommand) {
                 case ADD: {
-
                     boolean success = restDao.addRest(rest);
-                    System.out.println("ddxcvxdvffd");
                     if(success){
                         msg += " work!!";
                     } else {
                         msg += " can not work!!";
                     }
-
                     result = HttpCommonAction.generateStatusResponse(success,msg);
                     break;
                 }
                 case DELETE: {
+                    System.out.println(rest.getRestID());
                     boolean success = restDao.delRest(rest.getRestID());
+                    System.out.println("ddxcvxdvffd");
                     if(success){
                         msg += " work!!";
                     } else {
@@ -70,7 +69,13 @@ public class RestInfoService {
                     break;
                 }
                 case EDIT: {
-//                    restDao.
+                    boolean success = restDao.fixRest(rest);
+                    if(success){
+                        msg += " work!!";
+                    } else {
+                        msg += " can not work!!";
+                    }
+                    result = HttpCommonAction.generateStatusResponse(success,msg);
                     break;
                 }
             }
@@ -110,6 +115,13 @@ public class RestInfoService {
                     break;
                 }
                 case EDIT: {
+                    boolean success = menuDao.fixRestMenu(menu);
+                    if(success){
+                        msg += " work!!";
+                    } else {
+                        msg += " can not work!!";
+                    }
+                    result = HttpCommonAction.generateStatusResponse(success,msg);
                     break;
                 }
             }

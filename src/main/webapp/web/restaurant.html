@@ -5,6 +5,7 @@
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
 <html>
+<meta http-equiv="Pragma" content="no-cache" />
 <script src="js/jquery.min.js"></script>
 <script src="js/skel.min.js"></script>
 <script src="js/restaurant.js"></script>
@@ -51,197 +52,237 @@
 		});
 	})
 
-			 function add()
-			 {
-				 var restName = $('#restName').val()
-				 var restAddress = $('#restAddress').val()
-				 var restDescription = $('#restDescription').val()
-				 const dateTime = new Date().getTime();
-				 const timestamp = Math.floor(dateTime / 1000);
-				 var sJson = JSON.stringify
-				 ({
-					 Rest_Id: timestamp,
-					 Rest_Name: restName,
-					 Rest_Address: restAddress,
-					 Description: restDescription
-				 });
-				 $.ajax({
-					 url: "http://localhost:8080/SFD/ModifyRestInfoServlet?cmd=ADD",
-					 type: "POST",
-					 async: true,
-					 dataType: "json",
-					 contentType: 'application/json; charset=UTF-8',
-					 data: sJson,
-					 success: function(){alert("Sussess")}		});
-			 }
+	function add()
+	{
+		var restName = $('#addRestName').val();
+		var restAddress = $('#addRestAddress').val();
+		var restDescription = $('#addRestDescription').val();
+		const dateTime = new Date().getTime();
+		const timestamp = Math.floor(dateTime / 1000);
+		var sJson = JSON.stringify
+		({
+			Rest_Id: timestamp,
+			Rest_Name: restName,
+			Rest_Address: restAddress,
+			Description: restDescription
+		});
+		const url = "/SFD/ModifyRestInfoServlet?cmd=ADD"; // test url
+		// const url = "/ModifyRestInfoServlet?cmd=ADD"; // 正式 url
+		$.ajax({
+			url: url,
+			type: "POST",
+			async: true,
+			dataType: "json",
+			contentType: 'application/json; charset=UTF-8',
+			data: sJson,
+			success: function(){
+				alert("Success");
+				window.location.reload();
+			}
+		});
+	}
 
-			 function delete_rest()
-			 {
-				 var optionSelected = $("option:selected", $('#restaurant_select'));
-				 var deleteID = optionSelected[0].id.split("delete")[1];
-				 var restID = deleteID;
-				 var sJson = JSON.stringify
-				 ({
-					 Rest_Id: restID,
-				 });
-				 $.ajax({
-					 url: "i e0ModifyRestInfoServlet?cmd=DELETE",
-					 type: "POST",
-					 async: true,
-					 dataType: "json",
-					 contentType: 'application/json; charset=UTF-8',
-					 data: sJson,
-					 success: function(){alert("Sussess")}		});
-			 }
+	function delete_rest()
+	{
+		var optionSelected = $("option:selected", $('#restaurant_select'));
+		var deleteID = optionSelected[0].id.split("delete")[1];
+		//---uncheck---------
+		const restID = optionSelected[0].value;
+		//---uncheck---------
+		console.log(restID)
+		var sJson = JSON.stringify
+		({
+			Rest_Id: restID,
+		});
+		const url = "/SFD/ModifyRestInfoServlet?cmd=DELETE"; // test url
+		// const url = "/ModifyRestInfoServlet?cmd=DELETE"; // 正式 url
+		$.ajax({
+			url: url,
+			type: "POST",
+			async: true,
+			dataType: "json",
+			contentType: 'application/json; charset=UTF-8',
+			data: sJson,
+			success: function(){
+				alert("Success");
+				window.location.reload();
+			}
+		});
+	}
 
-			 function fix_rest() {
-				 var optionSelected = $("option:selected", $('#restaurant_select1'));
-				 var fixID = optionSelected[0].id.split("delete")[1];
-				 ;
-				 console.log(fixID);
-				 var restID = fixID;
-				 var restName = $('#restName').val()
-				 var restAddress = $('#restAddress').val()
-				 var restDescription = $('#restDescription').val()
-				 var sJson = JSON.stringify
-				 ({
-					 Rest_Id: fixID,
-					 Rest_Name: restName,
-					 Rest_Address:restAddress,
-					 Description: restDescription
-				 });
-				 $.ajax({
-					 url: "http://localhost:8080/SFD/ModifyRestInfoServlet?cmd=EDIT",
-					 type: "POST",
-					 async: true,
-					 dataType: "json",
-					 contentType: 'application/json; charset=UTF-8',
-					 data: sJson,
-					 success: function () {
-						 alert("Sussess")
-					 }
-				 });
-			 }
-		</script>
-	<head>
-		<title>新增刪除修改餐廳資訊</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="css/main.css" />
-		<script src="js/admin.js"></script>
-	</head>
+	function fix_rest() {
+		var optionSelected = $("option:selected", $('#restaurant_select1'));
+		var fixID = optionSelected[0].id.split("delete")[1];
+		//---uncheck---------
+		const restID = optionSelected[0].value;
+		//---uncheck---------
+		var restName = $('#editRestName').val();
+		var restAddress = $('#editRestAddress').val();
+		var restDescription = $('#editRestDescription').val();
+		var sJson = JSON.stringify
+		({
+			Rest_Id: restID,
+			Rest_Name: restName,
+			Rest_Address:restAddress,
+			Description: restDescription
+		});
+		const url = "/SFD/ModifyRestInfoServlet?cmd=EDIT"; // test url
+		// const url = "/ModifyRestInfoServlet?cmd=EDIT"; // 正式 url
+		$.ajax({
+			url: url,
+			type: "POST",
+			async: true,
+			dataType: "json",
+			contentType: 'application/json; charset=UTF-8',
+			data: sJson,
+			success: function(){
+				alert("Success");
+				window.location.reload();
+			}
+		});
+	}
+</script>
+<head>
+	<title>新增刪除修改餐廳資訊</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="css/main.css" />
+	<script src="js/admin.js"></script>
+</head>
 
-	<body>
+<body>
 
-		<!-- Banner -->
-			<section id="banner">
-				<h2><strong>Starburst Food Delivery</strong></h2>
-				<p>新增刪除修改餐廳資訊介面</p>
-				<p>AAAAA管理員</p>
-				<ul class="actions">
-					<li><a id = "bu" href="#" class="button special">開始使用</a></li>
-				</ul>
-			</section>
+<!-- Banner -->
+<section id="banner">
+	<h2><strong>Starburst Food Delivery</strong></h2>
+	<p>新增刪除修改餐廳資訊介面</p>
+	<p>AAAAA管理員</p>
+	<ul class="actions">
+		<li><a id = "bu" href="#" class="button special">開始使用</a></li>
+	</ul>
+</section>
 
-		<!-- One -->
-			<section id="one" class="wrapper special">
-				<div class="inner">
-					<header class="major">
-						<h2>新增餐廳</h2>
-					</header>
-					<div class="features">
-						<div class="feature">
-							<p>餐廳名稱</p>
-							<input id="restName" type="text" ></input>
-							<p></p>
-						</div>
-						<div class="feature">
-							<p>餐廳地址</p>
-							<input id="restAddress" type="text" ></input>
-							<p></p>
-						</div>
-						<div class="feature">
-							<p>敘述</p>
-							<input id="restDescription" type="text" ></input>
-							<p></p>
-						</div>
-						<div class="feature">
-							<p>餐廳照片</p>
-							<input type="text" id="myText" />
-							<input type="file" id="myFile" accept="image/*" />
-							<!--<input data-dismiss="modal" id="upload" type="submit" />-->
-							<input type="button" value="前往!" id="go" onclick="upload()"/>
-							<p></p>
-						</div>
-					</div>
-				</div>
-				<a href = "javascript:add()" class="button special">確定</a>
-			</section>
-			
-			<section id="banner1" class="wrapper special">
-				<div class="inner">
-					<header class="major">
-						<h2>刪除餐廳</h2>
-					</header>
-					<div class="features">
-						<div class="feature">
-							<p>選擇餐廳</p>
-							<select id='restaurant_select'>
-							</select>
-							<p></p>
-							<h3><a href = "javascript:delete_rest()" class="button special">確定</a></h3>
-						</div>
-					</div>
-				</div>
-			</section>
-			
-			<section id="three" class="wrapper special">
-				<div class="inner">
-					<header class="major">
-						<h2>修改餐廳</h2>
-					</header>
-					<div class="features">
-						<div class="feature">
-							<p>選擇餐廳</p>
-							<select id='restaurant_select1'>
-							</select>
-							<p></p>
-							<h3><a class="button special">確定</a></h3>
-						</div>
-						<div class="feature">
-							<p>餐廳名稱</p>
-							<input id="restName" type="text" ></input>
-							<p></p>
-						</div>
-						<div class="feature">
-							<p>餐廳地址</p>
-							<input id="restAddress" type="text" ></input>
-							<p></p>
-						</div>
-						<div class="feature">
-							<p>敘述</p>
-							<input id="restDescription" type="text" ></input>
-							<p></p>
-						</div>
-						<div class="feature">
-							<p>餐廳照片</p>
-							<input type="text" id="myText" />
-							<input type="file" id="myFile" accept="image/*" />
-							<input data-dismiss="modal" id="upload" type="submit" />
-							<p></p>
-						</div>
-					</div>
-				</div>
-				<a href = "javascript:fix_rest()" class="button special">確定</a>
-			</section>
-		<!-- Footer -->
-			<footer id="footer">
-				<div class="copyright">
-					&copy; 製作: <a href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
-				</div>
-			</footer>
+<!-- One -->
+<section id="one" class="wrapper special">
+	<div class="inner">
+		<header class="major">
+			<h2>新增餐廳</h2>
+		</header>
+		<div class="features">
+			<div class="feature">
+				<p>餐廳名稱</p>
+				<input id="addRestName" type="text" ></input>
+				<p></p>
+			</div>
+			<div class="feature">
+				<p>餐廳地址</p>
+				<input id="addRestAddress" type="text" ></input>
+				<p></p>
+			</div>
+			<div class="feature">
+				<p>敘述</p>
+				<input id="addRestDescription" type="text" ></input>
+				<p></p>
+			</div>
+			<div class="feature">
+				<p>餐廳照片</p>
+				<input type="text" id="myText" />
+				<input type="file" id="myFile" accept="image/*" />
+				<!--<input data-dismiss="modal" id="upload" type="submit" />-->
+				<input type="button" value="前往!" id="go" onclick="upload()"/>
+				<p></p>
+			</div>
+		</div>
+	</div>
+	<a href = "javascript:add()" class="button special">確定</a>
+</section>
 
-		<!-- Scripts -->
+<section id="banner1" class="wrapper special">
+	<div class="inner">
+		<header class="major">
+			<h2>刪除餐廳</h2>
+		</header>
+		<div class="features">
+			<div class="feature">
+				<p>選擇餐廳</p>
+				<select id='restaurant_select'>
+				</select>
+				<p></p>
+				<h3><a href = "javascript:delete_rest()" class="button special">確定</a></h3>
+			</div>
+		</div>
+	</div>
+</section>
 
-	</body>
+<section id="three" class="wrapper special">
+	<div class="inner">
+		<header class="major">
+			<h2>修改餐廳</h2>
+		</header>
+		<div class="features">
+			<div class="feature">
+				<p>選擇餐廳</p>
+				<select id='restaurant_select1'>
+				</select>
+				<p></p>
+				<h3><a class="button special">確定</a></h3>
+			</div>
+			<div class="feature">
+				<p>餐廳名稱</p>
+				<input id="editRestName" type="text" />
+				<p></p>
+			</div>
+			<div class="feature">
+				<p>餐廳地址</p>
+				<input id="editRestAddress" type="text" />
+				<p></p>
+			</div>
+			<div class="feature">
+				<p>敘述</p>
+				<input id="editRestDescription" type="text" />
+				<p></p>
+			</div>
+			<div class="feature">
+				<p>餐廳照片</p>
+				<input type="text" id="myText" />
+				<input type="file" id="myFile" accept="image/*" />
+				<input data-dismiss="modal" id="upload" type="submit" />
+				<p></p>
+			</div>
+		</div>
+	</div>
+	<a href = "javascript:fix_rest()" class="button special">確定</a>
+</section>
+<!-- Footer -->
+<footer id="footer">
+	<div class="copyright">
+		&copy; 製作: <a href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
+	</div>
+</footer>
+
+<!-- Scripts -->
+
+</body>
+<script>
+	window.onload =function()
+	{
+		const url = "/SFD/LoginServlet"; // test url
+		// const url = "/LoginServlet"; // 正式 url
+		$.ajax({
+			url:url,
+			type:'GET',
+			dataType:'json',
+			success:function(data)
+			{
+				console.log(data);
+				if(data){
+
+				}else {
+					window.location.href='/SFD/web/Administrator_Login.html'; // test url
+					// window.location.href='/web/Administrator_Login.html'; // 正式 url
+				}
+			}
+		})
+	}
+</script>
 </html>

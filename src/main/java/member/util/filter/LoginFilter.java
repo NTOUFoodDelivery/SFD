@@ -24,7 +24,7 @@ public class LoginFilter implements Filter {
 
         String path = ((HttpServletRequest) req).getServletPath();
         if(!excludedUrls.contains(path)){
-            System.out.println(path);
+//            System.out.println(path);
             HttpServletRequest request = (HttpServletRequest) req;
             HttpServletResponse response = (HttpServletResponse) resp;
             HttpSession session = request.getSession();
@@ -38,7 +38,7 @@ public class LoginFilter implements Filter {
             } else { // 該 session 有 user 登入了
                 if(path.equals("/LoginDemo.html") || path.equals("/web/Administrator_Login.html")){ // 有登入了 還想進 登入頁面 ------- 把他踢回去
                     Long userID = (Long) session.getAttribute("userID");
-                    System.out.println(userID);
+                    System.out.println("USER ININININ");
                     UserDaoImpl userDao = new UserDaoImpl();
                     User user = userDao.showUser(userID);
                     String retUrl = request.getHeader("Referer");

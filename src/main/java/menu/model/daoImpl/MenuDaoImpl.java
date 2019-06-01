@@ -166,20 +166,20 @@ public class MenuDaoImpl implements MenuDao {
      * @return boolean
      */
     @Override
-    public boolean fixRestMenu(Long restID, Long foodID, String foodName, int cost, String description, String image)
+    public boolean fixRestMenu(Menu menu)
     {
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
         boolean success = false;
-        String sql = "UPDATE meal SET Food_Name = ?, Cost = ?, Description = ?, Image = ? WHERE Rest_Id = ? AMD Food_Id = ?";
+        String sql = "UPDATE meal SET Food_Name = ?, Cost = ?, Description = ?, Image = ? WHERE Rest_Id = ? AND Food_Id = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, foodName);
-            preparedStatement.setInt(2, cost);
-            preparedStatement.setString(3, description);
-            preparedStatement.setString(4, image);
-            preparedStatement.setLong(5, restID);
-            preparedStatement.setLong(5, foodID);
+            preparedStatement.setString(1, menu.getFoodName());
+            preparedStatement.setInt(2, menu.getCost());
+            preparedStatement.setString(3, menu.getDescription());
+            preparedStatement.setString(4, menu.getImage());
+            preparedStatement.setLong(5, menu.getRestID());
+            preparedStatement.setLong(5, menu.getFoodID());
             preparedStatement.executeUpdate();
             success = true;
         }

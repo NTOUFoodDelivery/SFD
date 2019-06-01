@@ -1,16 +1,18 @@
 function upload()
 {
-	
+
 }
 function import_menu(n1, n2) {
     var JData_menu;
     var sJson = JSON.stringify
-        ({
-            Rest_Name: n1, Rest_Address: n2
-        });
-     showmenutemp = "";
+    ({
+        Rest_Name: n1, Rest_Address: n2
+    });
+    showmenutemp = "";
+    const url = "/SFD/ShowMenuServlet"; // test url
+    // const url = "/ShowMenuServlet"; // 正式 url
     $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
+        url: url,
         type: "POST",
         async: true,
         dataType: "json",
@@ -29,9 +31,9 @@ function import_menu(n1, n2) {
                     m2 = JData_menu.result[i]["Cost"];
                     m3 = JData_menu.result[i]["Description"];
                     m4 = JData_menu.result[i]["Image"];
-				m5 = JData_menu.result[i]["Food_Id"];
-				}
-			})
-		}
-	})
+                    m5 = JData_menu.result[i]["Food_Id"];
+                }
+            })
+        }
+    })
 }

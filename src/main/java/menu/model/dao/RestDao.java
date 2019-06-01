@@ -12,5 +12,5 @@ public interface RestDao {
     // 刪除 餐廳
     boolean delRest(Long restID);
     // 修改 餐廳
-    boolean fixRest(Long restID, String restName, String restAddress, String description, String restPhoto);
+    boolean fixRest(Rest rest);
 }
