@@ -162,7 +162,7 @@ public class MenuDaoImpl implements MenuDao {
      * @description: 修改 指定餐廳 的菜單
      * @author thomas205327
      * @date 2019-05-29 20:01
-     * @param [restID, foodID, foodName, cost, description, image]
+     * @param [Menu]
      * @return boolean
      */
     @Override

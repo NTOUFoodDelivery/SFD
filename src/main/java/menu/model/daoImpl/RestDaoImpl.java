@@ -116,7 +116,7 @@ public class RestDaoImpl implements RestDao {
      * @description: 修改 餐廳
      * @author thomas205327
      * @date 2019-05-29 20:01
-     * @param [restID, restName, restAddress, description, restPhoto]
+     * @param [rest]
      * @return boolean
      */
     @Override
