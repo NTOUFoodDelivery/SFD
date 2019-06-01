@@ -3,7 +3,7 @@
     <!-- 雖然是預設，但我們就拿來當專案的資料庫設定吧 -->
     <default-config>
         <!-- 連線超時 30秒 -->
-        <property name="checkoutTimeout">3000</property>
+        <property name="checkoutTimeout">30000</property>
         <!-- 25秒檢查一次connection 的空閒 -->
         <property name="idleConnectionTestPeriod">25</property>
         <property name="initialPoolSize">2</property>
@@ -23,7 +23,7 @@
 
     <!-- 這是我的本地端設定 -->
     <named-config name="BerSerKer">
-        <property name="checkoutTimeout">3000</property>
+        <property name="checkoutTimeout">30000</property>
         <property name="idleConnectionTestPeriod">25</property>
         <property name="initialPoolSize">2</property>
         <property name="maxIdleTime">30</property>
@@ -39,7 +39,7 @@
         <property name="password">bsqo9103</property>
     </named-config>
     <named-config name="Yaoder">
-        <property name="checkoutTimeout">3000</property>
+        <property name="checkoutTimeout">30000</property>
         <property name="idleConnectionTestPeriod">25</property>
         <property name="initialPoolSize">2</property>
         <property name="maxIdleTime">30</property>
@@ -55,7 +55,7 @@
         <property name="password">Chang301</property>
     </named-config>
     <named-config name="KevinSFD">
-        <property name="checkoutTimeout">3000</property>
+        <property name="checkoutTimeout">30000</property>
         <property name="idleConnectionTestPeriod">25</property>
         <property name="initialPoolSize">2</property>
         <property name="maxIdleTime">30</property>
@@ -71,7 +71,7 @@
         <property name="password">kevin691423</property>
     </named-config>
     <named-config name="thomas205327">
-        <property name="checkoutTimeout">3000</property>
+        <property name="checkoutTimeout">30000</property>
         <property name="idleConnectionTestPeriod">25</property>
         <property name="initialPoolSize">2</property>
         <property name="maxIdleTime">30</property>
@@ -87,7 +87,7 @@
         <property name="password">aa641803</property>
     </named-config>
     <named-config name="wudishidove">
-        <property name="checkoutTimeout">3000</property>
+        <property name="checkoutTimeout">30000</property>
         <property name="idleConnectionTestPeriod">25</property>
         <property name="initialPoolSize">2</property>
         <property name="maxIdleTime">30</property>
