@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-	 var url="https://ntou-sfd.herokuapp.com/ShowRestInfoServlet";
+	 var url="http://localhost:8080/SFD/ShowRestInfoServlet";
         $.ajax({
             type: "GET",
             url: url,
@@ -31,7 +31,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-	 var url="https://ntou-sfd.herokuapp.com/ShowRestInfoServlet";
+	 var url="http://localhost:8080/SFD/ShowRestInfoServlet";
         $.ajax({
             type: "GET",
             url: url,
@@ -68,7 +68,7 @@ function getMenu(Rest_Name,Rest_Address){
 		"Rest_Name":${Rest_Name},
 		"Rest_Address":${Rest_Address}
 	}`; 
-	 var url="https://ntou-sfd.herokuapp.com/ShowMenuServlet";
+	 var url="http://localhost:8080/SFD/ShowMenuServlet";
         $.ajax({
             type: "POST",
             url: url,
