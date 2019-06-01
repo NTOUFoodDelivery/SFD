@@ -5,6 +5,7 @@
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
 <html>
+<meta http-equiv="Pragma" content="no-cache" />
 <script src="js/jquery.min.js"></script>
 <script src="js/skel.min.js"></script>
 <script src="js/restaurant.js"></script>
@@ -13,75 +14,29 @@
         $('#bu').click(function(){
         $('html,body').animate({scrollTop:$('#one').offset().top},800);});
 		});
-		
-		 $("#upload").click(function () {
-
-        const id = '1573e8c523b6e8c'; // 填入 App 的 Client ID
-        const token = '2288b6ecd6c0eb7545b4c083c9e0f212eb6ab9ed'; // 填入 token
-        const album = 'vNnSeO4'; // 若要指定傳到某個相簿，就填入相簿的 ID
-
-        var file_data = $('#myFile').prop('files')[0]; //取得上傳檔案屬性
-        var text_data = $('#myText').val();
-
-        let settings = {
-            async: true,
-            crossDomain: true,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            url: 'https://api.imgur.com/3/image',
-            headers: {
-                Authorization: 'Bearer ' + token
-            },
-            mimeType: 'multipart/form-data'
-        };
-
-        let form = new FormData();
-        form.append('image', file_data);
-        form.append('title', "123");
-        form.append('description', text_data);
-        form.append('album', album); // 有要指定的相簿就加這行
-
-        settings.data = form;
-
-        $.ajax(settings).done(function(res) {
-            console.log(res); // 可以看見上傳成功後回的值
-            console.log(JSON.parse(res).data.link); // ------------------------- 圖片網址
-            alert('上傳完成，稍待一會兒就可以在底部的列表上看見了。')
-        });
-
-    })
 
 		function add()
 		{
 			var optionSelected = $("option:selected", $('#restaurant_select'));
 			var getID = optionSelected[0].id.split("delete")[1];
-			console.log(getID);
 			var restID = getID;
-			console.log(restID);
-			var mealName = $('#restName').val()
-			var mealCost = $('#mealCost').val()
-			var restDescription = $('#restDescription').val()
+			var mealName = $('#mealName').val();
+			var mealCost = $('#mealCost').val();
+			var restDescription = $('#restDescription').val();
+			var restImgUrl = $('#addImgUrl')[0].value;
 			const dateTime = new Date().getTime();
 			const timestamp = Math.floor(dateTime / 1000);
 			var sJson = JSON.stringify
 			({
-				query:{
-					command:"add",
-					what:"menu"
-				},
-				result: [
-					{
-						Food_Id: dateTime,
-						Food_Name: mealName,
-						Rest_Id: restID,
-						Cost: mealCost,
-						Description: restDescription,
-					}
-				]
+				Food_Id: timestamp,
+				Food_Name: mealName,
+				Rest_Id: restID,
+				Cost: mealCost,
+				Description: restDescription,
+				Image: foodImgUrl
 			});
 			$.ajax({
-				url: "https://ntou-sfd.herokuapp.com/ModifyMenuServlet",
+				url: "/SFD/ModifyMenuServlet?cmd=ADD",
 				type: "POST",
 				async: true,
 				dataType: "json",
@@ -95,27 +50,51 @@
 			var optionSelected = $("option:selected", $('#menu_select'));
 			var deleteID = optionSelected[0].id.split("delete")[1];
 			var menuID = deleteID;
-			console.log(menuID);
 			var sJson = JSON.stringify
 			({
-				query: {
-					command: "delete",
-					what: "menu"
-				},
-				result: [
-					{
-						Food_Id: menuID
-					}
-				]
+				Food_Id: menuID
 			});
 			$.ajax({
-				url: "https://ntou-sfd.herokuapp.com/ModifyMenuServlet",
+				url: "/SFD/ModifyMenuServlet?cmd=DELETE",
 				type: "POST",
 				async: true,
 				dataType: "json",
 				contentType: 'application/json; charset=UTF-8',
 				data: sJson,
-				success: function(){alert("Sussess")}		});
+				success: function(){alert("Sussess")}	});
+		}
+
+		function fix_rest() {
+			var optionSelected = $("option:selected", $('#menu_select1'));
+			const restID = optionSelected[0].id.split("delete")[1];
+			var mealName = $('#restName').val();
+			var mealCost = $('#mealCost').val();
+			var Description = $('#Description').val();
+			var foodImgUrl = $('#editImgUrl')[0].value;
+			var optionSelected1 = $("option:selected", $('#menu_select'));
+			var menuID = optionSelected1[0].id.split("delete")[1];
+			var sJson = JSON.stringify
+			({
+				Food_Id: menuID,
+				Food_Name: mealName,
+				Rest_Id: restID,
+				Cost: mealCost,
+				Description: Description,
+				Image: foodImgUrl
+			});
+			const url = "/SFD/ModifyMenuServlet?cmd=EDIT"; // test url
+			$.ajax({
+				url: url,
+				type: "POST",
+				async: true,
+				dataType: "json",
+				contentType: 'application/json; charset=UTF-8',
+				data: sJson,
+				success: function(){
+					alert("Success");
+					window.location.reload();
+				}
+			});
 		}
 		</script>
 	<head>
@@ -154,24 +133,25 @@
 						</div>
 						<div class="feature">
 							<p>餐點名稱</p>
-							<input id="restName" type="text" ></input>
+							<input id="mealName" type="text" ></input>
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點單價</p>
-							<input id="restName" type="text" ></input>
+							<input id="mealCost" type="text" ></input>
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點敘述</p>
-							<input id="restName" type="text" ></input>
+							<input id="Description" type="text" ></input>
 							<p></p>
 						</div>
 						<div class="feature">
-							<p>餐廳照片</p>
-							<input type="text" id="myText" />
-							<input type="file" id="myFile" accept="image/*" />
-							<input data-dismiss="modal" id="upload" type="submit" />
+							<p>餐點照片</p>
+							<input type="file" id="addFile" />
+							<!--recode img_url-->
+							<input type="hidden" id="addImgUrl" value="">
+							<input type="button" value="前往!"  onclick="upload('add')"/>
 							<p></p>
 						</div>
 					</div>
@@ -217,24 +197,25 @@
 						</div>
 						<div class="feature">
 							<p>餐點名稱</p>
-							<input id="restName" type="text" ></input>
+							<input id="mealName" type="text" ></input>
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點單價</p>
-							<input id="restName" type="text" ></input>
+							<input id="mealCost" type="text" ></input>
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點敘述</p>
-							<input id="restName" type="text" ></input>
+							<input id="Description" type="text" ></input>
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點照片</p>
-							<input type="text" id="myText" />
-							<input type="file" id="myFile" accept="image/*" />
-							<input data-dismiss="modal" id="upload" type="submit" />
+							<input type="file" id="editFile" />
+							<!--recode img_url-->
+							<input type="hidden" id="editImgUrl" value="">
+							<input type="button" value="前往!"  onclick="upload('add')"/>
 							<p></p>
 						</div>
 					</div>
@@ -250,4 +231,26 @@
 		<!-- Scripts -->
 
 	</body>
+<script>
+	window.onload =function()
+	{
+		const url = "/SFD/LoginServlet"; // test url
+		// const url = "/LoginServlet"; // 正式 url
+		$.ajax({
+			url:url,
+			type:'GET',
+			dataType:'json',
+			success:function(data)
+			{
+				console.log(data);
+				if(data){
+
+				}else {
+					window.location.href='/SFD/web/Administrator_Login.html'; // test url
+					// window.location.href='/web/Administrator_Login.html'; // 正式 url
+				}
+			}
+		})
+	}
+</script>
 </html>
