@@ -58,13 +58,9 @@
 				 var restDescription = $('#restDescription').val()
 				 const dateTime = new Date().getTime();
 				 const timestamp = Math.floor(dateTime / 1000);
-				 console.log(timestamp);
-				 console.log(restName);
-				 console.log(restAddress);
-				 console.log(restDescription);
 				 var sJson = JSON.stringify
 				 ({
-					 Rest_ID: timestamp,
+					 Rest_Id: timestamp,
 					 Rest_Name: restName,
 					 Rest_Address: restAddress,
 					 Description: restDescription
@@ -83,11 +79,10 @@
 			 {
 				 var optionSelected = $("option:selected", $('#restaurant_select'));
 				 var deleteID = optionSelected[0].id.split("delete")[1];
-				 console.log(deleteID);
 				 var restID = deleteID;
 				 var sJson = JSON.stringify
 				 ({
-					 Rest_ID: restID,
+					 Rest_Id: restID,
 				 });
 				 $.ajax({
 					 url: "http://localhost:8080/SFD/ModifyRestInfoServlet?cmd=DELETE",
@@ -110,7 +105,7 @@
 				 var restDescription = $('#restDescription').val()
 				 var sJson = JSON.stringify
 				 ({
-					 Rest_ID: fixID,
+					 Rest_Id: fixID,
 					 Rest_Name: restName,
 					 Rest_Address:restAddress,
 					 Description: restDescription
