@@ -24,7 +24,7 @@ public class ModifyRestInfoServlet extends HttpServlet {
 
         RestCommand restCommand = RestCommand.getRestCommand(request.getParameter("cmd")); // cmd
         Rest rest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Rest.class); // rest
-
+        System.out.println(rest);
         RestInfoService restInfoService = new RestInfoService();
         String json = gson.toJson(restInfoService.modifyRestInfo(restCommand,rest));
         restInfoService = null;

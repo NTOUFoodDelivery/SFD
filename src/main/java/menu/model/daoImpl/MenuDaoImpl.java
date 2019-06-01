@@ -190,7 +190,7 @@ public class MenuDaoImpl implements MenuDao {
         finally
         {
             C3P0Util.close(connection);
+            return success;
         }
-        return success;
     }
 }

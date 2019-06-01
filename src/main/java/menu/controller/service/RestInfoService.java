@@ -43,15 +43,19 @@ public class RestInfoService {
         Object result = null;
         String msg = "Command :: "+restCommand.toString();
         if(restCommand != null) {
+
             restDao = new RestDaoImpl();
             switch (restCommand) {
                 case ADD: {
+
                     boolean success = restDao.addRest(rest);
+                    System.out.println("ddxcvxdvffd");
                     if(success){
                         msg += " work!!";
                     } else {
                         msg += " can not work!!";
                     }
+
                     result = HttpCommonAction.generateStatusResponse(success,msg);
                     break;
                 }
