@@ -76,6 +76,7 @@ function converttobill() {
                 '</section>' + '</div>';
         }
         document.getElementById("extra").innerHTML = switch_billpage;
+        pagetype = "eater_cart";
         sent_Total=total;
 
        
@@ -156,6 +157,7 @@ function ChangeToCartPage() {
 
     }
     document.getElementById("extra").innerHTML = switch_cartpage;
+    pagetype = "eater_cart";
 }
 
 function clearcart() {
@@ -208,6 +210,7 @@ function showtobill() {
 
 function ShowCartPage() {
     document.getElementById("extra").innerHTML = switch_cartpage;
+    pagetype = "eater_cart";
 }
 
 

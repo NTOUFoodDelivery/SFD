@@ -11,7 +11,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="icon" href="https://tccas.ntou.edu.tw/cas/images/favicon.ico;jsessionid=579C5B90EDD1978D07074A7D609F1CB5" type="image/x-icon">
+  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <style>
     select#soflow{
@@ -135,11 +135,9 @@
           <input id="password" name="password" class="required" tabindex="2" accesskey="p" type="password" value="" size="25" autocomplete="off">
         </section>
 
-        <section class="row">
+        <section class="row" style="display:none;">
           <select id="soflow" name="userType">
-            <option value="" selected>選擇登入身份</option>
-            <option value="Customer_and_Deliver">外送員</option>
-            <option value="Customer">一般使用者</option>
+            <option value="Customer" type="hidden" selected></option>
           </select>
         </section>
 
@@ -183,6 +181,7 @@
           $("#loader").css('display','none');
           $("#fm1").css('display','block');
         }, 1000);
+        
         if (cmd === "CUSTOMER_AND_DELIVER") {
           window.location.href='index_deliver.html';
         }else if (cmd === "CUSTOMER") {

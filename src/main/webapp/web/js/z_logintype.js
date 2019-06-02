@@ -1,7 +1,7 @@
 window.onload =function()
 {
     $.ajax({
-        url:'LoginServlet',
+        url:'/SFD/LoginServlet',
         type:'GET',
         dataType:'json',
         success:function(data)
@@ -14,8 +14,8 @@ window.onload =function()
             }else{
                 var userName=data.User_Name;
                 var userType =data.User_Type;
-                $('#welcome_userName')[0].innerHTML =userName;
-                $('#welcome_userType')[0].innerHTML =userType;
+                // $('#welcome_userName')[0].innerHTML =userName;
+                // $('#welcome_userType')[0].innerHTML =userType;
             }
         }
     })
