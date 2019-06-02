@@ -7,6 +7,9 @@ install:
 cache:
   directories:
   - "$HOME/.m2"
+before_deploy:
+  - mkdir SFD
+  - cd SFD
 deploy:
   provider: heroku
   api_key:
