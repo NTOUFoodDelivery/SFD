@@ -1,5 +1,7 @@
 var showmenutemp;
+var menu_infor;
 function import_menu(n1, n2) {
+    pagetype = "menu";
     var JData_menu;
     var sJson = JSON.stringify
         ({
@@ -14,19 +16,21 @@ function import_menu(n1, n2) {
         contentType: 'application/json; charset=UTF-8',
         data: sJson,
         success: function (JData_menu) {
-            $.each(JData_menu, function () {
-                var NumOfJData_menu = JData_menu.result.length;
+           // $.each(JData_menu, function () {
+                var NumOfJData_menu = JData_menu.length;
                 var stringJData_menu = JSON.stringify(JData_menu);
                 var m1, m2, m3, m4;
                 var foodimg;
                 var addtocart;
                 $("body").append("<tr>" + stringJData_menu + "</tr>");
                 for (var i = 0; i < NumOfJData_menu; i++) {
-                    m1 = JData_menu.result[i]["Food_Name"];
-                    m2 = JData_menu.result[i]["Cost"];
-                    m3 = JData_menu.result[i]["Description"];
-                    m4 = JData_menu.result[i]["Image"];
-                    m5 = JData_menu.result[i]["Food_Id"];
+                    console.log("NumOfJData_menu" +i);
+                    console.log("i: " +i);
+                    m1 = JData_menu[i]["Food_Name"];
+                    m2 = JData_menu[i]["Cost"];
+                    m3 = JData_menu[i]["Description"];
+                    m4 = JData_menu[i]["Image"];
+                    m5 = JData_menu[i]["Food_Id"];
 
                     var abc = 0;
                     if (m4 == null) {
@@ -69,7 +73,7 @@ function import_menu(n1, n2) {
                             m1="'"+m1+"'";
                             m2="'"+m2+"'";
                             m5="'"+m5+"'";
-                            showmenutemp = showmenutemp +'<a href="#" class="button" onclick="additemwithoutcount(' + m2 + ',' + m1 +',' + m5 + ')" >加入購物車</a>' +
+                            showmenutemp = showmenutemp +'<a class="button" onclick="additemwithoutcount(' + m2 + ',' + m1 +',' + m5 + ')" >加入購物車</a>' +
                             '</div>' +
                             '</section>';//onclick="import_menu(' + a1 + ',' + a2 + ')" 
                     }
@@ -80,7 +84,7 @@ function import_menu(n1, n2) {
                 //push test
                 document.getElementById("extra").innerHTML = showmenutemp;
 
-            });
+            //});
 
 
         },
