@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+
+        <html>
+        <meta http-equiv="Pragma" content="no-cache" />
+        <head>
+            <script src="js/jquery.min.js"></script>
+            <script src="js/skel.min.js"></script>
+            <script src="js/skel-layers.min.js"></script>               <!-- 左上方的-->
+            <script src="js/init1.js"></script>
+            <script src="js/select_User.js"></script>
+            <script>
+                $(function(){
+                    $('#bu').click(function(){
+                        $('html,body').animate({scrollTop:$('#one').offset().top},800);});
+                });
+
+                function fix_user_status() {
+                    var optionSelected = $("option:selected", $('#user_select'));
+                    //---uncheck---------
+                    const userID = optionSelected[0].value;
+                    //---uncheck---------
+
+                    const url = "/SFD/ModifyMemberServlet?cmd=USER_BAN&userID="+userID; // test url
+                    // const url = "/ModifyRestInfoServlet?cmd=EDIT"; // 正式 url
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        async: true,
+                        dataType: "json",
+                        contentType: 'application/json; charset=UTF-8',
+                        data: sJson,
+                        success: function(){
+                            alert("Success");
+                            window.location.reload();
+                        }
+                    });
+                }
+            </script>
+
+
+            <title>Starburst Food Delivery---管理者介面</title>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <!--		[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+            <link rel="stylesheet" href="css/main.css" />
+            <!--		[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+        </head>
+
+<body>
+
+<!-- Banner -->
+<section id="banner">
+    <h2><strong>Starburst Food Delivery</strong></h2>
+    <p>歡迎來到使用者管理介面</p>
+    <p>AAAAA管理員</p>
+    <ul class="actions">
+        <li><a id = "bu" href="#" class="button special">開始使用</a></li>
+    </ul>
+</section>
+
+<!-- One -->
+<section id="one" class="wrapper special">
+    <div class="inner">
+        <header class="major">
+            <h2>使用者狀態管理</h2>
+        </header>
+        <div class="features">
+            <div class="feature">
+            <p>選擇使用者</p>
+            <select id='user_select'>
+            </select>
+            <p></p>
+            <h3><a class="button special">確定</a></h3>
+        </div>
+        </div>
+    </div>
+    <a href = "javascript:fix_user_status()" class="button special">確定</a>
+</section>
+<!-- Footer -->
+<footer id="footer">
+    <div class="copyright">
+        &copy; 製作: <a href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
+    </div>
+</footer>
+
+<!-- Scripts -->
+
+</body>
+<script>
+    $(document).ready(function(){
+        $(function(){
+            $.ajaxSetup ({
+                cache: false, //關掉AJAX 緩存
+                async:false, //同步請求
+                contentType:"application/x-www-form-urlencoded;charset=utf-8",
+                complete:function(XMLHttpRequest,textStatus){
+                    // 用 XMLHttpRequest 拿 header，sessionstatus，
+                    var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
+                    if(sessionstatus=="timeout"){
+                        alert("重複登入或長時間無操作～請重新登入！！");
+                        parent.location.href = "LoginDemo.html";
+                    }
+                }
+            });
+        });
+
+        const url = "/SFD/LoginServlet"; // test url
+        // const url = "/LoginServlet"; // 正式 url
+        $.ajax({
+            url:url,
+            type:'GET',
+            dataType:'json',
+            success:function(data)
+            {
+                console.log(data);
+                if(data){
+
+                }else {
+                    // window.location.href='/SFD/web/Administrator_Login.html'; // test url
+                    // window.location.href='/web/Administrator_Login.html'; // 正式 url
+                }
+            }
+        })
+    })
+
+</script>
+
+</html>

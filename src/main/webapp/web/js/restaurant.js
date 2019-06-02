@@ -12,7 +12,6 @@ $(document).ready(function(){
 					var rest = data[i];
 					var value = rest.Rest_Id;
 					var name = rest.Rest_Name;
-					var address = rest.Rest_Address;
 					$('#restaurant_select').append('<option value ='+value+'>'+name+'</option>');
 					$('#restaurant_select1').append('<option value ='+value+'>'+name+'</option>');
 				
