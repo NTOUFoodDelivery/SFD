@@ -40,7 +40,7 @@ public class OrderDaoImpl implements OrderDao {
             // set OCD table ----- END
             // set order_food table ----- BEGIN
             String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`, Rest_Id) VALUES(?, ?,  ?, ?. ?);";
-            preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);
+            preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);  //
             for(Order.OrderBean.MealsBean meal : order.getOrder().getMeals()) {
                 String str = order.getOrder().getOrderID()+""+meal.getFoodID();
                 Long orderSerial = Long.parseLong(str.trim(),10);
