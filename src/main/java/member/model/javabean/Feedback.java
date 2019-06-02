@@ -1,6 +1,7 @@
 package member.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Feedback {
