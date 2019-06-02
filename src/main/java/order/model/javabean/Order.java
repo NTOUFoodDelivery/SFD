@@ -11,6 +11,7 @@ public class Order {
      * Customer : {"User_Id":1,"User_Name":"你好","Address":"我家","Other":"gufjdk","Phone_Number":"02222"}
      * Deliver : {"User_Id":3,"User_Name":"Testd","Phone_Number":"111111"}
      * Order : {"Order_Id":253678911,"Total":75,"Type_Count":2,"Meals":[{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Meals":[{"Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},{"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]},{"Rest_Name":"OOXX 早午餐","Rest_Address":"基隆市ＸＸ區ＯＯ路ＸＸ號1樓","Meals":[{"Food_Id":5,"Food_Name":"鐵板麵","Cost":25,"Count":2},{"Food_Id":2,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]}],"Start_Time":"2019-05-17 03:31:00","Order_Status":"WAIT","CastingPrio":0}
+     * restIDs
      */
 
     @SerializedName("Customer")
@@ -19,6 +20,7 @@ public class Order {
     private DeliverBean deliver;
     @SerializedName("Order")
     private OrderBean order;
+    private List<Long> restIDs;
 
     public CustomerBean getCustomer() {
         return customer;
@@ -42,6 +44,14 @@ public class Order {
 
     public void setOrder(OrderBean order) {
         this.order = order;
+    }
+
+    public List<Long> getRestIDs() {
+        return restIDs;
+    }
+
+    public void setRestIDs(List<Long> restIDs) {
+        this.restIDs = restIDs;
     }
 
     public static class CustomerBean {
