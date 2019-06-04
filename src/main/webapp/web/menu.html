@@ -64,7 +64,7 @@
 				success: function(){alert("Sussess")}	});
 		}
 
-		function fix_rest() {
+		function fix_menu() {
 			var optionSelected = $("option:selected", $('#menu_select1'));
 			const restID = optionSelected[0].id.split("delete")[1];
 			var mealName = $('#restName').val();
@@ -125,7 +125,7 @@
 						<h2>新增菜單</h2>
 					</header>
 					<div class="features">
-						<div class="feature">
+						<div style="width:70%;"class="feature">
 							<p>選擇餐廳</p>
 							<select id='restaurant_select'>
 							</select>
@@ -151,15 +151,18 @@
 							<input type="file" id="addFile" />
 							<!--recode img_url-->
 							<input type="hidden" id="addImgUrl" value="">
-							<input type="button" value="前往!"  onclick="upload('add')"/>
+							<input class="button special"type="button" value="前往!"  onclick="upload('add')"/>
 							<p></p>
 						</div>
 					</div>
 				</div>
 				<a href = "javascript:add()" class="button special">確定</a>
 			</section>
-			
-			<section id="banner1" class="wrapper special">
+
+		<section id="banner1" class="wrapper special">
+		</section>
+
+			<section id="two" class="wrapper special">
 				<div class="inner">
 					<header class="major">
 						<h2>刪除菜單</h2>
@@ -181,31 +184,34 @@
 				</div>
 				<a href = "javascript:delete_menu()" class="button special">確定</a>
 			</section>
-			
+
+		<section id="banner1" class="wrapper special">
+		</section>
+
 			<section id="three" class="wrapper special">
 				<div class="inner">
 					<header class="major">
 						<h2>修改餐點</h2>
 					</header>
 					<div class="features">
-						<div class="feature">
+						<div style="width:34%;" class="feature">
 							<p>選擇餐廳</p>
 							<select id='restaurant_select1'>
 							</select>
 							<p></p>
-							<h3><a class="button special">確定</a></h3>
 						</div>
-						<div class="feature">
+						<div style="width:34%;" class="feature">
 							<p>餐點名稱</p>
-							<input id="mealName" type="text" ></input>
+							<select id='menu_select1'>
+							</select>
 							<p></p>
 						</div>
-						<div class="feature">
+						<div style="width:34%;"class="feature">
 							<p>餐點單價</p>
 							<input id="mealCost" type="text" ></input>
 							<p></p>
 						</div>
-						<div class="feature">
+						<div style="width:34%;"class="feature">
 							<p>餐點敘述</p>
 							<input id="Description" type="text" ></input>
 							<p></p>
@@ -215,11 +221,13 @@
 							<input type="file" id="editFile" />
 							<!--recode img_url-->
 							<input type="hidden" id="editImgUrl" value="">
-							<input type="button" value="前往!"  onclick="upload('add')"/>
+							<p></p>
+							<input class="button special"type="button" value="前往!"  onclick="upload('add')"/>
 							<p></p>
 						</div>
 					</div>
 				</div>
+				<a href = "javascript:fix_menu()" class="button special">確定</a>
 			</section>
 		<!-- Footer -->
 			<footer id="footer">
