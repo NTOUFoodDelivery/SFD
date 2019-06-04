@@ -19,42 +19,42 @@ public class OrderDaoImpl implements OrderDao {
         boolean success = false;
         try {
             // set order table ----- BEGIN
-            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other, Casting_Prio) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
-            preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
-            preparedStatement.setLong(1,order.getOrder().getOrderID());
-            preparedStatement.setString(2,order.getOrder().getStartTime());
-            preparedStatement.setInt(3,order.getOrder().getTypeCount());
-            preparedStatement.setInt(4,order.getOrder().getTotal());
-            preparedStatement.setString(5,order.getOrder().getOrderStatus());
-            preparedStatement.setString(6,order.getCustomer().getAddress());
-            preparedStatement.setString(7,order.getCustomer().getOther());
-            preparedStatement.setInt(8,order.getOrder().getCastingPrio());
-            preparedStatement.executeUpdate();
+//            String order_sql = "INSERT INTO `order`(Order_Id, Start_Time, Type_Count, Total, Order_Status, Address, Other, Casting_Prio) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+ //           preparedStatement = (PreparedStatement)connection.prepareStatement(order_sql);
+//            preparedStatement.setLong(1,order.getOrder().getOrderID());
+//            preparedStatement.setString(2,order.getOrder().getStartTime());
+//            preparedStatement.setInt(3,order.getOrder().getTypeCount());
+//            preparedStatement.setInt(4,order.getOrder().getTotal());
+//            preparedStatement.setString(5,order.getOrder().getOrderStatus());
+//            preparedStatement.setString(6,order.getCustomer().getAddress());
+//            preparedStatement.setString(7,order.getCustomer().getOther());
+//           preparedStatement.setInt(8,order.getOrder().getCastingPrio());
+//            preparedStatement.executeUpdate();
 //            // set order table ----- END
 //            // set OCD table ----- BEGIN
-            String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id) VALUES(?, ?);";
-            preparedStatement = (PreparedStatement)connection.prepareStatement(OC_sql);
-            preparedStatement.setLong(1,order.getOrder().getOrderID());
-            preparedStatement.setLong(2,order.getCustomer().getUserID());
-            preparedStatement.executeUpdate();
-            // set OCD table ----- END
+//            String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id) VALUES(?, ?);";
+//            preparedStatement = (PreparedStatement)connection.prepareStatement(OC_sql);
+//            preparedStatement.setLong(1,order.getOrder().getOrderID());
+//            preparedStatement.setLong(2,order.getCustomer().getUserID());
+//            preparedStatement.executeUpdate();
+//            // set OCD table ----- END
             // set order_food table ----- BEGIN
-            String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`, Rest_Id) VALUES(?, ?,  ?, ?. ?);";
-            preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);  //
-            for(Order.OrderBean.MealsBean meal : order.getOrder().getMeals()) {
-                String str = order.getOrder().getOrderID()+""+meal.getFoodID();
-                Long orderSerial = Long.parseLong(str.trim(),10);
-                preparedStatement.setLong(1, orderSerial);
-                preparedStatement.setLong(2, order.getOrder().getOrderID());
-                preparedStatement.setLong(3, meal.getFoodID());
-                preparedStatement.setInt(4, meal.getCount());
-                preparedStatement.setInt(5, meal.getRest_Id());
-               preparedStatement.executeUpdate();
-                success = true;
-            }
+//            String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`, Rest_Id) VALUES(?, ?,  ?, ?. ?);";
+//            preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);  //
+//            for(Order.OrderBean.MealsBean meal : order.getOrder().getMeals()) {
+//                String str = order.getOrder().getOrderID()+""+meal.getFoodID();
+//                Long orderSerial = Long.parseLong(str.trim(),10);
+//                preparedStatement.setLong(1, orderSerial);
+//                preparedStatement.setLong(2, order.getOrder().getOrderID());
+//                preparedStatement.setLong(3, meal.getFoodID());
+//                preparedStatement.setInt(4, meal.getCount());
+ //               preparedStatement.setInt(5, meal.getRest_Id());
+//               preparedStatement.executeUpdate();
+//                success = true;
+//            }
             // set order_food table ----- END
-        } catch (SQLException e) {
-            e.printStackTrace();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
             return success;
