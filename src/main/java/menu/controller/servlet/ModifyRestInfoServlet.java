@@ -3,39 +3,44 @@ package menu.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import menu.controller.service.RestInfoService;
-import menu.model.javabean.Rest;
-import menu.util.setting.RestCommand;
-import util.HttpCommonAction;
-
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import menu.controller.service.RestInfoService;
+import menu.model.javabean.Rest;
+import menu.util.setting.RestCommand;
+import util.HttpCommonAction;
 
 @WebServlet("/ModifyRestInfoServlet")
 public class ModifyRestInfoServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        RestCommand restCommand = RestCommand.getRestCommand(request.getParameter("cmd")); // cmd
-        Rest rest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Rest.class); // rest
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    response.setContentType("application/json;charset=UTF-8");
+    Gson gson = new GsonBuilder().disableHtmlEscaping()
+        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-        System.out.println(rest);
-        RestInfoService restInfoService = new RestInfoService();
-        String json = gson.toJson(restInfoService.modifyRestInfo(restCommand,rest));
-        restInfoService = null;
+    RestCommand restCommand = RestCommand.getRestCommand(request.getParameter("cmd")); // cmd
+    Rest rest = gson
+        .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Rest.class); // rest
 
-        PrintWriter out = response.getWriter();
-        out.print(json);
-        out.flush();
+    System.out.println(rest);
+    RestInfoService restInfoService = new RestInfoService();
+    String json = gson.toJson(restInfoService.modifyRestInfo(restCommand, rest));
+    restInfoService = null;
 
-    }
+    PrintWriter out = response.getWriter();
+    out.print(json);
+    out.flush();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    }
+  }
+
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+  }
 }

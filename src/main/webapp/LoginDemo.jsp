@@ -12,7 +12,9 @@
     <title>SFD登入測試</title>
     <style>
         #center {
-            position:absolute; top:50%; left:50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
             margin-left: -105px;
             margin-top: -170px;
         }
@@ -27,12 +29,13 @@
         request.setCharacterEncoding("utf-8");
     %>
     <%
-        List<String> info=(List<String>)request.getAttribute("info");
-        if(info!=null){
-            Iterator<String> iter=info.iterator();
-            while(iter.hasNext()){
+        List<String> info = (List<String>) request.getAttribute("info");
+        if (info != null) {
+            Iterator<String> iter = info.iterator();
+            while (iter.hasNext()) {
     %>
-    <h4><%=iter.next()%></h4>
+    <h4><%=iter.next()%>
+    </h4>
     <%
             }
         }

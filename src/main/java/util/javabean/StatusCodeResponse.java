@@ -1,37 +1,36 @@
 package util.javabean;
 
 public class StatusCodeResponse {
-    /**
-     * statusCode : 200
-     * message : hi
-     * time : 23d4rswty
-     */
 
-    private int statusCode;
-    private String time;
-    private String message;
+  /**
+   * statusCode : 200 message : hi time : 23d4rswty.
+   */
 
-    public int getStatusCode() {
-        return statusCode;
-    }
+  private int statusCode;
+  private String time;
+  private String message;
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
+  public int getStatusCode() {
+    return statusCode;
+  }
 
-    public String getTime() {
-        return time;
-    }
+  public void setStatusCode(int statusCode) {
+    this.statusCode = statusCode;
+  }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
+  public String getTime() {
+    return time;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public void setTime(String time) {
+    this.time = time;
+  }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
+  }
 }
