@@ -62,6 +62,7 @@ $(document).ready(function(){
 
 function getMenu(Rest_Id){
 	$('#menu_select').empty();
+	$('#menu_select1').empty();
 	const url = "/SFD/ShowMenuServlet?restID="+Rest_Id; // test url
 	// const url = "/ShowMenuServlet"; // 正式 url
         $.ajax({
@@ -75,6 +76,7 @@ function getMenu(Rest_Id){
 					var value = meal.Food_Id;
 					var name = meal.Food_Name;
 					$('#menu_select').append('<option value ='+value+'>'+name+'</option>');
+					$('#menu_select1').append('<option value ='+value+'>'+name+'</option>');
 				}
             },
             error: function () {

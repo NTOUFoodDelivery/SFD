@@ -146,6 +146,7 @@
 		});
 	}
 </script>
+
 <head>
 	<title>新增刪除修改餐廳資訊</title>
 	<meta charset="utf-8" />
@@ -194,7 +195,7 @@
 				<input type="file" id="addFile" />
 				<!--recode img_url-->
 				<input type="hidden" id="addImgUrl" value="">
-				<input type="button" value="前往!"  onclick="upload('add')"/>
+				<input class="button special"type="button" value="前往!"  onclick="upload('add')"/>
 				<p></p>
 			</div>
 		</div>
@@ -203,6 +204,9 @@
 </section>
 
 <section id="banner1" class="wrapper special">
+</section>
+
+<section id="two" class="wrapper special">
 	<div class="inner">
 		<header class="major">
 			<h2>刪除餐廳</h2>
@@ -219,19 +223,23 @@
 	</div>
 </section>
 
+<section id="banner1" class="wrapper special">
+</section>
+
 <section id="three" class="wrapper special">
 	<div class="inner">
 		<header class="major">
 			<h2>修改餐廳</h2>
 		</header>
 		<div class="features">
-			<div class="feature">
+			<div style="width:70%;" class="feature">
 				<p>選擇餐廳</p>
 				<select id='restaurant_select1'>
 				</select>
 				<p></p>
-				<h3><a class="button special">確定</a></h3>
 			</div>
+
+
 			<div class="feature">
 				<p>餐廳名稱</p>
 				<input id="editRestName" type="text" />
@@ -253,7 +261,8 @@
 				<input type="file" id="editFile" />
 				<!--recode img_url-->
 				<input type="hidden" id="editImgUrl" value="">
-				<input type="button" value="前往!"  onclick="upload('edit')"/>
+				<p></p>
+				<input class="button special" type="button" value="前往!"  onclick="upload('edit')"/>
 				<p></p>
 			</div>
 		</div>
