@@ -58,7 +58,7 @@ public class Order {
     @SerializedName("User_Name")
     private String userName;
     @SerializedName("Account")
-    private String acount;
+    private String account;
     @SerializedName("Address")
     private String address;
     @SerializedName("Other")
@@ -106,12 +106,13 @@ public class Order {
       this.phoneNumber = phoneNumber;
     }
 
-    public String getAcount() {
-      return acount;
+
+    public String getAccount() {
+      return account;
     }
 
-    public void setAcount(String acount) {
-      this.acount = acount;
+    public void setAccount(String account) {
+      this.account = account;
     }
   }
 
@@ -129,7 +130,7 @@ public class Order {
     @SerializedName("User_Name")
     private String userName;
     @SerializedName("Account")
-    private String acount;
+    private String account;
     @SerializedName("Phone_Number")
     private String phoneNumber;
 
@@ -157,12 +158,12 @@ public class Order {
       this.phoneNumber = phoneNumber;
     }
 
-    public String getAcount() {
-      return acount;
+    public String getAccount() {
+      return account;
     }
 
-    public void setAcount(String acount) {
-      this.acount = acount;
+    public void setAccount(String account) {
+      this.account = account;
     }
   }
 
