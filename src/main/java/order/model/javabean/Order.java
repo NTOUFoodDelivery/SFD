@@ -2,6 +2,7 @@ package order.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Order {
 
@@ -40,6 +41,15 @@ public class Order {
 
   public void setOrder(OrderBean order) {
     this.order = order;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("customer", customer)
+        .append("deliver", deliver)
+        .append("order", order)
+        .toString();
   }
 
   public static class CustomerBean {
@@ -114,6 +124,18 @@ public class Order {
     public void setAccount(String account) {
       this.account = account;
     }
+
+    @Override
+    public String toString() {
+      return new ToStringBuilder(this)
+          .append("userID", userID)
+          .append("userName", userName)
+          .append("account", account)
+          .append("address", address)
+          .append("other", other)
+          .append("phoneNumber", phoneNumber)
+          .toString();
+    }
   }
 
   public static class DeliverBean {
@@ -164,6 +186,16 @@ public class Order {
 
     public void setAccount(String account) {
       this.account = account;
+    }
+
+    @Override
+    public String toString() {
+      return new ToStringBuilder(this)
+          .append("userID", userID)
+          .append("userName", userName)
+          .append("account", account)
+          .append("phoneNumber", phoneNumber)
+          .toString();
     }
   }
 
@@ -250,6 +282,19 @@ public class Order {
       this.meals = meals;
     }
 
+    @Override
+    public String toString() {
+      return new ToStringBuilder(this)
+          .append("orderID", orderID)
+          .append("total", total)
+          .append("typeCount", typeCount)
+          .append("startTime", startTime)
+          .append("orderStatus", orderStatus)
+          .append("castingPrio", castingPrio)
+          .append("meals", meals)
+          .toString();
+    }
+
     public static class MealsBean {
 
       /**
@@ -320,6 +365,18 @@ public class Order {
 
       public void setCount(int count) {
         this.count = count;
+      }
+
+      @Override
+      public String toString() {
+        return new ToStringBuilder(this)
+            .append("restName", restName)
+            .append("restAddress", restAddress)
+            .append("foodID", foodID)
+            .append("foodName", foodName)
+            .append("cost", cost)
+            .append("count", count)
+            .toString();
       }
     }
   }

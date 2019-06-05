@@ -39,7 +39,7 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatement.executeUpdate();
             // set OCD table ----- END
             // set order_food table ----- BEGIN
-            String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`, Rest_Id) VALUES(?, ?,  ?, ?. ?);";
+            String order_food_sql = "INSERT INTO `order_food`(Order_SERIAL, Order_Id, Food_Id, `Count`) VALUES(?, ?,  ?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(order_food_sql);  //
             for(Order.OrderBean.MealsBean meal : order.getOrder().getMeals()) {
                 String str = order.getOrder().getOrderID()+""+meal.getFoodID();
@@ -120,7 +120,6 @@ public class OrderDaoImpl implements OrderDao {
 
                 List<Order.OrderBean.MealsBean> mealsBeanXList = new ArrayList<>();
 
-                Order.OrderBean.MealsBean mealsBeanX = new Order.OrderBean.MealsBean();
                 ResultSet mealResultSet;
                 String mealSql = "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n" +
                         "FROM order_food" +
@@ -128,7 +127,7 @@ public class OrderDaoImpl implements OrderDao {
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
                         "WHERE order_food.Order_Id = ?";
                 preparedStatement = connection.prepareStatement(mealSql);
-                preparedStatement.setLong(1, order.getOrder().getOrderID());
+                preparedStatement.setLong(1, orderBean.getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
 
                 /*mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
@@ -136,15 +135,14 @@ public class OrderDaoImpl implements OrderDao {
                 while(mealResultSet.next()){
                     Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
 
-                    mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
-                    mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));
+                    mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
+                    mealsBean.setRestAddress(mealResultSet.getString("Rest_Address"));
                     mealsBean.setFoodID(mealResultSet.getLong("Food_Id"));
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
                     mealsBean.setCost(mealResultSet.getInt("Cost"));//補涵式
-
+                    mealsBeanXList.add(mealsBean);
                 }
-                mealsBeanXList.add(mealsBeanX);
 
                 orderBean.setMeals(mealsBeanXList);
                 order.setCustomer(customerBean);
