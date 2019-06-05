@@ -48,7 +48,7 @@ public class OrderDaoImpl implements OrderDao {
 //                preparedStatement.setLong(2, order.getOrder().getOrderID());
 //                preparedStatement.setLong(3, meal.getFoodID());
 //                preparedStatement.setInt(4, meal.getCount());
- //               preparedStatement.setInt(5, meal.getRest_Id());
+ //               preparedStatement.setInt(5, meal.getRest_Id());//應該不用
 //               preparedStatement.executeUpdate();
 //                success = true;
 //            }
@@ -132,12 +132,14 @@ public class OrderDaoImpl implements OrderDao {
                 preparedStatement.setLong(1, order.getOrder().getOrderID());
                 mealResultSet = preparedStatement.executeQuery();
 
-                mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
-                mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));
-
+                /*mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
+                mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));*/
                 while(mealResultSet.next()){
                     Order.OrderBean.MealsBeanX.MealsBean mealsBean = new Order.OrderBean.MealsBeanX.MealsBean();
 
+                    mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
+                    mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));
+                    //這樣寫不確定OK
                     mealsBean.setFoodID(mealResultSet.getLong("Food_Id"));
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
@@ -395,7 +397,7 @@ public class OrderDaoImpl implements OrderDao {
 //                order.getDeliver().setUserName(resultSet.getString("User_Name"));
 //
 //                ResultSet mealResultSet;
-//                String mealSql = "SELECT history_food.Food_Name,history_food.Count" +
+//                String mealSql = "SELECT history_food.Food_Name,history_food.Count, history_food.Rest_Name" + //加了NAME
 //                        " FROM history" +
 //                        " INNER JOIN history_food ON history.History_Id = history_food.History_Id" +
 //                        " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id" +
@@ -407,6 +409,7 @@ public class OrderDaoImpl implements OrderDao {
 //                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
 //                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
 //                    mealsBean.setCount(mealResultSet.getInt("Count"));
+//           		   mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
 //                    mealsBeanList.add(mealsBean);
 //                }
 //                order.getOrder().setMeals(mealsBeanList);
@@ -453,7 +456,7 @@ public class OrderDaoImpl implements OrderDao {
 //                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
 //
 //                ResultSet mealResultSet = null;
-//                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost " +
+//                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost ,restaurant_info,Rest_Name" +
 //                        "FROM `order`" +
 //                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
 //                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
@@ -468,6 +471,7 @@ public class OrderDaoImpl implements OrderDao {
 //                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
 //                    mealsBean.setCount(mealResultSet.getInt("Count"));
 //                    mealsBean.setCost(mealResultSet.getInt("Cost"));
+//					   mealsBean.setFoodName(mealResultSet.getString("Rest_Name"));            		
 //                    mealsBeanList.add(mealsBean);
 //                }
 //                order.getOrder().setMeals(mealsBeanList);
@@ -635,4 +639,4 @@ public class OrderDaoImpl implements OrderDao {
             return castingPrio;
         }
     }
-}
+}//test
