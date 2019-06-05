@@ -40,27 +40,13 @@
 </section>
 
 <!-- One -->
-<section id="one" class="wrapper special">
+<section id="two" class="wrapper special">
 	<div class="inner">
 		<header class="major">
-			<h2>管理員功能</h2>
+			<h2>管理食物功能</h2>
 		</header>
+
 		<div class="features">
-			<div class="feature">
-				<i class="fa fa-copy"></i>
-				<h3><a href="order.html#one" onclick="getValue()" class="button special">管理目前訂單</a></h3>
-				<p>查看目前食客與外送員的所有訂單</p>
-			</div>
-			<div class="feature">
-				<i class="fa fa-book"></i>
-				<h3><a href="history_order.html#one" onclick="getValue()" class="button special">管理歷史訂單</a></h3>
-				<p>查看食客與外送員的所有歷史訂單</p>
-			</div>
-			<div class="feature">
-				<i class="fa fa-envelope-o"></i>
-				<h3><a href="feedback_html#one" onclick="getValue()" class="button special">查看客服回報</a></h3>
-				<p>查看食客與外送員所回報的所有問題</p>
-			</div>
 			<div class="feature">
 				<i class="fa fa-edit"></i>
 				<h3><a href="restaurant.html#one" onclick="getValue()" class="button special">修改餐廳</a></h3>
@@ -71,13 +57,55 @@
 				<h3><a href="menu.html#one" onclick="getValue()" class="button special">修改菜單</a></h3>
 				<p>新增刪除修改菜單資訊</p>
 			</div>
+		</div>
+
+
+	</div>
+</section>
+
+<section id="banner1" class="wrapper special">
+</section>
+
+<section id="three" class="wrapper special">
+	<div class="inner">
+		<header class="major">
+			<h2>管理訂單功能</h2>
+		</header>
+		<div class="features">
+			<div class="feature">
+			<i class="fa fa-copy"></i>
+			<h3><a href="order.html#one" onclick="getValue()" class="button special">管理目前訂單</a></h3>
+			<p>查看目前食客與外送員的所有訂單</p>
+			</div>
+			<div class="feature">
+				<i class="fa fa-book"></i>
+				<h3><a href="history_order.html#one" onclick="getValue()" class="button special">管理歷史訂單</a></h3>
+				<p>查看食客與外送員的所有歷史訂單</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="banner1" class="wrapper special">
+</section>
+
+<section id="one" class="wrapper special">
+	<div class="inner">
+		<header class="major">
+			<h2>管理使用者功能</h2>
+		</header>
+		<div class="features">
+			<div class="feature">
+				<i class="fa fa-envelope-o"></i>
+				<h3><a href="feedback_html#one" onclick="getValue()" class="button special">查看客服回報</a></h3>
+				<p>查看食客與外送員所回報的所有問題</p>
+			</div>
 			<div class="feature">
 				<i class="fa fa-user"></i>
 				<h3><a href="Fix_User.html#one" onclick="getValue()" class="button special">管理使用者</a></h3>
 				<p>進行使用者資訊管理</p>
 			</div>
 		</div>
-	</div>
 </section>
 <!-- Footer -->
 <footer id="footer">
@@ -107,8 +135,7 @@
 			});
 		});
 
-		const url = "/SFD/LoginServlet"; // test url
-		// const url = "/LoginServlet"; // 正式 url
+		const url = "/LoginServlet"; // 正式 url
 		$.ajax({
 			url:url,
 			type:'GET',
@@ -119,8 +146,7 @@
 				if(data){
 
 				}else {
-					// window.location.href='/SFD/web/Administrator_Login.html'; // test url
-					// window.location.href='/web/Administrator_Login.html'; // 正式 url
+					window.location.href='/web/Administrator_Login.html'; // 正式 url
 				}
 			}
 		})

@@ -4,43 +4,42 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class PushResult {
-    /**
-     * deliverID : 213
-     * orderID : f23trkogire
-     * accept : true
-     */
 
-    @SerializedName("Deliver_Id")
-    @Expose
-    private Long deliverID;
-    @SerializedName("Order_Id")
-    @Expose
-    private Long orderID;
-    @SerializedName("Accept")
-    @Expose
-    private boolean accept;
+  /**
+   * deliverID : 213 orderID : f23trkogire accept : true.
+   */
 
-    public Long getOrderID() {
-        return orderID;
-    }
+  @SerializedName("Deliver_Id")
+  @Expose
+  private Long deliverID;
+  @SerializedName("Order_Id")
+  @Expose
+  private Long orderID;
+  @SerializedName("Accept")
+  @Expose
+  private boolean accept;
 
-    public void setOrderID(Long orderID) {
-        this.orderID = orderID;
-    }
+  public Long getOrderID() {
+    return orderID;
+  }
 
-    public boolean isAccept() {
-        return accept;
-    }
+  public void setOrderID(Long orderID) {
+    this.orderID = orderID;
+  }
 
-    public void setAccept(boolean accept) {
-        this.accept = accept;
-    }
+  public boolean isAccept() {
+    return accept;
+  }
 
-    public Long getDeliverID() {
-        return deliverID;
-    }
+  public void setAccept(boolean accept) {
+    this.accept = accept;
+  }
 
-    public void setDeliverID(Long deliverID) {
-        this.deliverID = deliverID;
-    }
+  public Long getDeliverID() {
+    return deliverID;
+  }
+
+  public void setDeliverID(Long deliverID) {
+    this.deliverID = deliverID;
+  }
 }

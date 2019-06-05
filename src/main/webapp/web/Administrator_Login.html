@@ -139,7 +139,7 @@
         $("#center").css('display','none');
         $('.container').css('display','block');
         $.ajax({
-            url: '/SFD/LoginServlet',
+            url: '/LoginServlet',
             type: 'POST',
             data: $('#myForm').serialize(),
             dataType: 'json',
@@ -155,7 +155,7 @@
                     $("#center").css('display','block');
                 }, 1000);
                 if (cmd === "ADMINISTRATOR") {
-                    window.location.href='/SFD/web/Administrator.html';
+                    window.location.href='/web/Administrator.html';
                 }else {
                     $('input[type=password]')[0].value = "";
                 }

@@ -5,61 +5,59 @@ import jdk.nashorn.internal.objects.annotations.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Feedback {
-    /**
-     * Feedback_Id : 1234
-     * User_Id : 4567
-     * Content : hi
-     * Back_Content : hi~
-     */
 
-    @SerializedName("Feedback_Id")
-    private Long feedbackID;
-    @SerializedName("User_Id")
-    private Long userID;
-    @SerializedName("Content")
-    private String content;
-    @SerializedName("Back_Content")
-    private String backContent;
+  /**
+   * Feedback_Id : 1234 User_Id : 4567 Content : hi Back_Content : hi~.
+   */
 
-    public Long getFeedbackID() {
-        return feedbackID;
-    }
+  @SerializedName("Feedback_Id")
+  private Long feedbackID;
+  @SerializedName("User_Id")
+  private Long userID;
+  @SerializedName("Content")
+  private String content;
+  @SerializedName("Back_Content")
+  private String backContent;
 
-    public void setFeedbackID(Long feedbackID) {
-        this.feedbackID = feedbackID;
-    }
+  public Long getFeedbackID() {
+    return feedbackID;
+  }
 
-    public Long getUserID() {
-        return userID;
-    }
+  public void setFeedbackID(Long feedbackID) {
+    this.feedbackID = feedbackID;
+  }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
+  public Long getUserID() {
+    return userID;
+  }
 
-    public String getContent() {
-        return content;
-    }
+  public void setUserID(Long userID) {
+    this.userID = userID;
+  }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+  public String getContent() {
+    return content;
+  }
 
-    public String getBackContent() {
-        return backContent;
-    }
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-    public void setBackContent(String backContent) {
-        this.backContent = backContent;
-    }
+  public String getBackContent() {
+    return backContent;
+  }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("feedbackID", feedbackID)
-                .append("userID", userID)
-                .append("content", content)
-                .append("backContent", backContent)
-                .toString();
-    }
+  public void setBackContent(String backContent) {
+    this.backContent = backContent;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("feedbackID", feedbackID)
+        .append("userID", userID)
+        .append("content", content)
+        .append("backContent", backContent)
+        .toString();
+  }
 }

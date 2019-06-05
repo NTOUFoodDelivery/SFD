@@ -3,49 +3,51 @@ package menu.controller.servlet;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import menu.controller.service.RestInfoService;
-import menu.model.javabean.Rest;
-import util.HttpCommonAction;
-
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import menu.controller.service.RestInfoService;
+import menu.model.javabean.Rest;
+import util.HttpCommonAction;
 
 @WebServlet("/ShowMenuServlet")
 public class ShowMenuServlet extends HttpServlet {
 
-    Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+  Gson gson = new GsonBuilder().disableHtmlEscaping()
+      .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    response.setContentType("application/json;charset=UTF-8");
 
+    Rest rest = gson
+        .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Rest.class); // rest
 
-        Rest rest = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Rest.class); // rest
+    RestInfoService restInfoService = new RestInfoService();
+    String json = gson.toJson(restInfoService.getRestMenu(rest)); // 拿到 一家餐廳 的菜單
+    restInfoService = null;
 
-        RestInfoService restInfoService = new RestInfoService();
-        String json = gson.toJson(restInfoService.getRestMenu(rest)); // 拿到 一家餐廳 的菜單
-        restInfoService = null;
+    PrintWriter out = response.getWriter();
+    out.print(json);
+    out.flush();
+  }
 
-        PrintWriter out = response.getWriter();
-        out.print(json);
-        out.flush();
-    }
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    response.setContentType("application/json;charset=UTF-8");
+    Long restID = Long.parseLong(request.getParameter("restID"));
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        Long restID = Long.parseLong(request.getParameter("restID"));
+    System.out.println(restID);
+    RestInfoService restInfoService = new RestInfoService();
+    String json = gson.toJson(restInfoService.getRestMenu(restID)); // 拿到 一家餐廳 的菜單
+    restInfoService = null;
 
-        System.out.println(restID);
-        RestInfoService restInfoService = new RestInfoService();
-        String json = gson.toJson(restInfoService.getRestMenu(restID)); // 拿到 一家餐廳 的菜單
-        restInfoService = null;
-
-        PrintWriter out = response.getWriter();
-        out.print(json);
-        out.flush();
-    }
+    PrintWriter out = response.getWriter();
+    out.print(json);
+    out.flush();
+  }
 }
