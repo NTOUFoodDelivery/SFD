@@ -190,18 +190,21 @@ public class MemberService {
           switch (currentUserType) { // 設定 登入 初始狀態
             case Customer: {
               userHashMap.put(session.getId(), user.getUserID()); // 食客 session map
+              session.setAttribute("type", user.getUserType()); // type 保存進 session
               session.setAttribute("userID", user.getUserID()); // User id 保存進 session
               info.add("CUSTOMER");
               break;
             }
             case Customer_and_Deliver: {
               userHashMap.put(session.getId(), user.getUserID()); // 外送員 session map
+              session.setAttribute("type", user.getUserType()); // type 保存進 session
               session.setAttribute("userID", user.getUserID()); // User id 保存進 session
               info.add("CUSTOMER_AND_DELIVER");
               break;
             }
             case Administrator: {
               userHashMap.put(session.getId(), user.getUserID()); // 管理員 session map
+              session.setAttribute("type", user.getUserType()); // type 保存進 session
               session.setAttribute("userID", user.getUserID()); // User id 保存進 session
               info.add("ADMINISTRATOR");
               break;
@@ -298,6 +301,7 @@ public class MemberService {
         break;
       }
     }
+    httpSession.removeAttribute("type");
     httpSession.removeAttribute("login");
     httpSession.removeAttribute("userID");
     //httpSession.invalidate(); // 註銷 該 session

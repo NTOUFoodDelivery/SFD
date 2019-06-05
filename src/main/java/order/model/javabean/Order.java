@@ -47,6 +47,7 @@ public class Order {
     /**
      * User_Id : 1
      * User_Name : 你好
+     * Account : dsf
      * Address : 我家
      * Other : gufjdk
      * Phone_Number : 02222
@@ -56,6 +57,8 @@ public class Order {
     private Long userID;
     @SerializedName("User_Name")
     private String userName;
+    @SerializedName("Account")
+    private String acount;
     @SerializedName("Address")
     private String address;
     @SerializedName("Other")
@@ -102,6 +105,14 @@ public class Order {
     public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
     }
+
+    public String getAcount() {
+      return acount;
+    }
+
+    public void setAcount(String acount) {
+      this.acount = acount;
+    }
   }
 
   public static class DeliverBean {
@@ -109,6 +120,7 @@ public class Order {
     /**
      * User_Id : 3
      * User_Name : Testd
+     * Account : dsf
      * Phone_Number : 111111
      */
 
@@ -116,6 +128,8 @@ public class Order {
     private Long userID;
     @SerializedName("User_Name")
     private String userName;
+    @SerializedName("Account")
+    private String acount;
     @SerializedName("Phone_Number")
     private String phoneNumber;
 
@@ -141,6 +155,14 @@ public class Order {
 
     public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
+    }
+
+    public String getAcount() {
+      return acount;
+    }
+
+    public void setAcount(String acount) {
+      this.acount = acount;
     }
   }
 

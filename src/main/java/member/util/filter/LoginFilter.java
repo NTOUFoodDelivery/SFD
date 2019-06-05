@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
+import member.util.setting.UserType;
 
 @WebFilter("/LoginFilter")
 public class LoginFilter implements Filter {
@@ -57,11 +58,9 @@ public class LoginFilter implements Filter {
         if (path.equals("/web/login.html") || path
             .equals("/web/Administrator_Login.html")) { // 有登入了 還想進 登入頁面 ------- 把他踢回去
           Long userID = (Long) session.getAttribute("userID");
-          System.out.println("USER ININININ");
-          UserDaoImpl userDao = new UserDaoImpl();
-          User user = userDao.showUser(userID);
+          UserType userType = (UserType) session.getAttribute("type");
           String retUrl = request.getHeader("Referer");
-          switch (user.getUserType()) {
+          switch (userType) {
             case Customer: {
               retUrl = "/web/index_eater.html";
               break;
@@ -78,7 +77,6 @@ public class LoginFilter implements Filter {
               break;
             }
           }
-          userDao = null;
           response.sendRedirect(retUrl);
         } else {
           chain.doFilter(request, response);
