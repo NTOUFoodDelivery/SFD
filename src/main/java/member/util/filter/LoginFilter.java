@@ -47,14 +47,14 @@ public class LoginFilter implements Filter {
       if (session.getAttribute("login") == null) {
         System.out.println("session died");
         response.setHeader("sessionstatus", "timeout");
-        if (path.equals("/LoginDemo.html")) {
-          response.sendRedirect("/web/LoginDemo.html");
+        if (path.equals("/web/index_eater.html")) {
+          response.sendRedirect("/web/login.html");
         } else if (path.equals("/web/Administrator.html")) {
           response.sendRedirect("/web/Administrator_Login.html");
         }
         chain.doFilter(request, response);
       } else { // 該 session 有 user 登入了
-        if (path.equals("/LoginDemo.html") || path
+        if (path.equals("/web/login.html") || path
             .equals("/web/Administrator_Login.html")) { // 有登入了 還想進 登入頁面 ------- 把他踢回去
           Long userID = (Long) session.getAttribute("userID");
           System.out.println("USER ININININ");
@@ -63,11 +63,11 @@ public class LoginFilter implements Filter {
           String retUrl = request.getHeader("Referer");
           switch (user.getUserType()) {
             case Customer: {
-              retUrl = "testEater.html";
+              retUrl = "/web/index_eater.html";
               break;
             }
             case Customer_and_Deliver: {
-              retUrl = "testDeliver.html";
+              retUrl = "/web/index_deliver.html";
               break;
             }
             case Administrator: {

@@ -29,6 +29,9 @@
   </filter-mapping>
 
   <listener>
+    <listener-class>member.util.listener.UserListener</listener-class>
+  </listener>
+  <listener>
     <listener-class>util.listener.RequestListener</listener-class>
   </listener>
   <listener>

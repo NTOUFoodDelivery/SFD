@@ -1,21 +1,14 @@
 package order.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class Order {
 
-
   /**
-   * Customer : {"User_Id":1,"User_Name":"你好","Address":"我家","Other":"guk","Phone_Number":"02222"}
-   * Deliver : {"User_Id":3,"User_Name":"Testd","Phone_Number":"111111"} Order :
-   * {"Order_Id":253678911,"Total":75,"Type_Count":2,"Meals":[{"Rest_Name":"阿MAN
-   * 早午餐","Rest_Address":"中正路822號1樓","Meals":[{"Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},
-   * {"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]},{"Rest_Name":"OOXX
-   * 早午餐","Rest_Address":"ＯＯ路ＸＸ號1樓","Meals":[{"Food_Id":5,"Food_Name":"鐵板麵","Cost":25,"Count":2},
-   * {"Food_Id":2,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]}],"Start_Time":"2019-05-17
-   * 03:31:00","Order_Status":"WAIT","CastingPrio":0} restIDs.
+   * Customer : {"User_Id":1,"User_Name":"你好","Address":"我家","Other":"gufjdk","Phone_Number":"02222"}
+   * Deliver : {"User_Id":3,"User_Name":"Testd","Phone_Number":"111111"}
+   * Order : {"Order_Id":253678911,"Total":75,"Type_Count":2,"Meals":[{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}],"Start_Time":"2019-05-17 03:31:00","Order_Status":"WAIT","CastingPrio":0}
    */
 
   @SerializedName("Customer")
@@ -24,7 +17,6 @@ public class Order {
   private DeliverBean deliver;
   @SerializedName("Order")
   private OrderBean order;
-  private List<Long> restIDs;
 
   public CustomerBean getCustomer() {
     return customer;
@@ -50,18 +42,14 @@ public class Order {
     this.order = order;
   }
 
-  public List<Long> getRestIDs() {
-    return restIDs;
-  }
-
-  public void setRestIDs(List<Long> restIDs) {
-    this.restIDs = restIDs;
-  }
-
   public static class CustomerBean {
 
     /**
-     * User_Id : 1 User_Name : 你好 Address : 我家 Other : gufjdk Phone_Number : 02222 Account : 34567.
+     * User_Id : 1
+     * User_Name : 你好
+     * Address : 我家
+     * Other : gufjdk
+     * Phone_Number : 02222
      */
 
     @SerializedName("User_Id")
@@ -74,8 +62,6 @@ public class Order {
     private String other;
     @SerializedName("Phone_Number")
     private String phoneNumber;
-    @SerializedName("Account")
-    private String account;
 
     public Long getUserID() {
       return userID;
@@ -116,20 +102,14 @@ public class Order {
     public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
     }
-
-    public String getAccount() {
-      return account;
-    }
-
-    public void setAccount(String account) {
-      this.account = account;
-    }
   }
 
   public static class DeliverBean {
 
     /**
-     * User_Id : 3 User_Name : Testd Phone_Number : 111111.
+     * User_Id : 3
+     * User_Name : Testd
+     * Phone_Number : 111111
      */
 
     @SerializedName("User_Id")
@@ -138,8 +118,6 @@ public class Order {
     private String userName;
     @SerializedName("Phone_Number")
     private String phoneNumber;
-    @SerializedName("Account")
-    private String account;
 
     public Long getUserID() {
       return userID;
@@ -164,25 +142,18 @@ public class Order {
     public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
     }
-
-    public String getAccount() {
-      return account;
-    }
-
-    public void setAccount(String account) {
-      this.account = account;
-    }
   }
 
   public static class OrderBean {
 
     /**
-     * Order_Id : 253678911 Total : 75 Type_Count : 2 Meals : [{"Rest_Name":"阿MAN
-     * 早午餐","Rest_Address":"中正路822號1樓","Meals":[{"Food_Id":3,"Food_Name":"雞塊","Cost":25,"Count":2},
-     * {"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]},{"Rest_Name":"OOXX
-     * 早午餐","Rest_Address":"ＯＯ路ＸＸ號1樓","Meals":[{"Food_Id":5,"Food_Name":"鐵板麵","Cost":25,"Count":2},
-     * {"Food_Id":2,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]}] Start_Time : 2019-05-17 03:31:00
-     * Order_Status : WAIT CastingPrio : 0.
+     * Order_Id : 253678911
+     * Total : 75
+     * Type_Count : 2
+     * Meals : [{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},{"Rest_Name":"阿MAN 早午餐","Rest_Address":"基隆市中正區中正路822號1樓","Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}]
+     * Start_Time : 2019-05-17 03:31:00
+     * Order_Status : WAIT
+     * CastingPrio : 0
      */
 
     @SerializedName("Order_Id")
@@ -197,7 +168,8 @@ public class Order {
     private String orderStatus;
     @SerializedName("CastingPrio")
     private int castingPrio;
-    private List<MealsBeanX> Meals;
+    @SerializedName("Meals")
+    private List<MealsBean> meals;
 
     public Long getOrderID() {
       return orderID;
@@ -247,28 +219,37 @@ public class Order {
       this.castingPrio = castingPrio;
     }
 
-    public List<MealsBeanX> getMeals() {
-      return Meals;
+    public List<MealsBean> getMeals() {
+      return meals;
     }
 
-    public void setMeals(List<MealsBeanX> Meals) {
-      this.Meals = Meals;
+    public void setMeals(List<MealsBean> meals) {
+      this.meals = meals;
     }
 
-    public static class MealsBeanX {
+    public static class MealsBean {
 
       /**
-       * Rest_Name : 阿MAN 早午餐 Rest_Address : 中正區中正路822號1樓
-       * Meals : [{"Food_Id":3,"Food_Name":"麥克雞塊","Cost":25,"Count":2},
-       * {"Food_Id":4,"Food_Name":"蘿蔔糕","Cost":25,"Count":1}].
+       * Rest_Name : 阿MAN 早午餐
+       * Rest_Address : 基隆市中正區中正路822號1樓
+       * Food_Id : 3
+       * Food_Name : 麥克雞塊
+       * Cost : 25
+       * Count : 2
        */
 
       @SerializedName("Rest_Name")
       private String restName;
       @SerializedName("Rest_Address")
       private String restAddress;
-      @SerializedName("Meals")
-      private List<MealsBean> meals;
+      @SerializedName("Food_Id")
+      private Long foodID;
+      @SerializedName("Food_Name")
+      private String foodName;
+      @SerializedName("Cost")
+      private int cost;
+      @SerializedName("Count")
+      private int count;
 
       public String getRestName() {
         return restName;
@@ -286,60 +267,36 @@ public class Order {
         this.restAddress = restAddress;
       }
 
-      public List<MealsBean> getMeals() {
-        return meals;
+      public Long getFoodID() {
+        return foodID;
       }
 
-      public void setMeals(List<MealsBean> meals) {
-        this.meals = meals;
+      public void setFoodID(Long foodID) {
+        this.foodID = foodID;
       }
 
-      public static class MealsBean {
+      public String getFoodName() {
+        return foodName;
+      }
 
-        /**
-         * Food_Id : 3 Food_Name : 麥克雞塊 Cost : 25 Count : 2.
-         */
+      public void setFoodName(String foodName) {
+        this.foodName = foodName;
+      }
 
-        @SerializedName("Food_Id")
-        private Long foodID;
-        @SerializedName("Food_Name")
-        private String foodName;
-        @SerializedName("Cost")
-        private int cost;
-        @SerializedName("Count")
-        private int count;
+      public int getCost() {
+        return cost;
+      }
 
-        public Long getFoodID() {
-          return foodID;
-        }
+      public void setCost(int cost) {
+        this.cost = cost;
+      }
 
-        public void setFoodID(Long foodID) {
-          this.foodID = foodID;
-        }
+      public int getCount() {
+        return count;
+      }
 
-        public String getFoodName() {
-          return foodName;
-        }
-
-        public void setFoodName(String foodName) {
-          this.foodName = foodName;
-        }
-
-        public int getCost() {
-          return cost;
-        }
-
-        public void setCost(int cost) {
-          this.cost = cost;
-        }
-
-        public int getCount() {
-          return count;
-        }
-
-        public void setCount(int count) {
-          this.count = count;
-        }
+      public void setCount(int count) {
+        this.count = count;
       }
     }
   }
