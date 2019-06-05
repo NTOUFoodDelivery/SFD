@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpSession;
 import member.controller.servlet.LoginServlet;
 import member.model.daoImpl.UserDaoImpl;
@@ -162,7 +163,7 @@ public class MemberService {
    * @param userType 使用者 key in 的 使用者 種類
    */
 
-  public Object login(HttpSession session, String account, String password, String userType) {
+  public Object login(ConcurrentHashMap userHashMap,HttpSession session, String account, String password, String userType) {
 
     Object result;
     if (session.getAttribute("login") == null) { // 這個session 沒登入過 任何 user
@@ -188,19 +189,19 @@ public class MemberService {
           UserType currentUserType = user.getUserType();
           switch (currentUserType) { // 設定 登入 初始狀態
             case Customer: {
-              LoginServlet.eaterSession.put(session.getId(), user.getUserID()); // 食客 session map
+              userHashMap.put(session.getId(), user.getUserID()); // 食客 session map
               session.setAttribute("userID", user.getUserID()); // User id 保存進 session
               info.add("CUSTOMER");
               break;
             }
             case Customer_and_Deliver: {
-              LoginServlet.deliverSession.put(session.getId(), user.getUserID()); // 外送員 session map
+              userHashMap.put(session.getId(), user.getUserID()); // 外送員 session map
               session.setAttribute("userID", user.getUserID()); // User id 保存進 session
               info.add("CUSTOMER_AND_DELIVER");
               break;
             }
             case Administrator: {
-              LoginServlet.adminSession.put(session.getId(), user.getUserID()); // 管理者 session map
+              userHashMap.put(session.getId(), user.getUserID()); // 管理員 session map
               session.setAttribute("userID", user.getUserID()); // User id 保存進 session
               info.add("ADMINISTRATOR");
               break;
@@ -222,42 +223,6 @@ public class MemberService {
       result = HttpCommonAction.generateStatusResponse(false, "這個session 已經有 user 登入了");
     }
     return result;
-  }
-
-  /**
-   * <p>
-   * show online delivers.
-   * </p>
-   */
-  public void showOnlineDeliver() {
-    Collection<Long> onlineDeliversID = LoginServlet.deliverSession.values();
-    System.out.println("線上外送員 共 :: " + onlineDeliversID.size() + " 個");
-    int count = 0;
-    userDao = new UserDaoImpl();
-    for (Long onlineDeliverID : onlineDeliversID) {
-      User onlineDeliver = userDao.showUser(onlineDeliverID);
-      System.out.println("線上外送員 " + count + " :: " + onlineDeliver);
-      count++;
-    }
-    userDao = null;
-  }
-
-  /**
-   * <p>
-   * show online eaters.
-   * </p>
-   */
-  public void showOnlineEater() {
-    Collection<Long> onlineEatersID = LoginServlet.eaterSession.values();
-    System.out.println("線上食客 共 :: " + onlineEatersID.size() + " 個");
-    int count = 0;
-    userDao = new UserDaoImpl();
-    for (Long onlineEaterID : onlineEatersID) {
-      User onlineEater = userDao.showUser(onlineEaterID);
-      System.out.println("線上食客 " + count + " :: " + onlineEater);
-      count++;
-    }
-    userDao = null;
   }
 
   /**
@@ -296,34 +261,34 @@ public class MemberService {
    *
    * @param httpSession 請求中的 session
    */
-  public Object logout(HttpSession httpSession) {
+  public Object logout(ConcurrentHashMap userHashMap,HttpSession httpSession) {
     Long userID = (Long) httpSession.getAttribute("userID"); // current request user id
     userDao = new UserDaoImpl();
     User user = userDao.showUser(userID);
     boolean success = false;
     switch (user.getUserType()) {
       case Administrator: {
-        LoginServlet.adminSession.remove(httpSession.getId());
+        userHashMap.remove(httpSession.getId());
         List<String> adminSessionList = (List<String>) MemberService
-            .getKey(LoginServlet.adminSession, userID);
+            .getKey(userHashMap, userID);
         if (adminSessionList.size() == 0) { // 沒有其他 session 登這個 user 了
           success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
         }
         break;
       }
       case Customer_and_Deliver: {
-        LoginServlet.deliverSession.remove(httpSession.getId());
+        userHashMap.remove(httpSession.getId());
         List<String> deliverSessionList = (List<String>) MemberService
-            .getKey(LoginServlet.deliverSession, userID);
+            .getKey(userHashMap, userID);
         if (deliverSessionList.size() == 0) { // 沒有其他 session 登這個 user 了
           success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
         }
         break;
       }
       case Customer: {
-        LoginServlet.eaterSession.remove(httpSession.getId());
+        userHashMap.remove(httpSession.getId());
         List<String> eaterSessionList = (List<String>) MemberService
-            .getKey(LoginServlet.eaterSession, userID);
+            .getKey(userHashMap, userID);
         if (eaterSessionList.size() == 0) { // 沒有其他 session 登這個 user 了
           success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
         }

@@ -185,6 +185,7 @@ public class OrderService {
         break;
       }
       case Administrator: {
+        //result = orderDao.se
         break;
       }
       default: {

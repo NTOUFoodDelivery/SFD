@@ -20,10 +20,6 @@ import member.model.daoImpl.UserDaoImpl;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-  public static Map<String, Long> eaterSession = new ConcurrentHashMap<>();
-  public static Map<String, Long> deliverSession = new ConcurrentHashMap<>();
-  public static Map<String, Long> adminSession = new ConcurrentHashMap<>();
-
   Gson gson = new Gson();
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -36,9 +32,8 @@ public class LoginServlet extends HttpServlet {
     String json;
 
     MemberService memberService = new MemberService();
-    json = gson.toJson(memberService.login(session, account, password, userType));
-    memberService.showOnlineDeliver();
-    memberService.showOnlineEater();
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap)request.getServletContext().getAttribute("userHashMap");
+    json = gson.toJson(memberService.login(userHashMap,session, account, password, userType));
     memberService = null;
 
     PrintWriter out = response.getWriter();
