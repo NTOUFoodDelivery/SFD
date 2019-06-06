@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import member.controller.service.MemberService;
 
 @WebServlet("/LogoutServlet")
@@ -30,6 +29,7 @@ public class LogoutServlet extends HttpServlet {
     MemberService memberService = new MemberService();
     String json = gson.toJson(memberService.logout(userHashMap, httpSession));
     memberService = null;
+    gson = null;
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();

@@ -30,6 +30,7 @@ public class ModifyMemberServlet extends HttpServlet {
     MemberService memberService = new MemberService();
     String json = gson.toJson(memberService.modifyMember(userID, memberCommand));
     memberService = null;
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

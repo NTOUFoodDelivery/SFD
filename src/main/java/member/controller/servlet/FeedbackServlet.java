@@ -29,15 +29,13 @@ public class FeedbackServlet extends HttpServlet {
         .getFeedbackCommand(request.getParameter("cmd")); // command
     Feedback feedback = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Feedback.class); // feedback
-    Long currentUserID = (Long) request.getSession()
-        .getAttribute("userID"); // current request user id
     User currentUser = (User) request.getSession()
         .getAttribute("user"); // current request User
-    feedback.setUserID(currentUserID);
     FeedbackService feedbackService = new FeedbackService();
     String json = gson
         .toJson(feedbackService.handleFeedback(currentUser, feedbackCommand, feedback));
     feedbackService = null;
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
