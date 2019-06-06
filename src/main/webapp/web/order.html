@@ -13,169 +13,183 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
-  $(function () {
-    $('#bu').click(function () {
-      $('html,body').animate({scrollTop: $('#one').offset().top}, 800);
+    $(function () {
+        $('#bu').click(function () {
+            $('html,body').animate({scrollTop: $('#One').offset().top}, 800);
+        });
     });
-  });
 
-  $(document).ready(function () {
 
-    for (var i = 0; i < 5; i++) {
-      $('#accordionExample').append(
-          "<div class = 'card' >" +
-          "<div class = 'card-header' id = 'headingOne' >" +
-          "<h2 class = 'mb-0' >" +
-          "<button id='collapseButton" + i + "' class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#"
-          + i + "' aria-expanded = 'true' aria-controls = '" + i
-          + "' >10001215&emsp;&emsp;食客&emsp;&emsp;外送員</button>" +
-          "</h2>" +
-          "</div>" +
-          "<div id = '" + i
-          + "' class = 'collapse' aria-labelledby = 'headingOne' data-parent = '#accordionExample'>"
-          +     //第一個ID
-          "<div class = 'card-body' >" +
-          "<button type = 'button' class = 'btn btn-primary' data-toggle = 'modal' data-target = '#exampleModalCenter'> 食客資訊 </button> "
-          +
-          "<div class = 'modal fade' id = 'exampleModalCenter' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true'>"
-          +
-          "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
-          "<div class= 'modal-content' >" +
-          "<div class = 'modal-header' >" +
-          "<h5 class = 'modal-title' id = 'exampleModalCenterTitle' > 食客資訊 </h5>" +
-          "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
-          "<span aria-hidden = 'true' >&times;</span>" +
-          "</button>" +
-          "</div>" +
-          "<div class = 'modal-body' >食客ID:<br >食客名字:<br >食客帳號:<br >食客地址:<br >食客備註:<br >食客電話:</div>"
-          +
-          "<div class= 'modal-footer' >" +
-          "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
-          +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#exampleModalCenter1' > 外送員資訊 </button> "
-          +
-          "<div class= 'modal fade' id = 'exampleModalCenter1' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
-          +
-          "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
-          "<div class= 'modal-content' >" +
-          "<div class= 'modal-header' >" +
-          "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >外送員資訊</h5>" +
-          "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
-          "<span aria-hidden = 'true'>&times;</span>" +
-          "</button>" +
-          "</div>" +
-          "<div class = 'modal-body' >外送員ID:<br>外送員名字:<br >外送員帳號:<br >外送員電話:<br ></div>" +
-          "<div class= 'modal-footer' >" +
-          "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>"
-          +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#exampleModalCenter2' > 訂單資訊 </button>"
-          +
-          "<div class= 'modal fade' id = 'exampleModalCenter2' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
-          +
-          "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
-          "<div class= 'modal-content' >" +
-          "<div class= 'modal-header' >" +
-          "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >訂單資訊</h5>" +
-          "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
-          "<span aria-hidden = 'true' >&times;</span>" +
-          "</button>" +
-          "</div>" +
-          "<div class= 'modal-body'>訂單總價:<br >訂單種類:<br >餐廳名稱:<br >餐廳地址:<br >食物名稱:<br >食物單價:<br >食物個數:<br >訂單起始時間:<br >訂單狀態:<br >訂單權重:</div>"
-          +
-          "<div class = 'modal-footer' >" +
-          "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
-          +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>"
-      );
-    //  加監聽 <!--監聽按鈕 實施.collapse('toggle')-->
-      const buttonTarget = "#collapseButton"+i;
-      $(buttonTarget).click(function () {
-        const target = "#"+this.id.split('collapseButton')[1];
-        $(target).collapse('toggle')
-      })
-    }
-  });
+    $(document).ready(function () {
+
+        for (var i = 0; i < 5; i++) {
+            $('#accordionExample').append(
+                "<div class = 'card' >" +
+                "<div class = 'card-header' id = 'headingOne' >" +
+                "<h2 class = 'mb-0' >" +
+                "<button id='collapseButton" + i + "' class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#"
+                + i + "' aria-expanded = 'true' aria-controls = '" + i
+                + "' >10001215&emsp;&emsp;食客&emsp;&emsp;外送員</button>" +
+                "</h2>" +
+                "</div>" +
+                "<div id = '" + i
+                + "' class = 'collapse' aria-labelledby = 'headingOne' data-parent = '#accordionExample'>"
+                +     //第一個ID
+                "<div class = 'card-body' >" +
+                "<button type = 'button' class = 'btn btn-primary' data-toggle = 'modal' data-target = '#customer" + i + "'> 食客資訊 </button> "
+                +
+                "<div class = 'modal fade' id = 'customer" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true'>"
+                +
+                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                "<div class= 'modal-content' >" +
+                "<div class = 'modal-header' >" +
+                "<h5 class = 'modal-title' id = 'exampleModalCenterTitle' > 食客資訊 </h5>" +
+                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                "<span aria-hidden = 'true' >&times;</span>" +
+                "</button>" +
+                "</div>" +
+                "<div class = 'modal-body' >食客ID:<br >食客名字:<br >食客帳號:<br >食客地址:<br >食客備註:<br >食客電話:</div>"
+                +
+                "<div class= 'modal-footer' >" +
+                "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
+                +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#deliver" + i + "' > 外送員資訊 </button> "
+                +
+                "<div class= 'modal fade' id = 'deliver" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
+                +
+                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                "<div class= 'modal-content' >" +
+                "<div class= 'modal-header' >" +
+                "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >外送員資訊</h5>" +
+                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                "<span aria-hidden = 'true'>&times;</span>" +
+                "</button>" +
+                "</div>" +
+                "<div class = 'modal-body' >外送員ID:<br>外送員名字:<br >外送員帳號:<br >外送員電話:<br ></div>" +
+                "<div class= 'modal-footer' >" +
+                "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>"
+                +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#order" + i + "' > 訂單資訊 </button>"
+                +
+                "<div class= 'modal fade' id = 'order" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
+                +
+                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                "<div class= 'modal-content' >" +
+                "<div class= 'modal-header' >" +
+                "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >訂單資訊</h5>" +
+                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                "<span aria-hidden = 'true' >&times;</span>" +
+                "</button>" +
+                "</div>" +
+                "<div class= 'modal-body'>訂單總價:<br >訂單種類:<br >餐廳名稱:<br >餐廳地址:<br >食物名稱:<br >食物單價:<br >食物個數:<br >訂單起始時間:<br >訂單狀態:<br >訂單權重:</div>"
+                +
+                "<div class = 'modal-footer' >" +
+                "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
+                +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>"
+            );
+            //  加監聽 <!--監聽按鈕 實施.collapse('toggle')-->
+            const buttonTarget = "#collapseButton" + i;
+            $(buttonTarget).click(function () {
+                const target = "#" + this.id.split('collapseButton')[1];
+                $(target).collapse('toggle')
+            })
+
+            // const buttonCustomer = "#customer"+i;
+            // $(buttonCustomer).click(function () {
+            //
+            // }
+            // const buttonDeliver = "#deliver"+i;
+            // $(buttonDeliver).click(function () {
+            //
+            // }
+            // const buttonOrder = "#order"+i;
+            // $(buttonOrder).click(function () {
+            //
+            // }
+        }
+    });
 
 </script>
 
 <head>
-  <title>查看目前食客與外送員的所有訂單</title>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <!--[if lte IE 8]>
-  <script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-  <link rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="css/main.css"/>
-  <!--[if lte IE 9]>
-  <link rel="stylesheet" href="assets/css/ie9.css"/><![endif]-->
-  <noscript>
-    <link rel="stylesheet" href="css/skel1.css"/>
-    <link rel="stylesheet" href="css/style1.css"/>
-    <link rel="stylesheet" href="css/style-xlarge1.css"/>
-  </noscript>
+    <title>查看目前食客與外送員的所有訂單</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]>
+    <script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="assets/css/ie9.css"/><![endif]-->
+    <noscript>
+        <link rel="stylesheet" href="css/skel1.css"/>
+        <link rel="stylesheet" href="css/style1.css"/>
+        <link rel="stylesheet" href="css/style-xlarge1.css"/>
+    </noscript>
 </head>
 
 <body>
 
 <!-- Banner -->
 <section id="banner">
-  <h2><strong>Starburst Food Delivery</strong></h2>
-  <p>查看目前食客與外送員的所有訂單介面</p>
-  <p>AAAAA管理員</p>
-  <ul class="actions">
-    <li><a id="bu" href="#" class="button special">開始使用</a></li>
-  </ul>
+    <h2><strong>Starburst Food Delivery</strong></h2>
+    <p>查看目前食客與外送員的所有訂單介面</p>
+    <p>AAAAA管理員</p>
+    <ul class="actions">
+        <li><a id="bu" href="#" class="button special">開始使用</a></li>
+    </ul>
 </section>
 
 <!-- One -->
-<section id="one" class="wrapper special">
-  <div class="inner">
-    <header class="major">
-      <h2>管理員功能</h2>
-    </header>
-    <div class="features">
-      <section id="main" class="wrapper style2">
-        <div class="container">
+<section id="One" class="wrapper special">
+    <div class="inner">
+        <header class="major">
+            <h2>管理員功能</h2>
+        </header>
+        <div class="features">
+            <section id="main" class="wrapper style2">
+                <div class="container">
 
-          <header class="major">
-            <h2>目前正在進行的所有訂單</h2>
-          </header>
+                    <header class="major">
+                        <h2>目前正在進行的所有訂單</h2>
+                    </header>
 
-          <!-- Table -->
-          <section>
-            <h3>目前正在DEALING的訂單</h3>
-            <div class="table-wrapper">
-              <div class="accordion" id="accordionExample">
+                    <!-- Table -->
+                    <section>
+                        <h3>目前正在DEALING的訂單</h3>
+                        <div class="table-wrapper">
+                            <div class="accordion" id="accordionExample">
 
-              </div>
-            </div>
-          </section>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
         </div>
-      </section>
     </div>
-  </div>
 </section>
 <!-- Footer -->
 <footer id="footer">
-  <div class="copyright">
-    &copy; 製作: <a
-      href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
-  </div>
+    <div class="copyright">
+        &copy; 製作: <a
+            href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
+    </div>
 </footer>
 
 <!-- Scripts -->
