@@ -8,7 +8,6 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <script src="js/jquery.min.js"></script>
 <script src="js/skel.min.js"></script>
-<script src="js/restaurant.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -20,6 +19,76 @@
         });
     });
 
+    $(document).ready(function () {
+        var i;
+        for (i = 0; i < 5; i++) {
+            $("x").append(function (n)
+            {
+            return"<div class = 'card' >" +
+                "<div class = 'card-header' id = 'headingOne' >" +
+                "<h2 class = 'mb-0' >" +
+                "<button class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#" + i + " ' aria-expanded = 'true' aria-controls = '" + i + "' >10001215&emsp;&emsp;食客&emsp;&emsp;外送員</button>" +
+                "</h2>" +
+                "</div>" +
+                "<div id = '" + i + "' class = 'collapse show' aria-labelledby = 'headingOne' data-parent = '#accordionExample'>" +     //第一個ID
+                "<div class = 'card-body' >" +
+                "<button type = 'button' class = 'btn btn-primary' data-toggle = 'modal' data-target = '#exampleModalCenter'> 食客資訊 </button> " +
+                "<div class = 'modal fade' id = 'exampleModalCenter' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true'>" +
+                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                "<div class= 'modal-content' >" +
+                "<div class = 'modal-header' >" +
+                "<h5 class = 'modal-title' id = 'exampleModalCenterTitle' > 食客資訊 </h5>" +
+                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                "<span aria-hidden = 'true' >&times;</span>" +
+                "</button>" +
+                "</div>" +
+                "<div class = 'modal-body' >食客ID:<br >食客名字:<br >食客帳號:<br >食客地址:<br >食客備註:<br >食客電話:</div>" +
+                "<div class= 'modal-footer' >" +
+                "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#exampleModalCenter1' > 外送員資訊 </button> " +
+                "<div class= 'modal fade' id = 'exampleModalCenter1' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >" +
+                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                "<div class= 'modal-content' >" +
+                "<div class= 'modal-header' >" +
+                "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >外送員資訊</h5>" +
+                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                "<span aria-hidden = 'true'>&times;</span>" +
+                "</button>" +
+                "</div>" +
+                "<div class = 'modal-body' >外送員ID:<br>外送員名字:<br >外送員帳號:<br >外送員電話:<br ></div>" +
+                "<div class= 'modal-footer' >" +
+                "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#exampleModalCenter2' > 訂單資訊 </button>" +
+                "<div class= 'modal fade' id = 'exampleModalCenter2' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >" +
+                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                "<div class= 'modal-content' >" +
+                "<div class= 'modal-header' >" +
+                "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >訂單資訊</h5>" +
+                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                "<span aria-hidden = 'true' >&times;</span>" +
+                "</button>" +
+                "</div>" +
+                "<div class= 'modal-body'>訂單總價:<br >訂單種類:<br >餐廳名稱:<br >餐廳地址:<br >食物名稱:<br >食物單價:<br >食物個數:<br >訂單起始時間:<br >訂單狀態:<br >訂單權重:</div>" +
+                "<div class = 'modal-footer' >" +
+                "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+            });
+        }
+    });
 
 </script>
 <head>
@@ -70,155 +139,8 @@
                         <h3>目前正在DEALING的訂單</h3>
                         <div class="table-wrapper">
                             <div class="accordion" id="accordionExample">
-                                <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#collapseOne" aria-expanded="true"
-                                                    aria-controls="collapseOne">
-                                                10001215&emsp;&emsp;食客&emsp;&emsp;外送員
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                         data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                                食客資訊
-                                            </button>
-                                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">食客資訊</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            食客ID:
-                                                            <br>
-                                                            食客名字:
-                                                            <br>
-                                                            食客帳號:
-                                                            <br>
-                                                            食客地址:
-                                                            <br>
-                                                            食客備註:
-                                                            <br>
-                                                            食客電話:
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
-                                                外送員資訊
-                                            </button>
-                                            <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">外送員資訊</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            外送員ID:
-                                                            <br>
-                                                            外送員名字:
-                                                            <br>
-                                                            外送員帳號:
-                                                            <br>
-                                                            外送員電話:
-                                                            <br>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
-                                                訂單資訊
-                                            </button>
-                                            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">訂單資訊</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            訂單總價:
-                                                            <br>
-                                                            訂單種類:
-                                                            <br>
-                                                            餐廳名稱:
-                                                            <br>
-                                                            餐廳地址:
-                                                            <br>
-                                                            食物名稱:
-                                                            <br>
-                                                            食物單價:
-                                                            <br>
-                                                            食物個數:
-                                                            <br>
-
-                                                            訂單起始時間:
-                                                            <br>
-                                                            訂單狀態:
-                                                            <br>
-                                                            訂單權重:
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header" id="headingTwo">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                                    data-target="#collapseTwo" aria-expanded="false"
-                                                    aria-controls="collapseTwo">
-                                                65684112&emsp;&emsp;食客&emsp;&emsp;外送員
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                         data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            Anim pariatur
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header" id="headingThree">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                                    data-target="#collapseThree" aria-expanded="false"
-                                                    aria-controls="collapseThree">
-                                                65417854&emsp;&emsp;食客&emsp;&emsp;外送員
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                         data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            cliche
-                                        </div>
-                                    </div>
-                                </div>
+                               <x>
+                               </x>
                             </div>
                         </div>
                     </section>
