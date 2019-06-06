@@ -9,19 +9,27 @@ public interface UserDao {
 
     /**
      *
-     * @description: 登入
+     * @description: 找尋 符合條件的 使用者
      * @param [account, password, userType]
      * @return java.lang.Long
      */
-    Long loginID(String account, String password, String userType);
+    Long searchUserId(String account, String password, String userType);
 
     /**
      *
-     * @description: 登入
+     * @description:  找尋 符合條件的 使用者
      * @param [account, password, userType]
      * @return member.model.javabean.User
      */
-    User loginUser(String account, String password, String userType);
+    User searchUser(String account, String password, String userType);
+
+    /**
+     *
+     * @description:  找尋 符合條件的 使用者
+     * @param [account]
+     * @return member.model.javabean.User
+     */
+    User searchUser(String account);
 
     /**
      *
@@ -31,7 +39,7 @@ public interface UserDao {
      * @param [userID]
      * @return member.model.javabean.User
      */
-    User showUser(Long userID);
+    User showUser(Long userId);
 
     /**
      *
@@ -47,7 +55,7 @@ public interface UserDao {
      * @param [userID]
      * @return java.lang.String
      */
-    String showUserStatus(Long userID);
+    String showUserStatus(Long userId);
 
     /**
      *
@@ -55,7 +63,7 @@ public interface UserDao {
      * @param [userID]
      * @return java.lang.String
      */
-    String showUserType(Long userID);
+    String showUserType(Long userId);
 
     /**
      *
@@ -63,7 +71,7 @@ public interface UserDao {
      * @param [userID]
      * @return boolean
      */
-    boolean delUser(Long userID);
+    boolean delUser(Long userId);
 
     /**
      *
@@ -71,7 +79,7 @@ public interface UserDao {
      * @param [userID, userStatus]
      * @return boolean
      */
-    boolean modifyUserStatus(Long userID, String userStatus);
+    boolean modifyUserStatus(Long userId, String userStatus);
 
     /**
      *
@@ -79,7 +87,7 @@ public interface UserDao {
      * @param [userID, userType]
      * @return boolean
      */
-    boolean modifyUserType(Long userID, String userType);
+    boolean modifyUserType(Long userId, String userType);
 
     /**
      *
@@ -87,7 +95,7 @@ public interface UserDao {
      * @param [userID]
      * @return boolean
      */
-    boolean searchUser(Long userID);
+    boolean searchUser(Long userId);
 
     /**
      *
@@ -104,7 +112,7 @@ public interface UserDao {
      * @param [FeedbackID, UserID, Content]
      * @return boolean
      */
-    boolean addFeedback(Long FeedbackID, Long UserID, String Content);
+    boolean addFeedback(Long FeedbackId, Long userId, String Content);
 
     /**
      *
@@ -112,7 +120,7 @@ public interface UserDao {
      * @param [FeedbackID, BackContent]
      * @return boolean
      */
-    boolean replyFeedback(Long FeedbackID, String BackContent);
+    boolean replyFeedback(Long FeedbackId, String BackContent);
     // 在 service 層 須合併 ------------------------------------------------------ END
 
     // 在 service 層 須合併 ------------------------------------------------------ BEGIN
@@ -122,7 +130,7 @@ public interface UserDao {
      * @param [userID]
      * @return java.util.List<member.model.javabean.Feedback>
      */
-    List<Feedback> searchFeedback(Long userID);
+    List<Feedback> searchFeedback(Long userId);
 
     /**
      *

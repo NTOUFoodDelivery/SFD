@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -54,6 +53,6 @@ public class UserListener implements ServletContextListener,
   @Override
   public void sessionDestroyed(HttpSessionEvent se) {
     User user = (User) se.getSession().getAttribute("user"); // user
-    userHashMap.remove(user.getUserID()); // 剔除 user hash map
+    userHashMap.remove(user.getUserId()); // 剔除 user hash map
   }
 }

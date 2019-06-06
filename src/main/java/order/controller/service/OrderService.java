@@ -175,11 +175,11 @@ public class OrderService {
     Object result = null;
     switch (userType) {
       case Customer: {
-        result = orderDao.searchEaterOrder(currentUser.getUserID());
+        result = orderDao.searchEaterOrder(currentUser.getUserId());
         break;
       }
       case Customer_and_Deliver: {
-        result = orderDao.searchDeliverOrder(currentUser.getUserID());
+        result = orderDao.searchDeliverOrder(currentUser.getUserId());
         break;
       }
       case Administrator: {
@@ -207,11 +207,11 @@ public class OrderService {
     Object result = null;
     switch (userType) {
       case Customer: {
-        result = orderDao.searchEaterHistoryOrder(currentUser.getUserID());
+        result = orderDao.searchEaterHistoryOrder(currentUser.getUserId());
         break;
       }
       case Customer_and_Deliver: {
-        result = orderDao.searchDeliverHistoryOrder(currentUser.getUserID());
+        result = orderDao.searchDeliverHistoryOrder(currentUser.getUserId());
         break;
       }
       case Administrator: {

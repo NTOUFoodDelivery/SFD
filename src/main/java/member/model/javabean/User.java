@@ -10,7 +10,7 @@ public class User {
 
   @SerializedName("User_Id")
   @Expose
-  private long userID;
+  private long userId;
   @SerializedName("Account")
   @Expose
   private String account;
@@ -37,12 +37,12 @@ public class User {
   private UserStatus userStatus;
 
 
-  public long getUserID() {
-    return userID;
+  public long getUserId() {
+    return userId;
   }
 
-  public void setUserID(long userID) {
-    this.userID = userID;
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
 
   public String getAccount() {
@@ -112,7 +112,7 @@ public class User {
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("userID", userID)
+        .append("userId", userId)
         .append("account", account)
         .append("password", password)
         .append("userName", userName)

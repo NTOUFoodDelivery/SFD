@@ -1,12 +1,10 @@
 package member.controller.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpSession;
-import member.controller.servlet.LoginServlet;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.MemberCommand;
@@ -128,12 +126,12 @@ public class MemberService {
           || currentUser.getUserType().equals(UserStatus.PUSHING)) {
         // ---------------------------收回接單-------
         currentUser.setUserStatus(UserStatus.DELIVER_ON); // 更新 session user 的狀態 為可推播
-        success = userDao.modifyUserStatus(currentUser.getUserID(),
+        success = userDao.modifyUserStatus(currentUser.getUserId(),
             UserStatus.DELIVER_ON.toString()); // 更新 資料庫 user 狀態
       } else {
         currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
         success = userDao
-            .modifyUserStatus(currentUser.getUserID(), userStatus.toString()); // 更新 資料庫 user 狀態
+            .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
       }
     }
     return success;
@@ -144,7 +142,7 @@ public class MemberService {
     if (!currentUser.getUserStatus().equals(userStatus)) { // 不同狀態 才要變
       currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
       success = userDao
-          .modifyUserStatus(currentUser.getUserID(), userStatus.toString()); // 更新 資料庫 user 狀態
+          .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
     }
     return success;
   }
@@ -181,11 +179,11 @@ public class MemberService {
 
       if (info.size() == 0) { // 使用者欄位 輸入正常
         userDao = new UserDaoImpl();
-        User user = userDao.loginUser(account, password, userType); // 檢查 資料庫 有無此 帳密 使用者 --------
+        User user = userDao.searchUser(account, password, userType); // 檢查 資料庫 有無此 帳密 使用者 --------
         if (user != null) { // 資料庫 有這個使用者
-          if (!checkIsLogin(userHashMap, user.getUserID())) { // user hash map 沒有 這個 User
+          if (!checkIsLogin(userHashMap, user.getUserId())) { // user hash map 沒有 這個 User
             session.setAttribute("login", "login"); // login 保存進 session
-            Long currentUserID = user.getUserID();
+            Long currentUserID = user.getUserId();
             UserType currentUserType = user.getUserType();
 
             switch (currentUserType) { // 設定 登入 初始狀態
@@ -197,14 +195,14 @@ public class MemberService {
                 break;
               }
               case Customer_and_Deliver: {
-                userHashMap.put(currentUserID, user.getUserID()); // 外送員 User 存進 hash map
+                userHashMap.put(currentUserID, user.getUserId()); // 外送員 User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
                 info.add("CUSTOMER_AND_DELIVER");
                 break;
               }
               case Administrator: {
-                userHashMap.put(currentUserID, user.getUserID()); // 管理員 User 存進 hash map
+                userHashMap.put(currentUserID, user.getUserId()); // 管理員 User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
                 info.add("ADMINISTRATOR");
@@ -246,24 +244,25 @@ public class MemberService {
    * 註冊.
    * </p>
    *
-   * @param user 使用者
+   * @param currentUser 使用者
    */
-  public Object signUp(User user) {
+  public Object signUp(User currentUser) {
     userDao = new UserDaoImpl();
     Object result = null;
     boolean success;
-    if (userDao.searchUser(user.getUserID())) { // 已註冊
-      String currentUserType = userDao.showUserType(user.getUserID());
-      if (currentUserType.equals(UserType.Customer.toString())
+    User user = userDao.searchUser(currentUser.getAccount());
+    if (user != null) { // 已註冊
+      UserType currentUserType = currentUser.getUserType();
+      if (currentUserType.equals(UserType.Customer)
           && user.getUserType().equals(UserType.Customer_and_Deliver.toString())) {
         // 食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)
         success = userDao
-            .modifyUserType(user.getUserID(), UserType.Customer_and_Deliver.toString());
+            .modifyUserType(user.getUserId(), UserType.Customer_and_Deliver.toString());
         result = HttpCommonAction.generateStatusResponse(success, "食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)");
       }
     } else { // 未註冊
       // 目前直接註冊
-      success = userDao.addUser(user);
+      success = userDao.addUser(currentUser);
       result = HttpCommonAction.generateStatusResponse(success, "未註冊 的 目前直接註冊");
     }
     userDao = null;
@@ -282,29 +281,10 @@ public class MemberService {
    */
   public Object logout(ConcurrentHashMap userHashMap, HttpSession httpSession) {
     User user = (User) httpSession.getAttribute("userID"); // current request User
-    Long userID = user.getUserID();
+    Long userID = user.getUserId();
     userDao = new UserDaoImpl();
-    boolean success = false;
-    switch (user.getUserType()) {
-      case Administrator: {
-        userHashMap.remove(userID);
-        success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-        break;
-      }
-      case Customer_and_Deliver: {
-        userHashMap.remove(userID);
-        success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-        break;
-      }
-      case Customer: {
-        userHashMap.remove(userID);
-        success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    userHashMap.remove(userID);
+    boolean success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
     httpSession.removeAttribute("login");
     httpSession.removeAttribute("userID");
     httpSession.removeAttribute("user");

@@ -1,7 +1,6 @@
 package member.model.javabean;
 
 import com.google.gson.annotations.SerializedName;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Feedback {
@@ -11,7 +10,7 @@ public class Feedback {
    */
 
   @SerializedName("Feedback_Id")
-  private Long feedbackID;
+  private Long feedbackId;
   @SerializedName("User_Id")
   private Long userID;
   @SerializedName("Content")
@@ -19,12 +18,12 @@ public class Feedback {
   @SerializedName("Back_Content")
   private String backContent;
 
-  public Long getFeedbackID() {
-    return feedbackID;
+  public Long getFeedbackId() {
+    return feedbackId;
   }
 
-  public void setFeedbackID(Long feedbackID) {
-    this.feedbackID = feedbackID;
+  public void setFeedbackId(Long feedbackId) {
+    this.feedbackId = feedbackId;
   }
 
   public Long getUserID() {
@@ -54,7 +53,7 @@ public class Feedback {
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("feedbackID", feedbackID)
+        .append("feedbackId", feedbackId)
         .append("userID", userID)
         .append("content", content)
         .append("backContent", backContent)

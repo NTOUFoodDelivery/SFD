@@ -30,11 +30,11 @@
         if (data) {
           var userName = data.User_Name;
           var userType = data.User_Type;
-          var userID = data.User_Id;
+          var userId = data.User_Id;
 
           $('#welcome_userName')[0].innerHTML = "名字 :: " + userName;
           $('#welcome_userType')[0].innerHTML = "type :: " + userType;
-          $('#welcome_userID')[0].innerHTML = "ID :: " + userID;
+          $('#welcome_userID')[0].innerHTML = "ID :: " + userId;
 
         } else {
           window.location.href = 'LoginDemo.html';

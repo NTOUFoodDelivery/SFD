@@ -70,7 +70,7 @@ public class PushOrderWebSocket {
     synchronized (sessions) {
       User user = sessions.get(session); // deliver id
       PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
-      orderService.dealOrder(pushResult, user.getUserID()); // 處理 訂單
+      orderService.dealOrder(pushResult, user.getUserId()); // 處理 訂單
     }
   }
 

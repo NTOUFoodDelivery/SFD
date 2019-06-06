@@ -54,7 +54,7 @@ public class PushOrderTask extends TimerTask {
               if (deliver.getUserStatus().equals(UserStatus.DELIVER_ON)) { // 閒置的 外送員
                 List<Session> idleDeliverSessionList = (List<Session>) MemberService
                     .getKey(PushOrderWebSocket.sessions,
-                        deliver.getUserID()); // 拿 websocket session 物件 with user id
+                        deliver.getUserId()); // 拿 websocket session 物件 with user id
                 for (Session idleDeliverSession : idleDeliverSessionList) {
                   try {
                     idleDeliverSession.getBasicRemote()
@@ -67,7 +67,7 @@ public class PushOrderTask extends TimerTask {
                 }
                 orderDao.modifyOrderStatus(order.getOrder().getOrderID(),
                     OrderSetting.OrderStatus.PUSHING); // 改動 資料庫的 order status
-                userDao.modifyUserStatus(deliver.getUserID(),
+                userDao.modifyUserStatus(deliver.getUserId(),
                     UserStatus.PUSHING.toString()); // 改動 資料庫的 user status
                 order.getOrder().setOrderStatus(OrderSetting.OrderStatus.PUSHING); // 普通物件裡的 oder
                 deliver.setUserStatus(
