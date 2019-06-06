@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import member.model.javabean.User;
 import order.controller.service.OrderService;
 
 @WebServlet("/ShowCurrentOrderServlet")
@@ -27,9 +28,10 @@ public class ShowCurrentOrderServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
     Long currentUserID = (Long) request.getSession().getAttribute("userID");
-
+    User currentUser = (User) request.getSession()
+        .getAttribute("user"); // current request User
     OrderService orderService = new OrderService();
-    String json = gson.toJson(orderService.showCurrentOrder(currentUserID));
+    String json = gson.toJson(orderService.showCurrentOrder(currentUser));
     orderService = null;
 
     PrintWriter out = response.getWriter();

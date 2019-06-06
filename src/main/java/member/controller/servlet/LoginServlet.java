@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import member.controller.service.MemberService;
 import member.model.daoImpl.UserDaoImpl;
-
+import member.model.javabean.User;
 
 
 @WebServlet("/LoginServlet")
@@ -46,9 +46,9 @@ public class LoginServlet extends HttpServlet {
     response.setContentType("application/json;charset=UTF-8");
     HttpSession httpSession = request.getSession();
     Long userID = (Long) httpSession.getAttribute("userID");
-    UserDaoImpl userDao = new UserDaoImpl();
-    String json = gson.toJson(userDao.showUser(userID));
-    userDao = null;
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap) httpSession.getServletContext().getAttribute("userHashMap");
+    User currentUser = (User)userHashMap.get(userID);
+    String json = gson.toJson(currentUser);
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();

@@ -42,10 +42,9 @@ public class OrderService {
    * @param userID 使用者ID
    * @param orderID 訂單ID
    */
-  public synchronized Object confirmOrder(Long userID, Long orderID) {
+  public synchronized Object confirmOrder(User currentUser, Long orderID) {
     userDao = new UserDaoImpl();
-    User user = userDao.showUser(userID);
-    UserType userType = user.getUserType();
+    UserType userType = currentUser.getUserType();
     String msg = null;
     switch (userType) {
       case Customer_and_Deliver: {
@@ -169,10 +168,9 @@ public class OrderService {
    *
    * @param userID 使用者ID
    */
-  public Object showCurrentOrder(Long userID) {
+  public Object showCurrentOrder(User currentUser) {
     orderDao = new OrderDaoImpl();
     userDao = new UserDaoImpl();
-    User currentUser = userDao.showUser(userID);
     UserType userType = currentUser.getUserType();
     Object result = null;
     switch (userType) {
@@ -202,10 +200,9 @@ public class OrderService {
    *
    * @param userID 使用者ID
    */
-  public Object showHistoryOrder(Long userID) {
+  public Object showHistoryOrder(User currentUser) {
     orderDao = new OrderDaoImpl();
     userDao = new UserDaoImpl();
-    User currentUser = userDao.showUser(userID);
     UserType userType = currentUser.getUserType();
     Object result = null;
     switch (userType) {

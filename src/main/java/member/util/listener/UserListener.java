@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import member.model.daoImpl.UserDaoImpl;
+import member.model.javabean.User;
 import member.util.setting.UserStatus;
 
 
@@ -17,7 +18,7 @@ import member.util.setting.UserStatus;
 public class UserListener implements ServletContextListener,
     HttpSessionListener, HttpSessionAttributeListener {
 
-  private Map<String, Long> userHashMap;
+  private Map<Long, User> userHashMap;
 
   // Public constructor is required by servlet spec
   public UserListener() {
@@ -40,7 +41,7 @@ public class UserListener implements ServletContextListener,
    */
   public void contextDestroyed(ServletContextEvent sce) {
     UserDaoImpl userDao = new UserDaoImpl();
-    for (Long userID : userHashMap.values()) { //將 使用者 轟下線
+    for (Long userID : userHashMap.keySet()) { //將 使用者 轟下線
       userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
     }
     userDao = null;
@@ -52,8 +53,7 @@ public class UserListener implements ServletContextListener,
    */
   @Override
   public void sessionDestroyed(HttpSessionEvent se) {
-    HttpSession session = se.getSession();
-    Long userID = (Long) session.getAttribute("userID"); // user id
-    userHashMap.remove(session.getId()); // 剔除 user hash map
+    User user = (User) se.getSession().getAttribute("user"); // user
+    userHashMap.remove(user.getUserID()); // 剔除 user hash map
   }
 }

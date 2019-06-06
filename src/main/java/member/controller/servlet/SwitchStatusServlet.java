@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import member.controller.service.MemberService;
+import member.model.javabean.User;
 import member.util.setting.UserStatus;
 
 @WebServlet("/SwitchStatusServlet")
@@ -27,9 +28,10 @@ public class SwitchStatusServlet extends HttpServlet {
         .getUserStatus(request.getParameter("userStatus")); // user Status
     Long currentUserID = (Long) request.getSession()
         .getAttribute("userID"); // current request user id
-
+    User currentUser = (User) request.getSession()
+        .getAttribute("user"); // current request User
     MemberService memberService = new MemberService();
-    String json = gson.toJson(memberService.switchStatus(currentUserID, userStatus));
+    String json = gson.toJson(memberService.switchStatus(currentUser, userStatus));
     memberService = null;
 
     PrintWriter out = response.getWriter();

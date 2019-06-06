@@ -14,6 +14,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import member.model.javabean.User;
 import order.controller.service.OrderService;
 import order.model.javabean.PushResult;
 import util.configurator.GetHttpSessionConfigurator;
@@ -22,7 +23,7 @@ import util.configurator.GetHttpSessionConfigurator;
 public class PushOrderWebSocket {
 
   // 紀錄 所有 連接 websocket 外送員 的 websocket session
-  public static Map<Session, Long> sessions = new ConcurrentHashMap<>();
+  public static Map<Session, User> sessions = new ConcurrentHashMap<>();
 
   private Gson gson = new GsonBuilder().disableHtmlEscaping()
       .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
@@ -30,6 +31,7 @@ public class PushOrderWebSocket {
 
   /**
    * <p>開啟 session.</p>
+   *
    * @param session 當前 session
    */
   @OnOpen
@@ -39,14 +41,15 @@ public class PushOrderWebSocket {
     HttpSession httpSession = (HttpSession) config.getUserProperties()
         .get(HttpSession.class.getName());
 
-    Long userID = (Long) httpSession.getAttribute("userID");
-    if (userID != null) {
-      sessions.put(session, userID);
+    User user = (User) httpSession.getAttribute("user");
+    if (user != null) {
+      sessions.put(session, user);
     }
   }
 
   /**
    * <p>關閉 session.</p>
+   *
    * @param session 當前 session
    */
   @OnClose
@@ -65,9 +68,9 @@ public class PushOrderWebSocket {
   @OnMessage
   public void onMessage(Session session, String msg) {
     synchronized (sessions) {
-      Long userID = sessions.get(session); // deliver id
+      User user = sessions.get(session); // deliver id
       PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
-      orderService.dealOrder(pushResult, userID); // 處理 訂單
+      orderService.dealOrder(pushResult, user.getUserID()); // 處理 訂單
     }
   }
 

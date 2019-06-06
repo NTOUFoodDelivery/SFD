@@ -23,12 +23,11 @@ public class FeedbackService {
    * @param feedbackCommand 回饋 指令
    * @param feedback 回饋 本體
    */
-  public Object handleFeedback(Long userID, FeedbackCommand feedbackCommand, Feedback feedback) {
+  public Object handleFeedback(User currentUser, FeedbackCommand feedbackCommand, Feedback feedback) {
 
     Object result = null;
     if (feedbackCommand != null) { // 有這個指令
       userDao = new UserDaoImpl();
-      User currentUser = userDao.showUser(userID);
       String msg = "command :: " + feedbackCommand.toString() + " Feedback";
       switch (feedbackCommand) {
         case CREATE:

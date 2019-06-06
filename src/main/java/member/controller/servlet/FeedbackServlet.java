@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import member.controller.service.FeedbackService;
 import member.model.javabean.Feedback;
+import member.model.javabean.User;
 import member.util.setting.FeedbackCommand;
 import util.HttpCommonAction;
 
@@ -30,11 +31,12 @@ public class FeedbackServlet extends HttpServlet {
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Feedback.class); // feedback
     Long currentUserID = (Long) request.getSession()
         .getAttribute("userID"); // current request user id
-
+    User currentUser = (User) request.getSession()
+        .getAttribute("user"); // current request User
     feedback.setUserID(currentUserID);
     FeedbackService feedbackService = new FeedbackService();
     String json = gson
-        .toJson(feedbackService.handleFeedback(currentUserID, feedbackCommand, feedback));
+        .toJson(feedbackService.handleFeedback(currentUser, feedbackCommand, feedback));
     feedbackService = null;
     PrintWriter out = response.getWriter();
     out.print(json);

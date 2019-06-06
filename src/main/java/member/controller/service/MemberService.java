@@ -36,7 +36,6 @@ public class MemberService {
       String msg = "command :: " + memberCommand.toString() + " Member";
       switch (memberCommand) {
         case USER_BAN: { // ban 使用者
-          System.out.println("ban");
           boolean success;
           success = userDao.modifyUserStatus(userID, memberCommand.toString());
           if (success) {
@@ -48,7 +47,6 @@ public class MemberService {
           break;
         }
         case DELETE: { // 刪除 使用者
-          System.out.println("delete");
           boolean success;
           success = userDao.delUser(userID);
           if (success) {
@@ -75,17 +73,16 @@ public class MemberService {
    * 轉換 使用者 狀態.
    * </p>
    *
-   * @param userID 使用者ID
+   * @param currentUser 使用者 User 物件
    * @param userStatus 使用者 狀態
    */
-  public Object switchStatus(Long userID, UserStatus userStatus) {
+  public Object switchStatus(User currentUser, UserStatus userStatus) {
 
     Object result = null;
     String msg = "command :: " + userStatus;
     boolean success = false;
     if (userStatus != null) {
       userDao = new UserDaoImpl();
-      User currentUser = userDao.showUser(userID);
       UserType currentUserType = currentUser.getUserType();
       switch (currentUserType) {
         case Customer_and_Deliver: {
@@ -163,12 +160,13 @@ public class MemberService {
    * @param userType 使用者 key in 的 使用者 種類
    */
 
-  public Object login(ConcurrentHashMap userHashMap,HttpSession session, String account, String password, String userType) {
+  public Object login(ConcurrentHashMap userHashMap, HttpSession session, String account,
+      String password, String userType) {
 
     Object result;
+
     if (session.getAttribute("login") == null) { // 這個session 沒登入過 任何 user
       List<String> info = new ArrayList<>(); // 錯誤訊息
-
       if (account == null || "".equals(account)) { // account不能空著喔
         info.add("account不能空著喔");
       }
@@ -185,39 +183,46 @@ public class MemberService {
         userDao = new UserDaoImpl();
         User user = userDao.loginUser(account, password, userType); // 檢查 資料庫 有無此 帳密 使用者 --------
         if (user != null) { // 資料庫 有這個使用者
-          session.setAttribute("login", "login"); // login 保存進 session
-          UserType currentUserType = user.getUserType();
-          switch (currentUserType) { // 設定 登入 初始狀態
-            case Customer: {
-              userHashMap.put(session.getId(), user.getUserID()); // 食客 session map
-              session.setAttribute("type", user.getUserType()); // type 保存進 session
-              session.setAttribute("userID", user.getUserID()); // User id 保存進 session
-              info.add("CUSTOMER");
-              break;
+          if (!checkIsLogin(userHashMap, user.getUserID())) { // user hash map 沒有 這個 User
+            session.setAttribute("login", "login"); // login 保存進 session
+            Long currentUserID = user.getUserID();
+            UserType currentUserType = user.getUserType();
+
+            switch (currentUserType) { // 設定 登入 初始狀態
+              case Customer: {
+                userHashMap.put(currentUserID, user); // 食客 User 存進 hash map
+                session.setAttribute("user", user); // User 保存進 session
+                session.setAttribute("userID", currentUserID); // User id 保存進 session
+                info.add("CUSTOMER");
+                break;
+              }
+              case Customer_and_Deliver: {
+                userHashMap.put(currentUserID, user.getUserID()); // 外送員 User 存進 hash map
+                session.setAttribute("user", user); // User 保存進 session
+                session.setAttribute("userID", currentUserID); // User id 保存進 session
+                info.add("CUSTOMER_AND_DELIVER");
+                break;
+              }
+              case Administrator: {
+                userHashMap.put(currentUserID, user.getUserID()); // 管理員 User 存進 hash map
+                session.setAttribute("user", user); // User 保存進 session
+                session.setAttribute("userID", currentUserID); // User id 保存進 session
+                info.add("ADMINISTRATOR");
+                break;
+              }
+              default: {
+                break;
+              }
             }
-            case Customer_and_Deliver: {
-              userHashMap.put(session.getId(), user.getUserID()); // 外送員 session map
-              session.setAttribute("type", user.getUserType()); // type 保存進 session
-              session.setAttribute("userID", user.getUserID()); // User id 保存進 session
-              info.add("CUSTOMER_AND_DELIVER");
-              break;
-            }
-            case Administrator: {
-              userHashMap.put(session.getId(), user.getUserID()); // 管理員 session map
-              session.setAttribute("type", user.getUserType()); // type 保存進 session
-              session.setAttribute("userID", user.getUserID()); // User id 保存進 session
-              info.add("ADMINISTRATOR");
-              break;
-            }
-            default: {
-              break;
-            }
+          } else { // user hash map 有 這個 User
+            info.add(0, "重複登入");
           }
         } else {
           info.add("登入失敗，錯誤的帳號、密碼或userType");
           info.add(0, "error");
         }
         userDao = null;
+
       } else { // 使用者欄位 輸入異常
         info.add(0, "error");
       }
@@ -226,6 +231,14 @@ public class MemberService {
       result = HttpCommonAction.generateStatusResponse(false, "這個session 已經有 user 登入了");
     }
     return result;
+  }
+
+  private boolean checkIsLogin(ConcurrentHashMap userHashMap, Long userID) {
+    if (userHashMap.get(userID) != null) { // 在 servlet hash map 有 User
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -261,49 +274,40 @@ public class MemberService {
    * <p>
    * 登出.
    * </p>
+   * <p>
+   * 設計登出後，各使用者 的 訂單問題.
+   * </p>
    *
    * @param httpSession 請求中的 session
    */
-  public Object logout(ConcurrentHashMap userHashMap,HttpSession httpSession) {
-    Long userID = (Long) httpSession.getAttribute("userID"); // current request user id
+  public Object logout(ConcurrentHashMap userHashMap, HttpSession httpSession) {
+    User user = (User) httpSession.getAttribute("userID"); // current request User
+    Long userID = user.getUserID();
     userDao = new UserDaoImpl();
-    User user = userDao.showUser(userID);
     boolean success = false;
     switch (user.getUserType()) {
       case Administrator: {
-        userHashMap.remove(httpSession.getId());
-        List<String> adminSessionList = (List<String>) MemberService
-            .getKey(userHashMap, userID);
-        if (adminSessionList.size() == 0) { // 沒有其他 session 登這個 user 了
-          success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-        }
+        userHashMap.remove(userID);
+        success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
         break;
       }
       case Customer_and_Deliver: {
-        userHashMap.remove(httpSession.getId());
-        List<String> deliverSessionList = (List<String>) MemberService
-            .getKey(userHashMap, userID);
-        if (deliverSessionList.size() == 0) { // 沒有其他 session 登這個 user 了
-          success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-        }
+        userHashMap.remove(userID);
+        success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
         break;
       }
       case Customer: {
-        userHashMap.remove(httpSession.getId());
-        List<String> eaterSessionList = (List<String>) MemberService
-            .getKey(userHashMap, userID);
-        if (eaterSessionList.size() == 0) { // 沒有其他 session 登這個 user 了
-          success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-        }
+        userHashMap.remove(userID);
+        success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
         break;
       }
       default: {
         break;
       }
     }
-    httpSession.removeAttribute("type");
     httpSession.removeAttribute("login");
     httpSession.removeAttribute("userID");
+    httpSession.removeAttribute("user");
     //httpSession.invalidate(); // 註銷 該 session
     Object result = HttpCommonAction.generateStatusResponse(success, "logout!!");
     userDao = null;

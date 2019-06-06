@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import member.model.javabean.User;
 import order.controller.service.OrderService;
 
 @WebServlet("/ShowHistoryOrderServlet")
@@ -28,11 +29,10 @@ public class ShowHistoryOrderServlet extends HttpServlet {
 
     //Long currentUserID = (Long) request.getSession().getAttribute("userID");
     Long currentUserID = Long.parseLong(request.getParameter("userID"));
-    System.out.println(
-        currentUserID
-    );
+    User currentUser = (User) request.getSession()
+        .getAttribute("user"); // current request User
     OrderService orderService = new OrderService();
-    String json = gson.toJson(orderService.showHistoryOrder(currentUserID));
+    String json = gson.toJson(orderService.showHistoryOrder(currentUser));
     orderService = null;
 
     PrintWriter out = response.getWriter();

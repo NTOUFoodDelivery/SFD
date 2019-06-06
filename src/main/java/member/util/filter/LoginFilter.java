@@ -40,52 +40,52 @@ public class LoginFilter implements Filter {
 
     String path = ((HttpServletRequest) req).getServletPath();
     System.out.println(path);
-    //if (!excludedUrls.contains(path)) {
-    //  HttpServletRequest request = (HttpServletRequest) req;
-    //  HttpServletResponse response = (HttpServletResponse) resp;
-    //  HttpSession session = request.getSession();
-    //  //判斷session是否過期 或 沒登入
-    //  if (session.getAttribute("login") == null) {
-    //    System.out.println("session died");
-    //    response.setHeader("sessionstatus", "timeout");
-    //    if (path.equals("/web/index_eater.html")) {
-    //      response.sendRedirect("/web/login.html");
-    //    } else if (path.equals("/web/Administrator.html")) {
-    //      response.sendRedirect("/web/Administrator_Login.html");
-    //    }
-    //    chain.doFilter(request, response);
-    //  } else { // 該 session 有 user 登入了
-    //    if (path.equals("/web/login.html") || path
-    //        .equals("/web/Administrator_Login.html")) { // 有登入了 還想進 登入頁面 ------- 把他踢回去
-    //      Long userID = (Long) session.getAttribute("userID");
-    //      UserType userType = (UserType) session.getAttribute("type");
-    //      String retUrl = request.getHeader("Referer");
-    //      switch (userType) {
-    //        case Customer: {
-    //          retUrl = "/web/index_eater.html";
-    //          break;
-    //        }
-    //        case Customer_and_Deliver: {
-    //          retUrl = "/web/index_deliver.html";
-    //          break;
-    //        }
-    //        case Administrator: {
-    //          retUrl = "/web/Administrator.html";
-    //          break;
-    //        }
-    //        default: {
-    //          break;
-    //        }
-    //      }
-    //      response.sendRedirect(retUrl);
-    //    } else {
-    //      chain.doFilter(request, response);
-    //    }
-    //  }
-    //} else {
-    //  chain.doFilter(req, resp);
-    //}
-    chain.doFilter(req, resp);
+    if (!excludedUrls.contains(path)) {
+      HttpServletRequest request = (HttpServletRequest) req;
+      HttpServletResponse response = (HttpServletResponse) resp;
+      HttpSession session = request.getSession();
+      //判斷session是否過期 或 沒登入
+      if (session.getAttribute("login") == null) {
+        System.out.println("session died");
+        response.setHeader("sessionstatus", "timeout");
+        if (path.equals("/web/index_eater.html")) {
+          response.sendRedirect("/web/login.html");
+        } else if (path.equals("/web/Administrator.html")) {
+          response.sendRedirect("/web/Administrator_Login.html");
+        }
+        chain.doFilter(request, response);
+      } else { // 該 session 有 user 登入了
+        if (path.equals("/web/login.html") || path
+            .equals("/web/Administrator_Login.html")) { // 有登入了 還想進 登入頁面 ------- 把他踢回去
+          Long userID = (Long) session.getAttribute("userID");
+          UserType userType = (UserType) session.getAttribute("type");
+          String retUrl = request.getHeader("Referer");
+          switch (userType) {
+            case Customer: {
+              retUrl = "/web/index_eater.html";
+              break;
+            }
+            case Customer_and_Deliver: {
+              retUrl = "/web/index_deliver.html";
+              break;
+            }
+            case Administrator: {
+              retUrl = "/web/Administrator.html";
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+          response.sendRedirect(retUrl);
+        } else {
+          chain.doFilter(request, response);
+        }
+      }
+    } else {
+      chain.doFilter(req, resp);
+    }
+    //chain.doFilter(req, resp);
   }
 
   /**

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import member.model.javabean.User;
 import order.controller.service.OrderService;
 import order.model.javabean.Order;
 import util.HttpCommonAction;
@@ -53,9 +54,10 @@ public class SendOrderServlet extends HttpServlet {
         .getAttribute("userID"); // current request user id
     // 應該不會在這邊產生亂碼吧
     Long orderID = Long.parseLong(request.getParameter("orderID")); // order id
-
+    User currentUser = (User) request.getSession()
+        .getAttribute("user"); // current request User
     OrderService orderService = new OrderService();
-    String json = gson.toJson(orderService.confirmOrder(currentUserID, orderID)); // 食客或外送員 確認訂單
+    String json = gson.toJson(orderService.confirmOrder(currentUser, orderID)); // 食客或外送員 確認訂單
     orderService = null;
 
     PrintWriter out = response.getWriter();
