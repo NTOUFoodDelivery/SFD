@@ -24,10 +24,11 @@ public class LogoutServlet extends HttpServlet {
       throws ServletException, IOException {
     response.setContentType("application/json;charset=UTF-8");
     Gson gson = new Gson();
-    ConcurrentHashMap userHashMap = (ConcurrentHashMap)request.getServletContext().getAttribute("userHashMap");
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
+        .getAttribute("userHashMap");
     HttpSession httpSession = request.getSession();
     MemberService memberService = new MemberService();
-    String json = gson.toJson(memberService.logout(userHashMap,httpSession));
+    String json = gson.toJson(memberService.logout(userHashMap, httpSession));
     memberService = null;
     PrintWriter out = response.getWriter();
     out.println(json);

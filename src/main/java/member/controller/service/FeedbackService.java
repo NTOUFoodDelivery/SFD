@@ -19,11 +19,12 @@ public class FeedbackService {
    * 利用 回饋 指令 執行對應的事.
    * </p>
    *
-   * @param userID 使用者ID
+   * @param currentUser 使用者 物件
    * @param feedbackCommand 回饋 指令
    * @param feedback 回饋 本體
    */
-  public Object handleFeedback(User currentUser, FeedbackCommand feedbackCommand, Feedback feedback) {
+  public Object handleFeedback(User currentUser, FeedbackCommand feedbackCommand,
+      Feedback feedback) {
 
     Object result = null;
     if (feedbackCommand != null) { // 有這個指令

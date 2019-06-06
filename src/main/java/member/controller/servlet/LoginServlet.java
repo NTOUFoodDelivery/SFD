@@ -32,8 +32,9 @@ public class LoginServlet extends HttpServlet {
     String json;
 
     MemberService memberService = new MemberService();
-    ConcurrentHashMap userHashMap = (ConcurrentHashMap)request.getServletContext().getAttribute("userHashMap");
-    json = gson.toJson(memberService.login(userHashMap,session, account, password, userType));
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
+        .getAttribute("userHashMap");
+    json = gson.toJson(memberService.login(userHashMap, session, account, password, userType));
     memberService = null;
 
     PrintWriter out = response.getWriter();
@@ -46,8 +47,9 @@ public class LoginServlet extends HttpServlet {
     response.setContentType("application/json;charset=UTF-8");
     HttpSession httpSession = request.getSession();
     Long userID = (Long) httpSession.getAttribute("userID");
-    ConcurrentHashMap userHashMap = (ConcurrentHashMap) httpSession.getServletContext().getAttribute("userHashMap");
-    User currentUser = (User)userHashMap.get(userID);
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap) httpSession.getServletContext()
+        .getAttribute("userHashMap");
+    User currentUser = (User) userHashMap.get(userID);
     String json = gson.toJson(currentUser);
     PrintWriter out = response.getWriter();
     out.println(json);
