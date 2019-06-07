@@ -5,7 +5,7 @@
   version="4.0">
   <display-name>SFD-星爆送餐</display-name>
   <welcome-file-list>
-    <welcome-file>web/index.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
   <filter>

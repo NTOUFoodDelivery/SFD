@@ -52,12 +52,14 @@ public class LoginFilter implements Filter {
       if (session.getAttribute("login") == null) {
         System.out.println("請求網址時 還沒 登入！！");
         response.setHeader("sessionstatus", "timeout");
-        if (eaterWebUrls.contains(path)) {
-          response.sendRedirect(Eater.LOGIN);
-        } else if (deliverWebUrls.contains(path)) {
-          response.sendRedirect(Deliver.LOGIN);
-        } else if (adminWebUrls.contains(path)) {
-          response.sendRedirect(Admin.LOGIN);
+        if (!path.equals(Eater.LOGIN) && !path.equals(Deliver.LOGIN) && !path.equals(Admin.LOGIN)) {
+          if (eaterWebUrls.contains(path)) {
+            response.sendRedirect(Eater.LOGIN);
+          } else if (deliverWebUrls.contains(path)) {
+            response.sendRedirect(Deliver.LOGIN);
+          } else if (adminWebUrls.contains(path)) {
+            response.sendRedirect(Admin.LOGIN);
+          }
         }
         chain.doFilter(request, response);
       } else { // 該 session 有 user 登入了
