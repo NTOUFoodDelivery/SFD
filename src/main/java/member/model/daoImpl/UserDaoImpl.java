@@ -93,6 +93,45 @@ public class UserDaoImpl implements UserDao {
    * <p>找尋 符合條件的 使用者.</p>
    *
    * @param account account
+   * @param password password
+   * @return User
+   */
+  @Override
+  public User searchUser(String account, String password) {
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement;
+    ResultSet resultSet;
+    User user = null;
+    String sql = "select * from member where account=? and Password=?";
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+      preparedStatement.setString(1, account);
+      preparedStatement.setString(2, password);
+      resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        user = new User();
+        user.setUserId(resultSet.getLong("User_Id"));
+        user.setAccount(resultSet.getString("Account"));
+        user.setEmail(resultSet.getString("Email"));
+        user.setLastAddress(resultSet.getString("Last_Address"));
+        user.setPassword(resultSet.getString("Password"));
+        user.setPhoneNumber(resultSet.getString("Phone_Number"));
+        user.setUserName(resultSet.getString("User_Name"));
+        user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+        user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      C3P0Util.close(connection);
+      return user;
+    }
+  }
+
+  /**
+   * <p>找尋 符合條件的 使用者.</p>
+   *
+   * @param account account
    * @return User
    */
   @Override

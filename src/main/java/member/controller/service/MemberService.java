@@ -179,7 +179,7 @@ public class MemberService {
 
       if (info.size() == 0) { // 使用者欄位 輸入正常
         userDao = new UserDaoImpl();
-        User user = userDao.searchUser(account, password, userType); // 檢查 資料庫 有無此 帳密 使用者 --------
+        User user = userDao.searchUser(account, password); // 檢查 資料庫 有無此 帳密 使用者 --------
         if (user != null) { // 資料庫 有這個使用者
           if (!checkIsLogin(userHashMap, user.getUserId())) { // user hash map 沒有 這個 User
             session.setAttribute("login", "login"); // login 保存進 session

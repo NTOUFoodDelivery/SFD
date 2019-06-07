@@ -70,38 +70,38 @@ public class LoginFilter implements Filter {
         UserType userType = user.getUserType();
         switch (userType) {
           case Customer: {
-            if(!path.equals(Eater.LOGIN)){
+            if(path.equals(Eater.LOGIN)){
+              response.sendRedirect(Eater.WELCOME);
+            }else {
               if (adminWebUrls.contains(path)) {
                 response.sendRedirect(Eater.LOGIN);
               } else if (deliverWebUrls.contains(path)) {
                 response.sendRedirect(Eater.LOGIN);
               }
-            }else {
-              response.sendRedirect(Eater.WELCOME);
             }
             break;
           }
           case Customer_and_Deliver: {
-            if(!path.equals(Deliver.LOGIN)) {
+            if(path.equals(Deliver.LOGIN)) {
+              response.sendRedirect(Deliver.WELCOME);
+            }else {
               if (adminWebUrls.contains(path)) {
                 response.sendRedirect(Deliver.LOGIN);
               } else if (eaterWebUrls.contains(path)) {
                 response.sendRedirect(Deliver.LOGIN);
               }
-            }else {
-              response.sendRedirect(Deliver.WELCOME);
             }
             break;
           }
           case Administrator: {
-            if(!path.equals(Admin.LOGIN)) {
+            if(path.equals(Admin.LOGIN)) {
+              response.sendRedirect(Admin.WELCOME);
+            }else {
               if (eaterWebUrls.contains(path)) {
                 response.sendRedirect(Admin.LOGIN);
               } else if (deliverWebUrls.contains(path)) {
                 response.sendRedirect(Admin.LOGIN);
               }
-            }else {
-              response.sendRedirect(Admin.WELCOME);
             }
             break;
           }

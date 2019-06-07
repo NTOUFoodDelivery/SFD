@@ -26,6 +26,14 @@ public interface UserDao {
     /**
      *
      * @description:  找尋 符合條件的 使用者
+     * @param [account, password]
+     * @return member.model.javabean.User
+     */
+    User searchUser(String account, String password);
+
+    /**
+     *
+     * @description:  找尋 符合條件的 使用者
      * @param [account]
      * @return member.model.javabean.User
      */
