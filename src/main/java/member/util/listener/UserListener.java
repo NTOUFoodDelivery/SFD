@@ -53,6 +53,11 @@ public class UserListener implements ServletContextListener,
   @Override
   public void sessionDestroyed(HttpSessionEvent se) {
     User user = (User) se.getSession().getAttribute("user"); // user
-    userHashMap.remove(user.getUserId()); // 剔除 user hash map
+    if(user != null) {
+      //UserDaoImpl userDao = new UserDaoImpl();
+      //userDao.modifyUserStatus(user.getUserId(), UserStatus.OFFLINE.toString()); // 設定狀態為 下線
+      //userDao = null;
+      userHashMap.remove(user.getUserId()); // 剔除 user hash map
+    }
   }
 }
