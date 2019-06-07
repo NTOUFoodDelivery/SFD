@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import member.model.javabean.User;
 import member.util.setting.UserType;
+import member.util.setting.WebUrl;
 import member.util.setting.WebUrl.Admin;
 import member.util.setting.WebUrl.Deliver;
 import member.util.setting.WebUrl.Eater;
@@ -69,26 +70,38 @@ public class LoginFilter implements Filter {
         UserType userType = user.getUserType();
         switch (userType) {
           case Customer: {
-            if (adminWebUrls.contains(path)) {
-              response.sendRedirect(Eater.LOGIN);
-            } else if (deliverWebUrls.contains(path)) {
-              response.sendRedirect(Eater.LOGIN);
+            if(!path.equals(Eater.LOGIN)){
+              if (adminWebUrls.contains(path)) {
+                response.sendRedirect(Eater.LOGIN);
+              } else if (deliverWebUrls.contains(path)) {
+                response.sendRedirect(Eater.LOGIN);
+              }
+            }else {
+              response.sendRedirect(Eater.WELCOME);
             }
             break;
           }
           case Customer_and_Deliver: {
-            if (adminWebUrls.contains(path)) {
-              response.sendRedirect(Deliver.LOGIN);
-            } else if (eaterWebUrls.contains(path)) {
-              response.sendRedirect(Deliver.LOGIN);
+            if(!path.equals(Deliver.LOGIN)) {
+              if (adminWebUrls.contains(path)) {
+                response.sendRedirect(Deliver.LOGIN);
+              } else if (eaterWebUrls.contains(path)) {
+                response.sendRedirect(Deliver.LOGIN);
+              }
+            }else {
+              response.sendRedirect(Deliver.WELCOME);
             }
             break;
           }
           case Administrator: {
-            if (eaterWebUrls.contains(path)) {
-              response.sendRedirect(Admin.LOGIN);
-            } else if (deliverWebUrls.contains(path)) {
-              response.sendRedirect(Admin.LOGIN);
+            if(!path.equals(Admin.LOGIN)) {
+              if (eaterWebUrls.contains(path)) {
+                response.sendRedirect(Admin.LOGIN);
+              } else if (deliverWebUrls.contains(path)) {
+                response.sendRedirect(Admin.LOGIN);
+              }
+            }else {
+              response.sendRedirect(Admin.WELCOME);
             }
             break;
           }
