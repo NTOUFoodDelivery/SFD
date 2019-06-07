@@ -50,12 +50,12 @@ public class PushOrderTask extends TimerTask {
           });
 
           for (Order order : idleOrderList) { // 尋訪每個 閒置 訂單
-            for (User deliver : idleDeliverList) { // 尋訪每個 連接 websocket 的 外送員
+            for (User deliver : idleDeliverList) { // 尋訪每個 連接 websocket 的 外送員 ---維護 servlet context userHashMap 的 User
               if (deliver.getUserStatus().equals(UserStatus.DELIVER_ON)) { // 閒置的 外送員
                 List<Session> idleDeliverSessionList = (List<Session>) MemberService
                     .getKey(PushOrderWebSocket.sessions,
-                        deliver.getUserId()); // 拿 websocket session 物件 with user id
-                for (Session idleDeliverSession : idleDeliverSessionList) {
+                        deliver); // 拿 websocket session 物件 with user ---維護 servlet context userHashMap 的 User
+                for (Session idleDeliverSession : idleDeliverSessionList) { // 應該只會 跑一次 迴圈
                   try {
                     idleDeliverSession.getBasicRemote()
                         .sendText(gson.toJson(order)); // push order with websocket !!

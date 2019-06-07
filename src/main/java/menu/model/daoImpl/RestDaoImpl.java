@@ -45,8 +45,8 @@ public class RestDaoImpl implements RestDao {
             e.printStackTrace();
         }finally{
             C3P0Util.close(connection);
+            return restList;
         }
-        return restList;
     }
 
     /**

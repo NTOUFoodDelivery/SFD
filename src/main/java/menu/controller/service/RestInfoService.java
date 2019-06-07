@@ -1,5 +1,6 @@
 package menu.controller.service;
 
+import java.util.List;
 import menu.model.daoImpl.MenuDaoImpl;
 import menu.model.daoImpl.RestDaoImpl;
 import menu.model.javabean.Menu;
@@ -15,11 +16,11 @@ public class RestInfoService {
   /**
    * <p>拿到所有餐廳.</p>
    */
-  public Object getRestInfo() {
+  public List<Rest> getRestInfo() {
     restDao = new RestDaoImpl();
-    Object result = restDao.searchRestInfo();
+    List<Rest> restList = restDao.searchRestInfo();
     restDao = null;
-    return result;
+    return restList;
   }
 
   /**
@@ -39,9 +40,9 @@ public class RestInfoService {
   /**
    * <p>拿到 一家餐廳 的菜單.</p>
    */
-  public Object getRestMenu(Long restID) {
+  public List<Menu> getRestMenu(Long restID) {
     menuDao = new MenuDaoImpl();
-    Object result = menuDao.searchRestMenu(restID);
+    List<Menu> result = menuDao.searchRestMenu(restID);
     menuDao = null;
     return result;
   }
