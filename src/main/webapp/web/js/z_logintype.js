@@ -1,7 +1,7 @@
 window.onload =function()
 {
     $.ajax({
-        url:'/SFD/LoginServlet',
+        url:'/LoginServlet',
         type:'GET',
         dataType:'json',
         success:function(data)

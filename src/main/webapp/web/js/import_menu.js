@@ -9,7 +9,7 @@ function import_menu(n1, n2) {
         });
      showmenutemp = "";
     $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/ShowMenuServlet",
+        url: "/ShowMenuServlet",
         type: "POST",
         async: true,
         dataType: "json",
@@ -100,4 +100,10 @@ function import_menu(n1, n2) {
 function changetomenu()
 {
     document.getElementById("extra").innerHTML = showmenutemp;
+}
+
+
+function reimport_menu()
+{
+    
 }
