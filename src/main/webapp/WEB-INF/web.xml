@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0">
   <display-name>SFD-星爆送餐</display-name>
   <welcome-file-list>
     <welcome-file>web/index.html</welcome-file>
@@ -19,7 +22,22 @@
     <filter-class>member.util.filter.LoginFilter</filter-class>
     <init-param>
       <param-name>excludedUrls</param-name>
-      <param-value>/LoginServlet,/pushOrderEndpoint,/ShowMenuServlet,/ShowRestInfoServlet</param-value>
+      <param-value>/LoginServlet,/pushOrderEndpoint,/ShowMenuServlet,/ShowRestInfoServlet
+      </param-value>
+    </init-param>
+    <init-param>
+      <param-name>eaterWebUrls</param-name>
+      <param-value>/web/index_eater.html,/web/login.html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>deliverWebUrls</param-name>
+      <param-value>/web/index_deliver.html,/web/login.html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>adminWebUrls</param-name>
+      <param-value>
+        /web/Administrator.html,/web/restaurant.html,/web/menu.html,/web/order.html,/web/history_order.html,/web/feedback.html,/web/Fix_User.html,/web/Administrator_Login.html
+      </param-value>
     </init-param>
   </filter>
   <filter-mapping>

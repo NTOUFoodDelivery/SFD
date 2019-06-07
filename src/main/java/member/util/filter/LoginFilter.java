@@ -13,15 +13,19 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.UserType;
+import member.util.setting.WebUrl.Admin;
+import member.util.setting.WebUrl.Deliver;
+import member.util.setting.WebUrl.Eater;
 
 @WebFilter("/LoginFilter")
 public class LoginFilter implements Filter {
 
   private List<String> excludedUrls;
+  private List<String> eaterWebUrls;
+  private List<String> deliverWebUrls;
+  private List<String> adminWebUrls;
 
   public void destroy() {
   }
@@ -46,41 +50,52 @@ public class LoginFilter implements Filter {
       HttpSession session = request.getSession();
       //判斷session是否過期 或 沒登入
       if (session.getAttribute("login") == null) {
-        System.out.println("session died");
+        System.out.println("請求網址時 還沒 登入！！");
         response.setHeader("sessionstatus", "timeout");
-        if (path.equals("/web/index_eater.html")) {
-          response.sendRedirect("/web/login.html");
-        } else if (path.equals("/web/Administrator.html")) {
-          response.sendRedirect("/web/Administrator_Login.html");
+        if (eaterWebUrls.contains(path)) {
+          response.sendRedirect(Eater.LOGIN);
+        } else if (deliverWebUrls.contains(path)) {
+          response.sendRedirect(Deliver.LOGIN);
+        } else if (adminWebUrls.contains(path)) {
+          response.sendRedirect(Admin.LOGIN);
         }
         chain.doFilter(request, response);
       } else { // 該 session 有 user 登入了
-        if (path.equals("/web/login.html") || path
-            .equals("/web/Administrator_Login.html")) { // 有登入了 還想進 登入頁面 ------- 把他踢回去
-          Long userID = (Long) session.getAttribute("userID");
-          UserType userType = (UserType) session.getAttribute("type");
-          String retUrl = request.getHeader("Referer");
-          switch (userType) {
-            case Customer: {
-              retUrl = "/web/index_eater.html";
-              break;
+
+        // request url is web url-----BEGIN---may redirect
+        User user = (User) session.getAttribute("user");
+        UserType userType = user.getUserType();
+        switch (userType) {
+          case Customer: {
+            if (adminWebUrls.contains(path)) {
+              response.sendRedirect(Eater.LOGIN);
+            } else if (deliverWebUrls.contains(path)) {
+              response.sendRedirect(Eater.LOGIN);
             }
-            case Customer_and_Deliver: {
-              retUrl = "/web/index_deliver.html";
-              break;
-            }
-            case Administrator: {
-              retUrl = "/web/Administrator.html";
-              break;
-            }
-            default: {
-              break;
-            }
+            break;
           }
-          response.sendRedirect(retUrl);
-        } else {
-          chain.doFilter(request, response);
+          case Customer_and_Deliver: {
+            if (adminWebUrls.contains(path)) {
+              response.sendRedirect(Deliver.LOGIN);
+            } else if (eaterWebUrls.contains(path)) {
+              response.sendRedirect(Deliver.LOGIN);
+            }
+            break;
+          }
+          case Administrator: {
+            if (eaterWebUrls.contains(path)) {
+              response.sendRedirect(Admin.LOGIN);
+            } else if (deliverWebUrls.contains(path)) {
+              response.sendRedirect(Admin.LOGIN);
+            }
+            break;
+          }
+          default: {
+            break;
+          }
         }
+        // request url is web url-----END---may redirect
+        chain.doFilter(request, response);
       }
     } else {
       chain.doFilter(req, resp);
@@ -90,17 +105,30 @@ public class LoginFilter implements Filter {
 
   /**
    * <p>
-   * 把不要過濾的 url存入 list.
+   * 把不要過濾 或 一些網頁 的 url存入 list.
    * </p>
    *
    * @param config FilterConfig
    * @throws ServletException ServletException
    */
   public void init(FilterConfig config) throws ServletException {
+
     String excludePattern = config.getInitParameter("excludedUrls");
+    String eaterPattern = config.getInitParameter("eaterWebUrls");
+    String deliverPattern = config.getInitParameter("deliverWebUrls");
+    String adminPattern = config.getInitParameter("adminWebUrls");
 
     if (excludePattern != null) {
       excludedUrls = Arrays.asList(excludePattern.split(","));
+    }
+    if (eaterPattern != null) {
+      eaterWebUrls = Arrays.asList(eaterPattern.split(","));
+    }
+    if (deliverPattern != null) {
+      deliverWebUrls = Arrays.asList(deliverPattern.split(","));
+    }
+    if (adminPattern != null) {
+      adminWebUrls = Arrays.asList(adminPattern.split(","));
     }
   }
 
