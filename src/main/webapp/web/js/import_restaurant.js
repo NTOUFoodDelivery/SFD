@@ -1,26 +1,25 @@
 var rest_inner;
 var rest_infor;
-
-
-
-
-$.ajax({
-    url: "https://ntou-sfd.herokuapp.com/ShowRestInfoServlet",
-    type: "GET",
-    dataType: "json",
-    success: function (JData) {
-        //alert("get");
-        rest_infor = JData;
-        alert("get");
-    },
-
-    error: function () {
-        alert("無法取得餐廳資訊，請重新整理或稍後再試");
-    }
-});
-
 import_restaurant("");
 function import_restaurant(searcher) {
+    if(rest_infor==null)
+    {
+        $.ajax({
+            url: "/ShowRestInfoServlet",
+            type: "GET",
+            dataType: "json",
+            success: function (JData) {
+                //alert("get");
+                rest_infor = JData;
+                //alert("get");
+                
+            },
+        
+            error: function () {
+                alert("無法取得餐廳資訊，請重新整理或稍後再試");
+            }
+        });
+    }else{
     pagetype = "restaurant";
 
 
@@ -29,7 +28,7 @@ function import_restaurant(searcher) {
             //var stringJData = JSON.stringify(JData);
             //alert(stringJData);
             //這裡改用.each這個函式來取出JData裡的物件
-            alert(rest_infor);
+            //alert(rest_infor);
                 if (rest_infor == null) alert("無法取得餐廳資訊，請重新整理");
 
                 var NumOfJData = rest_infor.length;
@@ -38,7 +37,7 @@ function import_restaurant(searcher) {
                 var a1, a2, restimg;
                 rest_inner = '<div class="container">';
                 for (var i = 0, indexi = 0; i < NumOfJData; i++) {
-                    if ($.inArray(searcher, rest_infor[i]["Rest_Name"]) != -1 || searcher == "") {
+                    if (rest_infor[i]["Rest_Address"].match(searcher)!=null||rest_infor[i]["Rest_Name"].match(searcher)!=null  || searcher == "") {
                         
                         var abc = 0;
                         a1 = "'" + rest_infor[i]["Rest_Name"] + "'";
@@ -63,7 +62,7 @@ function import_restaurant(searcher) {
                                 '</a>' +
                                 '<div class="box">' +
                                 '<p>' + rest_infor[i]["Rest_Name"] + "<br>" + rest_infor[i]["Rest_Address"] + '</p>' +
-                                '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
+                                '<a  class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
                                 '</div>' +
                                 '</section>';
 
@@ -75,7 +74,7 @@ function import_restaurant(searcher) {
                                 '</a>' +
                                 '<div class="box">' +
                                 '<p>' + rest_infor[i]["Rest_Name"] + "<br>" + rest_infor[i]["Rest_Address"] + '</p>' +
-                                '<a href="#" class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
+                                '<a  class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
                                 '</div>' +
                                 '</section>';
                         }
@@ -94,8 +93,13 @@ function import_restaurant(searcher) {
 
 
 
-}
+}}
 
+
+function import_restaurantelsefunction()
+{
+    
+}
 
 function changtorest() {
     document.getElementById("extra").innerHTML = rest_inner;
@@ -104,7 +108,7 @@ function changtorest() {
 
 function SwitchStatustode() {
     $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/SwitchStatus",
+        url: "/SFD/SwitchStatus",
         type: "POST",
         async: true,
         dataType: "json",
