@@ -26,14 +26,12 @@ public class SwitchStatusServlet extends HttpServlet {
 
     UserStatus userStatus = UserStatus
         .getUserStatus(request.getParameter("userStatus")); // user Status
-    Long currentUserID = (Long) request.getSession()
-        .getAttribute("userID"); // current request user id
     User currentUser = (User) request.getSession()
         .getAttribute("user"); // current request User
     MemberService memberService = new MemberService();
     String json = gson.toJson(memberService.switchStatus(currentUser, userStatus));
     memberService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

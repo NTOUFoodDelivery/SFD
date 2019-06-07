@@ -33,7 +33,7 @@ public class ModifyRestInfoServlet extends HttpServlet {
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.modifyRestInfo(restCommand, rest));
     restInfoService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

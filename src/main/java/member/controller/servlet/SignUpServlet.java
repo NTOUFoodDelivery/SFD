@@ -29,7 +29,7 @@ public class SignUpServlet extends HttpServlet {
     MemberService memberService = new MemberService();
     String json = gson.toJson(memberService.signUp(user));
     memberService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

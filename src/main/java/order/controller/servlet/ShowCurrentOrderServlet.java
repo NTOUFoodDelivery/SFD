@@ -18,7 +18,6 @@ public class ShowCurrentOrderServlet extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +32,7 @@ public class ShowCurrentOrderServlet extends HttpServlet {
     OrderService orderService = new OrderService();
     String json = gson.toJson(orderService.showCurrentOrder(currentUser));
     orderService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

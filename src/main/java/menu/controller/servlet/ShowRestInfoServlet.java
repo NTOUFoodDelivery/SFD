@@ -29,7 +29,7 @@ public class ShowRestInfoServlet extends HttpServlet {
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.getRestInfo());  // 拿到所有餐廳
     restInfoService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

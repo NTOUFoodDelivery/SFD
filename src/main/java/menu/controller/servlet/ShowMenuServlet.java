@@ -17,20 +17,18 @@ import util.HttpCommonAction;
 @WebServlet("/ShowMenuServlet")
 public class ShowMenuServlet extends HttpServlet {
 
-  Gson gson = new GsonBuilder().disableHtmlEscaping()
-      .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("application/json;charset=UTF-8");
-
+    Gson gson = new GsonBuilder().disableHtmlEscaping()
+        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     Rest rest = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Rest.class); // rest
 
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.getRestMenu(rest)); // 拿到 一家餐廳 的菜單
     restInfoService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
@@ -39,13 +37,13 @@ public class ShowMenuServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("application/json;charset=UTF-8");
+    Gson gson = new GsonBuilder().disableHtmlEscaping()
+        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     Long restID = Long.parseLong(request.getParameter("restID"));
-
-    System.out.println(restID);
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.getRestMenu(restID)); // 拿到 一家餐廳 的菜單
     restInfoService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

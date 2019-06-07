@@ -32,7 +32,7 @@ public class ModifyMenuServlet extends HttpServlet {
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.modifyRestMenu(restCommand, menu));
     restInfoService = null;
-
+    gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
