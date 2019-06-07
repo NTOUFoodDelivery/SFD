@@ -1,6 +1,9 @@
 package menu.controller.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.servlet.ServletContext;
 import menu.model.daoImpl.MenuDaoImpl;
 import menu.model.daoImpl.RestDaoImpl;
 import menu.model.javabean.Menu;
@@ -110,16 +113,20 @@ public class RestInfoService {
    * @param restCommand 餐廳 指令
    * @param menu 菜單
    */
-  public Object modifyRestMenu(RestCommand restCommand, Menu menu) {
+  public Object modifyRestMenu(RestCommand restCommand, Menu menu, ServletContext servletContext) {
 
     Object result = null;
     String msg = "Command :: " + restCommand.toString();
     if (restCommand != null) {
+      Map<Long, List<Menu>> restMenuHashMap = (ConcurrentHashMap<Long, List<Menu>>) servletContext
+          .getAttribute("restMenuHashMap"); // 拿到 servlet context 紀錄 各家餐廳 的菜單
+      Long restId = menu.getRestID();
       menuDao = new MenuDaoImpl();
       switch (restCommand) {
         case ADD: {
           boolean success = menuDao.addRestMenu(menu);
           if (success) {
+            restMenuHashMap.put(restId, menuDao.searchRestMenu(restId));
             msg += " work!!";
           } else {
             msg += " can not work!!";
@@ -130,6 +137,7 @@ public class RestInfoService {
         case DELETE: {
           boolean success = menuDao.delRestMenu(menu.getFoodID());
           if (success) {
+            restMenuHashMap.remove(restId);
             msg += " work!!";
           } else {
             msg += " can not work!!";
@@ -140,6 +148,7 @@ public class RestInfoService {
         case EDIT: {
           boolean success = menuDao.fixRestMenu(menu);
           if (success) {
+            restMenuHashMap.replace(restId, menuDao.searchRestMenu(restId));
             msg += " work!!";
           } else {
             msg += " can not work!!";

@@ -5,12 +5,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import menu.controller.service.RestInfoService;
 import menu.model.javabean.Menu;
 import menu.util.setting.RestCommand;
@@ -29,8 +29,10 @@ public class ModifyMenuServlet extends HttpServlet {
     Menu menu = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Menu.class); // menu
 
+    ServletContext servletContext = request.getServletContext();
+
     RestInfoService restInfoService = new RestInfoService();
-    String json = gson.toJson(restInfoService.modifyRestMenu(restCommand, menu));
+    String json = gson.toJson(restInfoService.modifyRestMenu(restCommand, menu, servletContext));
     restInfoService = null;
     gson = null;
     PrintWriter out = response.getWriter();

@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import menu.controller.service.RestInfoService;
 import menu.model.javabean.Rest;
 import menu.util.setting.RestCommand;
@@ -29,9 +28,9 @@ public class ModifyRestInfoServlet extends HttpServlet {
     Rest rest = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Rest.class); // rest
 
-    System.out.println(rest);
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.modifyRestInfo(restCommand, rest));
+    request.getServletContext().setAttribute("restInfoList", restInfoService.getRestInfo());
     restInfoService = null;
     gson = null;
     PrintWriter out = response.getWriter();
