@@ -277,10 +277,11 @@ public class MemberService {
    * 設計登出後，各使用者 的 訂單問題.
    * </p>
    *
+   * @param userHashMap servlet context 裡面的 ConcurrentHashMap
    * @param httpSession 請求中的 session
    */
   public Object logout(ConcurrentHashMap userHashMap, HttpSession httpSession) {
-    User user = (User) httpSession.getAttribute("userID"); // current request User
+    User user = (User) httpSession.getAttribute("user"); // current request User
     Long userID = user.getUserId();
     userDao = new UserDaoImpl();
     userHashMap.remove(userID);
