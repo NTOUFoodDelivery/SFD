@@ -436,43 +436,43 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatement.setLong(1, userID);
             resultSet = preparedStatement.executeQuery();
             resultSet.getMetaData(); //取得Query資料
-//            while(resultSet.next()) {
-//                Order order = new Order();
-//                order.setCustomer(new Order.CustomerBean());
-//                order.setDeliver(new Order.DeliverBean());
-//                order.setOrder(new Order.OrderBean());
-//
-//                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
-//                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
-//                order.getOrder().setTotal(resultSet.getInt("Total"));
-//                order.getCustomer().setAddress(resultSet.getString("Address"));
-//                order.getCustomer().setOther(resultSet.getString("Other"));
-//                order.getDeliver().setAccount(resultSet.getString("Account"));
-//                order.getDeliver().setUserName(resultSet.getString("User_Name"));
-//                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
-//
-//                ResultSet mealResultSet = null;
-//                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost ,restaurant_info,Rest_Name" +
-//                        "FROM `order`" +
-//                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
-//                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
-//                        "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
-//                        " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
-//                        " WHERE customer_deliver_info.Deliver_Id = ?";
-//                preparedStatement = connection.prepareStatement(mealSql);
-//                preparedStatement.setLong(1, userID);
-//                mealResultSet = preparedStatement.executeQuery();
-//                while (mealResultSet.next()){
-//                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
-//                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
-//                    mealsBean.setCount(mealResultSet.getInt("Count"));
-//                    mealsBean.setCost(mealResultSet.getInt("Cost"));
-//					   mealsBean.setFoodName(mealResultSet.getString("Rest_Name"));            		
-//                    mealsBeanList.add(mealsBean);
-//                }
-//                order.getOrder().setMeals(mealsBeanList);
-//                orderList.add(order);
-//            }
+            while(resultSet.next()) {
+                Order order = new Order();
+                order.setCustomer(new Order.CustomerBean());
+                order.setDeliver(new Order.DeliverBean());
+                order.setOrder(new Order.OrderBean());
+
+                List<Order.OrderBean.MealsBean> mealsBeanList = new ArrayList<>();
+                order.getOrder().setOrderID(resultSet.getLong("Order_Id"));
+                order.getOrder().setTotal(resultSet.getInt("Total"));
+                order.getCustomer().setAddress(resultSet.getString("Address"));
+                order.getCustomer().setOther(resultSet.getString("Other"));
+                order.getDeliver().setAccount(resultSet.getString("Account"));
+                order.getDeliver().setUserName(resultSet.getString("User_Name"));
+                order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
+
+                ResultSet mealResultSet = null;
+                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost ,restaurant_info,Rest_Name" +
+                        "FROM `order`" +
+                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
+                        " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
+                        "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
+                        " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
+                        " WHERE customer_deliver_info.Deliver_Id = ?";
+                preparedStatement = connection.prepareStatement(mealSql);
+                preparedStatement.setLong(1, userID);
+                mealResultSet = preparedStatement.executeQuery();
+                while (mealResultSet.next()){
+                    Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
+                    mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                    mealsBean.setCount(mealResultSet.getInt("Count"));
+                    mealsBean.setCost(mealResultSet.getInt("Cost"));
+					   mealsBean.setFoodName(mealResultSet.getString("Rest_Name"));            		
+                    mealsBeanList.add(mealsBean);
+                }
+                order.getOrder().setMeals(mealsBeanList);
+                orderList.add(order);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
@@ -635,4 +635,156 @@ public class OrderDaoImpl implements OrderDao {
             return castingPrio;
         }
     }
-}//test
+
+public ArrayList<Order> searchallOrder() {
+    ArrayList<Order> orders = new ArrayList<Order>();
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement;
+    ResultSet resultSet;
+    try {
+        String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id,customer_deliver_info.Deliver_Id, member.User_Name,member.Account,member.Phone_Number\n" +
+                "FROM `order`\n" +
+                "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id\n" +
+                "INNER JOIN member ON  `member`.User_Id = customer_deliver_info.Customer_Id\n" ;
+        preparedStatement = connection.prepareStatement(sql);
+        resultSet = preparedStatement.executeQuery();
+        resultSet.getMetaData();
+
+        while(resultSet.next())
+        {
+            Order order = new Order();
+            Order.CustomerBean customerBean = new Order.CustomerBean();
+            customerBean.setUserID(resultSet.getLong("Customer_Id"));       
+            customerBean.setUserName(resultSet.getString("User_Name"));
+            customerBean.setAddress(resultSet.getString("Address"));
+            customerBean.setOther(resultSet.getString("Other"));
+            customerBean.setPhoneNumber(resultSet.getString("Phone_Number"));
+            customerBean.setAccount(resultSet.getString("Account"));
+
+            Order.OrderBean orderBean = new Order.OrderBean();
+            orderBean.setOrderID(resultSet.getLong("Order_Id"));
+            orderBean.setTotal(resultSet.getInt("Total"));
+            orderBean.setTypeCount(resultSet.getInt("Type_Count"));
+            orderBean.setStartTime(resultSet.getString("Start_Time"));
+            orderBean.setOrderStatus(resultSet.getString("Order_Status"));
+            orderBean.setCastingPrio(resultSet.getInt("Casting_Prio"));
+
+            List<Order.OrderBean.MealsBean> mealsBeanXList = new ArrayList<>();
+
+            ResultSet mealResultSet;
+            String mealSql = "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n" +
+                    "FROM order_food" +
+                    " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
+                    "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
+                    "WHERE order_food.Order_Id = ?";
+            preparedStatement = connection.prepareStatement(mealSql);
+            preparedStatement.setLong(1, orderBean.getOrderID());
+            mealResultSet = preparedStatement.executeQuery();
+
+            /*mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
+            mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));*/
+            while(mealResultSet.next()){
+                Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
+
+                mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
+                mealsBean.setRestAddress(mealResultSet.getString("Rest_Address"));
+                mealsBean.setFoodID(mealResultSet.getLong("Food_Id"));
+                mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                mealsBean.setCount(mealResultSet.getInt("Count"));
+                mealsBean.setCost(mealResultSet.getInt("Cost"));//補涵式
+                mealsBeanXList.add(mealsBean);
+            }
+
+            orderBean.setMeals(mealsBeanXList);
+            order.setCustomer(customerBean);
+            order.setOrder(orderBean);
+            orders.add(order);
+        }
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }finally{
+        	C3P0Util.close(connection);
+        	return orders;
+        }
+	}
+
+@Override
+public ArrayList<Order> searchallHistoryOrder() {
+    ArrayList<Order> orders = new ArrayList<Order>();
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement, pst;
+    ResultSet resultSet, rs;
+    try {
+        String sql = "SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Final_Status, history.Address, history.Other, history_customer_deliver_info.Customer_Id,customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
+        		+ " FROM history"
+        		+"INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id\n" 
+                +"INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Customer_Id" ;
+        String sql_del = "SELECT history_customer_deliver_info.Deliver_Id,customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
+        		+ " FROM history_customer_deliver_info" 
+                +"INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Deliver_Id" ;
+        preparedStatement = connection.prepareStatement(sql);
+        pst = connection.prepareStatement(sql_del);
+        resultSet = preparedStatement.executeQuery();
+        rs = pst.executeQuery();
+        resultSet.getMetaData();
+        rs.getMetaData();
+
+        while(resultSet.next() && rs.next())
+        {
+            Order order = new Order();
+            Order.CustomerBean customerBean = new Order.CustomerBean();
+            Order.DeliverBean deliverBean = new Order.DeliverBean();
+            customerBean.setUserID(resultSet.getLong("Customer_Id"));       
+            customerBean.setUserName(resultSet.getString("User_Name"));
+            customerBean.setAddress(resultSet.getString("Address"));
+            customerBean.setOther(resultSet.getString("Other"));
+            customerBean.setPhoneNumber(resultSet.getString("Phone_Number"));
+            customerBean.setAccount(resultSet.getString("Account"));
+
+            deliverBean.setUserID(rs.getLong("Customer_Id"));       
+            deliverBean.setUserName(rs.getString("User_Name"));
+            deliverBean.setPhoneNumber(rs.getString("Phone_Number"));
+            deliverBean.setAccount(rs.getString("Account"));
+            
+            Order.OrderBean orderBean = new Order.OrderBean();
+            orderBean.setOrderID(resultSet.getLong("History_Id"));
+            orderBean.setTotal(resultSet.getInt("Total"));
+            orderBean.setTypeCount(resultSet.getInt("Type_Count"));
+            orderBean.setStartTime(resultSet.getString("Start_Time"));
+            orderBean.setOrderStatus(resultSet.getString("Final_Status")); // 與ORDERSTATUS  相同地位
+
+            List<Order.OrderBean.MealsBean> mealsBeanXList = new ArrayList<>();
+
+            ResultSet mealResultSet;
+            String mealSql = "SELECT History_food.`Count`, History_food.Food_Name, History_food.Rest_Name" +
+                    "FROM history_food" +
+                    "WHERE history_food.History_Id = ?";
+            preparedStatement = connection.prepareStatement(mealSql);
+            preparedStatement.setLong(1, orderBean.getOrderID());
+            mealResultSet = preparedStatement.executeQuery();
+
+            /*mealsBeanX.setRestName(mealResultSet.getString("Rest_Name"));
+            mealsBeanX.setRestAddress(mealResultSet.getString("Rest_Address"));*/
+            while(mealResultSet.next()){
+                Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
+
+                mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
+                mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
+                mealsBean.setCount(mealResultSet.getInt("Count"));
+                mealsBeanXList.add(mealsBean);
+            }
+
+            orderBean.setMeals(mealsBeanXList);
+            order.setCustomer(customerBean);
+            order.setOrder(orderBean);
+            orders.add(order);
+        }
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }finally{
+        	C3P0Util.close(connection);
+        	return orders;
+        }
+	}
+
+}

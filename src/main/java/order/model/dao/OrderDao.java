@@ -32,4 +32,8 @@ public interface OrderDao {
     boolean modifyOrderCastingPrio(Long orderID,int castingPrio);
     // 拿到 訂單權重
     int getOrderCastingPrio(Long orderID);
+    //拿到所有歷史訂單
+    List<Order> searchallHistoryOrder();
+    //拿到所有訂單
+    List<Order> searchallOrder();
 }
