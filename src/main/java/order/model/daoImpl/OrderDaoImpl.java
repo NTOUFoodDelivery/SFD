@@ -461,7 +461,7 @@ public class OrderDaoImpl implements OrderDao {
                 preparedStatement = connection.prepareStatement(mealSql);
                 preparedStatement.setLong(1, userID);
                 mealResultSet = preparedStatement.executeQuery();
-                while (mealResultSet.next()){
+                while (mealResultSet.next()){	
                     Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
