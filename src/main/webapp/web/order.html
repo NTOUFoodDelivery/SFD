@@ -8,9 +8,9 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <script src="js/jquery.min.js"></script>
 <script src="js/skel.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 
 <script>
     $(function () {
@@ -22,106 +22,165 @@
 
     $(document).ready(function () {
 
-        for (var i = 0; i < 5; i++) {
-            $('#accordionExample').append(
-                "<div class = 'card' >" +
-                "<div class = 'card-header' id = 'headingOne' >" +
-                "<h2 class = 'mb-0' >" +
-                "<button id='collapseButton" + i + "' class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#"
-                + i + "' aria-expanded = 'true' aria-controls = '" + i
-                + "' >10001215&emsp;&emsp;食客&emsp;&emsp;外送員</button>" +
-                "</h2>" +
-                "</div>" +
-                "<div id = '" + i
-                + "' class = 'collapse' aria-labelledby = 'headingOne' data-parent = '#accordionExample'>"
-                +     //第一個ID
-                "<div class = 'card-body' >" +
-                "<button type = 'button' class = 'btn btn-primary' data-toggle = 'modal' data-target = '#customer" + i + "'> 食客資訊 </button> "
-                +
-                "<div class = 'modal fade' id = 'customer" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true'>"
-                +
-                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
-                "<div class= 'modal-content' >" +
-                "<div class = 'modal-header' >" +
-                "<h5 class = 'modal-title' id = 'exampleModalCenterTitle' > 食客資訊 </h5>" +
-                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
-                "<span aria-hidden = 'true' >&times;</span>" +
-                "</button>" +
-                "</div>" +
-                "<div class = 'modal-body' >食客ID:<br >食客名字:<br >食客帳號:<br >食客地址:<br >食客備註:<br >食客電話:</div>"
-                +
-                "<div class= 'modal-footer' >" +
-                "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
-                +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#deliver" + i + "' > 外送員資訊 </button> "
-                +
-                "<div class= 'modal fade' id = 'deliver" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
-                +
-                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
-                "<div class= 'modal-content' >" +
-                "<div class= 'modal-header' >" +
-                "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >外送員資訊</h5>" +
-                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
-                "<span aria-hidden = 'true'>&times;</span>" +
-                "</button>" +
-                "</div>" +
-                "<div class = 'modal-body' >外送員ID:<br>外送員名字:<br >外送員帳號:<br >外送員電話:<br ></div>" +
-                "<div class= 'modal-footer' >" +
-                "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>"
-                +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#order" + i + "' > 訂單資訊 </button>"
-                +
-                "<div class= 'modal fade' id = 'order" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
-                +
-                "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
-                "<div class= 'modal-content' >" +
-                "<div class= 'modal-header' >" +
-                "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >訂單資訊</h5>" +
-                "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
-                "<span aria-hidden = 'true' >&times;</span>" +
-                "</button>" +
-                "</div>" +
-                "<div class= 'modal-body'>訂單總價:<br >訂單種類:<br >餐廳名稱:<br >餐廳地址:<br >食物名稱:<br >食物單價:<br >食物個數:<br >訂單起始時間:<br >訂單狀態:<br >訂單權重:</div>"
-                +
-                "<div class = 'modal-footer' >" +
-                "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
-                +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>"
-            );
-            //  加監聽 <!--監聽按鈕 實施.collapse('toggle')-->
-            const buttonTarget = "#collapseButton" + i;
-            $(buttonTarget).click(function () {
-                const target = "#" + this.id.split('collapseButton')[1];
-                $(target).collapse('toggle')
-            })
+        var url = "/ShowCurrentOrderServlet?"; // test url
+        // const url = "/ShowCurrentOrderServlet?"; // 正式 url
+        $.ajax({
+            url: url,
+            type: "GET",
+            async: true,
+            dataType: "json",
+            contentType: 'application/json; charset=UTF-8',
+            success: function (data) {
+                var data_length = data.length;           //現在有多少訂單
+                for (var i = 0; i < data_length; i++) {
+                    var customer = data[i].Customer;
+                    var customerID = customer.User_Id;
+                    var customerName = customer.User_Name;
+                    var customerAccount = customer.Account;
+                    var customerAddress = customer.Address;
+                    var customerOther = customer.Other;
+                    var customerPhoneNumber = customer.Phone_Number;
 
-            // const buttonCustomer = "#customer"+i;
-            // $(buttonCustomer).click(function () {
-            //
-            // }
-            // const buttonDeliver = "#deliver"+i;
-            // $(buttonDeliver).click(function () {
-            //
-            // }
-            // const buttonOrder = "#order"+i;
-            // $(buttonOrder).click(function () {
-            //
-            // }
-        }
+                    var deliver = data[i].Deliver;
+                    var deliverID = deliver.User_Id;
+                    var deliverName = deliver.User_Name;
+                    var deliverAccount = deliver.Account;
+                    var deliverPhoneNumber = deliver.Phone_Number;
+
+                    var order = data[i].Order;
+                    var orderID = order.Order_Id;
+                    var total = order.Total;
+                    var typeCount = order.Type_Count;
+
+
+                    $('#accordionExample').append(
+                        "<div class = 'card' >" +
+                        "<div class = 'card-header' id = 'headingOne' >" +
+                        "<h2 class = 'mb-0' >" +
+                        "<button id='collapseButton" + i + "' class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#"
+                        + i + "' aria-expanded = 'true' aria-controls = '" + i
+                        + "' >" + orderID + "&emsp;&emsp;" + customerAccount + "&emsp;&emsp;" + deliverAccount + "</button>" +
+                        "</h2>" +
+                        "</div>" +
+                        "<div id = '" + i
+                        + "' class = 'collapse' aria-labelledby = 'headingOne' data-parent = '#accordionExample'>"
+                        +     //第一個ID
+                        "<div class = 'card-body' >" +
+                        "<button type = 'button' class = 'btn btn-primary' data-toggle = 'modal' data-target = '#customer" + i + "'> 食客資訊 </button> "
+                        +
+                        "<div class = 'modal fade' id = 'customer" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true'>"
+                        +
+                        "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                        "<div class= 'modal-content' >" +
+                        "<div class = 'modal-header' >" +
+                        "<h5 class = 'modal-title' id = 'exampleModalCenterTitle' > 食客資訊 </h5>" +
+                        "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                        "<span aria-hidden = 'true' >&times;</span>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class = 'modal-body' >食客ID:" + customerID + "<br >食客名字:" + customerName + "<br >食客帳號:" + customerAccount + "<br >食客地址:" + customerAddress + "<br >食客備註:" + customerOther + "<br >食客電話:" + customerPhoneNumber + "</div>"
+                        +
+                        "<div class= 'modal-footer' >" +
+                        "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
+                        +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#deliver" + i + "' > 外送員資訊 </button> "
+                        +
+                        "<div class= 'modal fade' id = 'deliver" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
+                        +
+                        "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                        "<div class= 'modal-content' >" +
+                        "<div class= 'modal-header' >" +
+                        "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >外送員資訊</h5>" +
+                        "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                        "<span aria-hidden = 'true'>&times;</span>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class = 'modal-body' >外送員ID:" + deliverID + "<br>外送員名字:" + deliverName + "<br >外送員帳號:" + deliverAccount + "<br >外送員電話:" + deliverPhoneNumber + "<br ></div>" +
+                        "<div class= 'modal-footer' >" +
+                        "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>"
+                        +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<button type = 'button' class= 'btn btn-primary' data-toggle = 'modal' data-target = '#order" + i + "' > 訂單資訊 </button>"
+                        +
+                        "<div class= 'modal fade' id = 'order" + i + "' tabindex = '-1' role = 'dialog' aria-labelledby = 'exampleModalCenterTitle' aria-hidden = 'true' >"
+                        +
+                        "<div class= 'modal-dialog modal-dialog-centered' role = 'document' >" +
+                        "<div class= 'modal-content' >" +
+                        "<div class= 'modal-header' >" +
+                        "<h5 class= 'modal-title' id = 'exampleModalCenterTitle' >訂單資訊</h5>" +
+                        "<button type = 'button' class= 'close' data-dismiss = 'modal' aria-label = 'Close' >" +
+                        "<span aria-hidden = 'true' >&times;</span>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class= 'modal-body'>訂單總價:" + total + "<br >訂單種類:" + typeCount + "<br>"
+                    );
+
+
+                    // const buttonCustomer = "#customer"+i;
+                    // $(buttonCustomer).click(function () {
+                    //
+                    // }
+                    // const buttonDeliver = "#deliver"+i;
+                    // $(buttonDeliver).click(function () {
+                    //
+                    // }
+                    // const buttonOrder = "#order"+i;
+                    // $(buttonOrder).click(function () {
+                    //
+                    // }
+
+
+                    var meal = order.Meals;
+                    for (var j = 0; j < meal.length; j++) {
+                        var restName = meal[j].Rest_Name;
+                        var restAddress = meal[j].Rest_Address;
+                        var foodID = meal[j].Food_Id;
+                        var foodName = meal[j].Food_Name;
+                        var cost = meal[j].Cost;
+                        var count = meal[j].Count;
+                        $('#accordionExample').append("" +
+                            "餐廳名稱:" + restName + "<br >餐廳地址:" + restAddress + "<br >食物名稱:" + foodName + "<br >食物編號:" + foodID + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
+                        );
+
+                    }
+                    var startTime = order.Start_Time;
+                    var orderStatus = order.Order_Status;
+                    var castingPrio = order.CastingPrio;
+                    $('#accordionExample').append("" +
+                        "訂單起始時間:"+startTime+"<br >訂單狀態:"+orderStatus+"<br >訂單權重:"+castingPrio+"</div>"
+                        +
+                        "<div class = 'modal-footer' >" +
+                        "<button type = 'button' class= 'btn btn-secondary' data-dismiss = 'modal' >Close</button>"
+                        +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                    //  加監聽 <!--監聽按鈕 實施.collapse('toggle')-->
+                    var buttonTarget = "#collapseButton" + i;
+                    $(buttonTarget).click(function () {
+                        var target = "#" + this.id.split('collapseButton')[1];
+                        $(target).collapse('toggle')
+                    });
+                }
+            },
+            error: function () {
+
+            }
+        });
+
+
     });
 
 </script>
