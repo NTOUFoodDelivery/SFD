@@ -183,7 +183,7 @@ public class OrderService {
         break;
       }
       case Administrator: {
-        //result = orderDao.se
+        result = orderDao.searchallOrder();
         break;
       }
       default: {
@@ -215,6 +215,7 @@ public class OrderService {
         break;
       }
       case Administrator: {
+        result = orderDao.searchallHistoryOrder();
         break;
       }
       default: {

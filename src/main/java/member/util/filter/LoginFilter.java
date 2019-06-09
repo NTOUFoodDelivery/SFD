@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import member.model.javabean.User;
 import member.util.setting.UserType;
-import member.util.setting.WebUrl;
 import member.util.setting.WebUrl.Admin;
 import member.util.setting.WebUrl.Deliver;
 import member.util.setting.WebUrl.Eater;
