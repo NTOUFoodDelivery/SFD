@@ -34,7 +34,7 @@ public class User {
   private UserType userType;
   @SerializedName("User_Now")
   @Expose
-  private UserStatus userNow;
+  private UserType userNow;
   @SerializedName("User_Status")
   @Expose
   private UserStatus userStatus;
@@ -112,11 +112,11 @@ public class User {
     this.userStatus = userStatus;
   }
 
-  public UserStatus getUserNow() {
+  public UserType getUserNow() {
     return userNow;
   }
 
-  public void setUserNow(UserStatus userNow) {
+  public void setUserNow(UserType userNow) {
     this.userNow = userNow;
   }
 
