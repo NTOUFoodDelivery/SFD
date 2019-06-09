@@ -452,9 +452,8 @@ public class OrderDaoImpl implements OrderDao {
                 order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
 
                 ResultSet mealResultSet = null;
-                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost ,restaurant_info,Rest_Name" +
-                        "FROM `order`" +
-                        "INNER JOIN order_food ON `order`.Order_Id = order_food.Order_Id " +
+                String mealSql = "SELECT  order_food.`Count`, meal.Food_Name, meal.Cost ,restaurant_info.Rest_Name, restaurant_info.Rest_Address" +
+                        "FROM order_food" +
                         " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id " +
                         "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id " +
                         " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id " +
@@ -467,7 +466,8 @@ public class OrderDaoImpl implements OrderDao {
                     mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
                     mealsBean.setCount(mealResultSet.getInt("Count"));
                     mealsBean.setCost(mealResultSet.getInt("Cost"));
-					   mealsBean.setFoodName(mealResultSet.getString("Rest_Name"));            		
+					mealsBean.setFoodName(mealResultSet.getString("Rest_Name"));            		
+					mealsBean.setRestAddress(mealResultSet.getString("Rest_Address"));
                     mealsBeanList.add(mealsBean);
                 }
                 order.getOrder().setMeals(mealsBeanList);
