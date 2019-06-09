@@ -757,8 +757,8 @@ public ArrayList<Order> searchallHistoryOrder() {
 
             ResultSet mealResultSet;
             String mealSql = "SELECT History_food.`Count`, History_food.Food_Name, History_food.Rest_Name" +
-                    " FROM history_food" +
-                    " WHERE history_food.History_Id = ?";
+                    "  FROM history_food" +
+                    "  WHERE history_food.History_Id = ?";
             preparedStatement = connection.prepareStatement(mealSql);
             preparedStatement.setLong(1, orderBean.getOrderID());
             mealResultSet = preparedStatement.executeQuery();
