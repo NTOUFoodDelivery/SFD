@@ -179,6 +179,7 @@ public class OrderService {
         break;
       }
       case Customer_and_Deliver: {
+        System.out.println(currentUser);
         result = orderDao.searchDeliverOrder(currentUser.getUserId());
         break;
       }
@@ -211,6 +212,7 @@ public class OrderService {
         break;
       }
       case Customer_and_Deliver: {
+        System.out.println(currentUser);
         result = orderDao.searchDeliverHistoryOrder(currentUser.getUserId());
         break;
       }

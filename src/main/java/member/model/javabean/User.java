@@ -32,6 +32,9 @@ public class User {
   @SerializedName("User_Type")
   @Expose
   private UserType userType;
+  @SerializedName("User_Now")
+  @Expose
+  private UserStatus userNow;
   @SerializedName("User_Status")
   @Expose
   private UserStatus userStatus;
@@ -109,6 +112,14 @@ public class User {
     this.userStatus = userStatus;
   }
 
+  public UserStatus getUserNow() {
+    return userNow;
+  }
+
+  public void setUserNow(UserStatus userNow) {
+    this.userNow = userNow;
+  }
+
   @Override
   public String toString() {
     return new ToStringBuilder(this)
@@ -120,6 +131,7 @@ public class User {
         .append("phoneNumber", phoneNumber)
         .append("lastAddress", lastAddress)
         .append("userType", userType)
+        .append("userNow", userNow)
         .append("userStatus", userStatus)
         .toString();
   }
