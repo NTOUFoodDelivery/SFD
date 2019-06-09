@@ -643,9 +643,9 @@ public ArrayList<Order> searchallOrder() {
     ResultSet resultSet;
     try {
         String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id,customer_deliver_info.Deliver_Id, member.User_Name,member.Account,member.Phone_Number\n" +
-                "FROM `order`\n" +
-                "INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id\n" +
-                "INNER JOIN member ON  `member`.User_Id = customer_deliver_info.Customer_Id\n" ;
+                " FROM `order`\n" +
+                " INNER JOIN customer_deliver_info ON `order`.Order_Id = customer_deliver_info.Order_Id\n" +
+                " INNER JOIN member ON  `member`.User_Id = customer_deliver_info.Customer_Id\n" ;
         preparedStatement = connection.prepareStatement(sql);
         resultSet = preparedStatement.executeQuery();
         resultSet.getMetaData();
@@ -673,7 +673,7 @@ public ArrayList<Order> searchallOrder() {
 
             ResultSet mealResultSet;
             String mealSql = "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n" +
-                    "FROM order_food" +
+                    " FROM order_food" +
                     " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
                     "INNER JOIN restaurant_info ON restaurant_info.Rest_Id = meal.Rest_Id  \n" +
                     "WHERE order_food.Order_Id = ?";
@@ -757,8 +757,8 @@ public ArrayList<Order> searchallHistoryOrder() {
 
             ResultSet mealResultSet;
             String mealSql = "SELECT History_food.`Count`, History_food.Food_Name, History_food.Rest_Name" +
-                    "FROM history_food" +
-                    "WHERE history_food.History_Id = ?";
+                    " FROM history_food" +
+                    " WHERE history_food.History_Id = ?";
             preparedStatement = connection.prepareStatement(mealSql);
             preparedStatement.setLong(1, orderBean.getOrderID());
             mealResultSet = preparedStatement.executeQuery();
