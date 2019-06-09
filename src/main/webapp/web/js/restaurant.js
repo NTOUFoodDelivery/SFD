@@ -6,7 +6,8 @@ $(document).ready(function(){
             type: "GET",
             url: url,
             dataType: "json",
-            success: function(data) {
+            success: function(data)
+			{
 				console.log(data)
 				for(var i = 0;i< data.length;i++){
 					var rest = data[i];
