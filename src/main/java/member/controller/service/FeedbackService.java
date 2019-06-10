@@ -63,7 +63,7 @@ public class FeedbackService {
   }
 
   private boolean writeFeedback(Feedback feedback, User user) {
-    if (user.getUserType().equals(UserType.Administrator)) { // 管理員回訊息
+    if (user.getUserNow().equals(UserType.Administrator)) { // 管理員回訊息
       return userDao.replyFeedback(feedback.getFeedbackId(), feedback.getBackContent());
     } else { // 使用者 創 訊息
       return userDao.addFeedback(feedback.getFeedbackId(), user.getUserId(), feedback.getContent());
@@ -71,7 +71,7 @@ public class FeedbackService {
   }
 
   private List<Feedback> showFeedback(User user) {
-    if (user.getUserType().equals(UserType.Administrator)) { // 管理員 拿到所有 訊息
+    if (user.getUserNow().equals(UserType.Administrator)) { // 管理員 拿到所有 訊息
       return userDao.searchFeedback();
     } else { // 使用者 拿到 他自己的 訊息
       return userDao.searchFeedback(user.getUserId());

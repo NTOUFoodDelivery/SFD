@@ -68,6 +68,56 @@ public class MemberService {
 
   /**
    * <p>
+   * 轉換 使用者 身份.
+   * </p>
+   *
+   * @param currentUser 使用者 User 物件
+   * @param userType 使用者 身份
+   */
+  public Object switchType(User currentUser, UserType userType) {
+
+    Object result = null;
+    String msg = "command :: " + userType;
+    boolean success;
+    if (userType != null) {
+      userDao = new UserDaoImpl();
+      UserType currentUserType = currentUser.getUserNow();
+      switch (currentUserType) {
+        case Deliver: {
+          success = switchDeliverType(currentUser, userType);
+          if (success) {
+            msg = msg + " work!!";
+          } else {
+            msg = msg + " do not work!!";
+          }
+          result = HttpCommonAction.generateStatusResponse(success, msg);
+          break;
+        }
+        case Customer: {
+          success = switchCustomerType(currentUser, userType);
+          if (success) {
+            msg = msg + " work!!";
+          } else {
+            msg = msg + " do not work!!";
+          }
+          result = HttpCommonAction.generateStatusResponse(success, msg);
+          break;
+        }
+        default: {
+          break;
+        }
+
+      }
+      userDao = null;
+    } else {
+      msg += "can not found!!";
+      result = HttpCommonAction.generateStatusResponse(false, msg);
+    }
+    return result;
+  }
+
+  /**
+   * <p>
    * 轉換 使用者 狀態.
    * </p>
    *
@@ -78,12 +128,12 @@ public class MemberService {
 
     Object result = null;
     String msg = "command :: " + userStatus;
-    boolean success = false;
+    boolean success;
     if (userStatus != null) {
       userDao = new UserDaoImpl();
-      UserType currentUserType = currentUser.getUserType();
+      UserType currentUserType = currentUser.getUserNow();
       switch (currentUserType) {
-        case Customer_and_Deliver: {
+        case Deliver: {
           success = switchDeliverStatus(currentUser, userStatus);
           if (success) {
             msg = msg + " work!!";
@@ -122,8 +172,8 @@ public class MemberService {
     boolean success = false;
     if (!currentUser.getUserStatus().equals(userStatus)) { // 不同狀態 才要變
       // 如果目前有接單 或 目前有推播訂單，收回接單
-      if (currentUser.getUserType().equals(UserStatus.DELIVER_BUSY)
-          || currentUser.getUserType().equals(UserStatus.PUSHING)) {
+      if (currentUser.getUserStatus().equals(UserStatus.DELIVER_BUSY)
+          || currentUser.getUserStatus().equals(UserStatus.PUSHING)) {
         // ---------------------------收回接單-------
         currentUser.setUserStatus(UserStatus.DELIVER_ON); // 更新 session user 的狀態 為可推播
         success = userDao.modifyUserStatus(currentUser.getUserId(),
@@ -144,6 +194,34 @@ public class MemberService {
       success = userDao
           .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
     }
+    return success;
+  }
+
+  // 轉換上下線 切換身份
+  // 討論！！
+  private boolean switchDeliverType(User currentUser, UserType userType) {
+    boolean success = false;
+    //if (!currentUser.getUserNow().equals(userType)) { // 不同身份 才要變
+    //
+    //    currentUser.setUserNow(UserType.Deliver); // 更新 session user 的狀態 為可推播
+    //    success = userDao.modifyUserStatus(currentUser.getUserId(),
+    //        UserStatus.DELIVER_ON.toString()); // 更新 資料庫 user 狀態
+    //  } else {
+    //    currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
+    //    success = userDao
+    //        .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
+    //  }
+    //}
+    return success;
+  }
+
+  private boolean switchCustomerType(User currentUser, UserType userType) {
+    boolean success = false;
+    //if (!currentUser.getUserStatus().equals(userStatus)) { // 不同狀態 才要變
+    //  currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
+    //  success = userDao
+    //      .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
+    //}
     return success;
   }
 

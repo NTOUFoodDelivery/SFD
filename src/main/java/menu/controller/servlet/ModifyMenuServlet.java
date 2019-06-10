@@ -29,10 +29,8 @@ public class ModifyMenuServlet extends HttpServlet {
     Menu menu = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Menu.class); // menu
 
-    ServletContext servletContext = request.getServletContext();
-
     RestInfoService restInfoService = new RestInfoService();
-    String json = gson.toJson(restInfoService.modifyRestMenu(restCommand, menu, servletContext));
+    String json = gson.toJson(restInfoService.modifyRestMenu(restCommand, menu));
     restInfoService = null;
     gson = null;
     PrintWriter out = response.getWriter();

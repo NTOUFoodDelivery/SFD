@@ -46,20 +46,10 @@ public class ShowMenuServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     Long restID = Long.parseLong(request.getParameter("restID"));
 
-    ServletContext servletContext = request.getServletContext();
-    Map<Long, List<Menu>> restMenuHashMap = (ConcurrentHashMap<Long, List<Menu>>) servletContext
-        .getAttribute("restMenuHashMap"); // 拿到 servlet context 紀錄 各家餐廳 的菜單
-    List<Menu> menuList = restMenuHashMap.get(restID);
-    if (menuList == null) { // servlet context 還沒有 紀錄 任何餐廳 的 hash map 還沒紀錄該餐廳的 菜單
-      RestInfoService restInfoService = new RestInfoService();
-      menuList = restInfoService.getRestMenu(restID);
-      restMenuHashMap.put(restID, menuList);
-      restInfoService = null;
-    } else {
-      System.out.println("Get restMenuHashMap from servlet context!!");
-    }
+    RestInfoService restInfoService = new RestInfoService();
 
-    String json = gson.toJson(menuList);
+    String json = gson.toJson(restInfoService.getRestMenu(restID));
+    restInfoService = null;
     gson = null;
     PrintWriter out = response.getWriter();
     out.print(json);
