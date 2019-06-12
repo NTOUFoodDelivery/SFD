@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-	const url = "/ShowRestInfoServlet"; // test url
+	const url = "/SFD/ShowRestInfoServlet"; // test url
 	// const url = "/ShowRestInfoServlet"; // 正式 url
         $.ajax({
             type: "GET",
@@ -33,7 +33,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-	const url = "/ShowRestInfoServlet"; // test url
+	const url = "/SFD/ShowRestInfoServlet"; // test url
 	// const url = "/ShowRestInfoServlet"; // 正式 url
         $.ajax({
             type: "GET",
@@ -63,8 +63,8 @@ $(document).ready(function(){
 
 function getMenu(Rest_Id){
 	$('#menu_select').empty();
-	$('#menu_select10').empty();
-	const url = "/ShowMenuServlet?restID="+Rest_Id; // test url
+	$('#menu_select1').empty();
+	const url = "/SFD/ShowMenuServlet?restID="+Rest_Id; // test url
 	// const url = "/ShowMenuServlet"; // 正式 url
         $.ajax({
             type: "GET",

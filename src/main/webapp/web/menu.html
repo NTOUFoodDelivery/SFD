@@ -18,11 +18,12 @@
 		function add()
 		{
 			var optionSelected = $("option:selected", $('#restaurant_select'));
-			var restID = optionSelected[0].value;
+			var getID = optionSelected[0].id.split("delete")[1];
+			var restID = getID;
 			var mealName = $('#mealName').val();
 			var mealCost = $('#mealCost').val();
-			var restDescription = $('#Description').val();
-			var foodImgUrl = $('#addImgUrl')[0].value;
+			var restDescription = $('#restDescription').val();
+			var restImgUrl = $('#addImgUrl')[0].value;
 			const dateTime = new Date().getTime();
 			const timestamp = Math.floor(dateTime / 1000);
 			var sJson = JSON.stringify
@@ -34,9 +35,8 @@
 				Description: restDescription,
 				Image: foodImgUrl
 			});
-			console.log(sJson);
 			$.ajax({
-				url: "/ModifyMenuServlet?cmd=ADD",
+				url: "/SFD/ModifyMenuServlet?cmd=ADD",
 				type: "POST",
 				async: true,
 				dataType: "json",
@@ -48,14 +48,14 @@
 		function delete_menu()
 		{
 			var optionSelected = $("option:selected", $('#menu_select'));
-			var deleteID = optionSelected[0].value;
+			var deleteID = optionSelected[0].id.split("delete")[1];
 			var menuID = deleteID;
 			var sJson = JSON.stringify
 			({
 				Food_Id: menuID
 			});
 			$.ajax({
-				url: "/ModifyMenuServlet?cmd=DELETE",
+				url: "/SFD/ModifyMenuServlet?cmd=DELETE",
 				type: "POST",
 				async: true,
 				dataType: "json",
@@ -65,14 +65,14 @@
 		}
 
 		function fix_menu() {
-			var optionSelected = $("option:selected", $('#menu_select'));
-			const restID = optionSelected[0].value;
+			var optionSelected = $("option:selected", $('#menu_select1'));
+			const restID = optionSelected[0].id.split("delete")[1];
 			var mealName = $('#restName').val();
 			var mealCost = $('#mealCost').val();
 			var Description = $('#Description').val();
 			var foodImgUrl = $('#editImgUrl')[0].value;
-			var optionSelected1 = $("option:selected", $('#menu_select1'));
-			var menuID = optionSelected1[0].value;
+			var optionSelected1 = $("option:selected", $('#menu_select'));
+			var menuID = optionSelected1[0].id.split("delete")[1];
 			var sJson = JSON.stringify
 			({
 				Food_Id: menuID,
@@ -82,7 +82,7 @@
 				Description: Description,
 				Image: foodImgUrl
 			});
-			const url = "/ModifyMenuServlet?cmd=EDIT"; // test url
+			const url = "/SFD/ModifyMenuServlet?cmd=EDIT"; // test url
 			$.ajax({
 				url: url,
 				type: "POST",
@@ -242,7 +242,7 @@
 <script>
 	window.onload =function()
 	{
-		const url = "/LoginServlet"; // test url
+		const url = "/SFD/LoginServlet"; // test url
 		// const url = "/LoginServlet"; // 正式 url
 		$.ajax({
 			url:url,

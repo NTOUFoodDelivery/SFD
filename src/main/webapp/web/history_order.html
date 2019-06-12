@@ -6,10 +6,9 @@
 -->
 <html>
 <meta http-equiv="Pragma" content="no-cache"/>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/skel.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -23,8 +22,8 @@
 
 	$(document).ready(function () {
 
-		var url = "/ShowHistoryOrderServlet"; // test url
-		// const url = "/ShowHistoryOrderServlet"; // 正式 url
+		var url = "/ShowHistoryOrderServlet?"; // test url
+		// const url = "/ShowHistoryOrderServlet?"; // 正式 url
 		$.ajax({
 			url: url,
 			type: "GET",
@@ -32,7 +31,6 @@
 			dataType: "json",
 			contentType: 'application/json; charset=UTF-8',
 			success: function (data) {
-			    console.log(data);
 				var data_length = data.length;           //現在有多少訂單
 				for (var i = 0; i < data_length; i++) {
 					var customer = data[i].Customer;
@@ -53,7 +51,7 @@
 					var orderID = order.Order_Id;
 					var total = order.Total;
 					var typeCount = order.Type_Count;
-                    var id2 = orderID +""+ i;
+
 
 					$('#accordionExample').append(
 							"<div class = 'card' >" +
@@ -121,7 +119,7 @@
 							"<span aria-hidden = 'true' >&times;</span>" +
 							"</button>" +
 							"</div>" +
-							"<div id = '"+id2+"' class= 'modal-body'>訂單總價:" + total + "<br >訂單種類:" + typeCount + "<br>"
+							"<div class= 'modal-body'>訂單總價:" + total + "<br >訂單種類:" + typeCount + "<br>"
 					);
 
 
@@ -138,7 +136,7 @@
 					//
 					// }
 
-                    var targetId2 = "#"+id2;
+
 					var meal = order.Meals;
 					for (var j = 0; j < meal.length; j++) {
 						var restName = meal[j].Rest_Name;
@@ -147,7 +145,7 @@
 						var foodName = meal[j].Food_Name;
 						var cost = meal[j].Cost;
 						var count = meal[j].Count;
-						$(targetId2).append("" +
+						$('#accordionExample').append("" +
 								"餐廳名稱:" + restName + "<br >餐廳地址:" + restAddress + "<br >食物名稱:" + foodName + "<br >食物編號:" + foodID + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
 						);
 
@@ -155,7 +153,7 @@
 					var startTime = order.Start_Time;
 					var orderStatus = order.Order_Status;
 					var castingPrio = order.CastingPrio;
-					$(targetId2).append("" +
+					$('#accordionExample').append("" +
 							"訂單起始時間:"+startTime+"<br >訂單狀態:"+orderStatus+"<br >訂單權重:"+castingPrio+"</div>"
 							+
 							"<div class = 'modal-footer' >" +

@@ -20,7 +20,7 @@
                     const userID = optionSelected[0].value;
                     //---uncheck---------
 
-                    const url = "/ModifyMemberServlet?cmd=USER_BAN&userID="+userID; // test url
+                    const url = "/SFD/ModifyMemberServlet?cmd=USER_BAN&userID="+userID; // test url
                     // const url = "/ModifyRestInfoServlet?cmd=EDIT"; // 正式 url
                     $.ajax({
                         url: url,
@@ -103,7 +103,7 @@
             });
         });
 
-        const url = "/LoginServlet"; // test url
+        const url = "/SFD/LoginServlet"; // test url
         // const url = "/LoginServlet"; // 正式 url
         $.ajax({
             url:url,

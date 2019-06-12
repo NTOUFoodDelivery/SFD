@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    const url = "/ModifyMemberServlet"; // 正式 url
+    const url = "/ShowRestInfoServlet"; // 正式 url
     $.ajax({
         type: "GET",
         url: url,
