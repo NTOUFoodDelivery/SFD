@@ -796,6 +796,7 @@ public ArrayList<Order> searchallHistoryOrder() {
             orderBean.setMeals(mealsBeanXList);
             order.setCustomer(customerBean);
             order.setOrder(orderBean);
+            order.setDeliver(deliverBean);
             orders.add(order);
         }
         } catch (SQLException e) {
