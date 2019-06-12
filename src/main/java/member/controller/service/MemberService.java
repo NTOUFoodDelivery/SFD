@@ -265,15 +265,24 @@ public class MemberService {
             System.out.println(user);
             switch (signUserType) { // 設定 登入 初始狀態
               case Customer:
-              case Customer_and_Deliver:
+              case Customer_and_Deliver:{
+                session.setAttribute("login", "login"); // login 保存進 session
+                userDao.modifyUserNow(user.getUserId(),UserType.Customer.toString());
+                user.setUserNow(UserType.Customer);
+                userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
+                session.setAttribute("user", user); // User 保存進 session
+                session.setAttribute("userID", currentUserID); // User id 保存進 session
+                info.add("login");
+                break;
+              }
               case Administrator: {
                 session.setAttribute("login", "login"); // login 保存進 session
-                userDao.modifyUserNow(user.getUserId(),signUserType.toString());
+                userDao.modifyUserNow(user.getUserId(),UserType.Administrator.toString());
                 user.setUserNow(signUserType);
                 userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
-                info.add(signUserType.toString());
+                info.add("login");
                 break;
               }
               case User_Ban: {
@@ -336,13 +345,14 @@ public class MemberService {
       }
     } else { // 未註冊
       // 註冊資料 都有填
-      if (!currentUser.getUserName().equals("") && currentUser.getUserName() != null && !currentUser
-          .getUserType().equals("") && currentUser.getUserType() != null
+      if (!currentUser.getUserName().equals("") && currentUser.getUserName() != null
+          && currentUser.getUserType() != null
           && !currentUser.getAccount().equals("") && currentUser.getAccount() != null
           && !currentUser.getPassword().equals("") && currentUser.getPassword() != null
           && !currentUser.getEmail().equals("") && currentUser.getEmail() != null && !currentUser
           .getLastAddress().equals("") && currentUser.getLastAddress() != null
-          && !currentUser.getPhoneNumber().equals("") && currentUser.getPhoneNumber() != null) {
+          && !currentUser.getPhoneNumber().equals("") && currentUser.getPhoneNumber() != null
+          && currentUser.getUserNow() != null) {
         success = userDao.addUser(currentUser);
         result = HttpCommonAction.generateStatusResponse(success, "未註冊 的 目前直接註冊");
       }

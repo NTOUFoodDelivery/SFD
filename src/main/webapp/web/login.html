@@ -182,9 +182,7 @@
           $("#fm1").css('display','block');
         }, 1000);
         
-        if (cmd === "CUSTOMER_AND_DELIVER") {
-          window.location.href='index_deliver.html';
-        }else if (cmd === "CUSTOMER") {
+        if (cmd === "login") {
           window.location.href='index_eater.html';
         }else {
           $('input[type=password]')[0].value = "";
