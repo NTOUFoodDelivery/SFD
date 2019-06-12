@@ -79,7 +79,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
-        user.setUserStatus(UserStatus.getUserNow(resultSet.getString("User_Now")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -119,7 +119,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
-        user.setUserStatus(UserStatus.getUserNow(resultSet.getString("User_Now")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -157,7 +157,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
-        user.setUserStatus(UserStatus.getUserNow(resultSet.getString("User_Now")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -196,7 +196,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
-        user.setUserStatus(UserStatus.getUserNow(resultSet.getString("User_Now")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
