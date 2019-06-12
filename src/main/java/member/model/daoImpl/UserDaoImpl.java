@@ -57,27 +57,28 @@ public class UserDaoImpl implements UserDao {
    * @return Long
    */
   @Override
-  public String searchUseraccount() {
-    Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
-    String userAccount = null;
-    String sql = "SELECT account FROM member ";
-    try {
-      preparedStatement = connection.prepareStatement(sql);
-      resultSet = preparedStatement.executeQuery();
-      if (resultSet.next()) {
-        userAccount = resultSet.getString("User_Account");//
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      C3P0Util.close(connection);
-      return userAccount;
-    }
-  }
+  public List<String> searchUseraccount() {
+	    Connection connection = C3P0Util.getConnection();
+	    PreparedStatement preparedStatement;
+	    ResultSet resultSet;
+	    String userAccount = null;
+	    String sql = "SELECT account FROM member ";
+	    List<String> accountList = new ArrayList<>();
+	    try {
+	      preparedStatement = connection.prepareStatement(sql);
+	      resultSet = preparedStatement.executeQuery();
+	      while (resultSet.next()) {
+	    	  userAccount = resultSet.getString("User_Account");
+	        accountList.add(userAccount);
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    } finally {
+	      C3P0Util.close(connection);
+	      return accountList;
+	    }
+	  }
 
-  
   /**
    * <p>找尋 符合條件的 使用者.</p>
    *
