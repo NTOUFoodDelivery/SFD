@@ -24,7 +24,6 @@ import util.configurator.GetHttpSessionConfigurator;
 public class PushOrderWebSocket {
 
 
-
   private Gson gson = new GsonBuilder().disableHtmlEscaping()
       .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
   private OrderService orderService = new OrderService();
