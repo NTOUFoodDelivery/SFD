@@ -7,11 +7,11 @@ import java.sql.SQLException;
 
 public class C3P0Util {
 
-//    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource(); // 正式
+    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource(); // 正式
     //private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource("BerSerKer"); // 本地端測試
 //    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource("Yaoder"); // 本地端測試
 //    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource("KevinSFD"); // 本地端測試
-    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource("thomas205327"); // 本地端測試
+//    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource("thomas205327"); // 本地端測試
 //    private static ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource("wudishidove"); // 本地端測試
 
     /**
