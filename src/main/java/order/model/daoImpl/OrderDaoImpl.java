@@ -717,7 +717,7 @@ public ArrayList<Order> searchallHistoryOrder() {
     try {
         String sql = "SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Final_Status, history.Address, history.Other, history_customer_deliver_info.Customer_Id,history_customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
         		+ " FROM history"
-        		+" INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id\n" 
+        		+" INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id\n"
                 +" INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Customer_Id" ;
         String sql_del = "SELECT history_customer_deliver_info.Deliver_Id, history_customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
         		+ " FROM history_customer_deliver_info" 
@@ -758,7 +758,7 @@ public ArrayList<Order> searchallHistoryOrder() {
             ResultSet mealResultSet;
             String mealSql = "SELECT History_food.`Count`, History_food.Food_Name, History_food.Rest_Name" +
                     " FROM history_food" +
-                    " WHERE history_food.History_Id = ?";
+                    " WHERE history_food.History_Id = ?";//  
             preparedStatement = connection.prepareStatement(mealSql);
             preparedStatement.setLong(1, orderBean.getOrderID());
             mealResultSet = preparedStatement.executeQuery();

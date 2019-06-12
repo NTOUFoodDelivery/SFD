@@ -79,6 +79,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -118,6 +119,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -155,6 +157,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -193,6 +196,7 @@ public class UserDaoImpl implements UserDao {
         user.setPhoneNumber(resultSet.getString("Phone_Number"));
         user.setUserName(resultSet.getString("User_Name"));
         user.setUserStatus(UserStatus.getUserStatus(resultSet.getString("User_Status")));
+        user.setUserNow(UserType.getUserType(resultSet.getString("User_Now")));
         user.setUserType(UserType.getUserType(resultSet.getString("User_Type")));
       }
     } catch (SQLException e) {
@@ -215,7 +219,7 @@ public class UserDaoImpl implements UserDao {
     Connection connection = C3P0Util.getConnection();
     PreparedStatement preparedStatement;
     boolean success = false;
-    String sql = "INSERT INTO member(User_Id, account, Password, User_Name, Email, Phone_number, Last_Address, User_Type, User_Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    String sql = "INSERT INTO member(User_Id, account, Password, User_Name, Email, Phone_number, Last_Address, User_Type, User_Now, User_Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     try {
       preparedStatement = connection.prepareStatement(sql);
       preparedStatement.setLong(1, user.getUserId());
@@ -226,7 +230,8 @@ public class UserDaoImpl implements UserDao {
       preparedStatement.setString(6, user.getPhoneNumber());
       preparedStatement.setString(7, user.getLastAddress());
       preparedStatement.setString(8, user.getUserType().toString());
-      preparedStatement.setString(9, user.getUserStatus().toString());
+      preparedStatement.setString(9, user.getUserNow().toString());
+      preparedStatement.setString(10, user.getUserStatus().toString());
       preparedStatement.executeUpdate();
       success = true;
     } catch (SQLException e) {
@@ -348,6 +353,63 @@ public class UserDaoImpl implements UserDao {
       return success;
     }
   }
+  
+  /**
+   * <p>更改 使用者的Now.</p>
+   *
+   * @param userId userId
+   * @param userStatus userStatus
+   * @return boolean
+   */
+  @Override
+  public boolean modifyUserNow(Long userId, String userNow) {
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement;
+    
+    String sql = "UPDATE member SET User_Now = ? WHERE User_Id = ?;";
+    boolean success = false;
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+      preparedStatement.setString(1, userNow);
+      preparedStatement.setLong(2, userId);
+      preparedStatement.executeQuery();
+      success = true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      C3P0Util.close(connection);
+      return success;
+    }
+  }
+
+  /**
+   * <p>獲得 使用者的Now.</p>
+   *
+   * @param userId userId
+   * @param userStatus userStatus
+   * @return boolean
+   */
+  @Override
+  public String showUserNow(Long userID) {
+	    Connection connection = C3P0Util.getConnection();
+	    PreparedStatement preparedStatement;
+	    ResultSet resultSet;
+	    String identity = null;
+	    String sql = "SELECT User_Now FROM member WHERE User_Id = ?";
+	    try {
+	      preparedStatement = connection.prepareStatement(sql);
+	      preparedStatement.setLong(1, userID);
+	      resultSet = preparedStatement.executeQuery();
+	      if (resultSet.next()) {
+	        identity = resultSet.getString("User_Now");
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    } finally {
+	      C3P0Util.close(connection);
+	      return identity;
+	    }
+	  }
 
   /**
    * @param [userID, userType]
