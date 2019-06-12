@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.Session;
 import member.controller.service.MemberService;
 import member.model.daoImpl.UserDaoImpl;
@@ -21,6 +23,8 @@ import order.model.javabean.OrderSetting;
 
 public class PushOrderTask extends TimerTask {
 
+  // 紀錄 所有 連接 websocket 外送員 的 websocket session
+  public static Map<Session, User> sessions = new ConcurrentHashMap<>();
   private Gson gson = new GsonBuilder().disableHtmlEscaping()
       .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
   private UserDaoImpl userDao = new UserDaoImpl();
@@ -31,12 +35,12 @@ public class PushOrderTask extends TimerTask {
 
     // lock websocket session
     // 推播訂單 給 這個時候之前的 空閒外送員
-    synchronized (PushOrderWebSocket.sessions) {
+    synchronized (sessions) {
 
-      if (PushOrderWebSocket.sessions.size() > 0) { // 如果有 外送員在線上
+      if (sessions.size() > 0) { // 如果有 外送員在線上
 
         List<Order> idleOrderList = orderDao.searchIdleOrder();// 到資料庫  找 閒置的訂單
-        Collection<User> idleDeliverList = PushOrderWebSocket.sessions
+        Collection<User> idleDeliverList = sessions
             .values();   //  ---維護 servlet context userHashMap 的 User
 
         if (idleDeliverList.size() > 0 && idleOrderList.size() > 0) { // 如果有 在線 閒置 的外送員的話 且有空閒訂單
@@ -53,7 +57,7 @@ public class PushOrderTask extends TimerTask {
             for (User deliver : idleDeliverList) { // 尋訪每個 連接 websocket 的 外送員 ---維護 servlet context userHashMap 的 User
               if (deliver.getUserStatus().equals(UserStatus.DELIVER_ON)) { // 閒置的 外送員
                 List<Session> idleDeliverSessionList = (List<Session>) MemberService
-                    .getKey(PushOrderWebSocket.sessions,
+                    .getKey(sessions,
                         deliver); // 拿 websocket session 物件 with user ---維護 servlet context userHashMap 的 User
                 for (Session idleDeliverSession : idleDeliverSessionList) { // 應該只會 跑一次 迴圈
                   try {
