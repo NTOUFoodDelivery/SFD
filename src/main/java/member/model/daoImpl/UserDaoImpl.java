@@ -54,6 +54,36 @@ public class UserDaoImpl implements UserDao {
    * @param account account
    * @param password password
    * @param userType userType
+   * @return Long
+   */
+  @Override
+  public String searchUseraccount() {
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement;
+    ResultSet resultSet;
+    String userAccount = null;
+    String sql = "SELECT account FROM member ";
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+      resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        userAccount = resultSet.getString("User_Account");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      C3P0Util.close(connection);
+      return userAccount;
+    }
+  }
+
+  
+  /**
+   * <p>找尋 符合條件的 使用者.</p>
+   *
+   * @param account account
+   * @param password password
+   * @param userType userType
    * @return User
    */
   @Override
