@@ -403,7 +403,7 @@ public class UserDaoImpl implements UserDao {
       preparedStatement = connection.prepareStatement(sql);
       preparedStatement.setString(1, userNow);
       preparedStatement.setLong(2, userId);
-      preparedStatement.executeQuery();
+      preparedStatement.executeUpdate();
       success = true;
     } catch (SQLException e) {
       e.printStackTrace();

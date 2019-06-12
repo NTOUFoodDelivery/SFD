@@ -63,9 +63,9 @@ public class LoginFilter implements Filter {
         }
         chain.doFilter(request, response);
       } else { // 該 session 有 user 登入了
-
         // request url is web url-----BEGIN---may redirect
         User user = (User) session.getAttribute("user");
+        System.out.println(user);
         UserType userCurrentType = user.getUserNow();
         switch (userCurrentType) {
           case Customer: {

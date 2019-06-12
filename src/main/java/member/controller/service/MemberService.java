@@ -260,33 +260,20 @@ public class MemberService {
         User user = userDao.searchUser(account, password); // 檢查 資料庫 有無此 帳密 使用者 --------
         if (user != null) { // 資料庫 有這個使用者
           if (!checkIsLogin(userHashMap, user.getUserId())) { // user hash map 沒有 這個 User
-            session.setAttribute("login", "login"); // login 保存進 session
             Long currentUserID = user.getUserId();
             UserType signUserType = user.getUserType();
-
+            System.out.println(user);
             switch (signUserType) { // 設定 登入 初始狀態
-              case Customer: {
-                user.setUserNow(UserType.Customer);
-                userHashMap.put(currentUserID, user); // 食客 User 存進 hash map
-                session.setAttribute("user", user); // User 保存進 session
-                session.setAttribute("userID", currentUserID); // User id 保存進 session
-                info.add("CUSTOMER");
-                break;
-              }
-              case Customer_and_Deliver: {
-                user.setUserNow(UserType.Customer);
-                userHashMap.put(currentUserID, user.getUserId()); // 外送員 User 存進 hash map
-                session.setAttribute("user", user); // User 保存進 session
-                session.setAttribute("userID", currentUserID); // User id 保存進 session
-                info.add("CUSTOMER_AND_DELIVER");
-                break;
-              }
+              case Customer:
+              case Customer_and_Deliver:
               case Administrator: {
-                user.setUserNow(UserType.Administrator);
-                userHashMap.put(currentUserID, user.getUserId()); // 管理員 User 存進 hash map
+                session.setAttribute("login", "login"); // login 保存進 session
+                userDao.modifyUserNow(user.getUserId(),signUserType.toString());
+                user.setUserNow(signUserType);
+                userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
-                info.add("ADMINISTRATOR");
+                info.add(signUserType.toString());
                 break;
               }
               case User_Ban: {
@@ -336,10 +323,9 @@ public class MemberService {
     Object result = null;
     boolean success;
     User user = userDao.searchUser(currentUser.getAccount());
-    if(user.getUserType().equals(UserType.User_Ban)){
+    if (user.getUserType().equals(UserType.User_Ban)) {
 
-    }
-    else if (user != null) { // 已註冊
+    } else if (user != null) { // 已註冊
       UserType currentUserType = currentUser.getUserType();
       if (currentUserType.equals(UserType.Customer)
           && user.getUserType().equals(UserType.Customer_and_Deliver.toString())) {
