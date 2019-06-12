@@ -72,6 +72,14 @@ public interface UserDao {
      * @return java.lang.String
      */
     String showUserType(Long userId);
+    
+    /**
+    *
+    * @description: 查看 使用者目前Now
+    * @param [userID]
+    * @return java.lang.String
+    */
+   String showUserNow(Long userId);
 
     /**
      *
@@ -97,6 +105,13 @@ public interface UserDao {
      */
     boolean modifyUserType(Long userId, String userType);
 
+    /**
+    *
+    * @description: 更改 使用者的Type
+    * @param [userID, userType]
+    * @return boolean
+    */
+   boolean modifyUserNow(Long userId, String userNow);
     /**
      *
      * @description: 找尋 有無該使用者
