@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-	const url = "/SFD/ShowRestInfoServlet"; // test url
+	const url = "/ShowRestInfoServlet"; // test url
 	// const url = "/ShowRestInfoServlet"; // 正式 url
         $.ajax({
             type: "GET",
@@ -8,7 +8,7 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data)
 			{
-				console.log(data)
+				console.log(data);
 				for(var i = 0;i< data.length;i++){
 					var rest = data[i];
 					var value = rest.Rest_Id;
