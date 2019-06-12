@@ -32,11 +32,10 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatement.executeUpdate();
             // set order table ----- END
             // set OCD table ----- BEGIN
-            String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id, Deliver_Id) VALUES(?, ?, ?);";
+            String OC_sql = "INSERT INTO customer_deliver_info(Order_Id, Customer_Id) VALUES(?, ?);";
             preparedStatement = (PreparedStatement)connection.prepareStatement(OC_sql);
             preparedStatement.setLong(1,order.getOrder().getOrderID());
             preparedStatement.setLong(2,order.getCustomer().getUserID());
-            preparedStatement.setLong(3, 0);
             preparedStatement.executeUpdate();
             // set OCD table ----- END
             // set order_food table ----- BEGIN
@@ -640,8 +639,8 @@ public class OrderDaoImpl implements OrderDao {
 public ArrayList<Order> searchallOrder() {
     ArrayList<Order> orders = new ArrayList<Order>();
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement, pst;
-    ResultSet resultSet, rs;
+    PreparedStatement preparedStatement;
+    ResultSet resultSet;
     try {
         String sql = "SELECT `order`.Order_Id, `order`.Total, `order`.Start_Time, `order`.Order_Status, `order`.Other,`order`.Type_Count, `order`.Address, `order`.Casting_Prio, customer_deliver_info.Customer_Id,customer_deliver_info.Deliver_Id, member.User_Name,member.Account,member.Phone_Number\n" +
                 " FROM `order`\n" +
@@ -650,22 +649,11 @@ public ArrayList<Order> searchallOrder() {
         preparedStatement = connection.prepareStatement(sql);
         resultSet = preparedStatement.executeQuery();
         resultSet.getMetaData();
-        
-        String sql_del = "SELECT customer_deliver_info.Deliver_Id, member.User_Name,member.Account,member.Phone_Number"
-        		+ " FROM customer_deliver_info" 
-                +" INNER JOIN member ON  `member`.User_Id = customer_deliver_info.Deliver_Id" ;
-    	pst = connection.prepareStatement(sql);
-        rs = pst.executeQuery();
-        rs.getMetaData();
-        
-        
 
-        while(resultSet.next() && rs.next())
+        while(resultSet.next())
         {
             Order order = new Order();
             Order.CustomerBean customerBean = new Order.CustomerBean();
-            Order.DeliverBean deliverBean = new Order.DeliverBean();
-            
             customerBean.setUserID(resultSet.getLong("Customer_Id"));       
             customerBean.setUserName(resultSet.getString("User_Name"));
             customerBean.setAddress(resultSet.getString("Address"));
@@ -681,11 +669,6 @@ public ArrayList<Order> searchallOrder() {
             orderBean.setOrderStatus(resultSet.getString("Order_Status"));
             orderBean.setCastingPrio(resultSet.getInt("Casting_Prio"));
 
-            if(resultSet.getLong("Deliver_Id") != 0 ) {
-            	deliverBean.setUserName(rs.getString("User_Name"));
-            	deliverBean.setAccount(rs.getString("Account"));
-            	deliverBean.setPhoneNumber(rs.getString("Phone_Number"));
-            }
             List<Order.OrderBean.MealsBean> mealsBeanXList = new ArrayList<>();
 
             ResultSet mealResultSet;
@@ -715,7 +698,6 @@ public ArrayList<Order> searchallOrder() {
             orderBean.setMeals(mealsBeanXList);
             order.setCustomer(customerBean);
             order.setOrder(orderBean);
-            order.setDeliver(deliverBean);
             orders.add(order);
         }
         } catch (SQLException e) {
@@ -733,11 +715,11 @@ public ArrayList<Order> searchallHistoryOrder() {
     PreparedStatement preparedStatement, pst;
     ResultSet resultSet, rs;
     try {
-        String sql = "SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Final_Status, history.Address, history.Other,history_customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
+        String sql = "SELECT history.History_Id, history.Start_Time, history.Type_Count, history.Total, history.Final_Status, history.Address, history.Other, history_customer_deliver_info.Customer_Id,history_customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
         		+ " FROM history"
         		+" INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id\n"
                 +" INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Customer_Id" ;
-        String sql_del = "SELECT history_customer_deliver_info.Deliver_Id, member.User_Name,member.Account,member.Phone_Number"
+        String sql_del = "SELECT history_customer_deliver_info.Deliver_Id, history_customer_deliver_info.Customer_Id, member.User_Name,member.Account,member.Phone_Number"
         		+ " FROM history_customer_deliver_info" 
                 +" INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Deliver_Id" ;
         preparedStatement = connection.prepareStatement(sql);
@@ -759,7 +741,7 @@ public ArrayList<Order> searchallHistoryOrder() {
             customerBean.setPhoneNumber(resultSet.getString("Phone_Number"));
             customerBean.setAccount(resultSet.getString("Account"));
 
-            deliverBean.setUserID(rs.getLong("Deliver_Id"));       
+            deliverBean.setUserID(rs.getLong("Customer_Id"));       
             deliverBean.setUserName(rs.getString("User_Name"));
             deliverBean.setPhoneNumber(rs.getString("Phone_Number"));
             deliverBean.setAccount(rs.getString("Account"));
