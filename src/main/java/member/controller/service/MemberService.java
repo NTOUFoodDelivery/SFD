@@ -391,6 +391,13 @@ public class MemberService {
     return result;
   }
 
+  public List<String> showUsers() {
+    userDao = new UserDaoImpl();
+    List<String> result = userDao.searchUseraccount();
+    userDao = null;
+    return result;
+  }
+
   /**
    * <p>
    * 依 value 找map 中符合的 keys.
