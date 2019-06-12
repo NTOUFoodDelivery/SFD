@@ -109,6 +109,26 @@ public class LoginFilter implements Filter {
         chain.doFilter(request, response);
       }
     } else {
+      if(path.equals("/LoginServlet")){
+        System.out.println("ININI");
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+
+        String url = request.getHeader("Referer");
+
+        String scheme = request.getScheme();
+        String host = request.getServerName();
+        int port = request.getServerPort();
+        String contextPath = request.getContextPath();
+        String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
+        String spiltUrl = url.split(baseUrl)[1];
+        if (adminWebUrls.contains(spiltUrl)){
+          response.sendRedirect(Admin.LOGIN);
+        }else if(eaterWebUrls.contains(spiltUrl) || deliverWebUrls.contains(spiltUrl)){
+          response.sendRedirect(Eater.LOGIN);
+        }
+        chain.doFilter(req, resp);
+      }
       chain.doFilter(req, resp);
     }
     //chain.doFilter(req, resp);
