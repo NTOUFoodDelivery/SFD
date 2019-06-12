@@ -67,7 +67,7 @@ public class UserDaoImpl implements UserDao {
       preparedStatement = connection.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
-        userAccount = resultSet.getString("User_Account");
+        userAccount = resultSet.getString("User_Account");//
       }
     } catch (SQLException e) {
       e.printStackTrace();
