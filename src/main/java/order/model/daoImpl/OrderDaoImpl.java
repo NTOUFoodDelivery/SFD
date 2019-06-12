@@ -683,6 +683,7 @@ public ArrayList<Order> searchallOrder() {
 
             if(resultSet.getLong("Deliver_Id") != 0 ) {
             	deliverBean.setUserName(rs.getString("User_Name"));
+            	deliverBean.setUserID(resultSet.getLong("Deliver_Id"));       
             	deliverBean.setAccount(rs.getString("Account"));
             	deliverBean.setPhoneNumber(rs.getString("Phone_Number"));
             }
@@ -737,7 +738,7 @@ public ArrayList<Order> searchallHistoryOrder() {
         		+ " FROM history"
         		+" INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id\n" 
                 +" INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Customer_Id" ;
-        String sql_del = "SELECT history_customer_deliver_info.Deliver_Id, member.User_Name,member.Account,member.Phone_Number"
+        String sql_del = "SELECT history_customer_deliver_info.Deliver_Id, member.User_Name,member.User_Name,member.Account,member.Phone_Number"
         		+ " FROM history_customer_deliver_info" 
                 +" INNER JOIN member ON  `member`.User_Id = history_customer_deliver_info.Deliver_Id" ;
         preparedStatement = connection.prepareStatement(sql);
