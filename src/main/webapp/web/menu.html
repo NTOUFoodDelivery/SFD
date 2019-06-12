@@ -36,7 +36,7 @@
 				Image: foodImgUrl
 			});
 			$.ajax({
-				url: "/SFD/ModifyMenuServlet?cmd=ADD",
+				url: "/ModifyMenuServlet?cmd=ADD",
 				type: "POST",
 				async: true,
 				dataType: "json",
@@ -55,7 +55,7 @@
 				Food_Id: menuID
 			});
 			$.ajax({
-				url: "/SFD/ModifyMenuServlet?cmd=DELETE",
+				url: "/ModifyMenuServlet?cmd=DELETE",
 				type: "POST",
 				async: true,
 				dataType: "json",
@@ -82,7 +82,7 @@
 				Description: Description,
 				Image: foodImgUrl
 			});
-			const url = "/SFD/ModifyMenuServlet?cmd=EDIT"; // test url
+			const url = "/ModifyMenuServlet?cmd=EDIT"; // test url
 			$.ajax({
 				url: url,
 				type: "POST",
@@ -242,7 +242,7 @@
 <script>
 	window.onload =function()
 	{
-		const url = "/SFD/LoginServlet"; // test url
+		const url = "/LoginServlet"; // test url
 		// const url = "/LoginServlet"; // 正式 url
 		$.ajax({
 			url:url,
