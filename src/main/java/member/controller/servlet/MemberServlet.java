@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import member.controller.service.MemberService;
 import member.util.setting.MemberCommand;
 
-@WebServlet("/ModifyMemberServlet")
-public class ModifyMemberServlet extends HttpServlet {
+@WebServlet(name = "ModifyMemberServlet", urlPatterns = {
+    "/MemberServlet/modify", "/MemberServlet/showUsers"
+})
+public class MemberServlet extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -39,5 +41,14 @@ public class ModifyMemberServlet extends HttpServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    response.setContentType("application/json;charset=UTF-8");
+    Gson gson = new GsonBuilder().disableHtmlEscaping()
+        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
+    String json = gson.toJson("sddsf");
+    gson = null;
+    PrintWriter out = response.getWriter();
+    out.print(json);
+    out.flush();
   }
 }
