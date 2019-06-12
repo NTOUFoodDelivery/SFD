@@ -10,11 +10,18 @@ public interface UserDao {
     /**
      *
      * @description: 找尋 符合條件的 使用者
-     * @param [account, password, userType]
+     * @param [account, password, userType]//
      * @return java.lang.Long
      */
     Long searchUserId(String account, String password, String userType);
 
+    /**
+    *
+    * @description: 找尋 全部 使用者 ACCOUNT
+    * @param [account, password, userType]
+    * @return java.lang.String
+    */
+    String searchUseraccount();
     /**
      *
      * @description:  找尋 符合條件的 使用者
