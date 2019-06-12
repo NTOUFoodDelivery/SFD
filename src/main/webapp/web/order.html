@@ -43,11 +43,11 @@
                     var customerOther = customer.Other;
                     var customerPhoneNumber = customer.Phone_Number;
 
-                    // var deliver = data[i].Deliver;
-                    // var deliverID = deliver.User_Id;
-                    // var deliverName = deliver.User_Name;
-                    // var deliverAccount = deliver.Account;
-                    // var deliverPhoneNumber = deliver.Phone_Number;
+                    var deliver = data[i].Deliver;
+                    var deliverID = deliver.User_Id;
+                    var deliverName = deliver.User_Name;
+                    var deliverAccount = deliver.Account;
+                    var deliverPhoneNumber = deliver.Phone_Number;
 
                     var order = data[i].Order;
                     var orderID = order.Order_Id;
@@ -64,7 +64,7 @@
                         "<h2 class = 'mb-0' >" +
                         "<button id='collapseButton" + i + "' class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#"
                         + i + "' aria-expanded = 'true' aria-controls = '" + i
-                        + "' >" + orderID + "&emsp;&emsp;" + customerAccount + "&emsp;&emsp;" + 1 + "</button>" +
+                        + "' >訂單編號:" + orderID + "&emsp;&emsp;食客帳號:" + customerAccount + "&emsp;&emsp;外送員帳號:" + deliverID + "</button>" +
                         "</h2>" +
                         "</div>" +
                         "<div id = '" + i
@@ -104,7 +104,7 @@
                         "<span aria-hidden = 'true'>&times;</span>" +
                         "</button>" +
                         "</div>" +
-                        "<div class = 'modal-body' style = 'text-align:left;'>外送員ID:" + 1 + "<br>外送員名字:" + 1 + "<br >外送員帳號:" + 1 + "<br >外送員電話:" + 1 + "<br ></div>" +
+                        "<div class = 'modal-body' style = 'text-align:left;'>外送員ID:" + deliverID + "<br>外送員名字:" + deliverName + "<br >外送員帳號:" + deliverAccount + "<br >外送員電話:" + deliverPhoneNumber + "<br ></div>" +
                         "<div class= 'modal-footer' >" +
                         "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>"
                         +
