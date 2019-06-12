@@ -44,11 +44,12 @@ public class MemberServlet extends HttpServlet {
     response.setContentType("application/json;charset=UTF-8");
     Gson gson = new GsonBuilder().disableHtmlEscaping()
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
-    String json = gson.toJson("sddsf");
-    gson = null;
-    PrintWriter out = response.getWriter();
-    out.print(json);
-    out.flush();
+    //MemberService memberService = new MemberService();
+    //String json = gson.toJson(memberService.);
+    //memberService = null;
+    //gson = null;
+    //PrintWriter out = response.getWriter();
+    //out.print(json);
+    //out.flush();
   }
 }

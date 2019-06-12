@@ -262,10 +262,11 @@ public class MemberService {
           if (!checkIsLogin(userHashMap, user.getUserId())) { // user hash map 沒有 這個 User
             session.setAttribute("login", "login"); // login 保存進 session
             Long currentUserID = user.getUserId();
-            UserType currentUserType = user.getUserType();
+            UserType signUserType = user.getUserType();
 
-            switch (currentUserType) { // 設定 登入 初始狀態
+            switch (signUserType) { // 設定 登入 初始狀態
               case Customer: {
+                user.setUserNow(UserType.Customer);
                 userHashMap.put(currentUserID, user); // 食客 User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
@@ -273,6 +274,7 @@ public class MemberService {
                 break;
               }
               case Customer_and_Deliver: {
+                user.setUserNow(UserType.Customer);
                 userHashMap.put(currentUserID, user.getUserId()); // 外送員 User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
@@ -280,10 +282,15 @@ public class MemberService {
                 break;
               }
               case Administrator: {
+                user.setUserNow(UserType.Administrator);
                 userHashMap.put(currentUserID, user.getUserId()); // 管理員 User 存進 hash map
                 session.setAttribute("user", user); // User 保存進 session
                 session.setAttribute("userID", currentUserID); // User id 保存進 session
                 info.add("ADMINISTRATOR");
+                break;
+              }
+              case User_Ban: {
+                info.add("User_Ban");
                 break;
               }
               default: {
@@ -329,7 +336,10 @@ public class MemberService {
     Object result = null;
     boolean success;
     User user = userDao.searchUser(currentUser.getAccount());
-    if (user != null) { // 已註冊
+    if(user.getUserType().equals(UserType.User_Ban)){
+
+    }
+    else if (user != null) { // 已註冊
       UserType currentUserType = currentUser.getUserType();
       if (currentUserType.equals(UserType.Customer)
           && user.getUserType().equals(UserType.Customer_and_Deliver.toString())) {
@@ -339,9 +349,17 @@ public class MemberService {
         result = HttpCommonAction.generateStatusResponse(success, "食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)");
       }
     } else { // 未註冊
-      // 目前直接註冊
-      success = userDao.addUser(currentUser);
-      result = HttpCommonAction.generateStatusResponse(success, "未註冊 的 目前直接註冊");
+      // 註冊資料 都有填
+      if (!currentUser.getUserName().equals("") && currentUser.getUserName() != null && !currentUser
+          .getUserType().equals("") && currentUser.getUserType() != null
+          && !currentUser.getAccount().equals("") && currentUser.getAccount() != null
+          && !currentUser.getPassword().equals("") && currentUser.getPassword() != null
+          && !currentUser.getEmail().equals("") && currentUser.getEmail() != null && !currentUser
+          .getLastAddress().equals("") && currentUser.getLastAddress() != null
+          && !currentUser.getPhoneNumber().equals("") && currentUser.getPhoneNumber() != null) {
+        success = userDao.addUser(currentUser);
+        result = HttpCommonAction.generateStatusResponse(success, "未註冊 的 目前直接註冊");
+      }
     }
     userDao = null;
     return result;

@@ -1,7 +1,7 @@
 package member.util.setting;
 
 public enum UserType {
-  Customer, Customer_and_Deliver, Administrator, Deliver;
+  Customer, Customer_and_Deliver, Administrator, Deliver, User_Ban;
 
   /**
    * <p>if this command is exist , get feedback command.</p>

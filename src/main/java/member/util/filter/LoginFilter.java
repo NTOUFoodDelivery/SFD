@@ -66,8 +66,8 @@ public class LoginFilter implements Filter {
 
         // request url is web url-----BEGIN---may redirect
         User user = (User) session.getAttribute("user");
-        UserType userType = user.getUserType();
-        switch (userType) {
+        UserType userCurrentType = user.getUserNow();
+        switch (userCurrentType) {
           case Customer: {
             if(path.equals(Eater.LOGIN)){
               response.sendRedirect(Eater.WELCOME);
