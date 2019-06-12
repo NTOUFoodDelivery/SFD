@@ -1,5 +1,4 @@
 
-
 function deliverOffline(deliver_status) {
 	if(deliver_now_order==""){
 	var deliver_temp="";
