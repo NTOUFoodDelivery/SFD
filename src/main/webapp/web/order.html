@@ -6,12 +6,11 @@
 -->
 <html>
 <meta http-equiv="Pragma" content="no-cache"/>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/skel.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 
 <script>
     $(function () {
@@ -32,7 +31,6 @@
             dataType: "json",
             contentType: 'application/json; charset=UTF-8',
             success: function (data) {
-                console.log(data);
                 var data_length = data.length;           //現在有多少訂單
                 for (var i = 0; i < data_length; i++) {
                     var customer = data[i].Customer;
@@ -43,17 +41,17 @@
                     var customerOther = customer.Other;
                     var customerPhoneNumber = customer.Phone_Number;
 
-                    // var deliver = data[i].Deliver;
-                    // var deliverID = deliver.User_Id;
-                    // var deliverName = deliver.User_Name;
-                    // var deliverAccount = deliver.Account;
-                    // var deliverPhoneNumber = deliver.Phone_Number;
+                    var deliver = data[i].Deliver;
+                    var deliverID = deliver.User_Id;
+                    var deliverName = deliver.User_Name;
+                    var deliverAccount = deliver.Account;
+                    var deliverPhoneNumber = deliver.Phone_Number;
 
                     var order = data[i].Order;
                     var orderID = order.Order_Id;
                     var total = order.Total;
                     var typeCount = order.Type_Count;
-                    var id2 = orderID +""+ i;
+
 
                     $('#accordionExample').append(
                         "<div class = 'card' >" +
@@ -61,7 +59,7 @@
                         "<h2 class = 'mb-0' >" +
                         "<button id='collapseButton" + i + "' class = 'btn btn-link' type = 'button' data-toggle = 'collapse' data-target = '#"
                         + i + "' aria-expanded = 'true' aria-controls = '" + i
-                        + "' >" + orderID + "&emsp;&emsp;" + customerAccount + "&emsp;&emsp;" + 1 + "</button>" +
+                        + "' >" + orderID + "&emsp;&emsp;" + customerAccount + "&emsp;&emsp;" + deliverAccount + "</button>" +
                         "</h2>" +
                         "</div>" +
                         "<div id = '" + i
@@ -101,7 +99,7 @@
                         "<span aria-hidden = 'true'>&times;</span>" +
                         "</button>" +
                         "</div>" +
-                        "<div class = 'modal-body' >外送員ID:" + 1 + "<br>外送員名字:" + 1 + "<br >外送員帳號:" + 1 + "<br >外送員電話:" + 1 + "<br ></div>" +
+                        "<div class = 'modal-body' >外送員ID:" + deliverID + "<br>外送員名字:" + deliverName + "<br >外送員帳號:" + deliverAccount + "<br >外送員電話:" + deliverPhoneNumber + "<br ></div>" +
                         "<div class= 'modal-footer' >" +
                         "<button type = 'button' class='btn btn-secondary' data-dismiss ='modal' >Close</button>"
                         +
@@ -121,10 +119,24 @@
                         "<span aria-hidden = 'true' >&times;</span>" +
                         "</button>" +
                         "</div>" +
-                        "<div id = '"+id2+"'+ class= 'modal-body'>訂單總價:" + total + "<br >訂單種類:" + typeCount + "<br>"
+                        "<div class= 'modal-body'>訂單總價:" + total + "<br >訂單種類:" + typeCount + "<br>"
                     );
 
-                    var targetId2 = "#"+id2;
+
+                    // const buttonCustomer = "#customer"+i;
+                    // $(buttonCustomer).click(function () {
+                    //
+                    // }
+                    // const buttonDeliver = "#deliver"+i;
+                    // $(buttonDeliver).click(function () {
+                    //
+                    // }
+                    // const buttonOrder = "#order"+i;
+                    // $(buttonOrder).click(function () {
+                    //
+                    // }
+
+
                     var meal = order.Meals;
                     for (var j = 0; j < meal.length; j++) {
                         var restName = meal[j].Rest_Name;
@@ -133,7 +145,7 @@
                         var foodName = meal[j].Food_Name;
                         var cost = meal[j].Cost;
                         var count = meal[j].Count;
-                        $(targetId2).append("" +
+                        $('#accordionExample').append("" +
                             "餐廳名稱:" + restName + "<br >餐廳地址:" + restAddress + "<br >食物名稱:" + foodName + "<br >食物編號:" + foodID + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
                         );
 
@@ -141,7 +153,7 @@
                     var startTime = order.Start_Time;
                     var orderStatus = order.Order_Status;
                     var castingPrio = order.CastingPrio;
-                    $(targetId2).append("" +
+                    $('#accordionExample').append("" +
                         "訂單起始時間:"+startTime+"<br >訂單狀態:"+orderStatus+"<br >訂單權重:"+castingPrio+"</div>"
                         +
                         "<div class = 'modal-footer' >" +
