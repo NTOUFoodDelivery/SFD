@@ -107,6 +107,7 @@
     }
   </style>
 </head>
+
 <body id="cas" style="">
 <div id="container">
   <div id="content">
@@ -160,7 +161,35 @@
   </div> <!-- END #content -->
 
 </div> <!-- END #container -->
+<script>
+  $("#fm1").css('display','none');
+  $('#loader').css('display','block');
+  $.ajax({
+    url: '/LoginServlet',
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    success: function (data) {
+      // alert("asdsa")
+      console.log(data);
+      if (data) {
+        var userType = data.User_Type;
+        if (userType === "Administrator") {
+          window.location = "/web/Administrator.html";
+        } else if (userType === "Customer") {
+          window.location = "/web/index_eater.html";
+        } else {
+          window.location = "/web/index_deliver.html";
+        }
 
+      } else {
+        $("#fm1").css('display','block');
+        $('#loader').css('display','none');
+        console.log("沒人登入！")
+      }
+    }
+  })
+</script>
 <script>
   $("#fm1").submit(function (event) {
     $("#fm1").css('display','none');

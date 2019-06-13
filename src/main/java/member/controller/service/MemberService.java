@@ -294,6 +294,7 @@ public class MemberService {
               }
             }
           } else { // user hash map 有 這個 User
+            System.out.println("重複登入");
             info.add(0, "重複登入");
           }
         } else {
@@ -306,8 +307,12 @@ public class MemberService {
         info.add(0, "error");
       }
       result = info;
-    } else { // 這個session 已經有 user 登入了 ---------- 紀錄用 應該不會發生  ---- 因為 在 LoginFilter 會擋掉
-      result = HttpCommonAction.generateStatusResponse(false, "這個session 已經有 user 登入了");
+    } else { // 這個session 已經有 user 登入了
+      List<String> info = new ArrayList<>();
+      info.add("login");
+      result = info;
+      System.out.println(info);
+      //result = HttpCommonAction.generateStatusResponse(false, "這個session 已經有 user 登入了");
     }
     return result;
   }

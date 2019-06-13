@@ -1,183 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>SFD-外送員-登入測試</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>SFD-外送員-登入測試</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <style>
-        #center {
-            position:absolute; top:50%; left:50%;
-            margin-left: -105px;
-            margin-top: -170px;
-        }
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    #center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -105px;
+      margin-top: -170px;
+    }
 
-        .container {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            min-height: 100vh;
-            /*background-color: #ededed;*/
-        }
+    .container {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      min-height: 100vh;
+      /*background-color: #ededed;*/
+    }
 
-        .loader {
-            max-width: 15rem;
-            width: 100%;
-            height: auto;
-            stroke-linecap: round;
-        }
+    .loader {
+      max-width: 15rem;
+      width: 100%;
+      height: auto;
+      stroke-linecap: round;
+    }
 
-        circle {
-            fill: none;
-            stroke-width: 3.5;
-            -webkit-animation-name: preloader;
-            animation-name: preloader;
-            -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-            -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-            -webkit-animation-timing-function: ease-in-out;
-            animation-timing-function: ease-in-out;
-            -webkit-transform-origin: 170px 170px;
-            transform-origin: 170px 170px;
-            will-change: transform;
-        }
-        circle:nth-of-type(1) {
-            stroke-dasharray: 550;
-        }
-        circle:nth-of-type(2) {
-            stroke-dasharray: 500;
-        }
-        circle:nth-of-type(3) {
-            stroke-dasharray: 450;
-        }
-        circle:nth-of-type(4) {
-            stroke-dasharray: 300;
-        }
-        circle:nth-of-type(1) {
-            -webkit-animation-delay: -0.15s;
-            animation-delay: -0.15s;
-        }
-        circle:nth-of-type(2) {
-            -webkit-animation-delay: -0.3s;
-            animation-delay: -0.3s;
-        }
-        circle:nth-of-type(3) {
-            -webkit-animation-delay: -0.45s;
-            -moz-animation-delay:  -0.45s;
-            animation-delay: -0.45s;
-        }
-        circle:nth-of-type(4) {
-            -webkit-animation-delay: -0.6s;
-            -moz-animation-delay: -0.6s;
-            animation-delay: -0.6s;
-        }
+    circle {
+      fill: none;
+      stroke-width: 3.5;
+      -webkit-animation-name: preloader;
+      animation-name: preloader;
+      -webkit-animation-duration: 3s;
+      animation-duration: 3s;
+      -webkit-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+      -webkit-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-transform-origin: 170px 170px;
+      transform-origin: 170px 170px;
+      will-change: transform;
+    }
 
-        @-webkit-keyframes preloader {
-            50% {
-                -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
+    circle:nth-of-type(1) {
+      stroke-dasharray: 550;
+    }
 
-        @keyframes preloader {
-            50% {
-                -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+    circle:nth-of-type(2) {
+      stroke-dasharray: 500;
+    }
+
+    circle:nth-of-type(3) {
+      stroke-dasharray: 450;
+    }
+
+    circle:nth-of-type(4) {
+      stroke-dasharray: 300;
+    }
+
+    circle:nth-of-type(1) {
+      -webkit-animation-delay: -0.15s;
+      animation-delay: -0.15s;
+    }
+
+    circle:nth-of-type(2) {
+      -webkit-animation-delay: -0.3s;
+      animation-delay: -0.3s;
+    }
+
+    circle:nth-of-type(3) {
+      -webkit-animation-delay: -0.45s;
+      -moz-animation-delay: -0.45s;
+      animation-delay: -0.45s;
+    }
+
+    circle:nth-of-type(4) {
+      -webkit-animation-delay: -0.6s;
+      -moz-animation-delay: -0.6s;
+      animation-delay: -0.6s;
+    }
+
+    @-webkit-keyframes preloader {
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes preloader {
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
-
 <body>
-
 <div id="center" style="display:block;">
-    <h1>登入後台測試</h1>
-    <form id="myForm">
-        Username:<input type="text" name="account"><br>
-        Password:<input type="password" name="password"><br>
-        <select class="custom-select" name="userType" style="display:none">
-            <option value="Administrator" selected>admin</option>
-        </select>
-        <input type="submit" value="Login">
-        <input type="reset" value="reset">
-    </form>
-    <div id="myDiv"></div>
+  <h1>登入後台測試</h1>
+  <form id="myForm">
+    Username:<input type="text" name="account"><br>
+    Password:<input type="password" name="password"><br>
+    <select class="custom-select" name="userType" style="display:none">
+      <option value="Administrator" selected>admin</option>
+    </select>
+    <input type="submit" value="Login">
+    <input type="reset" value="reset">
+  </form>
+  <div id="myDiv"></div>
 
 </div>
 <div class="card card-body" id="errorStr"></div>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+      id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
 <div class="container" style="display:none;">
-    <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340">
-        <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
-        <circle cx="170" cy="170" r="135" stroke="#404041"/>
-        <circle cx="170" cy="170" r="110" stroke="#E2007C"/>
-        <circle cx="170" cy="170" r="85" stroke="#404041"/>
-    </svg>
+  <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340">
+    <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
+    <circle cx="170" cy="170" r="135" stroke="#404041"/>
+    <circle cx="170" cy="170" r="110" stroke="#E2007C"/>
+    <circle cx="170" cy="170" r="85" stroke="#404041"/>
+  </svg>
 </div>
-
 <script>
-    if (!navigator.cookieEnabled) {
-        $("#errorStr").html("瀏覽器已禁用Cookie！");
-    } else {
-        $("#errorStr").html("瀏覽器已開啟Cookie！");
-    }
-</script>
-<script>
-    $("#myForm").submit(function (event) {
-        $("#center").css('display','none');
-        $('.container').css('display','block');
-        $.ajax({
-            url: '/LoginServlet',
-            type: 'POST',
-            data: $('#myForm').serialize(),
-            dataType: 'json',
-            success: function (data) {
-                console.log(data);
-                var cmd = data[0];
-                $("#myDiv").empty();
-                for(let i=1;i<data.length;i++){
-                    $("#myDiv").append("<p>" + data[i] + "</p>");
-                }
-                setTimeout(function() {
-                    $(".container").css('display','none');
-                    $("#center").css('display','block');
-                }, 1000);
-                if (cmd === "login") {
-                    window.location.href='/web/Administrator.html';
-                }else {
-                    $('input[type=password]')[0].value = "";
-                }
-            }
-        });
-        event.preventDefault();
-    });
-</script>
-<script>
-    $.ajaxSetup({
-        complete : function(xhr, textStatus) {
-            console.log("llllll")
-            var sessionid = xhr.getResponseHeader("JSESSIONID");
-            if (!navigator.cookieEnabled){
-                var url = document.URL;
-                url = url.split("?");
-                url = url[0]+"?JSESSIONID="+sessionid;
-                console.log(url)
-                // window.location.replace(url);
-            }
+  $("#center").css('display', 'none');
+  $('.container').css('display', 'block');
+  $.ajax({
+    url: '/LoginServlet',
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    success: function (data) {
+      console.log(data);
+      if (data) {
+        var userType = data.User_Type;
+        if (userType === "Administrator") {
+          window.location = "/web/Administrator.html";
+        } else if (userType === "Customer") {
+          window.location = "/web/index_eater.html";
+        } else {
+          window.location = "/web/index_deliver.html";
         }
+
+      } else {
+        $(".container").css('display', 'none');
+        $("#center").css('display', 'block');
+        console.log("沒人登入！")
+      }
+    }
+  })
+</script>
+<script>
+  if (!navigator.cookieEnabled) {
+    $("#errorStr").html("瀏覽器已禁用Cookie！");
+  } else {
+    $("#errorStr").html("瀏覽器已開啟Cookie！");
+  }
+</script>
+<script>
+  $("#myForm").submit(function (event) {
+    $("#center").css('display', 'none');
+    $('.container').css('display', 'block');
+    $.ajax({
+      url: '/LoginServlet',
+      type: 'POST',
+      data: $('#myForm').serialize(),
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        var cmd = data[0];
+        $("#myDiv").empty();
+        for (let i = 1; i < data.length; i++) {
+          $("#myDiv").append("<p>" + data[i] + "</p>");
+        }
+        setTimeout(function () {
+          $(".container").css('display', 'none');
+          $("#center").css('display', 'block');
+        }, 1000);
+        if (cmd === "login") {
+          window.location.href = '/web/Administrator.html';
+        } else {
+          $('input[type=password]')[0].value = "";
+        }
+      }
     });
+    event.preventDefault();
+  });
+</script>
+<script>
+  $.ajaxSetup({
+    complete: function (xhr, textStatus) {
+      console.log("llllll")
+      var sessionid = xhr.getResponseHeader("JSESSIONID");
+      if (!navigator.cookieEnabled) {
+        var url = document.URL;
+        url = url.split("?");
+        url = url[0] + "?JSESSIONID=" + sessionid;
+        console.log(url)
+        // window.location.replace(url);
+      }
+    }
+  });
 </script>
 </body>
 </html>
