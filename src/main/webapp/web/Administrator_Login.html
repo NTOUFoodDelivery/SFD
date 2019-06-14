@@ -185,16 +185,13 @@
       dataType: 'json',
       success: function (data) {
         console.log(data);
-        var cmd = data[0];
-        $("#myDiv").empty();
-        for (let i = 1; i < data.length; i++) {
-          $("#myDiv").append("<p>" + data[i] + "</p>");
-        }
+        var result = data.result;
+
         setTimeout(function () {
           $(".container").css('display', 'none');
           $("#center").css('display', 'block');
         }, 1000);
-        if (cmd === "login") {
+        if (result === "SUCCESS") {
           window.location.href = '/web/Administrator.html';
         } else {
           $('input[type=password]')[0].value = "";

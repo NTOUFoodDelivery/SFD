@@ -204,17 +204,14 @@
       dataType: 'json',
       success: function (data) {
         console.log(data);
-        var cmd = data[0];
-        $("#myDiv").empty();
-        for(let i=1;i<data.length;i++){
-          $("#myDiv").append("<span class='badge badge-pill badge-info'>" + data[i] + "</span><br>");
-        }
+        var result = data.result;
+
         setTimeout(function() {
           $("#loader").css('display','none');
           $("#fm1").css('display','block');
         }, 1000);
         
-        if (cmd === "login") {
+        if (result === "SUCCESS") {
           window.location.href='/web/index_eater.html';
         }else {
           $('input[type=password]')[0].value = "";

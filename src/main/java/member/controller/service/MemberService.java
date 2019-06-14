@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.MemberCommand;
 import member.util.setting.UserStatus;
 import member.util.setting.UserType;
+import member.util.setting.Validate;
 import util.HttpCommonAction;
 
 
@@ -225,104 +227,93 @@ public class MemberService {
     return success;
   }
 
+
   /**
    * <p>
    * 登入.
    * </p>
    *
-   * @param session 請求中的 session
+   * @param request 請求中的 HttpServletRequest
    * @param account 使用者 key in 的 帳號
    * @param password 使用者 key in 的 密碼
-   * @param userType 使用者 key in 的 使用者 種類
    */
+  public Validate login(HttpServletRequest request, String account, String password) {
 
-  public Object login(ConcurrentHashMap userHashMap, HttpSession session, String account,
-      String password, String userType) {
-
-    Object result;
-
-    if (session.getAttribute("login") == null) { // 這個session 沒登入過 任何 user
-      List<String> info = new ArrayList<>(); // 錯誤訊息
-      if (account == null || "".equals(account)) { // account不能空著喔
-        info.add("account不能空著喔");
-      }
-
-      if (password == null || "".equals(password)) { // password不能空著喔
-        info.add("password不能空著喔");
-      }
-
-      if (userType == null || "".equals(userType)) { // userType不能空著喔
-        info.add("userType不能空著喔");
-      }
-
-      if (info.size() == 0) { // 使用者欄位 輸入正常
-        userDao = new UserDaoImpl();
-        User user = userDao.searchUser(account, password); // 檢查 資料庫 有無此 帳密 使用者 --------
+    HttpSession session = request.getSession();
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
+        .getAttribute("userHashMap");
+    Validate validate;
+    if (checkLoginKeyIn(account, password)) { // 使用者欄位 輸入正常
+      if (!checkSessionIsLogin(session)) { // 這個session 沒登入過 任何 user
+        User user = validate(account, password);
         if (user != null) { // 資料庫 有這個使用者
-          if (!checkIsLogin(userHashMap, user.getUserId())) { // user hash map 沒有 這個 User
-            Long currentUserID = user.getUserId();
-            UserType signUserType = user.getUserType();
-            System.out.println(user);
-            switch (signUserType) { // 設定 登入 初始狀態
-              case Customer:
-              case Customer_and_Deliver:{
-                session.setAttribute("login", "login"); // login 保存進 session
-                userDao.modifyUserNow(user.getUserId(),UserType.Customer.toString());
-                user.setUserNow(UserType.Customer);
-                userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
-                session.setAttribute("user", user); // User 保存進 session
-                session.setAttribute("userID", currentUserID); // User id 保存進 session
-                info.add("login");
-                break;
-              }
-              case Administrator: {
-                session.setAttribute("login", "login"); // login 保存進 session
-                userDao.modifyUserNow(user.getUserId(),UserType.Administrator.toString());
-                user.setUserNow(signUserType);
-                userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
-                session.setAttribute("user", user); // User 保存進 session
-                session.setAttribute("userID", currentUserID); // User id 保存進 session
-                info.add("login");
-                break;
-              }
-              case User_Ban: {
-                info.add("User_Ban");
-                break;
-              }
-              default: {
-                break;
-              }
+          if (user.getUserType().equals(UserType.User_Ban)) { // 如果他被 BAN 了
+            validate = Validate.USER_IS_BAN;
+          } else {
+            if (!checkUserHashMapIsLogin(userHashMap,
+                user.getUserId())) { // user hash map 沒有 這個 User
+              login(session, userHashMap, user);
+              validate = Validate.SUCCESS;
+            } else { // user hash map 有 這個 User --重複登入
+              validate = Validate.HASH_MAP_LOGIN_REPEAT;
             }
-          } else { // user hash map 有 這個 User
-            System.out.println("重複登入");
-            info.add(0, "重複登入");
           }
-        } else {
-          info.add("登入失敗，錯誤的帳號、密碼或userType");
-          info.add(0, "error");
+        } else { // 資料庫 沒有這個使用者
+          validate = Validate.USER_NOT_EXIST;
         }
         userDao = null;
-
-      } else { // 使用者欄位 輸入異常
-        info.add(0, "error");
+      } else { // 這個session 已經有 user 登入了
+        validate = Validate.SESSION_LOGIN_REPEAT;
       }
-      result = info;
-    } else { // 這個session 已經有 user 登入了
-      List<String> info = new ArrayList<>();
-      info.add("login");
-      result = info;
-      System.out.println(info);
-      //result = HttpCommonAction.generateStatusResponse(false, "這個session 已經有 user 登入了");
+    } else { // 使用者欄位 輸入異常
+      validate = Validate.KEY_IN_ERROR;
     }
-    return result;
+    return validate;
   }
 
-  private boolean checkIsLogin(ConcurrentHashMap userHashMap, Long userID) {
-    if (userHashMap.get(userID) != null) { // 在 servlet hash map 有 User
-      return true;
+  private void login(HttpSession session, ConcurrentHashMap userHashMap, User user) {
+    Long currentUserID = user.getUserId();
+    UserType signUserType = user.getUserType();
+    userDao = new UserDaoImpl();
+    userDao.modifyUserNow(user.getUserId(), signUserType.toString());
+    userDao = null;
+    userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
+    session.setAttribute("user", user); // User 保存進 session
+    session.setAttribute("userID", currentUserID); // User id 保存進 session
+    session.setAttribute("login", "login"); // login 保存進 session
+    if (signUserType.equals(UserType.Administrator)) {
+      user.setUserNow(signUserType);
     } else {
+      user.setUserNow(UserType.Customer);
+    }
+  }
+
+  private boolean checkLoginKeyIn(String account, String password) {
+    if (account == null || "".equals(account) || password == null || "".equals(password)) {
       return false;
     }
+    return true;
+  }
+
+  private User validate(String account, String password) {
+    userDao = new UserDaoImpl();
+    User user = userDao.searchUser(account, password); // 檢查 資料庫 有無此 帳密 使用者 --------
+    userDao = null;
+    return user;
+  }
+
+  private boolean checkSessionIsLogin(HttpSession session) {
+    if (session.getAttribute("login") == null) { // 這個session 沒登入過 任何 user
+      return false;
+    }
+    return true;
+  }
+
+  private boolean checkUserHashMapIsLogin(ConcurrentHashMap userHashMap, Long userID) {
+    if (userHashMap.get(userID) != null) { // 在 servlet hash map 有 User
+      return true;
+    }
+    return false;
   }
 
   /**

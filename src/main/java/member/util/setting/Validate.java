@@ -1,0 +1,5 @@
+package member.util.setting;
+
+public enum Validate {
+  SUCCESS,HASH_MAP_LOGIN_REPEAT,USER_IS_BAN,USER_NOT_EXIST,SESSION_LOGIN_REPEAT,KEY_IN_ERROR
+}
