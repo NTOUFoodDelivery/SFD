@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import member.controller.service.MemberService;
-import member.model.javabean.LoginResponse;
+import member.model.javabean.MemberApiResponse;
 import member.model.javabean.User;
 import member.util.setting.Validate;
 
@@ -31,12 +31,12 @@ public class LoginServlet extends HttpServlet {
 
     MemberService memberService = new MemberService();
     Validate validate = memberService.login(request, account, password);
-    LoginResponse loginResponse = new LoginResponse();
-    loginResponse.setResult(validate.toString());
-    //loginResponse.setMessage("");
-    loginResponse.setTime(new Date().toString());
+    MemberApiResponse memberApiResponse = new MemberApiResponse();
+    memberApiResponse.setResult(validate.toString());
+    //memberApiResponse.setMessage("");
+    memberApiResponse.setTime(new Date().toString());
 
-    String json = gson.toJson(loginResponse);
+    String json = gson.toJson(memberApiResponse);
     memberService = null;
     gson = null;
     PrintWriter out = response.getWriter();

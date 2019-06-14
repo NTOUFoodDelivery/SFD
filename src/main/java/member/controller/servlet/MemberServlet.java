@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import member.controller.service.MemberService;
 import member.util.setting.MemberCommand;
+import util.HttpCommonAction;
 
 @WebServlet(name = "ModifyMemberServlet", urlPatterns = {
     "/MemberServlet/modify", "/MemberServlet/showUsers"
@@ -30,7 +31,9 @@ public class MemberServlet extends HttpServlet {
     Long userID = Long.parseLong(request.getParameter("userID")); // user id
 
     MemberService memberService = new MemberService();
-    String json = gson.toJson(memberService.modifyMember(userID, memberCommand));
+    boolean result = memberService.modifyMember(userID, memberCommand);
+    String json = gson.toJson(
+        HttpCommonAction.generateStatusResponse(result, "Command :: " + memberCommand.toString()));
     memberService = null;
     gson = null;
     PrintWriter out = response.getWriter();

@@ -27,43 +27,17 @@ public class MemberService {
    * @param userID 使用者ID
    * @param memberCommand 指令
    */
+  public boolean modifyMember(Long userID, MemberCommand memberCommand) {
 
-  public Object modifyMember(Long userID, MemberCommand memberCommand) {
-
-    Object result = null;
+    boolean result = false;
     if (memberCommand != null) { // 有這個指令
       userDao = new UserDaoImpl();
-      String msg = "command :: " + memberCommand.toString() + " Member";
-      switch (memberCommand) {
-        case USER_BAN: { // ban 使用者
-          boolean success;
-          success = userDao.modifyUserStatus(userID, memberCommand.toString());
-          if (success) {
-            msg = msg + " work!!";
-          } else {
-            msg = msg + " do not work!!";
-          }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
-          break;
-        }
-        case DELETE: { // 刪除 使用者
-          boolean success;
-          success = userDao.delUser(userID);
-          if (success) {
-            msg = msg + " work!!";
-          } else {
-            msg = msg + " do not work!!";
-          }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
-          break;
-        }
-        default: {
-          break;
-        }
+      if (memberCommand.equals(MemberCommand.USER_BAN)) {
+        result = userDao.modifyUserStatus(userID, memberCommand.toString());
+      } else if (memberCommand.equals(MemberCommand.DELETE)) {
+        result = userDao.delUser(userID);
       }
       userDao = null;
-    } else { // 沒有這個指令
-      result = HttpCommonAction.generateStatusResponse(false, "Command not found");
     }
     return result;
   }
@@ -126,64 +100,59 @@ public class MemberService {
    * @param currentUser 使用者 User 物件
    * @param userStatus 使用者 狀態
    */
-  public Object switchStatus(User currentUser, UserStatus userStatus) {
+  public Validate switchStatus(User currentUser, UserStatus userStatus) {
 
-    Object result = null;
-    String msg = "command :: " + userStatus;
-    boolean success;
+    Validate validate;
     if (userStatus != null) {
       userDao = new UserDaoImpl();
       UserType currentUserType = currentUser.getUserNow();
       switch (currentUserType) {
         case Deliver: {
-          success = switchDeliverStatus(currentUser, userStatus);
-          if (success) {
-            msg = msg + " work!!";
+          if (switchDeliverStatus(currentUser, userStatus)) {
+            validate = Validate.SUCCESS;
           } else {
-            msg = msg + " do not work!!";
+            validate = Validate.ERROR;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case Customer: {
-          success = switchCustomerStatus(currentUser, userStatus);
-          if (success) {
-            msg = msg + " work!!";
+          if (switchCustomerStatus(currentUser, userStatus)) {
+            validate = Validate.SUCCESS;
           } else {
-            msg = msg + " do not work!!";
+            validate = Validate.ERROR;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         default: {
+          validate = Validate.ERROR;
           break;
         }
-
       }
       userDao = null;
     } else {
-      msg += "can not found!!";
-      result = HttpCommonAction.generateStatusResponse(false, msg);
+      validate = Validate.ERROR;
     }
-    return result;
+    return validate;
   }
 
   // 轉換上下線 切換身份
   // 討論！！
   private boolean switchDeliverStatus(User currentUser, UserStatus userStatus) {
     boolean success = false;
-    if (!currentUser.getUserStatus().equals(userStatus)) { // 不同狀態 才要變
+    UserStatus currentUserStatus = currentUser.getUserStatus();
+    Long currentUserId = currentUser.getUserId();
+    if (!currentUserStatus.equals(userStatus)) { // 不同狀態 才要變
       // 如果目前有接單 或 目前有推播訂單，收回接單
-      if (currentUser.getUserStatus().equals(UserStatus.DELIVER_BUSY)
-          || currentUser.getUserStatus().equals(UserStatus.PUSHING)) {
+      if (currentUserStatus.equals(UserStatus.DELIVER_BUSY)
+          || currentUserStatus.equals(UserStatus.PUSHING)) {
         // ---------------------------收回接單-------
-        currentUser.setUserStatus(UserStatus.DELIVER_ON); // 更新 session user 的狀態 為可推播
-        success = userDao.modifyUserStatus(currentUser.getUserId(),
+        currentUser.setUserStatus(UserStatus.DELIVER_ON); // 更新 session / hash map user 的狀態 為可推播
+        success = userDao.modifyUserStatus(currentUserId,
             UserStatus.DELIVER_ON.toString()); // 更新 資料庫 user 狀態
       } else {
-        currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
+        currentUser.setUserStatus(userStatus); // 更新 session / hash map  user 的狀態
         success = userDao
-            .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
+            .modifyUserStatus(currentUserId, userStatus.toString()); // 更新 資料庫 user 狀態
       }
     }
     return success;
@@ -192,7 +161,7 @@ public class MemberService {
   private boolean switchCustomerStatus(User currentUser, UserStatus userStatus) {
     boolean success = false;
     if (!currentUser.getUserStatus().equals(userStatus)) { // 不同狀態 才要變
-      currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
+      currentUser.setUserStatus(userStatus); // 更新 session / hash map  user 的狀態
       success = userDao
           .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
     }
@@ -252,8 +221,11 @@ public class MemberService {
           } else {
             if (!checkUserHashMapIsLogin(userHashMap,
                 user.getUserId())) { // user hash map 沒有 這個 User
-              login(session, userHashMap, user);
-              validate = Validate.SUCCESS;
+              if (login(session, userHashMap, user)) { // 如果 資料庫 登入成功
+                validate = Validate.SUCCESS;
+              } else { // 如果 資料庫 登入失敗
+                validate = Validate.ERROR;
+              }
             } else { // user hash map 有 這個 User --重複登入
               validate = Validate.HASH_MAP_LOGIN_REPEAT;
             }
@@ -271,11 +243,11 @@ public class MemberService {
     return validate;
   }
 
-  private void login(HttpSession session, ConcurrentHashMap userHashMap, User user) {
+  private boolean login(HttpSession session, ConcurrentHashMap userHashMap, User user) {
     Long currentUserID = user.getUserId();
     UserType signUserType = user.getUserType();
     userDao = new UserDaoImpl();
-    userDao.modifyUserNow(user.getUserId(), signUserType.toString());
+    boolean result = userDao.modifyUserNow(user.getUserId(), signUserType.toString());
     userDao = null;
     userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
     session.setAttribute("user", user); // User 保存進 session
@@ -286,6 +258,7 @@ public class MemberService {
     } else {
       user.setUserNow(UserType.Customer);
     }
+    return result;
   }
 
   private boolean checkLoginKeyIn(String account, String password) {
@@ -323,38 +296,56 @@ public class MemberService {
    *
    * @param currentUser 使用者
    */
-  public Object signUp(User currentUser) {
-    userDao = new UserDaoImpl();
-    Object result = null;
-    boolean success;
-    User user = userDao.searchUser(currentUser.getAccount());
-    if (user.getUserType().equals(UserType.User_Ban)) {
+  public Validate signUp(User currentUser) {
 
-    } else if (user != null) { // 已註冊
-      UserType currentUserType = currentUser.getUserType();
-      if (currentUserType.equals(UserType.Customer)
-          && user.getUserType().equals(UserType.Customer_and_Deliver.toString())) {
-        // 食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)
-        success = userDao
-            .modifyUserType(user.getUserId(), UserType.Customer_and_Deliver.toString());
-        result = HttpCommonAction.generateStatusResponse(success, "食客想變 外送員(成為外送員會 包含食客及外送員兩種身份)");
+    Validate validate;
+    if (checkSignupKeyIn(currentUser)) {
+      userDao = new UserDaoImpl();
+      User user = userDao.searchUser(currentUser.getAccount());
+      if (user != null) { // 已註冊
+        if (user.getUserType().equals(UserType.User_Ban)) { // 如果使用者 被BAN
+          validate = Validate.USER_IS_BAN;
+        } else { // 如果使用者 沒有 被BAN
+          if (user.equals(UserType.Customer) // 他是食客
+              && currentUser.getUserType().equals(UserType.Customer_and_Deliver)) { // 但現在想 註冊 外送員
+            if (userDao
+                .modifyUserType(user.getUserId(),
+                    UserType.Customer_and_Deliver.toString())) { // 資料庫 加入成功
+              validate = Validate.SUCCESS;
+            } else { // 資料庫 加入失敗
+              validate = Validate.ERROR;
+            }
+          } else { // 他是 外送員 想註冊
+            validate = Validate.ERROR;
+          }
+        }
+      } else { // 未註冊
+        // 註冊資料 都有填
+        if (userDao.addUser(currentUser)) { // 資料庫 加入成功
+          validate = Validate.SUCCESS;
+        } else { // 資料庫 加入失敗
+          validate = Validate.ERROR;
+        }
       }
-    } else { // 未註冊
-      // 註冊資料 都有填
-      if (!currentUser.getUserName().equals("") && currentUser.getUserName() != null
-          && currentUser.getUserType() != null
-          && !currentUser.getAccount().equals("") && currentUser.getAccount() != null
-          && !currentUser.getPassword().equals("") && currentUser.getPassword() != null
-          && !currentUser.getEmail().equals("") && currentUser.getEmail() != null && !currentUser
-          .getLastAddress().equals("") && currentUser.getLastAddress() != null
-          && !currentUser.getPhoneNumber().equals("") && currentUser.getPhoneNumber() != null
-          && currentUser.getUserNow() != null) {
-        success = userDao.addUser(currentUser);
-        result = HttpCommonAction.generateStatusResponse(success, "未註冊 的 目前直接註冊");
-      }
+      userDao = null;
+    } else {
+      validate = Validate.KEY_IN_ERROR;
     }
-    userDao = null;
-    return result;
+    return validate;
+  }
+
+  private boolean checkSignupKeyIn(User user) {
+    if (user.getUserName().equals("") || user.getUserName() == null
+        || user.getUserType().equals("") || user.getUserType() == null
+        || user.getAccount().equals("") || user.getAccount() == null
+        || user.getPassword().equals("") || user.getPassword() == null
+        || user.getEmail().equals("") || user.getEmail() == null
+        || user.getLastAddress().equals("") || user.getLastAddress() == null
+        || user.getPhoneNumber().equals("") || user.getPhoneNumber() == null
+        || user.getUserNow().equals("") || user.getUserNow() == null) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -365,22 +356,30 @@ public class MemberService {
    * 設計登出後，各使用者 的 訂單問題.
    * </p>
    *
-   * @param userHashMap servlet context 裡面的 ConcurrentHashMap
-   * @param httpSession 請求中的 session
+   * @param request HttpServletRequest
    */
-  public Object logout(ConcurrentHashMap userHashMap, HttpSession httpSession) {
+  public Validate logout(HttpServletRequest request) {
+
+    ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
+        .getAttribute("userHashMap");
+    HttpSession httpSession = request.getSession();
+
+    Validate validate;
     User user = (User) httpSession.getAttribute("user"); // current request User
     Long userID = user.getUserId();
     userDao = new UserDaoImpl();
-    userHashMap.remove(userID);
-    boolean success = userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString()); // 設定狀態為 下線
-    httpSession.removeAttribute("login");
-    httpSession.removeAttribute("userID");
-    httpSession.removeAttribute("user");
-    //httpSession.invalidate(); // 註銷 該 session
-    Object result = HttpCommonAction.generateStatusResponse(success, "logout!!");
+    if (userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString())) { // 設定狀態為 下線
+      userHashMap.remove(userID); // 移除 hash map User 物件
+      httpSession.removeAttribute("login"); // 移除 session login
+      httpSession.removeAttribute("userID"); // 移除 session userID
+      httpSession.removeAttribute("user"); // 移除 session User 物件
+      //httpSession.invalidate(); // 註銷 該 session
+      validate = Validate.SUCCESS;
+    } else {
+      validate = Validate.ERROR;
+    }
     userDao = null;
-    return result;
+    return validate;
   }
 
   public List<String> showUsers() {

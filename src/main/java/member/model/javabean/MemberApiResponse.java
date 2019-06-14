@@ -1,6 +1,6 @@
 package member.model.javabean;
 
-public class LoginResponse {
+public class MemberApiResponse {
 
   /**
    * result :
