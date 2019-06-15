@@ -44,8 +44,8 @@
         this.webSocket.onmessage = function (event) {
           // 客製化-----BEGIN
 
-          console.log(event)
-
+          var ss = JSON.stringify(event, null, 4)
+          alert(ss)
         }
         this.webSocket.onclose = function (event) {
           console.log("onclose::" + JSON.stringify(event, null, 4));
