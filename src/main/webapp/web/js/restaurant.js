@@ -14,7 +14,7 @@ $(document).ready(function(){
 					var value = rest.Rest_Id;
 					var name = rest.Rest_Name;
 					$('#restaurant_select').append('<option value ='+value+'>'+name+'</option>');
-					$('#restaurant_select1').append('<option value ='+value+'>'+name+'</option>');
+
 				
 					
 				}
@@ -33,7 +33,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-	const url = "/SFD/ShowRestInfoServlet"; // test url
+	const url = "/ShowRestInfoServlet"; // test url
 	// const url = "/ShowRestInfoServlet"; // 正式 url
         $.ajax({
             type: "GET",
@@ -46,12 +46,16 @@ $(document).ready(function(){
 					var name = rest.Rest_Name;
 					var address = rest.Rest_Address;
 					$('#restaurant_select3').append('<option value ='+value+'>'+name+'</option>');
-				
+					$('#restaurant_select1').append('<option value ='+value+'>'+name+'</option>');
 					
 				}
 				$('#restaurant_select3').on('change', function() {
-						const valueSelected = this.value;
-						getMenu(valueSelected);
+						var valueSelected = this.value;
+						getMenu('#menu_select',valueSelected);
+				});
+				$('#restaurant_select1').on('change', function() {
+					var valueSelected = this.value;
+					getMenu('#menu_fix_select',valueSelected);
 				});
             },
             error: function () {
@@ -59,12 +63,13 @@ $(document).ready(function(){
             }
         })
 	
-})
+});
 
-function getMenu(Rest_Id){
-	$('#menu_select').empty();
-	$('#menu_select1').empty();
-	const url = "/SFD/ShowMenuServlet?restID="+Rest_Id; // test url
+
+
+function getMenu(where,Rest_Id){
+	$(where).empty();
+	const url = "/ShowMenuServlet?restID="+Rest_Id; // test url
 	// const url = "/ShowMenuServlet"; // 正式 url
         $.ajax({
             type: "GET",
@@ -76,8 +81,7 @@ function getMenu(Rest_Id){
 					var meal = data[i];
 					var value = meal.Food_Id;
 					var name = meal.Food_Name;
-					$('#menu_select').append('<option value ='+value+'>'+name+'</option>');
-					$('#menu_select1').append('<option value ='+value+'>'+name+'</option>');
+					$(where).append('<option value ='+value+'>'+name+'</option>');
 				}
             },
             error: function () {

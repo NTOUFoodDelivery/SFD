@@ -57,25 +57,26 @@ public class UserDaoImpl implements UserDao {
    * @return Long
    */
   @Override
-  public List<String> searchUseraccount() {
+  public List<User> searchUseraccount() {
 	    Connection connection = C3P0Util.getConnection();
 	    PreparedStatement preparedStatement;
 	    ResultSet resultSet;
-	    String userAccount = null;
-	    String sql = "SELECT account FROM member ";
-	    List<String> accountList = new ArrayList<>();
+	    List<User> users = new ArrayList<>();
+	    String sql = "SELECT account, User_Id FROM member ";
 	    try {
 	      preparedStatement = connection.prepareStatement(sql);
 	      resultSet = preparedStatement.executeQuery();
 	      while (resultSet.next()) {
-	    	  userAccount = resultSet.getString("Account");
-	        accountList.add(userAccount);
+	        User user = new User();
+	        user.setUserId( resultSet.getLong("User_Id"));
+	        user.setAccount( resultSet.getString("Account"));
+            users.add(user);
 	      }
 	    } catch (SQLException e) {
 	      e.printStackTrace();
 	    } finally {
 	      C3P0Util.close(connection);
-	      return accountList;
+	      return users;
 	    }
 	  }
 

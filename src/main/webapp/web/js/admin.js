@@ -1,11 +1,11 @@
-function upload(cmd) // upload img and return img_url
+function upload(cmd,where) // upload img and return img_url
 {
 
     const id = '1573e8c523b6e8c'; // 填入 App 的 Client ID
     const token = '2288b6ecd6c0eb7545b4c083c9e0f212eb6ab9ed'; // 填入 token
     const album = 'vNnSeO4'; // 若要指定傳到某個相簿，就填入相簿的 ID
 
-    var fileTarget = "#"+cmd+"File";
+    var fileTarget = "#"+cmd+where+"File";
     var file_data = $(fileTarget).prop('files')[0]; //取得上傳檔案屬性
 
     let settings = {
@@ -21,11 +21,11 @@ function upload(cmd) // upload img and return img_url
         mimeType: 'multipart/form-data'
     };
 
-    var restNameTarget = "#"+cmd+"RestName";
-    var restDescriptionTarget = "#"+cmd+"RestDescription";
+    var nameTarget = "#"+cmd+where+"Name";
+    var descriptionTarget = "#"+cmd+where+"Description";
 
-    var title = $(restNameTarget)[0].value;
-    var description = $(restDescriptionTarget)[0].value;
+    var title = $(nameTarget)[0].value;
+    var description = $(descriptionTarget)[0].value;
 
     let form = new FormData();
     form.append('image', file_data);
@@ -39,7 +39,7 @@ function upload(cmd) // upload img and return img_url
         // console.log(res); // 可以看見上傳成功後回的值
         var img_url = JSON.parse(res).data.link;
         console.log(img_url); // ------------------------- 圖片網址
-        var imgUrlTarget = "#"+cmd+"ImgUrl";
+        var imgUrlTarget = "#"+cmd+where+"ImgUrl";
         $(imgUrlTarget)[0].value = img_url;
         alert('上傳完成，稍待一會兒就可以在底部的列表上看見了。')
     });
@@ -53,7 +53,7 @@ function import_menu(n1, n2) {
         Rest_Name: n1, Rest_Address: n2
     });
     showmenutemp = "";
-    const url = "/SFD/ShowMenuServlet"; // test url
+    const url = "/ShowMenuServlet"; // test url
     // const url = "/ShowMenuServlet"; // 正式 url
     $.ajax({
         url: url,

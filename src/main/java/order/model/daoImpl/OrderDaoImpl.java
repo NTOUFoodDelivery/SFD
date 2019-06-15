@@ -664,7 +664,7 @@ public ArrayList<Order> searchallOrder() {
         {
             Order order = new Order();
             Order.CustomerBean customerBean = new Order.CustomerBean();
-            Order.DeliverBean deliverBean = new Order.DeliverBean();
+
             
             customerBean.setUserID(resultSet.getLong("Customer_Id"));       
             customerBean.setUserName(resultSet.getString("User_Name"));
@@ -682,10 +682,12 @@ public ArrayList<Order> searchallOrder() {
             orderBean.setCastingPrio(resultSet.getInt("Casting_Prio"));
 
             if(resultSet.getLong("Deliver_Id") != 0 ) {
+                Order.DeliverBean deliverBean = new Order.DeliverBean();
             	deliverBean.setUserName(rs.getString("User_Name"));
             	deliverBean.setUserID(resultSet.getLong("Deliver_Id"));       
             	deliverBean.setAccount(rs.getString("Account"));
             	deliverBean.setPhoneNumber(rs.getString("Phone_Number"));
+                order.setDeliver(deliverBean);
             }
             List<Order.OrderBean.MealsBean> mealsBeanXList = new ArrayList<>();
 
@@ -716,7 +718,6 @@ public ArrayList<Order> searchallOrder() {
             orderBean.setMeals(mealsBeanXList);
             order.setCustomer(customerBean);
             order.setOrder(orderBean);
-            order.setDeliver(deliverBean);
             orders.add(order);
         }
         } catch (SQLException e) {

@@ -21,7 +21,7 @@ public interface UserDao {
     * @param [account, password, userType]
     * @return java.lang.String
     */
-    List<String> searchUseraccount();
+    List<User> searchUseraccount();
     /**
      *
      * @description:  找尋 符合條件的 使用者

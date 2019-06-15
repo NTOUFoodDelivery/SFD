@@ -382,9 +382,9 @@ public class MemberService {
     return validate;
   }
 
-  public List<String> showUsers() {
+  public List<User> showUsers() {
     userDao = new UserDaoImpl();
-    List<String> result = userDao.searchUseraccount();
+    List<User> result = userDao.searchUseraccount();
     userDao = null;
     return result;
   }

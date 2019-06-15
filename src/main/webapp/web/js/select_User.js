@@ -9,7 +9,7 @@ $(document).ready(function(){
             for(var i = 0;i< data.length;i++){
                 var user = data[i];
                 var value = user.User_Id;
-                var name = user.Account;                           //要大寫還是小寫 Account
+                var name = user.Account;
                 $('#user_select').append('<option value ='+value+'>'+name+'</option>');
             }
         },

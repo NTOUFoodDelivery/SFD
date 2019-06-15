@@ -162,7 +162,7 @@ public class MenuDaoImpl implements MenuDao {
       preparedStatement.setString(3, menu.getDescription());
       preparedStatement.setString(4, menu.getImage());
       preparedStatement.setLong(5, menu.getRestID());
-      preparedStatement.setLong(5, menu.getFoodID());
+      preparedStatement.setLong(6, menu.getFoodID());
       preparedStatement.executeUpdate();
       success = true;
     } catch (SQLException e) {

@@ -44,10 +44,21 @@
                     var customerPhoneNumber = customer.Phone_Number;
 
                     var deliver = data[i].Deliver;
-                    var deliverID = deliver.User_Id;
-                    var deliverName = deliver.User_Name;
-                    var deliverAccount = deliver.Account;
-                    var deliverPhoneNumber = deliver.Phone_Number;
+                    var deliverID;
+                    var deliverName;
+                    var deliverAccount;
+                    var deliverPhoneNumber;
+                    if(deliver === undefined){ // 未接訂單
+                        deliverID = "尚未接單";
+                        deliverName = "尚未接單";
+                        deliverAccount = "尚未接單";
+                        deliverPhoneNumber ="尚未接單";
+                    }else { // 已接訂單
+                        deliverID = deliver.User_Id;
+                        deliverName = deliver.User_Name;
+                        deliverAccount = deliver.Account;
+                        deliverPhoneNumber = deliver.Phone_Number;
+                    }
 
                     var order = data[i].Order;
                     var orderID = order.Order_Id;
@@ -198,7 +209,7 @@
 <section id="banner">
     <h2><strong>Starburst Food Delivery</strong></h2>
     <p>查看目前食客與外送員的所有訂單介面</p>
-    <p>AAAAA管理員</p>
+    <p id="adminAccount"></p>
     <ul class="actions">
         <li><a id="bu" href="#" class="button special">開始使用</a></li>
     </ul>
@@ -242,4 +253,41 @@
 
 <!-- Scripts -->
 </body>
+<script>
+    $(document).ready(function(){
+        $(function(){
+            $.ajaxSetup ({
+                cache: false, //關掉AJAX 緩存
+                async:false, //同步請求
+                contentType:"application/x-www-form-urlencoded;charset=utf-8",
+                complete:function(XMLHttpRequest,textStatus){
+                    // 用 XMLHttpRequest 拿 header，sessionstatus，
+                    var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
+                    if(sessionstatus=="timeout"){
+                        alert("重複登入或長時間無操作～請重新登入！！");
+                        parent.location.href = "LoginDemo.html";
+                    }
+                }
+            });
+        });
+
+        const url = "/LoginServlet"; // 正式 url
+        $.ajax({
+            url:url,
+            type:'GET',
+            dataType:'json',
+            success:function(data)
+            {
+                console.log(data);
+                if(data){ // if login success
+                    var account = data.Account;
+                    $('#adminAccount')[0].innerHTML = account + "管理員";
+                }else {
+                    window.location.href='/web/Administrator_Login.html'; // 正式 url
+                }
+            }
+        })
+    })
+
+</script>
 </html>

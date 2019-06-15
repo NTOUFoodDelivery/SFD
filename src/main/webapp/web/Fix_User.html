@@ -19,7 +19,7 @@
                     //---uncheck---------
                     const userID = optionSelected[0].value;
                     //---uncheck---------
-
+                    console.log(optionSelected[0].value);
                     const url = "/MemberServlet/modify?cmd=USER_BAN&userID="+userID; // test url
                     // const url = "/MemberServlet/modify?cmd=EDIT"; // 正式 url
                     $.ajax({
@@ -28,7 +28,6 @@
                         async: true,
                         dataType: "json",
                         contentType: 'application/json; charset=UTF-8',
-                        data: sJson,
                         success: function(){
                             alert("Success");
                             window.location.reload();
@@ -52,7 +51,7 @@
 <section id="banner">
     <h2><strong>Starburst Food Delivery</strong></h2>
     <p>歡迎來到使用者管理介面</p>
-    <p>AAAAA管理員</p>
+    <p id="adminAccount"></p>
     <ul class="actions">
         <li><a id = "bu" href="#" class="button special">開始使用</a></li>
     </ul>
@@ -111,8 +110,9 @@
             dataType:'json',
             success:function(data)
             {
-                if(data){
-
+                if(data){ // if login success
+                    var account = data.Account;
+                    $('#adminAccount')[0].innerHTML = account + "管理員";
                 }else {
                     // window.location.href='/SFD/web/Administrator_Login.html'; // test url
                     // window.location.href='/web/Administrator_Login.html'; // 正式 url
