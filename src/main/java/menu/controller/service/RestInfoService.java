@@ -114,49 +114,35 @@ public class RestInfoService {
    * @param restCommand 餐廳 指令
    * @param menu 菜單
    */
-  public Object modifyRestMenu(RestCommand restCommand, Menu menu) {
+  public boolean modifyRestMenu(RestCommand restCommand, Menu menu) {
 
-    Object result = null;
-    String msg = "Command :: " + restCommand.toString();
+   boolean result = false;
     if (restCommand != null) {
       menuDao = new MenuDaoImpl();
       switch (restCommand) {
         case ADD: {
-          boolean success = menuDao.addRestMenu(menu);
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (menuDao.addRestMenu(menu)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case DELETE: {
-          boolean success = menuDao.delRestMenu(menu.getFoodID());
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (menuDao.delRestMenu(menu.getFoodID())) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
+
           break;
         }
         case EDIT: {
-          boolean success = menuDao.fixRestMenu(menu);
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (menuDao.fixRestMenu(menu)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         default: {
           break;
         }
       }
-    } else {
-      result = HttpCommonAction.generateStatusResponse(false, msg + " can not found!!");
     }
     return result;
   }
