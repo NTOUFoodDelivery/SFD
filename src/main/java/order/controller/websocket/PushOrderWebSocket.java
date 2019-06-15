@@ -59,18 +59,18 @@ public class PushOrderWebSocket {
 
   /**
    * <p>處理 訂單 接受與否 ,
-   * lock websocket sessions 以免推播訂單時 ,拿到不完全的 用戶、訂單資訊.</p>
+   * lock websocket sessions -- 已取消 以免推播訂單時 ,拿到不完全的 用戶、訂單資訊.</p>
    *
    * @param session 當前 session
    * @param msg client 回傳資訊
    */
   @OnMessage
   public void onMessage(Session session, String msg) {
-    synchronized (PushOrderTask.sessions) {
-      User user = PushOrderTask.sessions.get(session); // deliver id
-      PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
-      orderService.dealOrder(pushResult, user.getUserId()); // 處理 訂單
-    }
+    //synchronized (PushOrderTask.sessions) {
+    User user = PushOrderTask.sessions.get(session); // deliver id
+    PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
+    orderService.dealOrder(pushResult, user.getUserId()); // 處理 訂單
+    //}
   }
 
   @OnError

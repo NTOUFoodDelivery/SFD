@@ -1,15 +1,21 @@
 package member.util.setting;
 
 public class WebUrl {
-  public class Eater {
+
+  public static class Eater {
+
     public static final String WELCOME = "/web/index_eater.html";
     public static final String LOGIN = "/web/login.html";
   }
-  public class Deliver {
+
+  public static class Deliver {
+
     public static final String WELCOME = "/web/index_deliver.html";
     public static final String LOGIN = "/web/login.html";
   }
-  public class Admin {
+
+  public static class Admin {
+
     public static final String WELCOME = "/web/Administrator.html";
     public static final String REST = "/web/restaurant.html";
     public static final String MENU = "/web/menu.html";

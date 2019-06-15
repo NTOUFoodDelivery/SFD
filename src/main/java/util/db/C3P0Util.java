@@ -3,6 +3,8 @@ package util.db;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class C3P0Util {
@@ -40,6 +42,128 @@ public class C3P0Util {
             }
         }
     }
+
+  /**
+   * 連接物件放回連線池
+   *
+   * @param connection
+   * @param preparedStatement
+   */
+  public static void close(Connection connection, PreparedStatement preparedStatement){
+    if(preparedStatement!=null){
+      try {
+        preparedStatement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    if(connection!=null){
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * 連接物件放回連線池
+   *
+   * @param connection
+   * @param preparedStatement
+   * @param resultSet
+   */
+  public static void close(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet){
+    if(resultSet!=null){
+      try {
+        resultSet.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    if(preparedStatement!=null){
+      try {
+        preparedStatement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    if(connection!=null){
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * 連接物件放回連線池
+   *
+   * @param connection
+   * @param preparedStatement
+   * @param resultSet
+   */
+  public static void close(Connection connection, ResultSet resultSet , PreparedStatement... preparedStatements){
+    if(resultSet!=null){
+      try {
+        resultSet.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    for(PreparedStatement preparedStatement : preparedStatements) {
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    if(connection!=null){
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * 連接物件放回連線池
+   *
+   * @param preparedStatements
+   */
+  public static void close(PreparedStatement... preparedStatements){
+    for(PreparedStatement preparedStatement : preparedStatements) {
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  /**
+   * 連接物件放回連線池
+   *
+   * @param resultSets
+   */
+  public static void close(ResultSet... resultSets){
+
+    for(ResultSet resultSet : resultSets) {
+      if (resultSet != null) {
+        try {
+          resultSet.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
 }
 
 

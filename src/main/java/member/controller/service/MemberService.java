@@ -1,8 +1,11 @@
 package member.controller.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -303,10 +306,11 @@ public class MemberService {
       userDao = new UserDaoImpl();
       User user = userDao.searchUser(currentUser.getAccount());
       if (user != null) { // 已註冊
-        if (user.getUserType().equals(UserType.User_Ban)) { // 如果使用者 被BAN
+        UserType userType = user.getUserType();
+        if (userType.equals(UserType.User_Ban)) { // 如果使用者 被BAN
           validate = Validate.USER_IS_BAN;
         } else { // 如果使用者 沒有 被BAN
-          if (user.equals(UserType.Customer) // 他是食客
+          if (userType.equals(UserType.Customer) // 他是食客
               && currentUser.getUserType().equals(UserType.Customer_and_Deliver)) { // 但現在想 註冊 外送員
             if (userDao
                 .modifyUserType(user.getUserId(),
@@ -336,13 +340,13 @@ public class MemberService {
 
   private boolean checkSignupKeyIn(User user) {
     if (user.getUserName().equals("") || user.getUserName() == null
-        || user.getUserType().equals("") || user.getUserType() == null
+        || user.getUserType() == null
         || user.getAccount().equals("") || user.getAccount() == null
         || user.getPassword().equals("") || user.getPassword() == null
         || user.getEmail().equals("") || user.getEmail() == null
         || user.getLastAddress().equals("") || user.getLastAddress() == null
         || user.getPhoneNumber().equals("") || user.getPhoneNumber() == null
-        || user.getUserNow().equals("") || user.getUserNow() == null) {
+        || user.getUserNow() == null) {
       return false;
     }
     return true;
@@ -398,10 +402,14 @@ public class MemberService {
    * @param value map中的 value
    */
   public static Object getKey(Map map, Object value) {
+    Set set = map.entrySet();
+    @SuppressWarnings("unchecked")
+    Iterator<Entry<Object, Object>> iterator = set.iterator();
     List<Object> keyList = new ArrayList<>();
-    for (Object key : map.keySet()) {
-      if (map.get(key).equals(value)) {
-        keyList.add(key);
+    while(iterator.hasNext()){
+      Map.Entry<Object, Object> entry = iterator.next();
+      if(entry.getValue().equals(value)){
+        keyList.add(entry.getKey());
       }
     }
     return keyList;

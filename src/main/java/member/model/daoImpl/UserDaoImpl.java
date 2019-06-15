@@ -1,18 +1,17 @@
 package member.model.daoImpl;
 
-import member.model.dao.UserDao;
-import member.model.javabean.Feedback;
-import member.model.javabean.User;
-import member.util.setting.UserStatus;
-import member.util.setting.UserType;
-import util.db.C3P0Util;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import member.model.dao.UserDao;
+import member.model.javabean.Feedback;
+import member.model.javabean.User;
+import member.util.setting.UserStatus;
+import member.util.setting.UserType;
+import util.db.C3P0Util;
 
 public class UserDaoImpl implements UserDao {
 
@@ -27,8 +26,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public Long searchUserId(String account, String password, String userType) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     Long userID = 0L;
     String sql = "select * from member where account=? and Password=? and User_Type=?";
     try {
@@ -43,7 +42,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return userID;
     }
   }
@@ -58,27 +57,27 @@ public class UserDaoImpl implements UserDao {
    */
   @Override
   public List<User> searchUseraccount() {
-	    Connection connection = C3P0Util.getConnection();
-	    PreparedStatement preparedStatement;
-	    ResultSet resultSet;
-	    List<User> users = new ArrayList<>();
-	    String sql = "SELECT account, User_Id FROM member ";
-	    try {
-	      preparedStatement = connection.prepareStatement(sql);
-	      resultSet = preparedStatement.executeQuery();
-	      while (resultSet.next()) {
-	        User user = new User();
-	        user.setUserId( resultSet.getLong("User_Id"));
-	        user.setAccount( resultSet.getString("Account"));
-            users.add(user);
-	      }
-	    } catch (SQLException e) {
-	      e.printStackTrace();
-	    } finally {
-	      C3P0Util.close(connection);
-	      return users;
-	    }
-	  }
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    List<User> users = new ArrayList<>();
+    String sql = "SELECT account, User_Id FROM member ";
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        User user = new User();
+        user.setUserId(resultSet.getLong("User_Id"));
+        user.setAccount(resultSet.getString("Account"));
+        users.add(user);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      C3P0Util.close(connection, preparedStatement, resultSet);
+      return users;
+    }
+  }
 
   /**
    * <p>找尋 符合條件的 使用者.</p>
@@ -91,8 +90,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public User searchUser(String account, String password, String userType) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     User user = null;
     String sql = "select * from member where account=? and Password=? and User_Type=?";
     try {
@@ -117,7 +116,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return user;
     }
   }
@@ -132,8 +131,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public User searchUser(String account, String password) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     User user = null;
     String sql = "select * from member where account=? and Password=?";
     try {
@@ -157,7 +156,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return user;
     }
   }
@@ -171,8 +170,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public User searchUser(String account) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     User user = null;
     String sql = "select * from member where account=?";
     try {
@@ -195,7 +194,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return user;
     }
   }
@@ -210,8 +209,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public User showUser(Long userId) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     User user = null;
     String sql = "select * from member where User_Id =?";
     try {
@@ -234,7 +233,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return user;
     }
   }
@@ -249,7 +248,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean addUser(User user) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     boolean success = false;
     String sql = "INSERT INTO member(User_Id, account, Password, User_Name, Email, Phone_number, Last_Address, User_Type, User_Now, User_Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     try {
@@ -269,7 +268,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -284,8 +283,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public String showUserStatus(Long userID) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String identity = null;
     String sql = "SELECT User_Status FROM member WHERE User_Id = ?";
     try {
@@ -298,7 +297,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return identity;
     }
   }
@@ -313,8 +312,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public String showUserType(Long userId) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String userType = null;
     String sql = "SELECT User_Type FROM member WHERE User_Id = ?";
     try {
@@ -327,7 +326,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return userType;
     }
   }
@@ -342,7 +341,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean delUser(Long userId) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     String sql = "DELETE FROM member WHERE User_Id = ?";
     boolean success = false;
     try {
@@ -353,7 +352,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -369,7 +368,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean modifyUserStatus(Long userId, String userStatus) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     String sql = "UPDATE member SET User_Status = ? WHERE User_Id = ?;";
     boolean success = false;
     try {
@@ -381,11 +380,11 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
-  
+
   /**
    * <p>更改 使用者的Now.</p>
    *
@@ -396,8 +395,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean modifyUserNow(Long userId, String userNow) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    
+    PreparedStatement preparedStatement = null;
     String sql = "UPDATE member SET User_Now = ? WHERE User_Id = ?;";
     boolean success = false;
     try {
@@ -409,7 +407,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -423,25 +421,25 @@ public class UserDaoImpl implements UserDao {
    */
   @Override
   public String showUserNow(Long userID) {
-	    Connection connection = C3P0Util.getConnection();
-	    PreparedStatement preparedStatement;
-	    ResultSet resultSet;
-	    String identity = null;
-	    String sql = "SELECT User_Now FROM member WHERE User_Id = ?";
-	    try {
-	      preparedStatement = connection.prepareStatement(sql);
-	      preparedStatement.setLong(1, userID);
-	      resultSet = preparedStatement.executeQuery();
-	      if (resultSet.next()) {
-	        identity = resultSet.getString("User_Now");
-	      }
-	    } catch (SQLException e) {
-	      e.printStackTrace();
-	    } finally {
-	      C3P0Util.close(connection);
-	      return identity;
-	    }
-	  }
+    Connection connection = C3P0Util.getConnection();
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    String identity = null;
+    String sql = "SELECT User_Now FROM member WHERE User_Id = ?";
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+      preparedStatement.setLong(1, userID);
+      resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        identity = resultSet.getString("User_Now");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      C3P0Util.close(connection, preparedStatement, resultSet);
+      return identity;
+    }
+  }
 
   /**
    * @param [userID, userType]
@@ -453,7 +451,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean modifyUserType(Long userID, String userType) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     String sql = "UPDATE member SET User_Type = ? WHERE User_Id = ?;";
     boolean success = false;
     try {
@@ -465,7 +463,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
 
@@ -480,8 +478,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean searchUser(Long userID) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String sql = "SELECT User_Id FROM member WHERE User_Id = ?";
     boolean success = false;
     try {
@@ -495,7 +493,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return success;
     }
   }
@@ -509,8 +507,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public List<User> searchIdleDeliverUser() {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String sql = "SELECT * FROM member WHERE User_Status = 'DELIVER_ON'";
     List<User> userList = new ArrayList<>();
     try {
@@ -533,7 +531,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return userList;
     }
   }
@@ -548,7 +546,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean addFeedback(Long FeedbackID, Long UserID, String Content) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     String sql = "INSERT INTO feedback(Feedback_Id, User_Id, Content) VALUES(?, ?, ?);";
     boolean success = false;
     try {
@@ -561,7 +559,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -576,7 +574,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public boolean replyFeedback(Long FeedbackID, String BackContent) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     String sql = "UPDATE feedback SET Back_Content = ? WHERE Feedback_Id = ?;";
     boolean success = false;
     try {
@@ -588,7 +586,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -602,8 +600,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public List<Feedback> searchFeedback(Long userID) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String sql = "SELECT * FROM feedback WHERE User_Id = ?";
     List<Feedback> feedbackList = new ArrayList<>();
     try {
@@ -621,7 +619,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return feedbackList;
     }
   }
@@ -635,8 +633,8 @@ public class UserDaoImpl implements UserDao {
   @Override
   public List<Feedback> searchFeedback() {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String sql = "SELECT * FROM feedback";
     List<Feedback> feedbackList = new ArrayList<>();
     try {
@@ -653,7 +651,7 @@ public class UserDaoImpl implements UserDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return feedbackList;
     }
   }

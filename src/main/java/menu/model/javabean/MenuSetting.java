@@ -2,7 +2,7 @@ package menu.model.javabean;
 
 public class MenuSetting {
 
-  public class Command {
+  public static class Command {
 
     public static final String ADD = "add";
     public static final String DELETE = "delete";

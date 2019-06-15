@@ -26,7 +26,6 @@ public class ShowCurrentOrderServlet extends HttpServlet {
     Gson gson = new GsonBuilder().disableHtmlEscaping()
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-    Long currentUserID = (Long) request.getSession().getAttribute("userID");
     User currentUser = (User) request.getSession()
         .getAttribute("user"); // current request User
     OrderService orderService = new OrderService();
