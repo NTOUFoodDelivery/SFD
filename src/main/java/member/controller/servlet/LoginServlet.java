@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 
     String json = gson.toJson(memberApiResponse);
     memberService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();
@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
     HttpSession httpSession = request.getSession();
     User currentUser = (User) httpSession.getAttribute("user");
     String json = gson.toJson(currentUser);
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();

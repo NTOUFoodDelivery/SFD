@@ -41,7 +41,7 @@ public class ModifyMenuServlet extends HttpServlet {
     statusCodeResponse.setTime(new Date().toString());
     String json = gson.toJson(statusCodeResponse);
     restInfoService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

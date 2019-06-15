@@ -32,7 +32,7 @@ public class ShowCurrentOrderServlet extends HttpServlet {
     OrderService orderService = new OrderService();
     String json = gson.toJson(orderService.showCurrentOrder(currentUser));
     orderService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

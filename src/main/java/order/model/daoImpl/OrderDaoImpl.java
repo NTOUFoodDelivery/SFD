@@ -85,7 +85,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public ArrayList<Order> searchIdleOrder() {
+    public List<Order> searchIdleOrder() {
         ArrayList<Order> orders = new ArrayList<Order>();
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
@@ -160,7 +160,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public ArrayList<Order> searchEaterOrder(Long userID) {
+    public List<Order> searchEaterOrder(Long userID) {
         ArrayList<Order> orders = new ArrayList<Order>();
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
@@ -421,7 +421,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List searchDeliverOrder(Long userID) {
+    public List<Order> searchDeliverOrder(Long userID) {
         List<Order> orderList = new ArrayList<>();
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
@@ -483,7 +483,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List searchDeliverHistoryOrder(Long deliverId) {
+    public List<Order> searchDeliverHistoryOrder(Long deliverId) {
         List<Order> orderList = new ArrayList<>();
         Connection connection = C3P0Util.getConnection();
         PreparedStatement preparedStatement;
@@ -729,7 +729,7 @@ public ArrayList<Order> searchallOrder() {
 	}
 
 @Override
-public ArrayList<Order> searchallHistoryOrder() {
+public List<Order> searchallHistoryOrder() {
     ArrayList<Order> orders = new ArrayList<Order>();
     Connection connection = C3P0Util.getConnection();
     PreparedStatement preparedStatement, pst;

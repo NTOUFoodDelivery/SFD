@@ -5,23 +5,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import menu.controller.service.RestInfoService;
-import menu.model.javabean.Menu;
 import menu.model.javabean.Rest;
 import util.HttpCommonAction;
 
 @WebServlet("/ShowMenuServlet")
 public class ShowMenuServlet extends HttpServlet {
 
+
+  // 用 名稱 地址 拿餐廳菜單
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("application/json;charset=UTF-8");
@@ -33,12 +30,13 @@ public class ShowMenuServlet extends HttpServlet {
     RestInfoService restInfoService = new RestInfoService();
     String json = gson.toJson(restInfoService.getRestMenu(rest)); // 拿到 一家餐廳 的菜單
     restInfoService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
   }
 
+  // 用 id 拿餐廳菜單
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("application/json;charset=UTF-8");
@@ -50,7 +48,7 @@ public class ShowMenuServlet extends HttpServlet {
 
     String json = gson.toJson(restInfoService.getRestMenu(restID));
     restInfoService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

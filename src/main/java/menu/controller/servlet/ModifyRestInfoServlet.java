@@ -29,10 +29,11 @@ public class ModifyRestInfoServlet extends HttpServlet {
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Rest.class); // rest
 
     RestInfoService restInfoService = new RestInfoService();
-    String json = gson.toJson(restInfoService.modifyRestInfo(restCommand, rest));
-    request.getServletContext().setAttribute("restInfoList", restInfoService.getRestInfo());
+    boolean result = restInfoService.modifyRestInfo(restCommand, rest);
+    String json = gson.toJson(HttpCommonAction.generateStatusResponse(result,""));
+    request.getServletContext().setAttribute("restInfoList", restInfoService.getRestInfo()); // 重新設定 新的餐廳物件
     restInfoService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

@@ -1,5 +1,7 @@
 package order.controller.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.User;
 import member.util.setting.UserStatus;
@@ -8,7 +10,7 @@ import order.model.daoImpl.OrderDaoImpl;
 import order.model.javabean.Order;
 import order.model.javabean.OrderSetting;
 import order.model.javabean.PushResult;
-import util.HttpCommonAction;
+import order.util.setting.OrderConfirm;
 
 public class OrderService {
 
@@ -20,20 +22,17 @@ public class OrderService {
    *
    * @param order 訂單
    */
-  public Object addOrder(Order order) {
+  public boolean addOrder(Order order) {
 
     orderDao = new OrderDaoImpl();
-    order.getOrder().setCastingPrio(0);
-    order.getOrder().setOrderStatus(OrderSetting.OrderStatus.WAIT);
-    boolean success = orderDao.addOrder(order); // 訂單加入資料庫
-    orderDao = null;
-    String msg;
-    if (success) {
-      msg = "訂單加入資料庫";
-    } else {
-      msg = "訂單加入資料庫 失敗！！";
+    order.getOrder().setCastingPrio(0); // 權重 歸零
+    order.getOrder().setOrderStatus(OrderSetting.OrderStatus.WAIT); // 設定 訂單 初始狀態 --WAIT
+    boolean result = false;
+    if (orderDao.addOrder(order)) {
+      result = true;
     }
-    return HttpCommonAction.generateStatusResponse(success, msg);
+    orderDao = null;
+    return result;
   }
 
   /**
@@ -42,17 +41,17 @@ public class OrderService {
    * @param userID 使用者ID
    * @param orderID 訂單ID
    */
-  public synchronized Object confirmOrder(User currentUser, Long orderID) {
+  public synchronized OrderConfirm confirmOrder(User currentUser, Long orderID) {
     userDao = new UserDaoImpl();
     UserType userType = currentUser.getUserType();
-    String msg = null;
+    OrderConfirm result = OrderConfirm.ERROR;
     switch (userType) {
       case Customer_and_Deliver: {
-        msg = deliverConfirmOrder(orderID);
+        result = deliverConfirmOrder(orderID);
         break;
       }
       case Customer: {
-        msg = eaterConfirmOrder(orderID);
+        result = eaterConfirmOrder(orderID);
         break;
       }
       default: {
@@ -60,7 +59,7 @@ public class OrderService {
       }
     }
     userDao = null;
-    return HttpCommonAction.generateStatusResponse(true, msg);
+    return result;
   }
 
   /**
@@ -68,23 +67,25 @@ public class OrderService {
    *
    * @param orderID 訂單ID
    */
-  private String eaterConfirmOrder(Long orderID) {
+  private OrderConfirm eaterConfirmOrder(Long orderID) {
     orderDao = new OrderDaoImpl();
     String status = orderDao.getOrderStatus(orderID); // 訂單狀態
-    String msg = null;
+    OrderConfirm orderConfirm = OrderConfirm.ERROR;
     switch (status) {
       case OrderSetting.OrderStatus.DEALING: { // 沒人 按下  確認
-        orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.CUSTOMER_CONFIRMING);
-        msg = "等待外送員按確認";
+        if (orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.CUSTOMER_CONFIRMING)) {
+          orderConfirm = OrderConfirm.FIRST_CONFIRM;
+        }
         break;
       }
       case OrderSetting.OrderStatus.CUSTOMER_CONFIRMING: { // 自己 已按過 確認
-        msg = "自己已按過確認";
+        orderConfirm = OrderConfirm.REPEAT_CONFIRM;
         break;
       }
       case OrderSetting.OrderStatus.DELIVER_CONFIRMING: { // 外送員 已按過 確認
-        orderDao.ordertoHistory(orderID);
-        msg = "雙方皆按下確認";
+        if (orderDao.ordertoHistory(orderID)) {
+          orderConfirm = OrderConfirm.FINISH;
+        }
         break;
       }
       default: {
@@ -92,7 +93,7 @@ public class OrderService {
       }
     }
     orderDao = null;
-    return msg;
+    return orderConfirm;
   }
 
   /**
@@ -100,23 +101,25 @@ public class OrderService {
    *
    * @param orderID 訂單ID
    */
-  private String deliverConfirmOrder(Long orderID) {
+  private OrderConfirm deliverConfirmOrder(Long orderID) {
     orderDao = new OrderDaoImpl();
     String status = orderDao.getOrderStatus(orderID); // 訂單狀態
-    String msg = null;
+    OrderConfirm orderConfirm = OrderConfirm.ERROR;
     switch (status) {
       case OrderSetting.OrderStatus.DEALING: { // 沒人 按下  確認
-        orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DELIVER_CONFIRMING);
-        msg = "等待食客按確認";
+        if (orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DELIVER_CONFIRMING)) {
+          orderConfirm = OrderConfirm.FIRST_CONFIRM;
+        }
         break;
       }
       case OrderSetting.OrderStatus.CUSTOMER_CONFIRMING: { // 食客 已按過 確認
-        orderDao.ordertoHistory(orderID);
-        msg = "雙方皆按下確認";
+        if (orderDao.ordertoHistory(orderID)) {
+          orderConfirm = OrderConfirm.FINISH;
+        }
         break;
       }
       case OrderSetting.OrderStatus.DELIVER_CONFIRMING: { // 自己 已按過 確認
-        msg = "自己已按過確認";
+        orderConfirm = OrderConfirm.REPEAT_CONFIRM;
         break;
       }
       default: {
@@ -124,7 +127,7 @@ public class OrderService {
       }
     }
     orderDao = null;
-    return msg;
+    return orderConfirm;
   }
 
   /**
@@ -168,18 +171,17 @@ public class OrderService {
    *
    * @param userID 使用者ID
    */
-  public Object showCurrentOrder(User currentUser) {
+  public List<Order> showCurrentOrder(User currentUser) {
     orderDao = new OrderDaoImpl();
     userDao = new UserDaoImpl();
     UserType userType = currentUser.getUserType();
-    Object result = null;
+    List<Order> result;
     switch (userType) {
       case Customer: {
         result = orderDao.searchEaterOrder(currentUser.getUserId());
         break;
       }
       case Customer_and_Deliver: {
-        System.out.println(currentUser);
         result = orderDao.searchDeliverOrder(currentUser.getUserId());
         break;
       }
@@ -188,6 +190,7 @@ public class OrderService {
         break;
       }
       default: {
+        result = new ArrayList<>();
         break;
       }
     }
@@ -201,18 +204,17 @@ public class OrderService {
    *
    * @param userID 使用者ID
    */
-  public Object showHistoryOrder(User currentUser) {
+  public List<Order> showHistoryOrder(User currentUser) {
     orderDao = new OrderDaoImpl();
     userDao = new UserDaoImpl();
     UserType userType = currentUser.getUserType();
-    Object result = null;
+    List<Order> result;
     switch (userType) {
       case Customer: {
         result = orderDao.searchEaterHistoryOrder(currentUser.getUserId());
         break;
       }
       case Customer_and_Deliver: {
-        System.out.println(currentUser);
         result = orderDao.searchDeliverHistoryOrder(currentUser.getUserId());
         break;
       }
@@ -221,6 +223,7 @@ public class OrderService {
         break;
       }
       default: {
+        result = new ArrayList<>();
         break;
       }
     }

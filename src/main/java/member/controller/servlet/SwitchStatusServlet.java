@@ -39,7 +39,7 @@ public class SwitchStatusServlet extends HttpServlet {
     memberApiResponse.setTime(new Date().toString());
     String json = gson.toJson(memberApiResponse);
     memberService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

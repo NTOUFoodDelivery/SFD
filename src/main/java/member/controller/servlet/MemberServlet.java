@@ -35,7 +35,7 @@ public class MemberServlet extends HttpServlet {
     String json = gson.toJson(
         HttpCommonAction.generateStatusResponse(result, "Command :: " + memberCommand.toString()));
     memberService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
@@ -50,7 +50,7 @@ public class MemberServlet extends HttpServlet {
     MemberService memberService = new MemberService();
     String json = gson.toJson(memberService.showUsers());
     memberService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

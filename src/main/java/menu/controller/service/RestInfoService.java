@@ -1,16 +1,11 @@
 package menu.controller.service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.ServletContext;
 import menu.model.daoImpl.MenuDaoImpl;
 import menu.model.daoImpl.RestDaoImpl;
 import menu.model.javabean.Menu;
 import menu.model.javabean.Rest;
 import menu.util.setting.RestCommand;
-import util.HttpCommonAction;
 
 public class RestInfoService {
 
@@ -57,44 +52,28 @@ public class RestInfoService {
    * @param restCommand 餐廳 指令
    * @param rest 餐廳
    */
-  public Object modifyRestInfo(RestCommand restCommand, Rest rest) {
+  public boolean modifyRestInfo(RestCommand restCommand, Rest rest) {
 
-    Object result = null;
-    String msg = "Command :: " + restCommand.toString();
+    boolean result = false;
     if (restCommand != null) {
-
       restDao = new RestDaoImpl();
       switch (restCommand) {
         case ADD: {
-          boolean success = restDao.addRest(rest);
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (restDao.addRest(rest)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case DELETE: {
-          System.out.println(rest.getRestID());
-          boolean success = restDao.delRest(rest.getRestID());
-          System.out.println("ddxcvxdvffd");
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (restDao.delRest(rest.getRestID())) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case EDIT: {
-          boolean success = restDao.fixRest(rest);
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (restDao.fixRest(rest)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         default: {
@@ -102,8 +81,6 @@ public class RestInfoService {
         }
       }
       restDao = null;
-    } else {
-      result = HttpCommonAction.generateStatusResponse(false, msg + " can not found!!");
     }
     return result;
   }
@@ -116,7 +93,7 @@ public class RestInfoService {
    */
   public boolean modifyRestMenu(RestCommand restCommand, Menu menu) {
 
-   boolean result = false;
+    boolean result = false;
     if (restCommand != null) {
       menuDao = new MenuDaoImpl();
       switch (restCommand) {
