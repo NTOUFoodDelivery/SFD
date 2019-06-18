@@ -108,12 +108,19 @@ function changtorest() {
 
 function SwitchStatustode() {
     $.ajax({
-        url: "/SFD/SwitchStatus",
+        url: "/SwitchStatusServlet?userStatus=DELIVER_OFF",
         type: "POST",
         async: true,
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',
-        data: sJson,
-        success: function (JData_menu) { alert("switch to deliver"); }
+        data: null,
+        success: 
+        
+        function (JData_menu) { 
+            
+            window.location="/web/index_deliver.html";
+            
+            //alert("switch to deliver");
+         }
     });
 }
