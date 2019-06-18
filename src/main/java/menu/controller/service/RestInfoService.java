@@ -1,15 +1,11 @@
 package menu.controller.service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.ServletContext;
 import menu.model.daoImpl.MenuDaoImpl;
 import menu.model.daoImpl.RestDaoImpl;
 import menu.model.javabean.Menu;
 import menu.model.javabean.Rest;
 import menu.util.setting.RestCommand;
-import util.HttpCommonAction;
 
 public class RestInfoService {
 
@@ -56,44 +52,28 @@ public class RestInfoService {
    * @param restCommand 餐廳 指令
    * @param rest 餐廳
    */
-  public Object modifyRestInfo(RestCommand restCommand, Rest rest) {
+  public boolean modifyRestInfo(RestCommand restCommand, Rest rest) {
 
-    Object result = null;
-    String msg = "Command :: " + restCommand.toString();
+    boolean result = false;
     if (restCommand != null) {
-
       restDao = new RestDaoImpl();
       switch (restCommand) {
         case ADD: {
-          boolean success = restDao.addRest(rest);
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (restDao.addRest(rest)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case DELETE: {
-          System.out.println(rest.getRestID());
-          boolean success = restDao.delRest(rest.getRestID());
-          System.out.println("ddxcvxdvffd");
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (restDao.delRest(rest.getRestID())) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case EDIT: {
-          boolean success = restDao.fixRest(rest);
-          if (success) {
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (restDao.fixRest(rest)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         default: {
@@ -101,8 +81,6 @@ public class RestInfoService {
         }
       }
       restDao = null;
-    } else {
-      result = HttpCommonAction.generateStatusResponse(false, msg + " can not found!!");
     }
     return result;
   }
@@ -113,55 +91,35 @@ public class RestInfoService {
    * @param restCommand 餐廳 指令
    * @param menu 菜單
    */
-  public Object modifyRestMenu(RestCommand restCommand, Menu menu, ServletContext servletContext) {
+  public boolean modifyRestMenu(RestCommand restCommand, Menu menu) {
 
-    Object result = null;
-    String msg = "Command :: " + restCommand.toString();
+    boolean result = false;
     if (restCommand != null) {
-      Map<Long, List<Menu>> restMenuHashMap = (ConcurrentHashMap<Long, List<Menu>>) servletContext
-          .getAttribute("restMenuHashMap"); // 拿到 servlet context 紀錄 各家餐廳 的菜單
-      Long restId = menu.getRestID();
       menuDao = new MenuDaoImpl();
       switch (restCommand) {
         case ADD: {
-          boolean success = menuDao.addRestMenu(menu);
-          if (success) {
-            restMenuHashMap.put(restId, menuDao.searchRestMenu(restId));
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (menuDao.addRestMenu(menu)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case DELETE: {
-          boolean success = menuDao.delRestMenu(menu.getFoodID());
-          if (success) {
-            restMenuHashMap.remove(restId);
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (menuDao.delRestMenu(menu.getFoodID())) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
+
           break;
         }
         case EDIT: {
-          boolean success = menuDao.fixRestMenu(menu);
-          if (success) {
-            restMenuHashMap.replace(restId, menuDao.searchRestMenu(restId));
-            msg += " work!!";
-          } else {
-            msg += " can not work!!";
+          if (menuDao.fixRestMenu(menu)) {
+            result = true;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         default: {
           break;
         }
       }
-    } else {
-      result = HttpCommonAction.generateStatusResponse(false, msg + " can not found!!");
     }
     return result;
   }

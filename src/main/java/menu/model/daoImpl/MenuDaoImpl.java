@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import menu.model.dao.MenuDao;
 import menu.model.javabean.Menu;
 import util.db.C3P0Util;
@@ -23,8 +21,8 @@ public class MenuDaoImpl implements MenuDao {
   @Override
   public List<Menu> searchRestMenu(Long restID) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     String sql = "SELECT * FROM meal WHERE Rest_Id = ?";
     List<Menu> menuList = new ArrayList<>();
     try {
@@ -45,7 +43,7 @@ public class MenuDaoImpl implements MenuDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return menuList;
     }
   }
@@ -60,8 +58,8 @@ public class MenuDaoImpl implements MenuDao {
   @Override
   public List<Menu> searchRestMenu(String restName, String restAddress) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
     List<Menu> menuList = new ArrayList<>();
     String sql = "SELECT * FROM meal WHERE Rest_Id = (SELECT Rest_Id FROM restaurant_info WHERE Rest_Name= ? and Rest_Address= ?)";
     try {
@@ -83,7 +81,7 @@ public class MenuDaoImpl implements MenuDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement, resultSet);
       return menuList;
     }
   }
@@ -97,7 +95,7 @@ public class MenuDaoImpl implements MenuDao {
   @Override
   public boolean addRestMenu(Menu menu) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     String sql = "INSERT INTO meal(Food_Id, Food_Name, Rest_Id, Cost, Description, Image) VALUES(?, ?, ?, ?, ?, ?);";
     boolean success = false;
     try {
@@ -113,7 +111,7 @@ public class MenuDaoImpl implements MenuDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -127,7 +125,7 @@ public class MenuDaoImpl implements MenuDao {
   @Override
   public boolean delRestMenu(Long foodID) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     boolean success = false;
     String sql = "DELETE FROM meal WHERE Food_Id = ?";
     try {
@@ -138,7 +136,7 @@ public class MenuDaoImpl implements MenuDao {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }
@@ -152,7 +150,7 @@ public class MenuDaoImpl implements MenuDao {
   @Override
   public boolean fixRestMenu(Menu menu) {
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement = null;
     boolean success = false;
     String sql = "UPDATE meal SET Food_Name = ?, Cost = ?, Description = ?, Image = ? WHERE Rest_Id = ? AND Food_Id = ?";
     try {
@@ -162,13 +160,13 @@ public class MenuDaoImpl implements MenuDao {
       preparedStatement.setString(3, menu.getDescription());
       preparedStatement.setString(4, menu.getImage());
       preparedStatement.setLong(5, menu.getRestID());
-      preparedStatement.setLong(5, menu.getFoodID());
+      preparedStatement.setLong(6, menu.getFoodID());
       preparedStatement.executeUpdate();
       success = true;
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      C3P0Util.close(connection);
+      C3P0Util.close(connection, preparedStatement);
       return success;
     }
   }

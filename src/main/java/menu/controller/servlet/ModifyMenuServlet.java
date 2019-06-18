@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import menu.controller.service.RestInfoService;
 import menu.model.javabean.Menu;
 import menu.util.setting.RestCommand;
 import util.HttpCommonAction;
+import util.javabean.StatusCodeResponse;
 
 @WebServlet("/ModifyMenuServlet")
 public class ModifyMenuServlet extends HttpServlet {
@@ -29,12 +31,17 @@ public class ModifyMenuServlet extends HttpServlet {
     Menu menu = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Menu.class); // menu
 
-    ServletContext servletContext = request.getServletContext();
-
     RestInfoService restInfoService = new RestInfoService();
-    String json = gson.toJson(restInfoService.modifyRestMenu(restCommand, menu, servletContext));
+    StatusCodeResponse statusCodeResponse = new StatusCodeResponse();
+    if(restInfoService.modifyRestMenu(restCommand, menu)){
+      statusCodeResponse.setResult("SUCCESS");
+    }else {
+      statusCodeResponse.setResult("FAILURE");
+    }
+    statusCodeResponse.setTime(new Date().toString());
+    String json = gson.toJson(statusCodeResponse);
     restInfoService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

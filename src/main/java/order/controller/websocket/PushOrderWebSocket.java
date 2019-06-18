@@ -16,14 +16,13 @@ import javax.websocket.server.ServerEndpoint;
 
 import member.model.javabean.User;
 import order.controller.service.OrderService;
+import order.controller.timertask.PushOrderTask;
 import order.model.javabean.PushResult;
 import util.configurator.GetHttpSessionConfigurator;
 
 @ServerEndpoint(value = "/pushOrderEndpoint", configurator = GetHttpSessionConfigurator.class)
 public class PushOrderWebSocket {
 
-  // 紀錄 所有 連接 websocket 外送員 的 websocket session
-  public static Map<Session, User> sessions = new ConcurrentHashMap<>();
 
   private Gson gson = new GsonBuilder().disableHtmlEscaping()
       .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
@@ -43,7 +42,7 @@ public class PushOrderWebSocket {
 
     User user = (User) httpSession.getAttribute("user");
     if (user != null) {
-      sessions.put(session, user);
+      PushOrderTask.sessions.put(session, user);
     }
   }
 
@@ -55,23 +54,23 @@ public class PushOrderWebSocket {
   @OnClose
   public void onClose(Session session) {
     System.out.println("PushOrderWebSocket Server close ::" + session.getId());
-    sessions.remove(session);
+    PushOrderTask.sessions.remove(session);
   }
 
   /**
    * <p>處理 訂單 接受與否 ,
-   * lock websocket sessions 以免推播訂單時 ,拿到不完全的 用戶、訂單資訊.</p>
+   * lock websocket sessions -- 已取消 以免推播訂單時 ,拿到不完全的 用戶、訂單資訊.</p>
    *
    * @param session 當前 session
    * @param msg client 回傳資訊
    */
   @OnMessage
   public void onMessage(Session session, String msg) {
-    synchronized (sessions) {
-      User user = sessions.get(session); // deliver id
-      PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
-      orderService.dealOrder(pushResult, user.getUserId()); // 處理 訂單
-    }
+    //synchronized (PushOrderTask.sessions) {
+    User user = PushOrderTask.sessions.get(session); // deliver id
+    PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
+    orderService.dealOrder(pushResult, user.getUserId()); // 處理 訂單
+    //}
   }
 
   @OnError

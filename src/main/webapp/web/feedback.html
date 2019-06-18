@@ -10,6 +10,32 @@
         $('#bu').click(function(){
         $('html,body').animate({scrollTop:$('#one').offset().top},800);});
 		});
+
+		$(document).ready(function () {
+
+			var url = "/ShowCurrentOrderServlet?"; // test url
+			// const url = "/ShowCurrentOrderServlet?"; // 正式 url
+			$.ajax({
+				url: url,
+				type: "GET",
+				async: true,
+				dataType: "json",
+				contentType: 'application/json; charset=UTF-8',
+				success: function (data) {
+					console.log(data);
+					var data_length = data.length;
+					for (var i = 0; i < data_length; i++) {
+						var feedback = data[i].Feedback;
+						var feedbackId = feedback.Feedback_Id;
+						var feedbackName = feedback.User_Name;
+					}
+				},
+				error: function () {
+
+				}
+			})
+		});
+
 		</script>
 	<head>
 		<title>查看食客與外送員所回報的所有問題</title>

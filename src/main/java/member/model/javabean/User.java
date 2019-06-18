@@ -6,7 +6,7 @@ import member.util.setting.UserStatus;
 import member.util.setting.UserType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class User {
+public class User implements java.io.Serializable{
 
   @SerializedName("User_Id")
   @Expose

@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import member.controller.service.MemberService;
 import member.util.setting.MemberCommand;
+import util.HttpCommonAction;
 
-@WebServlet("/ModifyMemberServlet")
-public class ModifyMemberServlet extends HttpServlet {
+@WebServlet(name = "ModifyMemberServlet", urlPatterns = {
+    "/MemberServlet/modify", "/MemberServlet/showUsers"
+})
+public class MemberServlet extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -28,9 +31,11 @@ public class ModifyMemberServlet extends HttpServlet {
     Long userID = Long.parseLong(request.getParameter("userID")); // user id
 
     MemberService memberService = new MemberService();
-    String json = gson.toJson(memberService.modifyMember(userID, memberCommand));
+    boolean result = memberService.modifyMember(userID, memberCommand);
+    String json = gson.toJson(
+        HttpCommonAction.generateStatusResponse(result, "Command :: " + memberCommand.toString()));
     memberService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
@@ -39,5 +44,15 @@ public class ModifyMemberServlet extends HttpServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    response.setContentType("application/json;charset=UTF-8");
+    Gson gson = new GsonBuilder().disableHtmlEscaping()
+        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+    MemberService memberService = new MemberService();
+    String json = gson.toJson(memberService.showUsers());
+    memberService = null;
+
+    PrintWriter out = response.getWriter();
+    out.print(json);
+    out.flush();
   }
 }

@@ -18,12 +18,12 @@
 		function add()
 		{
 			var optionSelected = $("option:selected", $('#restaurant_select'));
-			var getID = optionSelected[0].id.split("delete")[1];
+			var getID = optionSelected[0].value;
 			var restID = getID;
-			var mealName = $('#mealName').val();
-			var mealCost = $('#mealCost').val();
-			var restDescription = $('#restDescription').val();
-			var restImgUrl = $('#addImgUrl')[0].value;
+			var mealName = $('#addMealName').val();
+			var mealCost = $('#addMealCost').val();
+			var restDescription = $('#addMealDescription').val();
+			var foodImgUrl = $('#addMealImgUrl')[0].value;
 			const dateTime = new Date().getTime();
 			const timestamp = Math.floor(dateTime / 1000);
 			var sJson = JSON.stringify
@@ -35,56 +35,62 @@
 				Description: restDescription,
 				Image: foodImgUrl
 			});
+			console.log(sJson)
 			$.ajax({
-				url: "/SFD/ModifyMenuServlet?cmd=ADD",
+				url: "/ModifyMenuServlet?cmd=ADD",
 				type: "POST",
 				async: true,
 				dataType: "json",
 				contentType: 'application/json; charset=UTF-8',
 				data: sJson,
-				success: function(){alert("Sussess")}		});
+				success: function(){
+					alert("Sussess")
+					window.location.reload();
+				}		});
 		}
 
 		function delete_menu()
 		{
 			var optionSelected = $("option:selected", $('#menu_select'));
-			var deleteID = optionSelected[0].id.split("delete")[1];
+			var deleteID = optionSelected[0].value;
 			var menuID = deleteID;
 			var sJson = JSON.stringify
 			({
 				Food_Id: menuID
 			});
 			$.ajax({
-				url: "/SFD/ModifyMenuServlet?cmd=DELETE",
+				url: "/ModifyMenuServlet?cmd=DELETE",
 				type: "POST",
 				async: true,
 				dataType: "json",
 				contentType: 'application/json; charset=UTF-8',
 				data: sJson,
-				success: function(){alert("Sussess")}	});
+				success: function(){alert("Sussess")
+					window.location.reload();}	});
 		}
 
 		function fix_menu() {
-			var optionSelected = $("option:selected", $('#menu_select1'));
-			const restID = optionSelected[0].id.split("delete")[1];
-			var mealName = $('#restName').val();
-			var mealCost = $('#mealCost').val();
-			var Description = $('#Description').val();
-			var foodImgUrl = $('#editImgUrl')[0].value;
-			var optionSelected1 = $("option:selected", $('#menu_select'));
-			var menuID = optionSelected1[0].id.split("delete")[1];
+			var optionSelected = $("option:selected", $('#restaurant_select1'));
+			var restID = optionSelected[0].value;
+			var mealName = $('#editRestName').val();
+			var change_mealName = $('#editMealName').val();
+			var mealCost = $('#editMealCost').val();
+			var Description = $('#editMealDescription').val();
+			var foodImgUrl = $('#editMealImgUrl')[0].value;
+			var optionSelected1 = $("option:selected", $('#menu_fix_select'));
+			var menuID = optionSelected1[0].value;
 			var sJson = JSON.stringify
 			({
 				Food_Id: menuID,
-				Food_Name: mealName,
+				Food_Name: change_mealName,
 				Rest_Id: restID,
 				Cost: mealCost,
 				Description: Description,
 				Image: foodImgUrl
 			});
-			const url = "/SFD/ModifyMenuServlet?cmd=EDIT"; // test url
+			console.log(sJson);
 			$.ajax({
-				url: url,
+				url: "/ModifyMenuServlet?cmd=EDIT",
 				type: "POST",
 				async: true,
 				dataType: "json",
@@ -98,12 +104,11 @@
 		}
 		</script>
 	<head>
-		<title>新增刪除修改餐廳資訊</title>
+		<title>新增刪除修改菜單資訊</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<script src="js/admin.js"></script>
 	</head>
 
 	<body>
@@ -112,7 +117,7 @@
 			<section id="banner">
 				<h2><strong>Starburst Food Delivery</strong></h2>
 				<p>新增刪除修改餐廳資訊介面</p>
-				<p>AAAAA管理員</p>
+				<p id="adminAccount"></p>
 				<ul class="actions">
 					<li><a id = "bu" href="#" class="button special">開始使用</a></li>
 				</ul>
@@ -133,25 +138,25 @@
 						</div>
 						<div class="feature">
 							<p>餐點名稱</p>
-							<input id="mealName" type="text" ></input>
+							<input id="addMealName" type="text"/>
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點單價</p>
-							<input id="mealCost" type="text" ></input>
+							<input id="addMealCost" type="text" />
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點敘述</p>
-							<input id="Description" type="text" ></input>
+							<input id="addMealDescription" type="text" />
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點照片</p>
-							<input type="file" id="addFile" />
+							<input type="file" id="addMealFile" />
 							<!--recode img_url-->
-							<input type="hidden" id="addImgUrl" value="">
-							<input class="button special"type="button" value="前往!"  onclick="upload('add')"/>
+							<input type="hidden" id="addMealImgUrl" value="">
+							<input class="button special"type="button" value="上傳圖片!"  onclick="upload('add','Meal')"/>
 							<p></p>
 						</div>
 					</div>
@@ -202,27 +207,32 @@
 						</div>
 						<div style="width:34%;" class="feature">
 							<p>餐點名稱</p>
-							<select id='menu_select1'>
+							<select id='menu_fix_select'>
 							</select>
 							<p></p>
 						</div>
 						<div style="width:34%;"class="feature">
+							<p>餐點名稱</p>
+							<input id="editMealName" type="text" />
+							<p></p>
+						</div>
+						<div style="width:34%;"class="feature">
 							<p>餐點單價</p>
-							<input id="mealCost" type="text" ></input>
+							<input id="editMealCost" type="text" />
 							<p></p>
 						</div>
 						<div style="width:34%;"class="feature">
 							<p>餐點敘述</p>
-							<input id="Description" type="text" ></input>
+							<input id="editMealDescription" type="text" />
 							<p></p>
 						</div>
 						<div class="feature">
 							<p>餐點照片</p>
-							<input type="file" id="editFile" />
+							<input type="file" id="editMealFile" />
 							<!--recode img_url-->
-							<input type="hidden" id="editImgUrl" value="">
+							<input type="hidden" id="editMealImgUrl" value="">
 							<p></p>
-							<input class="button special"type="button" value="前往!"  onclick="upload('add')"/>
+							<input class="button special"type="button" value="上傳圖片!"  onclick="upload('edit','Meal')"/>
 							<p></p>
 						</div>
 					</div>
@@ -242,7 +252,7 @@
 <script>
 	window.onload =function()
 	{
-		const url = "/SFD/LoginServlet"; // test url
+		const url = "/LoginServlet"; // test url
 		// const url = "/LoginServlet"; // 正式 url
 		$.ajax({
 			url:url,
@@ -251,8 +261,9 @@
 			success:function(data)
 			{
 				console.log(data);
-				if(data){
-
+				if(data){ // if login success
+					var account = data.Account;
+					$('#adminAccount')[0].innerHTML = account + "管理員";
 				}else {
 					window.location.href='/SFD/web/Administrator_Login.html'; // test url
 					// window.location.href='/web/Administrator_Login.html'; // 正式 url

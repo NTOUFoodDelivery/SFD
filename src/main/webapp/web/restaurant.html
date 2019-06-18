@@ -15,49 +15,12 @@
 			$('html,body').animate({scrollTop:$('#one').offset().top},800);});
 	});
 
-	// $("#upload").click(function () {
-	//
-	// 	const id = '1573e8c523b6e8c'; // 填入 App 的 Client ID
-	// 	const token = '2288b6ecd6c0eb7545b4c083c9e0f212eb6ab9ed'; // 填入 token
-	// 	const album = 'vNnSeO4'; // 若要指定傳到某個相簿，就填入相簿的 ID
-	//
-	// 	var file_data = $('#myFile').prop('files')[0]; //取得上傳檔案屬性
-	// 	var text_data = $('#myText').val();
-	//
-	// 	let settings = {
-	// 		async: true,
-	// 		crossDomain: true,
-	// 		processData: false,
-	// 		contentType: false,
-	// 		type: 'POST',
-	// 		url: 'https://api.imgur.com/3/image',
-	// 		headers: {
-	// 			Authorization: 'Bearer ' + token
-	// 		},
-	// 		mimeType: 'multipart/form-data'
-	// 	};
-	//
-	// 	let form = new FormData();
-	// 	form.append('image', file_data);
-	// 	form.append('title', "123");
-	// 	form.append('description', text_data);
-	// 	form.append('album', album); // 有要指定的相簿就加這行
-	//
-	// 	settings.data = form;
-	//
-	// 	$.ajax(settings).done(function(res) {
-	// 		console.log(res); // 可以看見上傳成功後回的值
-	// 		console.log(JSON.parse(res).data.link); // ------------------------- 圖片網址
-	// 		alert('上傳完成，稍待一會兒就可以在底部的列表上看見了。')
-	// 	});
-	// })
-
 	function add()
 	{
 		var restName = $('#addRestName').val();
 		var restAddress = $('#addRestAddress').val();
 		var restDescription = $('#addRestDescription').val();
-		var restImgUrl = $('#addImgUrl')[0].value;
+		var restImgUrl = $('#addRestImgUrl')[0].value;
 		const dateTime = new Date().getTime();
 		const timestamp = Math.floor(dateTime / 1000);
 		var sJson = JSON.stringify
@@ -68,7 +31,7 @@
 			Description: restDescription,
 			Rest_Photo: restImgUrl
 		});
-		const url = "/SFD/ModifyRestInfoServlet?cmd=ADD"; // test url
+		const url = "/ModifyRestInfoServlet?cmd=ADD"; // test url
 		// const url = "/ModifyRestInfoServlet?cmd=ADD"; // 正式 url
 		$.ajax({
 			url: url,
@@ -87,16 +50,16 @@
 	function delete_rest()
 	{
 		var optionSelected = $("option:selected", $('#restaurant_select'));
-		var deleteID = optionSelected[0].id.split("delete")[1];
+		//var deleteID = optionSelected[0].id.split("delete")[1];
 		//---uncheck---------
-		const restID = optionSelected[0].value;
+		var restID = optionSelected[0].value;
 		//---uncheck---------
 		console.log(restID)
 		var sJson = JSON.stringify
 		({
 			Rest_Id: restID,
 		});
-		const url = "/SFD/ModifyRestInfoServlet?cmd=DELETE"; // test url
+		const url = "/ModifyRestInfoServlet?cmd=DELETE"; // test url
 		// const url = "/ModifyRestInfoServlet?cmd=DELETE"; // 正式 url
 		$.ajax({
 			url: url,
@@ -114,14 +77,14 @@
 
 	function fix_rest() {
 		var optionSelected = $("option:selected", $('#restaurant_select1'));
-		var fixID = optionSelected[0].id.split("delete")[1];
+		//var fixID = optionSelected[0].id.split("delete")[1];
 		//---uncheck---------
-		const restID = optionSelected[0].value;
+		var restID = optionSelected[0].value;
 		//---uncheck---------
 		var restName = $('#editRestName').val();
 		var restAddress = $('#editRestAddress').val();
 		var restDescription = $('#editRestDescription').val();
-		var restImgUrl = $('#editImgUrl')[0].value;
+		var restImgUrl = $('#editRestImgUrl')[0].value;
 		var sJson = JSON.stringify
 		({
 			Rest_Id: restID,
@@ -130,7 +93,7 @@
 			Description: restDescription,
 			Rest_Photo: restImgUrl
 		});
-		const url = "/SFD/ModifyRestInfoServlet?cmd=EDIT"; // test url
+		const url = "/ModifyRestInfoServlet?cmd=EDIT"; // test url
 		// const url = "/ModifyRestInfoServlet?cmd=EDIT"; // 正式 url
 		$.ajax({
 			url: url,
@@ -161,7 +124,7 @@
 <section id="banner">
 	<h2><strong>Starburst Food Delivery</strong></h2>
 	<p>新增刪除修改餐廳資訊介面</p>
-	<p>AAAAA管理員</p>
+	<p id="adminAccount"></p>
 	<ul class="actions">
 		<li><a id = "bu" href="#" class="button special">開始使用</a></li>
 	</ul>
@@ -192,10 +155,10 @@
 			<div class="feature">
 				<p>餐廳照片</p>
 				<!--				<input type="text" id="myText" />-->
-				<input type="file" id="addFile" />
+				<input type="file" id="addRestFile" />
 				<!--recode img_url-->
-				<input type="hidden" id="addImgUrl" value="">
-				<input class="button special"type="button" value="前往!"  onclick="upload('add')"/>
+				<input type="hidden" id="addRestImgUrl" value="">
+				<input class="button special"type="button" value="上傳圖片!"  onclick="upload('add','Rest')"/>
 				<p></p>
 			</div>
 		</div>
@@ -258,11 +221,11 @@
 			<div class="feature">
 				<p>餐廳照片</p>
 				<!--				<input type="text" id="myText" />-->
-				<input type="file" id="editFile" />
+				<input type="file" id="editRestFile" />
 				<!--recode img_url-->
-				<input type="hidden" id="editImgUrl" value="">
+				<input type="hidden" id="editRestImgUrl" value="">
 				<p></p>
-				<input class="button special" type="button" value="前往!"  onclick="upload('edit')"/>
+				<input class="button special" type="button" value="上傳圖片!"  onclick="upload('edit','Rest')"/>
 				<p></p>
 			</div>
 		</div>
@@ -282,7 +245,7 @@
 <script>
 	window.onload =function()
 	{
-		const url = "/SFD/LoginServlet"; // test url
+		const url = "/LoginServlet"; // test url
 		// const url = "/LoginServlet"; // 正式 url
 		$.ajax({
 			url:url,
@@ -291,8 +254,9 @@
 			success:function(data)
 			{
 				console.log(data);
-				if(data){
-
+				if(data){ // if login success
+					var account = data.Account;
+					$('#adminAccount')[0].innerHTML = account + "管理員";
 				}else {
 					window.location.href='/SFD/web/Administrator_Login.html'; // test url
 					// window.location.href='/web/Administrator_Login.html'; // 正式 url

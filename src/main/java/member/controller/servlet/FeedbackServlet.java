@@ -35,7 +35,7 @@ public class FeedbackServlet extends HttpServlet {
     String json = gson
         .toJson(feedbackService.handleFeedback(currentUser, feedbackCommand, feedback));
     feedbackService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

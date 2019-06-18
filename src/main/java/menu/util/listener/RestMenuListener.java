@@ -36,10 +36,10 @@ public class RestMenuListener implements ServletContextListener,
     servletContext.setAttribute("restInfoList", restInfoList);
     restInfoService = null;
     // init restInfo----END
-    // init restMenu----BEGIN
-    Map<Long, List<Menu>> restMenuHashMap = new ConcurrentHashMap<>();
-    servletContext.setAttribute("restMenuHashMap", restMenuHashMap);
-    // init restMenu----BEGIN
+    //// init restMenu----BEGIN
+    //Map<Long, List<Menu>> restMenuHashMap = new ConcurrentHashMap<>();
+    //servletContext.setAttribute("restMenuHashMap", restMenuHashMap);
+    //// init restMenu----BEGIN
   }
 
   public void contextDestroyed(ServletContextEvent sce) {

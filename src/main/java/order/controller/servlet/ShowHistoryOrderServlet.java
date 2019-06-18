@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import member.model.javabean.User;
 import order.controller.service.OrderService;
 
@@ -33,7 +32,7 @@ public class ShowHistoryOrderServlet extends HttpServlet {
     OrderService orderService = new OrderService();
     String json = gson.toJson(orderService.showHistoryOrder(currentUser));
     orderService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();

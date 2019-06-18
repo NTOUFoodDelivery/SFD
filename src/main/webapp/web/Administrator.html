@@ -33,7 +33,7 @@
 <section id="banner">
 	<h2><strong>Starburst Food Delivery</strong></h2>
 	<p>歡迎來到管理介面</p>
-	<p>AAAAA管理員</p>
+	<p id="adminAccount"></p>
 	<ul class="actions">
 		<li><a id = "bu" href="#" class="button special">開始使用</a></li>
 	</ul>
@@ -110,6 +110,9 @@
 <!-- Footer -->
 <footer id="footer">
 	<div class="copyright">
+		<button id="adminLogout">登出</button>.
+	</div>
+	<div class="copyright">
 		&copy; 製作: <a href="https://trello.com/b/6JldUO2i/%E6%B5%B7%E5%A4%A7%E9%A4%90%E9%A3%B2%E5%A4%96%E9%80%81%E7%B3%BB%E7%B5%B1">SFD製作委員會</a>.
 	</div>
 </footer>
@@ -119,6 +122,23 @@
 </body>
 <script>
 	$(document).ready(function(){
+		$('#adminLogout').click(function () {
+			var url = "/LogoutServlet"; // 正式 url
+			$.ajax({
+				url:url,
+				type:'GET',
+				dataType:'json',
+				success:function(data)
+				{
+					console.log(data);
+					window.location = "/web/Administrator_Login.html";
+				},
+				error: function () {
+					window.location.reload();
+				}
+			})
+		})
+
 		$(function(){
 			$.ajaxSetup ({
 				cache: false, //關掉AJAX 緩存
@@ -135,7 +155,7 @@
 			});
 		});
 
-		const url = "/LoginServlet"; // 正式 url
+		var url = "/LoginServlet"; // 正式 url
 		$.ajax({
 			url:url,
 			type:'GET',
@@ -143,8 +163,9 @@
 			success:function(data)
 			{
 				console.log(data);
-				if(data){
-
+				if(data){ // if login success
+					var account = data.Account;
+					$('#adminAccount')[0].innerHTML = account + "管理員";
 				}else {
 					window.location.href='/web/Administrator_Login.html'; // 正式 url
 				}

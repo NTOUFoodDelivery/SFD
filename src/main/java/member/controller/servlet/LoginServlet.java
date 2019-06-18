@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import member.controller.service.MemberService;
+import member.model.javabean.MemberApiResponse;
 import member.model.javabean.User;
+import member.util.setting.Validate;
 
 
 @WebServlet("/LoginServlet")
@@ -26,15 +28,17 @@ public class LoginServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     String account = request.getParameter("account");
     String password = request.getParameter("password");
-    String userType = request.getParameter("userType");
-    HttpSession session = request.getSession();
-    String json;
+
     MemberService memberService = new MemberService();
-    ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
-        .getAttribute("userHashMap");
-    json = gson.toJson(memberService.login(userHashMap, session, account, password, userType));
+    Validate validate = memberService.login(request, account, password);
+    MemberApiResponse memberApiResponse = new MemberApiResponse();
+    memberApiResponse.setResult(validate.toString());
+    //memberApiResponse.setMessage("");
+    memberApiResponse.setTime(new Date().toString());
+
+    String json = gson.toJson(memberApiResponse);
     memberService = null;
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();
@@ -48,7 +52,7 @@ public class LoginServlet extends HttpServlet {
     HttpSession httpSession = request.getSession();
     User currentUser = (User) httpSession.getAttribute("user");
     String json = gson.toJson(currentUser);
-    gson = null;
+
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();

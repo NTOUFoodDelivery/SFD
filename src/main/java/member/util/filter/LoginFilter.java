@@ -52,26 +52,23 @@ public class LoginFilter implements Filter {
       if (session.getAttribute("login") == null) {
         System.out.println("請求網址時 還沒 登入！！");
         response.setHeader("sessionstatus", "timeout");
-        if (!path.equals(Eater.LOGIN) && !path.equals(Deliver.LOGIN) && !path.equals(Admin.LOGIN)) {
-          if (eaterWebUrls.contains(path)) {
+        if (!path.equals(Eater.LOGIN) && !path.equals(Admin.LOGIN)) {
+          if (eaterWebUrls.contains(path) || deliverWebUrls.contains(path)) {
             response.sendRedirect(Eater.LOGIN);
-          } else if (deliverWebUrls.contains(path)) {
-            response.sendRedirect(Deliver.LOGIN);
           } else if (adminWebUrls.contains(path)) {
             response.sendRedirect(Admin.LOGIN);
           }
         }
         chain.doFilter(request, response);
       } else { // 該 session 有 user 登入了
-
         // request url is web url-----BEGIN---may redirect
         User user = (User) session.getAttribute("user");
-        UserType userType = user.getUserType();
-        switch (userType) {
+        UserType userCurrentType = user.getUserNow();
+        switch (userCurrentType) {
           case Customer: {
-            if(path.equals(Eater.LOGIN)){
+            if (path.equals(Eater.LOGIN)) {
               response.sendRedirect(Eater.WELCOME);
-            }else {
+            } else {
               if (adminWebUrls.contains(path)) {
                 response.sendRedirect(Eater.LOGIN);
               } else if (deliverWebUrls.contains(path)) {
@@ -81,9 +78,9 @@ public class LoginFilter implements Filter {
             break;
           }
           case Customer_and_Deliver: {
-            if(path.equals(Deliver.LOGIN)) {
+            if (path.equals(Deliver.LOGIN)) {
               response.sendRedirect(Deliver.WELCOME);
-            }else {
+            } else {
               if (adminWebUrls.contains(path)) {
                 response.sendRedirect(Deliver.LOGIN);
               } else if (eaterWebUrls.contains(path)) {
@@ -93,9 +90,9 @@ public class LoginFilter implements Filter {
             break;
           }
           case Administrator: {
-            if(path.equals(Admin.LOGIN)) {
+            if (path.equals(Admin.LOGIN)) {
               response.sendRedirect(Admin.WELCOME);
-            }else {
+            } else {
               if (eaterWebUrls.contains(path)) {
                 response.sendRedirect(Admin.LOGIN);
               } else if (deliverWebUrls.contains(path)) {
@@ -114,7 +111,6 @@ public class LoginFilter implements Filter {
     } else {
       chain.doFilter(req, resp);
     }
-    //chain.doFilter(req, resp);
   }
 
   /**

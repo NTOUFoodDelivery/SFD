@@ -4,7 +4,7 @@ public class OrderSetting {
 
   public static final int ORDERSTAGE = 5;
 
-  public class OrderStatus {
+  public static class OrderStatus {
 
     public static final String CANCEL = "CANCEL";
     public static final String WAIT = "WAIT";

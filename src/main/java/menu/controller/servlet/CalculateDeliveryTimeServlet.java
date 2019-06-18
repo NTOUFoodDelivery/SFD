@@ -27,11 +27,10 @@ public class CalculateDeliveryTimeServlet extends HttpServlet {
 
 
         Order order = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()),Order.class);
-        OrderDaoImpl orderDao = new OrderDaoImpl();
+        //OrderDaoImpl orderDao = new OrderDaoImpl();
 
-        System.out.println(orderDao.ordertoHistory(order.getOrder().getOrderID()));
+        //System.out.println(orderDao.ordertoHistory(order.getOrder().getOrderID()));
 
-        String json = gson.toJson(orderDao.searchIdleOrder());
         TestWebsocket.testPushSession.getBasicRemote().sendText(gson.toJson(order));
 //        String json = gson.toJson(HttpCommonAction.getRequestBody(request.getReader()));
         PrintWriter out = response.getWriter();

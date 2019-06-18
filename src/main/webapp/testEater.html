@@ -48,7 +48,7 @@
 script
 type = "text/javascript" >
     $("#testLogout").click(function () {
-      var url = "LogoutServlet";
+      var url = "/LogoutServlet";
       $.ajax({
         xhrFields: {
           withCredentials: true
@@ -60,13 +60,13 @@ type = "text/javascript" >
         dataType: "json",
         success: function (data) {
           console.log(data);
-
+          window.location = "/web/Administrator_Login.html";
         },
         error: function () {
           console.log("logout error");
         }
       })
-      location.reload();
+      // location.reload();
     })
 
 </script>

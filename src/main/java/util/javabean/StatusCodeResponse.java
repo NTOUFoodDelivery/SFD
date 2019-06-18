@@ -3,9 +3,11 @@ package util.javabean;
 public class StatusCodeResponse {
 
   /**
+   * result : sdf
    * statusCode : 200 message : hi time : 23d4rswty.
    */
 
+  private String result;
   private int statusCode;
   private String time;
   private String message;
@@ -32,5 +34,13 @@ public class StatusCodeResponse {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public String getResult() {
+    return result;
+  }
+
+  public void setResult(String result) {
+    this.result = result;
   }
 }
