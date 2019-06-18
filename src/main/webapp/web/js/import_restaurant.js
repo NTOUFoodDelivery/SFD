@@ -37,7 +37,7 @@ function import_restaurant(searcher) {
                 var a1, a2, restimg;
                 rest_inner = '<div class="container">';
                 for (var i = 0, indexi = 0; i < NumOfJData; i++) {
-                    if (rest_infor[i]["Rest_Address"].match(searcher)!=null||rest_infor[i]["Rest_Name"].match(searcher)!=null  || searcher == "") {
+                    if (rest_infor[i]["Rest_Address"].match(searcher)!=null||rest_infor[i]["Rest_Name"].match(searcher)!=null ||rest_infor[i]["Description"].match(searcher)!=null || searcher == "") {
                         
                         var abc = 0;
                         a1 = "'" + rest_infor[i]["Rest_Name"] + "'";

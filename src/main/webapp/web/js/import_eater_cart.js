@@ -217,7 +217,7 @@ function ShowCartPage() {
 function senterPOST(sentdata)
 {
     $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/SendOrderServlet",
+        url: "/SendOrderServlet",
         type: "POST",
         async: true,
         dataType: "json",
