@@ -53,46 +53,39 @@ public class MemberService {
    * @param currentUser 使用者 User 物件
    * @param userType 使用者 身份
    */
-  public Object switchType(User currentUser, UserType userType) {
+  public Validate switchType(User currentUser, UserType userType) {
 
-    Object result = null;
-    String msg = "command :: " + userType;
-    boolean success;
+    Validate validate;
     if (userType != null) {
       userDao = new UserDaoImpl();
       UserType currentUserType = currentUser.getUserNow();
       switch (currentUserType) {
         case Deliver: {
-          success = switchDeliverType(currentUser, userType);
-          if (success) {
-            msg = msg + " work!!";
+          if (switchDeliverType(currentUser, userType)) {
+            validate = Validate.SUCCESS;
           } else {
-            msg = msg + " do not work!!";
+            validate = Validate.ERROR;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         case Customer: {
-          success = switchCustomerType(currentUser, userType);
-          if (success) {
-            msg = msg + " work!!";
+          if (switchCustomerType(currentUser, userType)) {
+            validate = Validate.SUCCESS;
           } else {
-            msg = msg + " do not work!!";
+            validate = Validate.ERROR;
           }
-          result = HttpCommonAction.generateStatusResponse(success, msg);
           break;
         }
         default: {
+          validate = Validate.ERROR;
           break;
         }
-
       }
       userDao = null;
     } else {
-      msg += "can not found!!";
-      result = HttpCommonAction.generateStatusResponse(false, msg);
+      validate = Validate.ERROR;
     }
-    return result;
+    return validate;
   }
 
   /**
@@ -175,27 +168,35 @@ public class MemberService {
   // 討論！！
   private boolean switchDeliverType(User currentUser, UserType userType) {
     boolean success = false;
-    //if (!currentUser.getUserNow().equals(userType)) { // 不同身份 才要變
-    //
-    //    currentUser.setUserNow(UserType.Deliver); // 更新 session user 的狀態 為可推播
-    //    success = userDao.modifyUserStatus(currentUser.getUserId(),
-    //        UserStatus.DELIVER_ON.toString()); // 更新 資料庫 user 狀態
-    //  } else {
-    //    currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
-    //    success = userDao
-    //        .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
-    //  }
-    //}
+    Long userId = currentUser.getUserId();
+    if (!currentUser.getUserNow().equals(userType)) { // 不同身份 才要變
+      if (userDao.modifyUserNow(userId, userType.toString()) && userDao.modifyUserStatus(userId,
+          UserStatus.DELIVER_OFF.toString())) {
+        currentUser.setUserNow(UserType.Deliver); // 更新 session user 的狀態 為可推播
+        success = true;
+      } else { // 還原
+        userDao.modifyUserNow(userId, currentUser.getUserNow().toString());
+        userDao.modifyUserStatus(userId,
+            currentUser.getUserStatus().toString());
+      }
+    }
     return success;
   }
 
   private boolean switchCustomerType(User currentUser, UserType userType) {
     boolean success = false;
-    //if (!currentUser.getUserStatus().equals(userStatus)) { // 不同狀態 才要變
-    //  currentUser.setUserStatus(userStatus); // 更新 session user 的狀態
-    //  success = userDao
-    //      .modifyUserStatus(currentUser.getUserId(), userStatus.toString()); // 更新 資料庫 user 狀態
-    //}
+    Long userId = currentUser.getUserId();
+    if (!currentUser.getUserNow().equals(userType)) { // 不同狀態 才要變
+      if (userDao.modifyUserNow(userId, userType.toString()) && userDao.modifyUserStatus(userId,
+          UserStatus.CUSTOMER.toString())) {
+        currentUser.setUserNow(UserType.Customer); // 更新 session user 的狀態 為可推播
+        success = true;
+      } else { // 還原
+        userDao.modifyUserNow(userId, currentUser.getUserNow().toString());
+        userDao.modifyUserStatus(userId,
+            currentUser.getUserStatus().toString());
+      }
+    }
     return success;
   }
 
@@ -406,9 +407,9 @@ public class MemberService {
     @SuppressWarnings("unchecked")
     Iterator<Entry<Object, Object>> iterator = set.iterator();
     List<Object> keyList = new ArrayList<>();
-    while(iterator.hasNext()){
+    while (iterator.hasNext()) {
       Map.Entry<Object, Object> entry = iterator.next();
-      if(entry.getValue().equals(value)){
+      if (entry.getValue().equals(value)) {
         keyList.add(entry.getKey());
       }
     }
