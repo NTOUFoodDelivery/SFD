@@ -807,6 +807,7 @@ public class OrderDaoImpl implements OrderDao {
           Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
 
           mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
+          mealsBean.setRestAddress(mealResultSet.getString("Rest_Address"));
           mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
           mealsBean.setCount(mealResultSet.getInt("Count"));
           mealsBeanXList.add(mealsBean);
