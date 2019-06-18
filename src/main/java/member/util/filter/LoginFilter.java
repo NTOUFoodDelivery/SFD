@@ -77,7 +77,8 @@ public class LoginFilter implements Filter {
             }
             break;
           }
-          case Customer_and_Deliver: {
+          case Deliver: {
+            System.out.println("Deliver");
             if (path.equals(Deliver.LOGIN)) {
               response.sendRedirect(Deliver.WELCOME);
             } else {

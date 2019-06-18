@@ -59,9 +59,10 @@ public class MemberService {
     if (userType != null) {
       userDao = new UserDaoImpl();
       UserType currentUserType = currentUser.getUserNow();
+      System.out.println(currentUser);
       switch (currentUserType) {
         case Deliver: {
-          if (switchDeliverType(currentUser, userType)) {
+          if (switchCustomerType(currentUser, userType)) {
             validate = Validate.SUCCESS;
           } else {
             validate = Validate.ERROR;
@@ -69,7 +70,7 @@ public class MemberService {
           break;
         }
         case Customer: {
-          if (switchCustomerType(currentUser, userType)) {
+          if (switchDeliverType(currentUser, userType)) {
             validate = Validate.SUCCESS;
           } else {
             validate = Validate.ERROR;
@@ -167,6 +168,7 @@ public class MemberService {
   // 轉換上下線 切換身份
   // 討論！！
   private boolean switchDeliverType(User currentUser, UserType userType) {
+    System.out.println(currentUser);
     boolean success = false;
     Long userId = currentUser.getUserId();
     if (!currentUser.getUserNow().equals(userType)) { // 不同身份 才要變
