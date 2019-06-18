@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>SFD - sing up</title>
+
+
+  <link rel="stylesheet" href="./css/cas.css">
+  <link rel="stylesheet" href="./css/cas-ext.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <style>
+    select#soflow{
+      -webkit-appearance: button;
+      -webkit-border-radius: 2px;
+      -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      -webkit-padding-end: 20px;
+      -webkit-padding-start: 2px;
+      -webkit-user-select: none;
+      background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+      background-position: 97% center;
+      background-repeat: no-repeat;
+      border: 1px solid #AAA;
+      color: #555;
+      font-size: inherit;
+      overflow: hidden;
+      padding: 5px 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 300px;
+    }
+  </style>
+  <style>
+
+    .loader {
+      position:absolute; top:50%; left:50%;
+      margin-left: -105px;
+      margin-top: -170px;
+      max-width: 15rem;
+      width: 100%;
+      height: auto;
+      stroke-linecap: round;
+    }
+
+    circle {
+      fill: none;
+      stroke-width: 3.5;
+      -webkit-animation-name: preloader;
+      animation-name: preloader;
+      -webkit-animation-duration: 3s;
+      animation-duration: 3s;
+      -webkit-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+      -webkit-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-transform-origin: 170px 170px;
+      transform-origin: 170px 170px;
+      will-change: transform;
+    }
+    circle:nth-of-type(1) {
+      stroke-dasharray: 550;
+    }
+    circle:nth-of-type(2) {
+      stroke-dasharray: 500;
+    }
+    circle:nth-of-type(3) {
+      stroke-dasharray: 450;
+    }
+    circle:nth-of-type(4) {
+      stroke-dasharray: 300;
+    }
+    circle:nth-of-type(1) {
+      -webkit-animation-delay: -0.15s;
+      animation-delay: -0.15s;
+    }
+    circle:nth-of-type(2) {
+      -webkit-animation-delay: -0.3s;
+      animation-delay: -0.3s;
+    }
+    circle:nth-of-type(3) {
+      -webkit-animation-delay: -0.45s;
+      -moz-animation-delay:  -0.45s;
+      animation-delay: -0.45s;
+    }
+    circle:nth-of-type(4) {
+      -webkit-animation-delay: -0.6s;
+      -moz-animation-delay: -0.6s;
+      animation-delay: -0.6s;
+    }
+
+    @-webkit-keyframes preloader {
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes preloader {
+      50% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body id="cas" style="">
+<div id="container">
+  <div id="content">
+
+    <div class="box" id="login">
+      <div class="logo"></div>
+
+      <form id="fm1" style="display:block;">
+        <div id="myDiv"></div>
+        <section class="row">
+          <label for="account">帳　號:
+            <span id="username-warning" style="display:none;">請輸入用戶名</span>
+          </label>
+
+
+          <input id="account" name="account" class="required" tabindex="1" accesskey="u" type="text" value="" size="25" autocomplete="off">
+
+
+        </section>
+
+        <section class="row">
+          <label for="password">密　碼:
+            <span id="password-warning" style="display:none;">請輸入密碼</span>
+          </label>
+
+          <input id="password" name="password" class="required" tabindex="2" accesskey="p" type="password" value="" size="25" autocomplete="off">
+        </section>
+
+        <section class="row">
+          <label for="password">email:
+            <span id="email-warning" style="display:none;">請輸入emailemail</span>
+          </label>
+
+          <input id="password" name="password" class="required" tabindex="2" accesskey="p" type="text" value="" size="25" autocomplete="off">
+        </section>
+
+        <section class="row">
+          <label for="phonenumber">手機號碼:
+            <span id="phonenumber-warning" style="display:none;">請輸入手機號碼</span>
+          </label>
+
+          <input id="phonenumber" name="phonenumber" class="required" tabindex="2" accesskey="p" type="text" value="" size="25" autocomplete="off">
+        </section>
+
+        <section class="row">
+          <label for="username">真實姓名:
+            <span id="username-warning" style="display:none;">請輸入真實姓名</span>
+          </label>
+
+          <input id="username" name="username" class="required" tabindex="2" accesskey="p" type="text" value="" size="25" autocomplete="off">
+        </section>
+
+        <section class="row" style="display:none;">
+          <select id="soflow" name="userType">
+            <option value="Customer" type="hidden" selected></option>
+          </select>
+        </section>
+
+        <section class="row btn-row">
+
+          <input class="btn-submit" name="submit" accesskey="l" value="註冊" tabindex="4" type="submit">
+        </section>
+
+        <section class="row login-tip">
+        </section>
+
+      </form>
+        <svg  id="loader" class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340" style="display:none;">
+          <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
+          <circle cx="170" cy="170" r="135" stroke="#404041"/>
+          <circle cx="170" cy="170" r="110" stroke="#E2007C"/>
+          <circle cx="170" cy="170" r="85" stroke="#404041"/>
+        </svg>
+    </div>
+  </div> <!-- END #content -->
+
+</div> <!-- END #container -->
+
+<script>
+  $("#fm1").submit(function (event) {
+    $("#fm1").css('display','none');
+    $('#loader').css('display','block');
+    $.ajax({
+      url: '/LoginServlet',
+      type: 'POST',
+      data: $('#fm1').serialize(),
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        var cmd = data[0];
+        $("#myDiv").empty();
+        for(let i=1;i<data.length;i++){
+          $("#myDiv").append("<span class='badge badge-pill badge-info'>" + data[i] + "</span><br>");
+        }
+        setTimeout(function() {
+          $("#loader").css('display','none');
+          $("#fm1").css('display','block');
+        }, 1000);
+        
+        if (cmd === "CUSTOMER_AND_DELIVER") {
+          window.location.href='index_deliver.html';
+        }else if (cmd === "CUSTOMER") {
+          window.location.href='index_eater.html';
+        }else {
+          $('input[type=password]')[0].value = "";
+        }
+      }
+    });
+    event.preventDefault();
+  });
+</script>
+</body>
+</html>
