@@ -108,7 +108,7 @@ function changtorest() {
 
 function SwitchStatustode() {
     $.ajax({
-        url: "/SwitchStatusServlet?userStatus=DELIVER_OFF",
+        url: "/SwitchTypeServlet?userNow=Deliver",
         type: "POST",
         async: true,
         dataType: "json",
