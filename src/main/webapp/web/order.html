@@ -40,10 +40,13 @@
                     var customerName = customer.User_Name;
                     var customerAccount = customer.Account;
                     var customerAddress = customer.Address;
-                    var customerOther = customer.Other;
-                    if(customerOther === undefined)
+                    if(customer.Other === undefined)
                     {
-                        customerOther = "空";
+                        var customerOther = "空";
+                    }
+                    else
+                    {
+                        var customerOther = customer.Other;
                     }
                     var customerPhoneNumber = customer.Phone_Number;
 
