@@ -4,7 +4,7 @@ function deliverOffline(deliver_status) {
 
     if (deliver_status == 0) {
       deliver_temp = deliver_temp
-          + '<img src="images/offline.svg" style="z-index:999;position:absolute;width:100%;" />';
+          + '<img src="images/offline.svg" style="z-index:950;position:absolute;width:100%;" />';
       deliver_status = 1;
       $.ajax({
         url: "/SwitchStatusServlet?userStatus=DELIVER_OFF",
