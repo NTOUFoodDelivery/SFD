@@ -139,31 +139,16 @@
 							"<div id = '"+id2+"' class= 'modal-body' style = 'text-align:left;'>訂單總價:" + total + "<br >訂單種類:" + typeCount + "<br>" + "訂單起始時間:"+startTime+"<br >訂單狀態:"+orderStatus+"<br >訂單權重:"+castingPrio+"<br>"
 					);
 
-
-					// const buttonCustomer = "#customer"+i;
-					// $(buttonCustomer).click(function () {
-					//
-					// }
-					// const buttonDeliver = "#deliver"+i;
-					// $(buttonDeliver).click(function () {
-					//
-					// }
-					// const buttonOrder = "#order"+i;
-					// $(buttonOrder).click(function () {
-					//
-					// }
-
                     var targetId2 = "#"+id2;
 					var meal = order.Meals;
 					for (var j = 0; j < meal.length; j++) {
 						var restName = meal[j].Rest_Name;
 						var restAddress = meal[j].Rest_Address;
-						var foodID = meal[j].Food_Id;
 						var foodName = meal[j].Food_Name;
 						var cost = meal[j].Cost;
 						var count = meal[j].Count;
 						$(targetId2).append("<br>" +
-								"餐廳名稱:" + restName + "<br >餐廳地址:" + restAddress + "<br >食物名稱:" + foodName + "<br >食物編號:" + foodID + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
+								"餐廳名稱:" + restName + "<br >餐廳地址:" + restAddress + "<br >食物名稱:" + foodName + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
 						);
 
 					}

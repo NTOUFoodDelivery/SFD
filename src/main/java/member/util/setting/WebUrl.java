@@ -21,7 +21,6 @@ public class WebUrl {
     public static final String MENU = "/web/menu.html";
     public static final String ORDER = "/web/order.html";
     public static final String HISTORYORDER = "/web/history_order.html";
-    public static final String FEEDBACK = "/web/feedback.html";
     public static final String FIXUSER = "/web/Fix_User.html";
     public static final String LOGIN = "/web/Administrator_Login.html";
   }

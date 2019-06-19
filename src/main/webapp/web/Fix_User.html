@@ -34,6 +34,28 @@
                         }
                     });
                 }
+
+                function delete_user_status() {
+                    var optionSelected = $("option:selected", $('#user_select1'));
+                    //---uncheck---------
+                    const userID = optionSelected[0].value;
+                    //---uncheck---------
+                    console.log(optionSelected[0].value);
+                    const url = "/MemberServlet/modify?cmd=USER_BAN&userID="+userID; // test url
+                    // const url = "/MemberServlet/modify?cmd=EDIT"; // 正式 url
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        async: true,
+                        dataType: "json",
+                        contentType: 'application/json; charset=UTF-8',
+                        success: function(){
+                            alert("Success");
+                            window.location.reload();
+                        }
+                    });
+                }
+
             </script>
 
 
@@ -61,7 +83,7 @@
 <section id="one" class="wrapper special">
     <div class="inner">
         <header class="major">
-            <h2>使用者狀態管理</h2>
+            <h2>使用者禁用管理</h2>
         </header>
         <div class="features">
             <div class="feature">
@@ -74,6 +96,27 @@
     </div>
     <a href = "javascript:fix_user_status()" class="button special">確定</a>
 </section>
+
+<section id="banner1" class="wrapper special">
+</section>
+
+<section id="two" class="wrapper special">
+    <div class="inner">
+        <header class="major">
+            <h2>使用者刪除管理</h2>
+        </header>
+        <div class="features">
+            <div class="feature">
+                <p>選擇使用者</p>
+                <select id='user_select1'>
+                </select>
+                <p></p>
+            </div>
+        </div>
+    </div>
+    <a href = "javascript:fix_user_status()" class="button special">確定</a>
+</section>
+
 <!-- Footer -->
 <footer id="footer">
     <div class="copyright">

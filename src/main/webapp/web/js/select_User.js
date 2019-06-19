@@ -11,6 +11,7 @@ $(document).ready(function(){
                 var value = user.User_Id;
                 var name = user.Account;
                 $('#user_select').append('<option value ='+value+'>'+name+'</option>');
+                $('#user_select1').append('<option value ='+value+'>'+name+'</option>');
             }
         },
         error: function () {
