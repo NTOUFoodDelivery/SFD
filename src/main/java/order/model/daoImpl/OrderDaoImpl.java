@@ -794,7 +794,7 @@ public class OrderDaoImpl implements OrderDao {
 
         ResultSet mealResultSet;
         String mealSql =
-            "SELECT History_food.`Count`, History_food.Food_Name, History_food.Rest_Name" +
+            "SELECT History_food.`Count`, History_food.Food_Name, History_food.Rest_Name, History_food.Address" +
                 " FROM history_food" +
                 " WHERE history_food.History_Id = ?";//
         preparedStatement = connection.prepareStatement(mealSql);
@@ -807,7 +807,7 @@ public class OrderDaoImpl implements OrderDao {
           Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
 
           mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
-          mealsBean.setRestAddress(mealResultSet.getString("Rest_Address"));
+          mealsBean.setRestAddress(mealResultSet.getString("Address"));
           mealsBean.setFoodName(mealResultSet.getString("Food_Name"));
           mealsBean.setCount(mealResultSet.getInt("Count"));
           mealsBeanXList.add(mealsBean);
