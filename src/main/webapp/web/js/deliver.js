@@ -98,7 +98,7 @@ function OrderIsComing(deliver_order) {
 		}
 	}
 
-  alert(rest_ID);
+  //alert(rest_ID);
   var txt = '目的地:' + m3 + '\n代付額:' + m4
       + '元\n外送費:50元\n訂單明細:\n';
 	for(var j=0;j<rest_ID.length;j++)
@@ -107,6 +107,7 @@ function OrderIsComing(deliver_order) {
 		for (var i = 0; i < m6; i++) {
 		
 			if(deliver_order["Order"]["Meals"][i]["Rest_Name"]==rest_ID[j]){
+
 				txt = txt + deliver_order["Order"]["Meals"][i]["Food_Name"] + ':'
 				+ deliver_order["Order"]["Meals"][i]["Count"] + "個\n";
 				}
@@ -132,7 +133,7 @@ function OrderIsComing(deliver_order) {
     //alert("clear");
     marker.setMap(map);
   });
-  deliver_now_order = txt;
+  deliver_now_order = "食客電話:"+deliver_order["Customer"]["Phone_Number"]+"\n"+txt;
 
 }
 
