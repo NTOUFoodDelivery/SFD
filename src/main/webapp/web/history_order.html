@@ -150,12 +150,11 @@
 					var meal = order.Meals;
 					for (var j = 0; j < meal.length; j++) {
 						var restName = meal[j].Rest_Name;
-						var restAddress = meal[j].Rest_Address;
 						var foodName = meal[j].Food_Name;
 						var cost = meal[j].Cost;
 						var count = meal[j].Count;
 						$(targetId2).append("<br>" +
-								"餐廳名稱:" + restName + "<br >餐廳地址:" + restAddress + "<br >食物名稱:" + foodName + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
+								"餐廳名稱:" + restName + "<br >食物名稱:" + foodName + "<br >食物單價:" + cost + "<br >食物個數:" + count + "<br >"
 						);
 
 					}
