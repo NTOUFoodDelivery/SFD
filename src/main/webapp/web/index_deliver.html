@@ -23,7 +23,8 @@
 		<!--reconnect websocket-->
     <script src="js/websocket/reconnecting-websocket.min.js"></script>
 			<script src="js/deliver.js"></script>
-
+			<script src="js/logout.js"></script>
+			
 <script>
  var directionDisplay;
     var directionsService = new google.maps.DirectionsService();
@@ -173,7 +174,7 @@ function calcRoute() {
 						<nav id="nav">
 							<ul>
 								
-								<li><a href="index_eater.html">登出</a></li>
+								<li><a href="javascript:Member_logout()">登出</a></li>
 								<li><a href="javascript:SwitchStatusToCu()" >切換身分</a></li>
 								<li><a href="javascript:deliver_status=deliverOffline(deliver_status)" >切換上下線</a></li>
 								<li><a href="javascript:deliver_check_now_order()" >目前接收的訂單</a></li>
