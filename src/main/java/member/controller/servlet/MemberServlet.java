@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import member.controller.service.MemberService;
+import member.model.dao.UserDao;
+import member.model.daoImpl.UserDaoImpl;
+import member.model.javabean.User;
 import member.util.setting.MemberCommand;
 import util.HttpCommonAction;
 
 @WebServlet(name = "ModifyMemberServlet", urlPatterns = {
-    "/MemberServlet/modify", "/MemberServlet/showUsers"
+    "/MemberServlet/modify", "/MemberServlet/showUsers", "/MemberServlet/showUser"
 })
 public class MemberServlet extends HttpServlet {
 
@@ -47,10 +50,22 @@ public class MemberServlet extends HttpServlet {
     response.setContentType("application/json;charset=UTF-8");
     Gson gson = new GsonBuilder().disableHtmlEscaping()
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-    MemberService memberService = new MemberService();
-    String json = gson.toJson(memberService.showUsers());
-    memberService = null;
-
+    String json;
+    String account = request.getParameter("account");
+    switch (request.getServletPath()) {
+      case "/MemberServlet/showUser": {
+        UserDaoImpl userDao = new UserDaoImpl();
+        json = gson.toJson(userDao.searchUser(account));
+        userDao =  null;
+        break;
+      }
+      default: {
+        MemberService memberService = new MemberService();
+        json = gson.toJson(memberService.showUsers());
+        memberService = null;
+        break;
+      }
+    }
     PrintWriter out = response.getWriter();
     out.print(json);
     out.flush();
