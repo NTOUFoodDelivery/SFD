@@ -122,7 +122,7 @@ public class OrderDaoImpl implements OrderDao {
 
         ResultSet mealResultSet;
         String mealSql =
-            "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n"
+            "SELECT order_food.`Count`, meal.Food_Name, meal.Cost, meal.Food_Id,  restaurant_info.Rest_Id, restaurant_info.Rest_Name, restaurant_info.Rest_Address\n"
                 +
                 "FROM order_food" +
                 " INNER JOIN meal ON order_food.Food_Id = meal.Food_Id  \n" +
@@ -137,6 +137,7 @@ public class OrderDaoImpl implements OrderDao {
         while (mealResultSet.next()) {
           Order.OrderBean.MealsBean mealsBean = new Order.OrderBean.MealsBean();
 
+          mealsBean.setRestID(mealResultSet.getLong("Rest_Id"));
           mealsBean.setRestName(mealResultSet.getString("Rest_Name"));
           mealsBean.setRestAddress(mealResultSet.getString("Rest_Address"));
           mealsBean.setFoodID(mealResultSet.getLong("Food_Id"));
