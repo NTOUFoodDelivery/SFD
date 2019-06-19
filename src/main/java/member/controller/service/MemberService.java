@@ -59,6 +59,7 @@ public class MemberService {
     if (userType != null) {
       userDao = new UserDaoImpl();
       UserType currentUserType = currentUser.getUserNow();
+      UserType currentUserSignUpType = currentUser.getUserType();
       System.out.println(currentUser);
       switch (currentUserType) {
         case Deliver: {
@@ -70,7 +71,7 @@ public class MemberService {
           break;
         }
         case Customer: {
-          if (switchDeliverType(currentUser, userType)) {
+          if (currentUserSignUpType.equals(UserType.Customer_and_Deliver) && switchDeliverType(currentUser, userType)) {
             validate = Validate.SUCCESS;
           } else {
             validate = Validate.ERROR;
