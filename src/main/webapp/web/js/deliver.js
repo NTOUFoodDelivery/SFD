@@ -184,9 +184,28 @@ function deliver_finish_order()
 {
 	if(deliver_now_order!=""){
 	if (confirm('完成以下訂單?\n'+deliver_now_order+'\n')) {
-		alert("訂單完成!");
+		
 		deliver_now_order="";
 		//client.send(generatResult(a,true));
+		var temp123;
+		temp123="/SendOrderServlet?orderID="+Deliver_order_ID;
+		$.ajax({
+			url: temp123;//"/SendOrderServlet?orderID="+Order_Id,
+			type: "get",
+			async: true,
+			dataType: "json",
+			contentType: 'application/json; charset=UTF-8',
+			data: null,
+			success: 
+				
+			function (JData_menu) { 
+				alert("訂單完成!");
+				//window.location="/web/index_eater.html";
+				
+				//alert("switch to deliver");
+			 }
+		});
+		
 	} 
 	else {
 		alert( "訂單尚未完成，同志尚須努力");
