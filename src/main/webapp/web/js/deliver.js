@@ -133,8 +133,8 @@ function OrderIsComing(deliver_order) {
     //alert("clear");
     marker.setMap(map);
   });
-  deliver_now_order = "食客電話:"+deliver_order["Customer"]["Phone_Number"]+"\n"+txt;
-
+  deliver_now_order = txt;
+  customer_Inf="食客名稱:"+deliver_order["Customer"]["User_Name"]+"\n食客電話:"+deliver_order["Customer"]["Phone_Number"]+"\n";
 }
 
 function DeleteMarkers() {
@@ -210,7 +210,7 @@ function deliver_check_now_order() {
   if (deliver_now_order == "") {
     alert("你現在沒有訂單喔<3")
   } else {
-    alert(deliver_now_order);
+    alert(customer_Inf+deliver_now_order);
   }
 }
 
