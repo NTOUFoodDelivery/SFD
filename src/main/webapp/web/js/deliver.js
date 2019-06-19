@@ -63,6 +63,7 @@ function generatResult(Deliver_Id,accept){
 function OrderIsComing(deliver_order) {
 	
 	var m1,m2,m3,m4,m5,m6;
+	Deliver_order_ID=deliver_order["Order_Id"];
 	m1 = deliver_order["Rest_Name"];
 	m2 = deliver_order["Rest_Address"];
 	m3 = deliver_order["Address"];
@@ -109,6 +110,8 @@ function OrderIsComing(deliver_order) {
         }   
         markers = [];   
     };  
+var Deliver_order_ID;
+	
 function post_Order_status() {
 var rest_inner;
 $.ajax({
@@ -215,10 +218,12 @@ function SwitchStatusToCu() {
     });
 }
 
-/*function SwitchStatus() {
+function SwitchStatus() {
+		var temp123;
+		temp123="/SendOrderServlet?orderID="+Deliver_order_ID;
     $.ajax({
-        url: "/SwitchStatusServlet?userStatus=DELIVER_ON",
-        type: "POST",
+        url: temp123;//"/SendOrderServlet?orderID="+Order_Id,
+        type: "get",
         async: true,
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',
@@ -232,4 +237,4 @@ function SwitchStatusToCu() {
             //alert("switch to deliver");
          }
     });
-}*/
+}
