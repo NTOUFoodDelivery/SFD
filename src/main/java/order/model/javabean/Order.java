@@ -300,6 +300,7 @@ public class Order {
       /**
        * Rest_Name : 阿MAN 早午餐
        * Rest_Address : 基隆市中正區中正路822號1樓
+       * Rest_Id : 1
        * Food_Id : 3
        * Food_Name : 麥克雞塊
        * Cost : 25
@@ -310,6 +311,8 @@ public class Order {
       private String restName;
       @SerializedName("Rest_Address")
       private String restAddress;
+      @SerializedName("Rest_Id")
+      private Long restID;
       @SerializedName("Food_Id")
       private Long foodID;
       @SerializedName("Food_Name")
@@ -367,11 +370,20 @@ public class Order {
         this.count = count;
       }
 
+      public Long getRestID() {
+        return restID;
+      }
+
+      public void setRestID(Long restID) {
+        this.restID = restID;
+      }
+
       @Override
       public String toString() {
         return new ToStringBuilder(this)
             .append("restName", restName)
             .append("restAddress", restAddress)
+            .append("restID", restID)
             .append("foodID", foodID)
             .append("foodName", foodName)
             .append("cost", cost)

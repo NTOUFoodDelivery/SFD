@@ -36,7 +36,7 @@ public class MemberService {
     if (memberCommand != null) { // 有這個指令
       userDao = new UserDaoImpl();
       if (memberCommand.equals(MemberCommand.USER_BAN)) {
-        result = userDao.modifyUserStatus(userID, memberCommand.toString());
+        result = userDao.modifyUserType(userID, memberCommand.toString());
       } else if (memberCommand.equals(MemberCommand.DELETE)) {
         result = userDao.delUser(userID);
       }
