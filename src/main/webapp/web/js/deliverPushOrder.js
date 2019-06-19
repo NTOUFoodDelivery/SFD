@@ -39,6 +39,7 @@ $(document).ready(function () {
           var notification = new Notification('Hello', {body: text, icon: img});
           setTimeout(notification.close.bind(notification), 4000);
           var deliver_order = JSON.parse(event.data);
+		  //alert("event:"+event.data);
           OrderIsComing(deliver_order);
           //alert(deliver_order	);
           //TransferDeliverOrder(event);
