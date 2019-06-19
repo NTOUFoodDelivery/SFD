@@ -216,7 +216,7 @@ function deliver_check_now_order() {
 
 function deliver_finish_order() {
   if (deliver_now_order != "") {
-    if (confirm('完成以下訂單?\n' + deliver_now_order + '\n')) {
+    if (confirm('完成以下訂單?\n' + customer_Inf + deliver_now_order + '\n')) {
 
       deliver_now_order = "";
       //client.send(generatResult(a,true));
