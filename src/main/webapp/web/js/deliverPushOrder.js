@@ -48,11 +48,11 @@ $(document).ready(function () {
           if (confirm(deliver_now_order)) {
 
             alert("You pressed OK!");
-            client.send(generatResult(a, true));
+            client.send(generatResult(Order_Inf, true));
           } else {
             deliver_now_order = "";
             alert("You pressed Cancel!");
-            client.send(generatResult(a, false));
+            client.send(generatResult(Order_Inf, false));
           }
           console.log(event);
 

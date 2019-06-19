@@ -58,7 +58,14 @@ function OrderIsComing(deliver_order) {
 	//alert(deliver_order);
   console.log(deliver_order)
   var m1, m2, m3, m4, m5, m6;
-
+	
+	Order_Inf=
+	{
+		"orderID" : deliver_order["Order"]["Order_Id"],
+		"deliverID":""	
+	};
+	
+	
   Deliver_order_ID = deliver_order["Order"]["Order_Id"];
   m1 = deliver_order["Order"]["Meals"][0]["Rest_Name"];
   m2 = deliver_order["Order"]["Meals"][0]["Rest_Address"];
@@ -260,23 +267,12 @@ function SwitchStatusToCu() {
   });
 }
 
-function SwitchStatus() {
-  var temp123;
-  temp123 = "/SendOrderServlet?orderID=" + Deliver_order_ID;
-  $.ajax({
-    url: temp123,//"/SendOrderServlet?orderID="+Order_Id,
-    type: "get",
-    async: true,
-    dataType: "json",
-    contentType: 'application/json; charset=UTF-8',
-    data: null,
-    success:
-
-        function (JData_menu) {
-
-          window.location = "/web/index_eater.html";
-
-          //alert("switch to deliver");
-        }
-  });
+function generatResult(Order_Inf,yesOrNot)
+{
+	Order_Inf=
+	{
+		"orderID" : Deliver_order_ID,
+		"deliverID":"",
+		"accept":yesOrNot
+	};
 }
