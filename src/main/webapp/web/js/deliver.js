@@ -7,12 +7,39 @@ function deliverOffline(deliver_status) {
 				{
 					deliver_temp=deliver_temp+'<img src="images/offline.svg" style="z-index:999;position:absolute;width:100%;" />';
 					deliver_status=1;
+					$.ajax({
+						url: "/SwitchStatusServlet?userStatus=DELIVER_OFF",
+						type: "POST",
+						async: true,
+						dataType: "json",
+						contentType: 'application/json; charset=UTF-8',
+						data: null,
+						success: 
+						
+						function (JData_menu) { 
+							
+							alert("switch to OFF");
+						 }
+					});
 				}
 				else
 				{
-					
 					deliver_temp="";
 					deliver_status=0;
+					$.ajax({
+						url: "/SwitchStatusServlet?userStatus=DELIVER_ON",
+						type: "POST",
+						async: true,
+						dataType: "json",
+						contentType: 'application/json; charset=UTF-8',
+						data: null,
+						success: 
+						
+						function (JData_menu) { 
+							
+							alert("switch to ON");
+						 }
+					});
 				}
 			document.getElementById("offlineImg").innerHTML = deliver_temp;
 			//document.getElementById("content").innerHTML = deliver_temp;
@@ -168,3 +195,41 @@ function deliver_finish_order()
 		alert("你現在沒有訂單喔<3");
 	}
 }
+
+function SwitchStatusToCu() {
+    $.ajax({
+        url: "/SwitchTypeServlet?userNow=Customer",
+        type: "POST",
+        async: true,
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: null,
+        success: 
+        
+        function (JData_menu) { 
+            
+            window.location="/web/index_eater.html";
+            
+            //alert("switch to deliver");
+         }
+    });
+}
+
+/*function SwitchStatus() {
+    $.ajax({
+        url: "/SwitchStatusServlet?userStatus=DELIVER_ON",
+        type: "POST",
+        async: true,
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: null,
+        success: 
+        
+        function (JData_menu) { 
+            
+            window.location="/web/index_eater.html";
+            
+            //alert("switch to deliver");
+         }
+    });
+}*/
