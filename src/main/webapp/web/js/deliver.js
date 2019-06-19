@@ -189,8 +189,9 @@ function deliver_finish_order()
 		//client.send(generatResult(a,true));
 		var temp123;
 		temp123="/SendOrderServlet?orderID="+Deliver_order_ID;
+
 		$.ajax({
-			url: temp123;//"/SendOrderServlet?orderID="+Order_Id,
+			url: temp123,//"/SendOrderServlet?orderID="+Order_Id,
 			type: "get",
 			async: true,
 			dataType: "json",
@@ -241,7 +242,7 @@ function SwitchStatus() {
 		var temp123;
 		temp123="/SendOrderServlet?orderID="+Deliver_order_ID;
     $.ajax({
-        url: temp123;//"/SendOrderServlet?orderID="+Order_Id,
+        url: temp123,//"/SendOrderServlet?orderID="+Order_Id,
         type: "get",
         async: true,
         dataType: "json",
