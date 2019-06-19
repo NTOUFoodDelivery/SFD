@@ -6,10 +6,10 @@
         <property name="checkoutTimeout">30000</property>
         <!-- 25秒檢查一次connection 的空閒 -->
         <property name="idleConnectionTestPeriod">25</property>
-        <property name="initialPoolSize">2</property>
+        <property name="initialPoolSize">10</property>
         <property name="maxIdleTime">30</property>
-        <property name="maxPoolSize">5</property>
-        <property name="minPoolSize">2</property>
+        <property name="maxPoolSize">30</property>
+        <property name="minPoolSize">10</property>
         <property name="maxStatements">0</property>
         <!-- 每次增加的連接數 -->
         <property name="acquireIncrement">3</property>

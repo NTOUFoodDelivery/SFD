@@ -372,19 +372,19 @@ public class MemberService {
         .getAttribute("userHashMap");
     HttpSession httpSession = request.getSession();
 
-    Validate validate;
+    Validate validate = Validate.ERROR;
     User user = (User) httpSession.getAttribute("user"); // current request User
-    Long userID = user.getUserId();
-    userDao = new UserDaoImpl();
-    if (userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString())) { // 設定狀態為 下線
-      userHashMap.remove(userID); // 移除 hash map User 物件
-      httpSession.removeAttribute("login"); // 移除 session login
-      httpSession.removeAttribute("userID"); // 移除 session userID
-      httpSession.removeAttribute("user"); // 移除 session User 物件
-      //httpSession.invalidate(); // 註銷 該 session
-      validate = Validate.SUCCESS;
-    } else {
-      validate = Validate.ERROR;
+    if(user != null) {
+      Long userID = user.getUserId();
+      userDao = new UserDaoImpl();
+      if (userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString())) { // 設定狀態為 下線
+        userHashMap.remove(userID); // 移除 hash map User 物件
+        httpSession.removeAttribute("login"); // 移除 session login
+        httpSession.removeAttribute("userID"); // 移除 session userID
+        httpSession.removeAttribute("user"); // 移除 session User 物件
+        //httpSession.invalidate(); // 註銷 該 session
+        validate = Validate.SUCCESS;
+      }
     }
     userDao = null;
     return validate;
