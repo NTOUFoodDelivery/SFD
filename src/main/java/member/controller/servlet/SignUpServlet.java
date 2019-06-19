@@ -27,19 +27,19 @@ public class SignUpServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
     User user = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()), User.class);
-
+    System.out.println(user);
     MemberService memberService = new MemberService();
-    Validate validate = memberService.signUp(user);
-    MemberApiResponse memberApiResponse = new MemberApiResponse();
-    memberApiResponse.setResult(validate.toString());
-    //memberApiResponse.setMessage("");
-    memberApiResponse.setTime(new Date().toString());
-    String json = gson.toJson(memberApiResponse);
-    memberService = null;
-
-    PrintWriter out = response.getWriter();
-    out.print(json);
-    out.flush();
+    //Validate validate = memberService.signUp(user);
+    //MemberApiResponse memberApiResponse = new MemberApiResponse();
+    //memberApiResponse.setResult(validate.toString());
+    ////memberApiResponse.setMessage("");
+    //memberApiResponse.setTime(new Date().toString());
+    //String json = gson.toJson(memberApiResponse);
+    //memberService = null;
+    //
+    //PrintWriter out = response.getWriter();
+    //out.print(json);
+    //out.flush();
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
