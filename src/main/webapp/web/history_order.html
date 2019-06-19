@@ -41,6 +41,10 @@
 					var customerAccount = customer.Account;
 					var customerAddress = customer.Address;
 					var customerOther = customer.Other;
+					if(customerOther === undefined)
+					{
+						customerOther = "空";
+					}
 					var customerPhoneNumber = customer.Phone_Number;
 
 					var deliver = data[i].Deliver;

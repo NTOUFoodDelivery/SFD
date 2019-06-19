@@ -41,7 +41,7 @@
                     const userID = optionSelected[0].value;
                     //---uncheck---------
                     console.log(optionSelected[0].value);
-                    const url = "/MemberServlet/modify?cmd=USER_BAN&userID="+userID; // test url
+                    const url = "/MemberServlet/modify?cmd=DELETE&userID="+userID; // test url
                     // const url = "/MemberServlet/modify?cmd=EDIT"; // 正式 url
                     $.ajax({
                         url: url,
@@ -114,7 +114,7 @@
             </div>
         </div>
     </div>
-    <a href = "javascript:fix_user_status()" class="button special">確定</a>
+    <a href = "javascript:delete_user_status()" class="button special">確定</a>
 </section>
 
 <!-- Footer -->

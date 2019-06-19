@@ -17,6 +17,7 @@
 
 	function add()
 	{
+		upload('add','Rest');
 		var restName = $('#addRestName').val();
 		var restAddress = $('#addRestAddress').val();
 		var restDescription = $('#addRestDescription').val();
@@ -54,7 +55,7 @@
 		//---uncheck---------
 		var restID = optionSelected[0].value;
 		//---uncheck---------
-		console.log(restID)
+		console.log(restID);
 		var sJson = JSON.stringify
 		({
 			Rest_Id: restID,

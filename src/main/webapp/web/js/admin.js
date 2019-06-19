@@ -1,6 +1,6 @@
 function upload(cmd,where) // upload img and return img_url
 {
-
+    console.log("IN")
     const id = '1573e8c523b6e8c'; // 填入 App 的 Client ID
     const token = '2288b6ecd6c0eb7545b4c083c9e0f212eb6ab9ed'; // 填入 token
     const album = 'vNnSeO4'; // 若要指定傳到某個相簿，就填入相簿的 ID
@@ -9,7 +9,6 @@ function upload(cmd,where) // upload img and return img_url
     var file_data = $(fileTarget).prop('files')[0]; //取得上傳檔案屬性
 
     let settings = {
-        async: true,
         crossDomain: true,
         processData: false,
         contentType: false,
@@ -36,6 +35,7 @@ function upload(cmd,where) // upload img and return img_url
     settings.data = form;
 
     $.ajax(settings).done(function(res) {
+        console.log("ININ")
         // console.log(res); // 可以看見上傳成功後回的值
         var img_url = JSON.parse(res).data.link;
         console.log(img_url); // ------------------------- 圖片網址
