@@ -9,7 +9,7 @@ window.onload =function()
             console.log(data);
             if(data === null)
             {
-                window.location.href = '/web/login.html';
+                window.location.href = './login.html';
             }
         }
     })

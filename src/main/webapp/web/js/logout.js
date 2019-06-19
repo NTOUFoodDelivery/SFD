@@ -8,7 +8,7 @@ function Member_logout()
         {
             if(data.result=="SUCCESS")
             {
-            window.location="/web/nologin.html";
+            window.location.href="./nologin.html";
             }
             else
             {

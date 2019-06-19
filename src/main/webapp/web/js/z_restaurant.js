@@ -1,5 +1,5 @@
 $.ajax({
-            url: "https://ntou-sfd.herokuapp.com/ShowRestInfoServlet",
+            url: "/ShowRestInfoServlet",
             type: "GET",
             dataType: "json",
             success: function (JData) {

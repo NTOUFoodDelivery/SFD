@@ -324,9 +324,9 @@
       success: function (data) {
         console.log(data);
         if (data.result === "SUCCESS") {
-          window.location.href = "/web/nologin.html";
+          window.location = "nologin.html";
         } else {
-          window.location.href = "/web/sign_up.html";
+          window.location = "sign_up.html";
         }
       }
     });
