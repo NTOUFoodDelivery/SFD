@@ -7,7 +7,7 @@ function deliverCheckHistoryOrder() {
             success: function (JData) {
                 //alert("get");
                 historyOrder = JData;
-                alert(historyOrder);
+                alert("success catch");
                 
             },
         
@@ -16,15 +16,9 @@ function deliverCheckHistoryOrder() {
             }
         });
 		
-		alert(historyOrder);
 	//console.log(historyOrder);
   var m1, m2, m3, m4, m5, m6;
 	
-	Order_Inf=
-	{
-		"orderID" : historyOrder["Order"]["Order_Id"],
-		"deliverID":""	
-	};
 	
 	
   //Deliver_order_ID = deliver_order["Order"]["Order_Id"];
@@ -33,6 +27,7 @@ function deliverCheckHistoryOrder() {
   m3 = historyOrder["Customer"]["Address"];
   m4 = historyOrder["Order"]["Total"];
   m6 = historyOrder["Order"]["Type_Count"]
+  alert("m1");
   //m5 = deliver_order["meals"][0]["Food_Name"];
   //a = deliver_order["Deliver_Id"];
   rest_address_for_map = m2;
