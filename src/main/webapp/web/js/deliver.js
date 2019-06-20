@@ -148,7 +148,7 @@ var Deliver_order_ID;
 
 function post_Order_status() {
 	//window.open ('index_eater.html') ;
-	window.open ('index_eater.html','newwindow','height=800,width=800,toolbar=no,menubar=no,scrollbars=no,resizable=yes,location=no,status=no'); 
+	window.open ('index_eater.html','newwindow','height=800,width=800,toolbar=yes,menubar=yes,scrollbars=no,resizable=yes,location=no,status=no'); 
   var rest_inner;
   $.ajax({
     url: "/ShowCurrentOrderServlet",
