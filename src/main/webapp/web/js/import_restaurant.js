@@ -140,6 +140,8 @@ function gethistory()
             
             var t=JSON.stringify(JData_);
             alert(t);
+            console.log(t);
+            console.log(JData_);
             
             //alert("switch to deliver");
          }

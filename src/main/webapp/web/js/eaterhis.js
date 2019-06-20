@@ -50,9 +50,9 @@ function eatergetorder() {
                 }
 
 
-            },
+            })},
 
-                error: function () {
+        error: function () {
                     alert("無法取得餐廳資訊，請重新整理");
                 }
     });
