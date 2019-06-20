@@ -507,7 +507,7 @@ public class OrderDaoImpl implements OrderDao {
     ResultSet resultSet = null;
     try {
       String sql =
-          "SELECT history.History_Id, history.Start_Time, history.Total history.Type_Count, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number "
+          "SELECT history.History_Id, history.Start_Time, history.Total, history.Type_Count, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number "
               +
               "FROM history" +
               " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id "
