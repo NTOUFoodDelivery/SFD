@@ -53,7 +53,8 @@ function generatResult(Deliver_Id, accept) {
     "accept": accept
   };
 }
-
+var rest_address= new Array();
+var rest_ID= new Array();
 function OrderIsComing(deliver_order) {
 	//alert(deliver_order);
   console.log(deliver_order)
@@ -77,8 +78,8 @@ function OrderIsComing(deliver_order) {
   rest_address_for_map = m2;
   DeleteMarkers();
   //var test=new string(m2);
-  var rest_ID= new Array();
-  var rest_address= new Array();
+  rest_ID= [];
+  rest_address= [];
   rest_ID.push(deliver_order["Order"]["Meals"][0]["Rest_Name"]);
   rest_address.push(deliver_order["Order"]["Meals"][0]["Rest_Address"]);
 	for (var i = 0; i < m6; i++) 
@@ -93,7 +94,7 @@ function OrderIsComing(deliver_order) {
 		}
 		if(checkID==0)
 		{
-			rest_address.push(deliver_order["Order"]["Meals"][0]["Rest_Address"]);
+			rest_address.push(deliver_order["Order"]["Meals"][i]["Rest_Address"]);
 			rest_ID.push(deliver_order["Order"]["Meals"][i]["Rest_Name"]);
 		}
 	}
@@ -101,6 +102,7 @@ function OrderIsComing(deliver_order) {
   //alert(rest_ID);
   var txt = '目的地:' + m3 + '\n代付額:' + m4
       + '元\n外送費:50元\n訂單明細:\n';
+	var selectRest="";
 	for(var j=0;j<rest_ID.length;j++)
 	{
 		txt=txt+"\n餐廳:" + rest_ID[j] + '\n餐廳地址:' + rest_address[j] +'\n'; 
@@ -112,9 +114,10 @@ function OrderIsComing(deliver_order) {
 				+ deliver_order["Order"]["Meals"][i]["Count"] + "個\n";
 				}
 		}
-		
+		selectRest=selectRest+'<option value="'+rest_address[j]+'">餐廳'+(j+1)+'</option>';
+		document.getElementById("restSelect").innerHTML = selectRest;
 	}
-
+	
   //import_Order_menu(m1,m2,txt);
   //initialPlace = new google.maps.LatLng(25.150892, 121.772461);
   var geocoder = new google.maps.Geocoder();
@@ -135,6 +138,28 @@ function OrderIsComing(deliver_order) {
   });
   deliver_now_order = txt+"\n備註:"+deliver_order["Customer"]["Other"];
   customer_Inf="食客名稱:"+deliver_order["Customer"]["User_Name"]+"\n食客電話:"+deliver_order["Customer"]["Phone_Number"]+"\n";
+}
+function mark_rest()
+{
+	DeleteMarkers();
+	rest_address_for_map=document.getElementById("restSelect").value;
+	var geocoder = new google.maps.Geocoder();
+	
+  geocoder.geocode({'address': document.getElementById("restSelect").value}, function (results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      map.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location
+      });
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+    markers.push(marker);
+
+    //alert("clear");
+    marker.setMap(map);
+  });
 }
 
 function DeleteMarkers() {
