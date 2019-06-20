@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import member.controller.service.MemberService;
-import member.model.dao.UserDao;
 import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.MemberApiResponse;
 import member.model.javabean.User;
+import member.util.setting.UserType;
 import member.util.setting.Validate;
 
 
-@WebServlet("/LoginServlet")
+@WebServlet(name = "/LoginServlet", urlPatterns = {"/LoginServlet/admin", "/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,15 +30,36 @@ public class LoginServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     String account = request.getParameter("account");
     String password = request.getParameter("password");
-    System.out.println(account);
+    Validate validate = Validate.ERROR;
+    UserDaoImpl userDao = new UserDaoImpl();
+    User user = userDao.searchUser(account, password);
     MemberService memberService = new MemberService();
-    Validate validate = memberService.login(request, account, password);
+    if(user != null) {
+      switch (request.getServletPath()) {
+        case "/LoginServlet/admin": {
+          if (user.getUserType().equals(UserType.Administrator)) {
+            validate = memberService.login(request, user);
+          }
+          break;
+        }
+        default: {
+          if (!user.getUserType().equals(UserType.Administrator)) {
+            validate = memberService.login(request,user);
+          }
+          break;
+        }
+      }
+    }
     MemberApiResponse memberApiResponse = new MemberApiResponse();
     memberApiResponse.setResult(validate.toString());
     memberApiResponse.setTime(new Date().toString());
+    if (validate.equals(Validate.SUCCESS)) {
+      memberApiResponse.setMessage(gson.toJson(user));
+    }
     System.out.println(request.getSession());
     System.out.println(validate);
     String json = gson.toJson(memberApiResponse);
+    userDao = null;
     memberService = null;
 
     PrintWriter out = response.getWriter();
@@ -51,9 +72,15 @@ public class LoginServlet extends HttpServlet {
     response.setContentType("application/json;charset=UTF-8");
     Gson gson = new GsonBuilder().disableHtmlEscaping()
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+    String json;
+
+    User currentUser;
+    System.out.println("sdsad");
     HttpSession httpSession = request.getSession();
-    User currentUser = (User) httpSession.getAttribute("user");
-    String json = gson.toJson(currentUser);
+    currentUser = (User) httpSession.getAttribute("user");
+    System.out.println(currentUser);
+    json = gson.toJson(currentUser);
+
     System.out.println(request.getSession());
     PrintWriter out = response.getWriter();
     out.println(json);

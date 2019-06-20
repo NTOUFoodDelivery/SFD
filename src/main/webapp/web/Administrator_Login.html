@@ -150,7 +150,7 @@
     success: function (data) {
       console.log(data);
       if (data) {
-        var userType = data.User_Type;
+        var userType = data.User_Now;
         if (userType === "Administrator") {
           window.location = "Administrator.html";
         } else if (userType === "Customer") {
@@ -167,19 +167,19 @@
     }
   })
 </script>
-<script>
-  if (!navigator.cookieEnabled) {
-    $("#errorStr").html("瀏覽器已禁用Cookie！");
-  } else {
-    $("#errorStr").html("瀏覽器已開啟Cookie！");
-  }
-</script>
+<!--<script>-->
+<!--  if (!navigator.cookieEnabled) {-->
+<!--    $("#errorStr").html("瀏覽器已禁用Cookie！");-->
+<!--  } else {-->
+<!--    $("#errorStr").html("瀏覽器已開啟Cookie！");-->
+<!--  }-->
+<!--</script>-->
 <script>
   $("#myForm").submit(function (event) {
     $("#center").css('display', 'none');
     $('.container').css('display', 'block');
     $.ajax({
-      url: '/LoginServlet',
+      url: '/LoginServlet/admin',
       type: 'POST',
       data: $('#myForm').serialize(),
       dataType: 'json',
@@ -191,8 +191,14 @@
           $(".container").css('display', 'none');
           $("#center").css('display', 'block');
         }, 1000);
+
         if (result === "SUCCESS") {
-          window.location.href = 'Administrator.html';
+          var message = JSON.parse(data.message);
+          var type = message.User_Type;
+          if (type === "Administrator") {
+            window.location.href = 'Administrator.html';
+          }
+
         } else {
           $('input[type=password]')[0].value = "";
         }

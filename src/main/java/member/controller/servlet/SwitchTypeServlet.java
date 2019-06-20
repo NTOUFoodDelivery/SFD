@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import member.controller.service.MemberService;
 import member.model.javabean.MemberApiResponse;
 import member.model.javabean.User;
-import member.util.setting.UserStatus;
 import member.util.setting.UserType;
 import member.util.setting.Validate;
 
@@ -30,7 +29,8 @@ public class SwitchTypeServlet extends HttpServlet {
 
     UserType userType = UserType
         .getUserType(request.getParameter("userNow")); // user Status
-    User currentUser = (User) request.getSession()
+    User currentUser; // current request User
+    currentUser = (User) request.getSession()
         .getAttribute("user"); // current request User
     MemberService memberService = new MemberService();
     Validate validate = memberService.switchType(currentUser, userType);

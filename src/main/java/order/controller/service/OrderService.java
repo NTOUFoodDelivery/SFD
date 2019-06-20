@@ -43,10 +43,10 @@ public class OrderService {
    */
   public synchronized OrderConfirm confirmOrder(User currentUser, Long orderID) {
     userDao = new UserDaoImpl();
-    UserType userType = currentUser.getUserType();
+    UserType userType = currentUser.getUserNow();
     OrderConfirm result = OrderConfirm.ERROR;
     switch (userType) {
-      case Customer_and_Deliver: {
+      case Deliver: {
         result = deliverConfirmOrder(orderID);
         break;
       }
@@ -174,14 +174,14 @@ public class OrderService {
   public List<Order> showCurrentOrder(User currentUser) {
     orderDao = new OrderDaoImpl();
     userDao = new UserDaoImpl();
-    UserType userType = currentUser.getUserType();
+    UserType userType = currentUser.getUserNow();
     List<Order> result;
     switch (userType) {
       case Customer: {
         result = orderDao.searchEaterOrder(currentUser.getUserId());
         break;
       }
-      case Customer_and_Deliver: {
+      case Deliver: {
         result = orderDao.searchDeliverOrder(currentUser.getUserId());
         break;
       }

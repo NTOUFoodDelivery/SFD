@@ -3,6 +3,7 @@ package member.util.filter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -44,19 +45,40 @@ public class LoginFilter implements Filter {
 
     String path = ((HttpServletRequest) req).getServletPath();
     System.out.println(path);
+    HttpServletRequest request = (HttpServletRequest) req;
+    HttpServletResponse response = (HttpServletResponse) resp;
+    HttpSession session = request.getSession();
     if (!excludedUrls.contains(path)) {
-      HttpServletRequest request = (HttpServletRequest) req;
-      HttpServletResponse response = (HttpServletResponse) resp;
-      HttpSession session = request.getSession();
+
       //判斷session是否過期 或 沒登入
       if (session.getAttribute("login") == null) {
-        System.out.println("請求網址時 還沒 登入！！");
-        //response.setHeader("sessionstatus", "timeout");
-        if (!path.equals(Eater.LOGIN) && !path.equals(Admin.LOGIN) && !path.equals(Eater.SIGN_UP) ) {
-          if (eaterWebUrls.contains(path) || deliverWebUrls.contains(path)) {
-            response.sendRedirect(Eater.LOGIN);
-          } else if (adminWebUrls.contains(path)) {
-            response.sendRedirect(Admin.LOGIN);
+        String param = request.getParameter("requestID");
+        if (param != null) {
+          Long requestID = Long.parseLong(param);
+          ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
+              .getAttribute("userHashMap");
+          Object userObject = userHashMap.get(requestID);
+          if (userObject != null) {
+            User user =(User)userObject;
+            System.out.println(user);
+            if (user != null) {
+              session.setAttribute("user", user); // User 保存進 session
+              session.setAttribute("userID", requestID); // User id 保存進 session
+              session.setAttribute("login", "login"); // login 保存進 session
+            } else {
+              System.out.println("請求網址時 還沒 登入！！");
+            }
+          }
+        } else {
+          System.out.println("請求網址時 還沒 登入！！");
+          response.setHeader("sessionstatus", "timeout");
+          if (!path.equals(Eater.LOGIN) && !path.equals(Admin.LOGIN) && !path
+              .equals(Eater.SIGN_UP)) {
+            if (eaterWebUrls.contains(path) || deliverWebUrls.contains(path)) {
+              response.sendRedirect(Eater.LOGIN);
+            } else if (adminWebUrls.contains(path)) {
+              response.sendRedirect(Admin.LOGIN);
+            }
           }
         }
         chain.doFilter(request, response);
@@ -78,7 +100,6 @@ public class LoginFilter implements Filter {
             break;
           }
           case Deliver: {
-            System.out.println("Deliver");
             if (path.equals(Deliver.LOGIN)) {
               response.sendRedirect(Deliver.WELCOME);
             } else {
@@ -110,10 +131,30 @@ public class LoginFilter implements Filter {
         chain.doFilter(request, response);
       }
     } else {
+      if(path.equals("/LoginServlet")) {
+        String param = request.getParameter("requestID");
+        if (param != null) {
+          Long requestID = Long.parseLong(param);
+          ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
+              .getAttribute("userHashMap");
+          Object userObject = userHashMap.get(requestID);
+          if (userObject != null) {
+            User user =(User)userObject;
+            System.out.println("sdf");
+            System.out.println(user);
+            if (user != null) {
+              session.setAttribute("user", user); // User 保存進 session
+              session.setAttribute("userID", requestID); // User id 保存進 session
+              session.setAttribute("login", "login"); // login 保存進 session
+            } else {
+              System.out.println("請求網址時 還沒 登入！！");
+            }
+          }
+        }
+      }
       chain.doFilter(req, resp);
     }
   }
-
   /**
    * <p>
    * 把不要過濾 或 一些網頁 的 url存入 list.
