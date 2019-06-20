@@ -12,12 +12,13 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <!--  <meta http-equiv="expires" content="0">-->
   <!--  <meta http-equiv="cache-control" content="no-cache">-->
   <!--  <meta http-equiv="pragma" content="no-cache">-->
   <style>
-    select#soflow{
+    select#soflow {
       -webkit-appearance: button;
       -webkit-border-radius: 2px;
       -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -40,7 +41,9 @@
   <style>
 
     .loader {
-      position:absolute; top:50%; left:50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       margin-left: -105px;
       margin-top: -170px;
       max-width: 15rem;
@@ -64,31 +67,39 @@
       transform-origin: 170px 170px;
       will-change: transform;
     }
+
     circle:nth-of-type(1) {
       stroke-dasharray: 550;
     }
+
     circle:nth-of-type(2) {
       stroke-dasharray: 500;
     }
+
     circle:nth-of-type(3) {
       stroke-dasharray: 450;
     }
+
     circle:nth-of-type(4) {
       stroke-dasharray: 300;
     }
+
     circle:nth-of-type(1) {
       -webkit-animation-delay: -0.15s;
       animation-delay: -0.15s;
     }
+
     circle:nth-of-type(2) {
       -webkit-animation-delay: -0.3s;
       animation-delay: -0.3s;
     }
+
     circle:nth-of-type(3) {
       -webkit-animation-delay: -0.45s;
-      -moz-animation-delay:  -0.45s;
+      -moz-animation-delay: -0.45s;
       animation-delay: -0.45s;
     }
+
     circle:nth-of-type(4) {
       -webkit-animation-delay: -0.6s;
       -moz-animation-delay: -0.6s;
@@ -126,7 +137,8 @@
           </label>
 
 
-          <input id="account" name="account" class="required" tabindex="1" accesskey="u" type="text" value="" size="25" autocomplete="off">
+          <input id="account" name="account" class="required" tabindex="1" accesskey="u" type="text"
+                 value="" size="25" autocomplete="off">
 
 
         </section>
@@ -136,7 +148,8 @@
             <span id="password-warning" style="display:none;">請輸入密碼</span>
           </label>
 
-          <input id="password" name="password" class="required" tabindex="2" accesskey="p" type="password" value="" size="25" autocomplete="off">
+          <input id="password" name="password" class="required" tabindex="2" accesskey="p"
+                 type="password" value="" size="25" autocomplete="off">
         </section>
 
         <section class="row" style="display:none;">
@@ -147,7 +160,8 @@
 
         <section class="row btn-row">
 
-          <input class="btn-submit" name="submit" accesskey="l" value="登錄" tabindex="4" type="submit">
+          <input class="btn-submit" name="submit" accesskey="l" value="登錄" tabindex="4"
+                 type="submit">
         </section>
 
 
@@ -157,7 +171,8 @@
         </section>
 
       </form>
-      <svg  id="loader" class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340" style="display:none;">
+      <svg id="loader" class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340"
+           style="display:none;">
         <circle cx="170" cy="170" r="160" stroke="#E2007C"/>
         <circle cx="170" cy="170" r="135" stroke="#404041"/>
         <circle cx="170" cy="170" r="110" stroke="#E2007C"/>
@@ -168,12 +183,12 @@
 
 </div> <!-- END #container -->
 <script>
-  function signUp(){
-    window.location='sign_up.html'
+  function signUp() {
+    window.location = 'sign_up.html'
   }
 
-  $("#fm1").css('display','none');
-  $('#loader').css('display','block');
+  $("#fm1").css('display', 'none');
+  $('#loader').css('display', 'block');
   $.ajax({
     url: '/LoginServlet',
     type: 'GET',
@@ -183,7 +198,7 @@
       // alert("asdsa")
       console.log(data);
       if (data) {
-        var userType = data.User_Type;
+        var userType = data.User_Now;
         if (userType === "Administrator") {
           window.location = "Administrator.html";
         } else if (userType === "Customer") {
@@ -193,8 +208,8 @@
         }
 
       } else {
-        $("#fm1").css('display','block');
-        $('#loader').css('display','none');
+        $("#fm1").css('display', 'block');
+        $('#loader').css('display', 'none');
         console.log("沒人登入！")
       }
     }
@@ -202,8 +217,8 @@
 </script>
 <script>
   $("#fm1").submit(function (event) {
-    $("#fm1").css('display','none');
-    $('#loader').css('display','block');
+    $("#fm1").css('display', 'none');
+    $('#loader').css('display', 'block');
     $.ajax({
       url: '/LoginServlet',
       type: 'POST',
@@ -213,14 +228,20 @@
         console.log(data);
         var result = data.result;
 
-        setTimeout(function() {
-          $("#loader").css('display','none');
-          $("#fm1").css('display','block');
+        setTimeout(function () {
+          $("#loader").css('display', 'none');
+          $("#fm1").css('display', 'block');
         }, 1000);
 
+
         if (result === "SUCCESS") {
-          window.location.href='index_eater.html';
-        }else {
+          var message = JSON.parse(data.message);
+          var type = message.User_Type;
+          if(type !== "Administrator"){
+            window.location.href = 'index_eater.html';
+          }
+
+        } else {
           $('input[type=password]')[0].value = "";
         }
       }

@@ -1,16 +1,22 @@
-window.onload =function()
+$(document).ready(function()
 {
     $.ajax({
-        url:'/LoginServlet',
-        type:'GET',
-        dataType:'json',
-        success:function(data)
-        {
+        url: '/LoginServlet',
+        type: 'GET',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
             console.log(data);
-            if(data === null)
-            {
-                window.location.href = './login.html';
+            if (data) {
+                var userType = data.User_Now;
+                if (userType === "Administrator") {
+                    window.location = "Administrator.html";
+                }
+
+            } else {
+                window.location = "login.html";
+                console.log("沒人登入！")
             }
         }
     })
-}
+})

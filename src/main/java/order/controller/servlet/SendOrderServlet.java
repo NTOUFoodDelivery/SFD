@@ -30,9 +30,9 @@ public class SendOrderServlet extends HttpServlet {
 
     Order order = gson
         .fromJson(HttpCommonAction.getRequestBody(request.getReader()), Order.class); // 訂單
-    Long currentUserID = (Long) request.getSession()
-        .getAttribute("userID"); // current request user id
-
+    Long currentUserID; // current request user id
+    currentUserID = (Long) request.getSession()
+        .getAttribute("userID");
     order.getCustomer().setUserID(currentUserID); // 調整 order 的 user id
     OrderService orderService = new OrderService();
     // 將訂單存入資料庫
@@ -53,9 +53,9 @@ public class SendOrderServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
     Long orderID = Long.parseLong(request.getParameter("orderID")); // order id
-    User currentUser = (User) request.getSession()
-        .getAttribute("user"); // current request User
-
+    User currentUser; // current request User
+    currentUser = (User) request.getSession()
+        .getAttribute("user");
     OrderService orderService = new OrderService();
     OrderConfirm result = orderService.confirmOrder(currentUser, orderID);
     StatusCodeResponse statusCodeResponse = new StatusCodeResponse();

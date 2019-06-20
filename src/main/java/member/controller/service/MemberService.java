@@ -71,7 +71,8 @@ public class MemberService {
           break;
         }
         case Customer: {
-          if (currentUserSignUpType.equals(UserType.Customer_and_Deliver) && switchDeliverType(currentUser, userType)) {
+          if (currentUserSignUpType.equals(UserType.Customer_and_Deliver) && switchDeliverType(
+              currentUser, userType)) {
             validate = Validate.SUCCESS;
           } else {
             validate = Validate.ERROR;
@@ -213,40 +214,41 @@ public class MemberService {
    * @param account 使用者 key in 的 帳號
    * @param password 使用者 key in 的 密碼
    */
-  public Validate login(HttpServletRequest request, String account, String password) {
+  public Validate login(HttpServletRequest request,User user) {
 
     HttpSession session = request.getSession();
     ConcurrentHashMap userHashMap = (ConcurrentHashMap) request.getServletContext()
         .getAttribute("userHashMap");
     Validate validate;
-    if (checkLoginKeyIn(account, password)) { // 使用者欄位 輸入正常
+    //if (checkLoginKeyIn(account, password)) { // 使用者欄位 輸入正常
       if (!checkSessionIsLogin(session)) { // 這個session 沒登入過 任何 user
-        User user = validate(account, password);
-        if (user != null) { // 資料庫 有這個使用者
-          if (user.getUserType().equals(UserType.User_Ban)) { // 如果他被 BAN 了
-            validate = Validate.USER_IS_BAN;
-          } else {
-            if (!checkUserHashMapIsLogin(userHashMap,
-                user.getUserId())) { // user hash map 沒有 這個 User
-              if (login(session, userHashMap, user)) { // 如果 資料庫 登入成功
-                validate = Validate.SUCCESS;
-              } else { // 如果 資料庫 登入失敗
-                validate = Validate.ERROR;
-              }
-            } else { // user hash map 有 這個 User --重複登入
-              validate = Validate.HASH_MAP_LOGIN_REPEAT;
+
+        if (user.getUserType().equals(UserType.User_Ban)) { // 如果他被 BAN 了
+          validate = Validate.USER_IS_BAN;
+        } else {
+          if (!checkUserHashMapIsLogin(session,userHashMap,
+              user.getUserId())) { // user hash map 沒有 這個 User
+            if (login(session, userHashMap, user)) { // 如果 資料庫 登入成功
+              validate = Validate.SUCCESS;
+            } else { // 如果 資料庫 登入失敗
+              validate = Validate.ERROR;
             }
           }
-        } else { // 資料庫 沒有這個使用者
-          validate = Validate.USER_NOT_EXIST;
+          else { // user hash map 有 這個 User --重複登入
+            validate = Validate.HASH_MAP_LOGIN_REPEAT;
+          }
         }
+
         userDao = null;
-      } else { // 這個session 已經有 user 登入了
+      } else { // 這個session 已經有 其他 user 登入了
         validate = Validate.SESSION_LOGIN_REPEAT;
+        if(checkSessionIsLoginSameUser(session,user.getUserId())){
+          validate = Validate.SUCCESS;
+        }
       }
-    } else { // 使用者欄位 輸入異常
-      validate = Validate.KEY_IN_ERROR;
-    }
+    //} else { // 使用者欄位 輸入異常
+    //  validate = Validate.KEY_IN_ERROR;
+    //}
     return validate;
   }
 
@@ -256,7 +258,7 @@ public class MemberService {
     userDao = new UserDaoImpl();
     boolean result = userDao.modifyUserNow(user.getUserId(), signUserType.toString());
     userDao = null;
-    userHashMap.put(currentUserID, user.getUserId()); // User 存進 hash map
+    userHashMap.put(currentUserID, user); // User 存進 hash map
     session.setAttribute("user", user); // User 保存進 session
     session.setAttribute("userID", currentUserID); // User id 保存進 session
     session.setAttribute("login", "login"); // login 保存進 session
@@ -275,13 +277,6 @@ public class MemberService {
     return true;
   }
 
-  private User validate(String account, String password) {
-    userDao = new UserDaoImpl();
-    User user = userDao.searchUser(account, password); // 檢查 資料庫 有無此 帳密 使用者 --------
-    userDao = null;
-    return user;
-  }
-
   private boolean checkSessionIsLogin(HttpSession session) {
     if (session.getAttribute("login") == null) { // 這個session 沒登入過 任何 user
       return false;
@@ -289,7 +284,14 @@ public class MemberService {
     return true;
   }
 
-  private boolean checkUserHashMapIsLogin(ConcurrentHashMap userHashMap, Long userID) {
+  private boolean checkSessionIsLoginSameUser(HttpSession session,Long userID) {
+    if (session.getAttribute("userID").equals(userID)) { // 這個session 登入同個 user
+      return true;
+    }
+    return false;
+  }
+
+  private boolean checkUserHashMapIsLogin(HttpSession session, ConcurrentHashMap userHashMap, Long userID) {
     if (userHashMap.get(userID) != null) { // 在 servlet hash map 有 User
       return true;
     }
@@ -374,7 +376,7 @@ public class MemberService {
 
     Validate validate = Validate.ERROR;
     User user = (User) httpSession.getAttribute("user"); // current request User
-    if(user != null) {
+    if (user != null) {
       Long userID = user.getUserId();
       userDao = new UserDaoImpl();
       if (userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString())) { // 設定狀態為 下線
@@ -383,6 +385,31 @@ public class MemberService {
         httpSession.removeAttribute("userID"); // 移除 session userID
         httpSession.removeAttribute("user"); // 移除 session User 物件
         //httpSession.invalidate(); // 註銷 該 session
+        validate = Validate.SUCCESS;
+      }
+    }
+    userDao = null;
+    return validate;
+  }
+
+  /**
+   * <p>
+   * 登出.
+   * </p>
+   * <p>
+   * 設計登出後，各使用者 的 訂單問題.
+   * </p>
+   *
+   * @param userHashMap ConcurrentHashMap
+   */
+  public Validate logout(ConcurrentHashMap userHashMap, Long userID) {
+
+    Validate validate = Validate.ERROR;
+    User user = (User) userHashMap.get(userID); // current request User
+    if (user != null) {
+      userDao = new UserDaoImpl();
+      if (userDao.modifyUserStatus(userID, UserStatus.OFFLINE.toString())) { // 設定狀態為 下線
+        userHashMap.remove(userID); // 移除 hash map User 物件
         validate = Validate.SUCCESS;
       }
     }

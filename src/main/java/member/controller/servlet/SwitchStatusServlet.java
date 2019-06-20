@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import member.controller.service.MemberService;
 import member.model.javabean.MemberApiResponse;
 import member.model.javabean.User;
@@ -29,10 +28,13 @@ public class SwitchStatusServlet extends HttpServlet {
 
     UserStatus userStatus = UserStatus
         .getUserStatus(request.getParameter("userStatus")); // user Status
-    User currentUser = (User) request.getSession()
-        .getAttribute("user"); // current request User
+    User currentUser;
     MemberService memberService = new MemberService();
-    Validate validate = memberService.switchStatus(currentUser, userStatus);
+    Validate validate;
+    currentUser = (User) request.getSession()
+        .getAttribute("user"); // current request User
+    validate = memberService.switchStatus(currentUser, userStatus);
+
     MemberApiResponse memberApiResponse = new MemberApiResponse();
     memberApiResponse.setResult(validate.toString());
     //memberApiResponse.setMessage();
