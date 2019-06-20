@@ -503,7 +503,7 @@ public class OrderDaoImpl implements OrderDao {
   public List<Order> searchDeliverHistoryOrder(Long deliverId) {
     List<Order> orderList = new ArrayList<>();
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement = null;
+    PreparedStatement preparedStatement = null;//
     ResultSet resultSet = null;
     try {
       String sql =
