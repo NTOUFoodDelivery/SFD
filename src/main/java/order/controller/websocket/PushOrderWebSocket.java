@@ -67,9 +67,10 @@ public class PushOrderWebSocket {
   @OnMessage
   public void onMessage(Session session, String msg) {
     //synchronized (PushOrderTask.sessions) {
-    User user = PushOrderTask.sessions.get(session); // deliver id
+    User user = PushOrderTask.sessions.get(session); // deliver
+    System.out.println(user);
     PushResult pushResult = gson.fromJson(msg, PushResult.class); // 訂單 處理 訊息
-    orderService.dealOrder(pushResult, user.getUserId()); // 處理 訂單
+    orderService.dealOrder(pushResult, user); // 處理 訂單
     //}
   }
 

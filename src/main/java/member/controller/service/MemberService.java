@@ -254,8 +254,23 @@ public class MemberService {
 
   private boolean login(HttpSession session, ConcurrentHashMap userHashMap, User user) {
     Long currentUserID = user.getUserId();
-    UserType signUserType = user.getUserNow();
+
     userDao = new UserDaoImpl();
+    switch (user.getUserType()){
+      case Customer:
+      case Customer_and_Deliver:{
+        user.setUserStatus(UserStatus.CUSTOMER);
+        break;
+      }
+      case Administrator:{
+        user.setUserStatus(UserStatus.ADMINISTRATOR);
+        break;
+      }
+      default:{
+        break;
+      }
+    }
+    UserType signUserType = user.getUserNow();
     boolean result = userDao.modifyUserNow(user.getUserId(), signUserType.toString());
     userDao = null;
     userHashMap.put(currentUserID, user); // User 存進 hash map

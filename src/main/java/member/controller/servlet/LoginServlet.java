@@ -75,7 +75,6 @@ public class LoginServlet extends HttpServlet {
     String json;
 
     User currentUser;
-    System.out.println("sdsad");
     HttpSession httpSession = request.getSession();
     currentUser = (User) httpSession.getAttribute("user");
     System.out.println(currentUser);

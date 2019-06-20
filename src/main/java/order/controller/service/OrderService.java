@@ -134,12 +134,13 @@ public class OrderService {
    * <p>處理訂單 接受與否 以及 外送員、訂單狀態 轉換.</p>
    *
    * @param pushResult 推播結果
-   * @param deliverID 外送員ID
+   * @param deliver 外送員 User
    */
-  public void dealOrder(PushResult pushResult, Long deliverID) {
+  public void dealOrder(PushResult pushResult, User deliver) {
     userDao = new UserDaoImpl();
     orderDao = new OrderDaoImpl();
     Long orderID = pushResult.getOrderID();
+    Long deliverID = deliver.getUserId();
     pushResult.setDeliverID(deliverID);
     boolean isAccept = pushResult.isAccept();
     if (isAccept) { // 訂單被接受
@@ -152,6 +153,7 @@ public class OrderService {
       orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.DEALING);
       // 將 外送員狀態 改成"已接受訂單之類的"
       userDao.modifyUserStatus(deliverID, UserStatus.DELIVER_BUSY.toString());
+      deliver.setUserStatus(UserStatus.DELIVER_BUSY);
     } else {  // 訂單取消
       // 更改 訂單 權重
       orderDao.modifyOrderCastingPrio(orderID,
@@ -160,6 +162,7 @@ public class OrderService {
       orderDao.modifyOrderStatus(orderID, OrderSetting.OrderStatus.WAIT);
       // 將外送員狀態 改成"空閒之類的"
       userDao.modifyUserStatus(deliverID, UserStatus.DELIVER_ON.toString());
+      deliver.setUserStatus(UserStatus.DELIVER_ON);
     }
     userDao = null;
     orderDao = null;
