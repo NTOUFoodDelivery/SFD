@@ -152,11 +152,11 @@
       if (data) {
         var userType = data.User_Type;
         if (userType === "Administrator") {
-          window.location = "/web/Administrator.html";
+          window.location = "Administrator.html";
         } else if (userType === "Customer") {
-          window.location = "/web/index_eater.html";
+          window.location = "index_eater.html";
         } else {
-          window.location = "/web/index_deliver.html";
+          window.location = "index_deliver.html";
         }
 
       } else {
@@ -192,28 +192,13 @@
           $("#center").css('display', 'block');
         }, 1000);
         if (result === "SUCCESS") {
-          window.location.href = '/web/Administrator.html';
+          window.location.href = 'Administrator.html';
         } else {
           $('input[type=password]')[0].value = "";
         }
       }
     });
     event.preventDefault();
-  });
-</script>
-<script>
-  $.ajaxSetup({
-    complete: function (xhr, textStatus) {
-      console.log("llllll")
-      var sessionid = xhr.getResponseHeader("JSESSIONID");
-      if (!navigator.cookieEnabled) {
-        var url = document.URL;
-        url = url.split("?");
-        url = url[0] + "?JSESSIONID=" + sessionid;
-        console.log(url)
-        // window.location.replace(url);
-      }
-    }
   });
 </script>
 </body>

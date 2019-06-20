@@ -1,6 +1,6 @@
 function eatergethistory() {
     $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/ShowCommonUserHistoryOrderServlet?userID=2",
+        url: "/ShowHistoryOrderServlet",
         type: "GET",
         dataType: "json",
         success: function (JData) {
@@ -25,7 +25,7 @@ function eatergethistory() {
 function eatergetorder() {
 
     $.ajax({
-        url: "https://ntou-sfd.herokuapp.com/ShowCommonUserCurrentOrderServlet?userID=1",
+        url: "/ShowOrderServlet",
         type: "GET",
         dataType: "json",
         success: function (JData) {

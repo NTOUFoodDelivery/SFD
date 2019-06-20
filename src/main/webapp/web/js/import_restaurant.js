@@ -118,7 +118,7 @@ function SwitchStatustode() {
         
         function (JData_menu) { 
             
-            window.location="/web/index_deliver.html";
+            window.location="./index_deliver.html";
             
             //alert("switch to deliver");
          }

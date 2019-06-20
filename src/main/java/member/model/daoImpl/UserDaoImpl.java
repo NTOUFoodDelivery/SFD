@@ -173,7 +173,7 @@ public class UserDaoImpl implements UserDao {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     User user = null;
-    String sql = "select * from member where account=?";
+    String sql = "select * from member where Account=?";
     try {
       preparedStatement = connection.prepareStatement(sql);
       preparedStatement.setString(1, account);

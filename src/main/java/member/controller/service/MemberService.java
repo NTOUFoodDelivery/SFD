@@ -306,7 +306,7 @@ public class MemberService {
   public Validate signUp(User currentUser) {
 
     Validate validate;
-    if (checkSignupKeyIn(currentUser)) {
+    if (checkSignUpKeyIn(currentUser)) {
       userDao = new UserDaoImpl();
       User user = userDao.searchUser(currentUser.getAccount());
       if (user != null) { // 已註冊
@@ -342,7 +342,7 @@ public class MemberService {
     return validate;
   }
 
-  private boolean checkSignupKeyIn(User user) {
+  private boolean checkSignUpKeyIn(User user) {
     if (user.getUserName().equals("") || user.getUserName() == null
         || user.getUserType() == null
         || user.getAccount().equals("") || user.getAccount() == null

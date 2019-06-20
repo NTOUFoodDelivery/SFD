@@ -151,7 +151,7 @@ function post_Order_status() {
 	window.open ('index_eater.html','newwindow','height=800,width=800,toolbar=no,menubar=no,scrollbars=no,resizable=yes,location=no,status=no'); 
   var rest_inner;
   $.ajax({
-    url: "https://ntou-sfd.herokuapp.com/ShowDeliveryStaffCurrentOrderServlet?userID=3",
+    url: "/ShowCurrentOrderServlet",
     type: "GET",
     dataType: "json",
     success: function (JData) {
@@ -236,7 +236,7 @@ function deliver_finish_order() {
 
             function (JData_menu) {
               alert("訂單完成!");
-              //window.location="/web/index_eater.html";
+              //window.location="./index_eater.html";
 
               //alert("switch to deliver");
             }
@@ -263,7 +263,7 @@ function SwitchStatusToCu() {
 
         function (JData_menu) {
 
-          window.location = "/web/index_eater.html";
+          window.location = "./index_eater.html";
 
           //alert("switch to deliver");
         }

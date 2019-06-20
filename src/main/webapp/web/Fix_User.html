@@ -142,7 +142,7 @@
                     var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus");
                     if(sessionstatus=="timeout"){
                         alert("重複登入或長時間無操作～請重新登入！！");
-                        parent.location.href = "LoginDemo.html";
+                        parent.location.href = "Administrator_Login.html";
                     }
                 }
             });
@@ -160,8 +160,7 @@
                     var account = data.Account;
                     $('#adminAccount')[0].innerHTML = account + "管理員";
                 }else {
-                    // window.location.href='/SFD/web/Administrator_Login.html'; // test url
-                    // window.location.href='/web/Administrator_Login.html'; // 正式 url
+                    window.location ='Administrator_Login.html'; // 正式 url
                 }
             }
         })

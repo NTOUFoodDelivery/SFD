@@ -6,12 +6,14 @@ public class WebUrl {
 
     public static final String WELCOME = "/web/index_eater.html";
     public static final String LOGIN = "/web/login.html";
+    public static final String SIGN_UP = "/web/sign_up.html";
   }
 
   public static class Deliver {
 
     public static final String WELCOME = "/web/index_deliver.html";
     public static final String LOGIN = "/web/login.html";
+    public static final String SIGN_UP = "/web/sign_up.html";
   }
 
   public static class Admin {

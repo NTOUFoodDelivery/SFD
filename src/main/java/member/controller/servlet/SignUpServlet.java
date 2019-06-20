@@ -1,4 +1,6 @@
 package member.controller.servlet;
+import member.util.setting.UserStatus;
+import member.util.setting.UserType;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -26,20 +28,20 @@ public class SignUpServlet extends HttpServlet {
     Gson gson = new GsonBuilder().disableHtmlEscaping()
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-    User user = gson.fromJson(HttpCommonAction.getRequestBody(request.getReader()), User.class);
+    User user = gson.fromJson((HttpCommonAction.getRequestBody(request.getReader())),User.class);
     System.out.println(user);
     MemberService memberService = new MemberService();
-    //Validate validate = memberService.signUp(user);
-    //MemberApiResponse memberApiResponse = new MemberApiResponse();
-    //memberApiResponse.setResult(validate.toString());
-    ////memberApiResponse.setMessage("");
-    //memberApiResponse.setTime(new Date().toString());
-    //String json = gson.toJson(memberApiResponse);
-    //memberService = null;
-    //
-    //PrintWriter out = response.getWriter();
-    //out.print(json);
-    //out.flush();
+    Validate validate = memberService.signUp(user);
+    MemberApiResponse memberApiResponse = new MemberApiResponse();
+    memberApiResponse.setResult(validate.toString());
+    //memberApiResponse.setMessage("");
+    memberApiResponse.setTime(new Date().toString());
+    String json = gson.toJson(memberApiResponse);
+    memberService = null;
+
+    PrintWriter out = response.getWriter();
+    out.print(json);
+    out.flush();
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
