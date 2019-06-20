@@ -124,3 +124,24 @@ function SwitchStatustode() {
          }
     });
 }
+
+
+function gethistory()
+{
+    $.ajax({
+        url: "/ShowHistoryOrderServlet",
+        type: "GET",
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: null,
+        success: 
+        
+        function (JData_) { 
+            
+            var t=JSON.stringify(JData_);
+            alert(t);
+            
+            //alert("switch to deliver");
+         }
+    });
+}
