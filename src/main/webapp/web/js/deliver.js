@@ -133,7 +133,7 @@ function OrderIsComing(deliver_order) {
     //alert("clear");
     marker.setMap(map);
   });
-  deliver_now_order = txt;
+  deliver_now_order = txt+"\n備註:"+deliver_order["Customer"]["Other"];
   customer_Inf="食客名稱:"+deliver_order["Customer"]["User_Name"]+"\n食客電話:"+deliver_order["Customer"]["Phone_Number"]+"\n";
 }
 
@@ -147,6 +147,8 @@ function DeleteMarkers() {
 var Deliver_order_ID;
 
 function post_Order_status() {
+	//window.open ('index_eater.html') ;
+	window.open ('index_eater.html','newwindow','height=800,width=800,toolbar=no,menubar=no,scrollbars=no,resizable=yes,location=no,status=no'); 
   var rest_inner;
   $.ajax({
     url: "https://ntou-sfd.herokuapp.com/ShowDeliveryStaffCurrentOrderServlet?userID=3",
@@ -276,4 +278,16 @@ function generatResult(Order_Inf,yesOrNot)
 		"deliverID":"",
 		"accept":yesOrNot
 	};
+}
+
+function logoutConfirm()
+{
+	if(deliver_now_order=="")
+	{
+		Member_logout();
+	}
+	else
+	{
+		alert("訂單還沒完成就想下線阿?");
+	}
 }
