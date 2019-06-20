@@ -1,6 +1,6 @@
 var rest_inner;
 var rest_infor;
-import_restaurant("");
+//import_restaurant("");
 function import_restaurant(searcher) {
     if(rest_infor==null)
     {
