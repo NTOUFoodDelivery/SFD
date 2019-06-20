@@ -39,9 +39,9 @@ function generateHistoryOrder(historyOrder){
   DeleteMarkers();
   //var test=new string(m2);
   var rest_ID= new Array();
-  var rest_address= new Array();
+  
   rest_ID.push(historyOrder["Order"]["Meals"][0]["Rest_Name"]);
-  rest_address.push(historyOrder["Order"]["Meals"][0]["Rest_Address"]);
+  
 	for (var i = 0; i < m6; i++) 
 	{
 		var checkID=0;
@@ -54,7 +54,7 @@ function generateHistoryOrder(historyOrder){
 		}
 		if(checkID==0)
 		{
-			rest_address.push(historyOrder["Order"]["Meals"][0]["Rest_Address"]);
+			
 			rest_ID.push(historyOrder["Order"]["Meals"][i]["Rest_Name"]);
 		}
 	}
@@ -64,7 +64,7 @@ function generateHistoryOrder(historyOrder){
       + '元<br>外送費:50元<br>訂單明細:<br>';
 	for(var j=0;j<rest_ID.length;j++)
 	{
-		txt=txt+"<br>餐廳:" + rest_ID[j] + '<br>餐廳地址:' + rest_address[j] +'<br>'; 
+		txt=txt+"<br>餐廳:" + rest_ID[j]  +'<br>'; 
 		for (var i = 0; i < m6; i++) {
 		
 			if(historyOrder["Order"]["Meals"][i]["Rest_Name"]==rest_ID[j]){
