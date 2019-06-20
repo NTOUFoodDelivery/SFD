@@ -62,7 +62,7 @@ function generateHistoryOrder(historyOrder){
 
   //alert(rest_ID);
   var txt = '顧客:'+m1+'<br>顧客電話:'+m2+'<br>目的地:' + m3 + '<br>代付額:' + m4
-      + '元<br>外送費:50'+50*rest_ID.length+'元<br>'+'時間:'+historyOrder["Order"]["Start_Time"]+'<br>訂單明細:<br>';
+      + '元<br>外送費:'+50*rest_ID.length+'元<br>'+'時間:'+historyOrder["Order"]["Start_Time"]+'<br>訂單明細:<br>';
 	for(var j=0;j<rest_ID.length;j++)
 	{
 		txt=txt+"<br>餐廳:" + rest_ID[j]  +'<br>'; 
