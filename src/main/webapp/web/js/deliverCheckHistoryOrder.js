@@ -6,7 +6,11 @@ function deliverCheckHistoryOrder() {
             dataType: "json",
             success: function (JData) {
                 //alert("get");
-                historyOrder = JData;
+				for(var i=0;i<Jdata.length;i++)
+				{
+					generateHistoryOrder ( JData[i]);
+				}
+                
                 alert("success catch");
                 
             },
@@ -15,7 +19,8 @@ function deliverCheckHistoryOrder() {
                 alert("無法取得歷史紀錄，請重新整理或稍後再試");
             }
         });
-		
+}
+function generateHistoryOrder(historyOrder){	
 	//console.log(historyOrder);
   var m1, m2, m3, m4, m5, m6;
 	
