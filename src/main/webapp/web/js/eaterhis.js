@@ -1,5 +1,6 @@
 
-
+ var te="";
+ var orderid;
 function eatergetorder() {
 
     $.ajax({
@@ -10,7 +11,7 @@ function eatergetorder() {
 
             //alert("SUCCESS!!!");
             var i = 0;
-            var te="";
+           
             var bill="";
             //var stringJData = JSON.stringify(JData);
             //alert(stringJData);
@@ -53,3 +54,40 @@ function eatergetorder() {
 }
 
 
+function eater_finish_order() {
+
+
+    
+    if (te != "") {
+      if (confirm('完成以下訂單?\n'  + te + '\n')) {
+  
+        te = "";
+        //client.send(generatResult(a,true));
+        var temp123;
+        temp123 = "/SendOrderServlet?orderID=" + $.ajax({url: "/ShowOrderServlet",type: "GET",dataType: "json",success: function (JData) {return JData["Order"]["Order_Id"]}});
+  
+        $.ajax({
+          url: temp123,//"/SendOrderServlet?orderID="+Order_Id,
+          type: "get",
+          async: true,
+          dataType: "json",
+          contentType: 'application/json; charset=UTF-8',
+          data: null,
+          success:
+  
+              function (JData_menu) {
+                alert("訂單完成!");
+                //window.location="./index_eater.html";
+  
+                //alert("switch to deliver");
+              }
+        });
+  
+      } else {
+        alert("訂單尚未完成");
+        //client.send(generatResult(a,false));
+      }
+    } else {
+      alert("你現在沒有訂單喔<3");
+    }
+  }
