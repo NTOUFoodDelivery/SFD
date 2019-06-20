@@ -8,6 +8,8 @@ function import_menu(n1, n2) {
         ({
             Rest_Name: n1, Rest_Address: n2
         });
+        n1="'"+n1+"'";
+        n2="'"+n2+"'";
     showmenutemp = "";
     $.ajax({
         url: "/ShowMenuServlet",
