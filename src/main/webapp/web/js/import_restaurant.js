@@ -61,7 +61,7 @@ function import_restaurant(searcher) {
                         '</a>' +
                         '<div class="box">' +
                         '<p>' + rest_infor[i]["Rest_Name"] + "<br>" + rest_infor[i]["Rest_Address"] + '</p>' +
-                        '<a  class="button" onclick="import_menu(' + a1 + ',' + a2 + ')" >Read More</a>' +
+                        '<a  class="button" onclick="import_menu(' + a1 + ',' + a2 + ','+')" >Read More</a>' +
                         '</div>' +
                         '</section>';
 

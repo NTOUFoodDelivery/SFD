@@ -12,7 +12,7 @@ function searcher() {
     var strss = string_search;
 
     if (pagetype == "restaurant") { import_restaurant(strss); }
-    else if(pagetype=="menu"){}
+    else if(pagetype=="menu"){search_menu(strss);}
 
 
 
