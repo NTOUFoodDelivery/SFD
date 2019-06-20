@@ -89,4 +89,28 @@
 		</div>
 
 	</body>
+<script>
+	var url = "/LoginServlet"; // 正式 url
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		success: function (data) {
+			console.log(data);
+			if (data) {
+
+				var userType = data.User_Now;
+				if (userType === "Customer") {
+					window.location = "index_eater.html";
+				} else if(userType === "Deliver"){
+					window.location = "index_deliver.html";
+				}
+
+			} else {
+				console.log("沒人登入！")
+			}
+
+		}
+	})
+</script>
 </html>
