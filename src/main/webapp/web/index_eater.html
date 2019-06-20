@@ -1,121 +1,229 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-			<meta http-equiv="expires" content="0"> 
-			<meta http-equiv="cache-control" content="no-cache"> 
-			<meta http-equiv="pragma" content="no-cache"> 
-		<title>Starburst Food Delivery</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery.dropotron.min.js"></script>
-		<script src="js/skel.min.js"></script>
-		<script src="js/skel-layers.min.js"></script>
-		<script src="js/init.js"></script>
-		<script src="js/import_restaurant.js"></script>
-		<script src="js/import_menu.js"></script>
-		<script src="js/import_eater_cart.js"></script>
-		<!-- <script src="js/eaterhis.js"></script> -->
-		<script src="js/z_logintype.js"></script>
-		<script src="js/logout.js"></script>
-		<script src="js/z_search_menu.js"></script>
-		<noscript>
-			<link rel="stylesheet" href="css/skel.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-wide.css" />
-			
-			<link rel="stylesheet" href="css/email.css" />
-		</noscript>
-		<link rel=stylesheet type="text/css" href="css/email.css">
-		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
-	</head>
-	<body>
 
-		<!-- Wrapper -->
-    
-    <!-- <div class="wrapper style1"> -->
+<head>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">
+	<title>Starburst Food Delivery</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.dropotron.min.js"></script>
+	<script src="js/skel.min.js"></script>
+	<script src="js/skel-layers.min.js"></script>
+	<script src="js/init.js"></script>
+	<script src="js/import_restaurant.js"></script>
+	<script src="js/import_menu.js"></script>
+	<script src="js/import_eater_cart.js"></script>
+	<!-- <script src="js/eaterhis.js"></script> -->
+	<script src="js/z_logintype.js"></script>
+	<script src="js/logout.js"></script>
+	<script src="js/z_search_menu.js"></script>
+	<script src="js/eatergethistory.js"></script>
+	<script src="js/eaterhis.js"></script>
+	<noscript>
+		<link rel="stylesheet" href="css/skel.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/style-wide.css" />
 
-				<!-- Header -->
-					<div id="header" class="skel-panels-fixed">
-						
-							<div id="logo">
-								<a></a>
-							  <h1><a href="../index.html">Starburst Food Delivery</a></h1>
-							<span class="tag">NTOUFoodDelivery</span>
-						</div>
-						<nav id="nav">
-							<ul>
-								
-								<li><a href="javascript:Member_logout()">登出</a></li>
-								<li><a href="javascript:SwitchStatustode()" >切換身分</a></li>
-								<li><a href="javascript: ChangeToCartPage()" >購物車</a></li>
-								<li><a href="javascript: eatergetorder()" >訂單狀態</a></li>
-								<li><a href="javascript: gethistory()" >購買紀錄</a></li>
-							</ul>
-						</nav>
-					</div>
+		<link rel="stylesheet" href="css/email.css" />
+	</noscript>
+	<link rel=stylesheet type="text/css" href="css/email.css">
+	<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+</head>
 
-				<!-- Banner -->
-					<div id="banner" class="container">
-						
+<body>
 
-					</div>
+	<!-- Wrapper -->
 
-				<!-- Extra -->
-				
+	<!-- <div class="wrapper style1"> -->
 
-				<!-- Main -->
-					<div id="main">
-						<div class="container">
-							<div class="row"> 
-									<section class="8u" > <input type='text' id ='searcher' /></section>
-									<section class="2u"> <a class="button" onclick="searcher()" id ='searcherbutton' >搜尋</a></section><br><br>
-								<!-- Content -->
-								<div class="6u">
-									<section> </section>
-								</div>
-								<div class="6u">
-									<section> </section>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="extra">
+	<!-- Header -->
+	<div id="header" class="skel-panels-fixed">
 
-						</div>
+		<div id="logo">
+			<a></a>
+			<h1><a href="../index.html">Starburst Food Delivery</a></h1>
+			<span class="tag">NTOUFoodDelivery</span>
+		</div>
+		<nav id="nav">
+			<ul>
+
+				<li><a href="javascript:Member_logout()">登出</a></li>
+				<li><a href="javascript:SwitchStatustode()">切換身分</a></li>
+				<li><a href="javascript: ChangeToCartPage()">購物車</a></li>
+				<li><a href="javascript: eatergetorder()">訂單狀態</a></li>
+				<li><a herf="javascript: eater_finish_order()">完成訂單</a></li>
+				<li><a href="javascript: eaterCheckHistoryOrder() ">購買紀錄</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<!-- Banner -->
+	<div id="banner" class="container">
+
+
+	</div>
+
+	<!-- Extra -->
+
+
+	<!-- Main -->
+	<div id="main" style="display:none">
+		<div class="container">
+			<div class="row">
+				<section class="8u"> <input type='text' id='searcher' /></section>
+				<section class="2u"> <a class="button" onclick="searcher()" id='searcherbutton'>搜尋</a></section><br><br>
+				<!-- Content -->
+				<div class="6u">
+					<section> </section>
+				</div>
+				<div class="6u">
+					<section> </section>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="extra">
+
+	</div>
+
+
+
+
+	<div id="bill" style="display:none">
+		<section class="12u">
+			<h1 style="color:white">總金額 <h1>123</h1>></h1>
+			<h1 style="color:white">地址:<input type="text" id="address" value=""></h1>
+			<h1 style="color:white">手機:<input type="text" id="cellphone" value=""></h1>
+			<h1 style="color:white">姓名:<input type="text" id="NaME" value=""></h1>
+			<h1 style="color:white">備註:<input type="text" id="others" value=""></h1>
+			<a href="javascript:add_alltosentcart()" class="button">送出訂單</a><br><br><br><br>
+			<a href="javascript:ShowCartPage()" class="button">返回購物車</a>
+
+		</section>
+	</div>
+
+
+	<div id="cart" style="display:none">
+		<section class="12u">
+			<h1 style="color:white">總金額 <h1>123</h1>></h1>
+			<h1 style="color:white">地址:<input type="text" id="address" value=""></h1>
+			<h1 style="color:white">手機:<input type="text" id="cellphone" value=""></h1>
+			<h1 style="color:white">姓名:<input type="text" id="NaME" value=""></h1>
+			<h1 style="color:white">備註:<input type="text" id="others" value=""></h1>
+			<a href="javascript:add_alltosentcart()" class="button">送出訂單</a><br><br><br><br>
+			<a href="javascript:ShowCartPage()" class="button">返回購物車</a>
+
+		</section>
+	</div>
+
+
+
+
 
 	</div>
 
 	<!-- Footer -->
 	<!-- Copyright -->
-		<div id="copyright">
-			<div class="container">
-				<div class="copyright">
-					
-					<ul class="icons">
-						<li><a href="#" class="fa fa-facebook"><span>Facebook</span></a></li>
-						<a>email us</a>
-						<!--<a href="mailto:someone@yoursite.com?cc=someoneelse@theirsite.com, another@thatsite.com, me@mysite.com&bcc=lastperson@theirsite.com&subject=[錯誤回報]我是預設標題&body=請在標題前方加入[錯誤回報]、[提供意見]或[檢舉]的分類 %0A例如:%0A[提供意見]我想新增一間餐廳">Email us</a>-->
+	<div id="copyright">
+		<div class="container">
+			<div class="copyright">
 
-					</ul>
-					<ul class="drop-down-menu">
-					<li><a href="#"><font color="black">聯絡我們</font></a>
+				<ul class="icons">
+					<li><a href="#" class="fa fa-facebook"><span>Facebook</span></a></li>
+					<a>email us</a>
+					<!--<a href="mailto:someone@yoursite.com?cc=someoneelse@theirsite.com, another@thatsite.com, me@mysite.com&bcc=lastperson@theirsite.com&subject=[錯誤回報]我是預設標題&body=請在標題前方加入[錯誤回報]、[提供意見]或[檢舉]的分類 %0A例如:%0A[提供意見]我想新增一間餐廳">Email us</a>-->
+
+				</ul>
+				<ul class="drop-down-menu">
+					<li><a>
+							<font color="black">聯絡我們</font>
+						</a>
 						<ul>
-							<li><a href="mailto:starburstfooddelivery@gmail.com?subject=[錯誤回報]"><font color="black">錯誤回報</font></a>
+							<li><a href="mailto:starburstfooddelivery@gmail.com?subject=[錯誤回報]">
+									<font color="black">錯誤回報</font>
+								</a>
 							</li>
-							<li><a href="mailto:starburstfooddelivery@gmail.com?subject=[提供意見]"><font color="black">提供意見</font></a>
+							<li><a href="mailto:starburstfooddelivery@gmail.com?subject=[提供意見]">
+									<font color="black">提供意見</font>
+								</a>
 							</li>
-							<li><a href="mailto:starburstfooddelivery@gmail.com?subject=[檢舉]"><font color="black">檢舉</font></a>
+							<li><a href="mailto:starburstfooddelivery@gmail.com?subject=[檢舉]">
+									<font color="black">檢舉</font>
+								</a>
 							</li>
+							<li>
+								<script>
+									var yyyyData = {
+										"Customer": {
+											"User_Id": 1,
+											"User_Name": "你好",
+											"Address": "我家",
+											"Other": "gufjdk",
+											"Phone_Number": "02222"
+										},
+										"Order": {
+											"Order_Id": 253678911,
+											"Total": 75,
+											"Type_Count": 2,
+											"Meals": [{
+												"Rest_Name": "阿MAN 早午餐",
+												"Rest_Address": "基隆市中正區中正路822號1樓",
+												"Food_Id": 3,
+												"Food_Name": "麥克雞塊",
+												"Cost": 25,
+												"Count": 2
+											},
+											{
+												"Rest_Name": "阿MAN 早午餐",
+												"Rest_Address": "基隆市中正區中正路822號1樓",
+												"Food_Id": 4,
+												"Food_Name": "蘿蔔糕",
+												"Cost": 25,
+												"Count": 1
+											}
+											],
+											"Start_Time": "2019-05-17 03:31:00",
+											"Order_Status": "WAIT",
+											"CastingPrio": 0
+										}
+									}
+									function oppppp(){$.ajax({
+										url: "/SendOrderServlet",
+										type: "POST",
+										async: true,
+										dataType: "json",
+										contentType: 'application/json; charset=UTF-8',
+										data: yyyyData,
+										success: function (JData_menu) {
+
+										},
+
+										error: function () {
+											alert("無法取得餐廳餐點資訊，請重新整理");
+										}
+
+
+									});}
+
+								</script>
+								<a herf="javascript: oppppp()">
+									tester
+								</a>
+							</li>
+
 						</ul>
 					</li>
-       
-					</ul>
-				</div>
+
+				</ul>
 			</div>
 		</div>
+	</div>
 
-	</body>
+</body>
+
 </html>
