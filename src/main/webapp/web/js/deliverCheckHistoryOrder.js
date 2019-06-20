@@ -87,18 +87,19 @@ function SHowHistoryOrder()
    
     OpenWindow.document.write("<TITLE>配送紀錄</TITLE>");
    
-    OpenWindow.document.write("<BODY BGCOLOR=#ffffff>");
+    OpenWindow.document.write("<BODY style='font-family:DFKai-sb;font-size:2em;'BGCOLOR=#ffffff>");
    
    
    	OpenWindow.document.write(ALLHistoryOrder);
     /*OpenWindow.document.write("<h1>Hello!</h1>");
-
+	
    
     OpenWindow.document.write("New window opened!");*/
 	//OpenWindow.document.write("New window opened!<br>123");
+	OpenWindow.document.write('<br><input onclick="window.close();" value="關閉" type="button">');
     OpenWindow.document.write("</BODY>");
    
     OpenWindow.document.write("</HTML>");
-   
+    
     OpenWindow.document.close();
 }
