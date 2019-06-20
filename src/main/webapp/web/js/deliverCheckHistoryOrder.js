@@ -1,5 +1,8 @@
+var ALLHistoryOrder;
+
 function deliverCheckHistoryOrder() {
 	var historyOrder;
+	ALLHistoryOrder="";
 	$.ajax({
             url: "/ShowHistoryOrderServlet",
             type: "GET",
@@ -11,8 +14,8 @@ function deliverCheckHistoryOrder() {
 					generateHistoryOrder ( JData[i]);
 				}
                 
-                alert("success catch");
-                
+                //alert("success catch");
+                SHowHistoryOrder();
             },
         
             error: function () {
@@ -32,11 +35,9 @@ function generateHistoryOrder(historyOrder){
   m3 = historyOrder["Customer"]["Address"];
   m4 = historyOrder["Order"]["Total"];
   m6 = historyOrder["Order"]["Type_Count"]
-  alert("m1");
+  
   //m5 = deliver_order["meals"][0]["Food_Name"];
   //a = deliver_order["Deliver_Id"];
-  rest_address_for_map = m2;
-  DeleteMarkers();
   //var test=new string(m2);
   var rest_ID= new Array();
   
@@ -75,10 +76,11 @@ function generateHistoryOrder(historyOrder){
 		}
 		
 	}
-	
+	ALLHistoryOrder=ALLHistoryOrder+txt;
+}	
 		
-		
-		
+function SHowHistoryOrder()
+{	
 		
    
     OpenWindow=window.open("", "newwin", "height=250, width=250,toolbar=no,scrollbars="+scroll+",menubar=no");
@@ -88,7 +90,7 @@ function generateHistoryOrder(historyOrder){
     OpenWindow.document.write("<BODY BGCOLOR=#ffffff>");
    
    
-   	OpenWindow.document.write(txt);
+   	OpenWindow.document.write(ALLHistoryOrder);
     /*OpenWindow.document.write("<h1>Hello!</h1>");
 
    
@@ -99,5 +101,4 @@ function generateHistoryOrder(historyOrder){
     OpenWindow.document.write("</HTML>");
    
     OpenWindow.document.close();
-   
 }
