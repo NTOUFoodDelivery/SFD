@@ -6,7 +6,7 @@ function deliverCheckHistoryOrder() {
             dataType: "json",
             success: function (JData) {
                 //alert("get");
-				for(var i=0;i<Jdata.length;i++)
+				for(var i=0;i<JData.length;i++)
 				{
 					generateHistoryOrder ( JData[i]);
 				}
