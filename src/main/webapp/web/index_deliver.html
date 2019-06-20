@@ -44,6 +44,7 @@
 	var Order_Inf;
 	var Deliver_order_ID;
 	var customer_Inf;
+
     function initialize() {
 
       directionsDisplay = new google.maps.DirectionsRenderer();
@@ -167,6 +168,7 @@
           directionsDisplay.setDirections(response);
         }
       });
+	  document.getElementById("directionsPanel").style.backgroundColor='white';
     }
 
   </script>
@@ -229,7 +231,7 @@
       <!-- end center-->
 
       <div style=" height:300px; float:left; width:75%;margin-left:20px;margin-bottom:30px;">
-        <div id="directionsPanel" style="width:75%; height:300px;  overflow-Y:auto;background-color: white;"></div>
+        <div id="directionsPanel" style="width:75%; height:300px;  overflow-Y:auto;background-color=black"></div>
       </div>
 	  
       <div class="clear" style="height:40px"></div>
