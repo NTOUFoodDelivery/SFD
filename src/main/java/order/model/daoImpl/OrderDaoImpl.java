@@ -529,7 +529,7 @@ public class OrderDaoImpl implements OrderDao {
         order.getOrder().setOrderID(resultSet.getLong("History_Id"));
         order.getOrder().setStartTime(resultSet.getString("Start_Time"));
         order.getOrder().setTotal(resultSet.getInt("Total"));
-        order.getOrder().setTypeCount(resultSet.getInt("TYpe_Count"));
+        order.getOrder().setTypeCount(resultSet.getInt("Type_Count"));
         order.getCustomer().setAddress(resultSet.getString("Address"));
         order.getCustomer().setOther(resultSet.getString("Other"));
         order.getCustomer().setAccount(resultSet.getString("Account"));
