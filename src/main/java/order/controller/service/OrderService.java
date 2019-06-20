@@ -207,14 +207,14 @@ public class OrderService {
   public List<Order> showHistoryOrder(User currentUser) {
     orderDao = new OrderDaoImpl();
     userDao = new UserDaoImpl();
-    UserType userType = currentUser.getUserType();
+    UserType userType = currentUser.getUserNow();
     List<Order> result;
     switch (userType) {
       case Customer: {
         result = orderDao.searchEaterHistoryOrder(currentUser.getUserId());
         break;
       }
-      case Customer_and_Deliver: {
+      case Deliver: {
         result = orderDao.searchDeliverHistoryOrder(currentUser.getUserId());
         break;
       }

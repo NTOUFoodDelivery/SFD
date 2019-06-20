@@ -252,7 +252,7 @@ public class MemberService {
 
   private boolean login(HttpSession session, ConcurrentHashMap userHashMap, User user) {
     Long currentUserID = user.getUserId();
-    UserType signUserType = user.getUserType();
+    UserType signUserType = user.getUserNow();
     userDao = new UserDaoImpl();
     boolean result = userDao.modifyUserNow(user.getUserId(), signUserType.toString());
     userDao = null;

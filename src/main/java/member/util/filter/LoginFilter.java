@@ -51,7 +51,7 @@ public class LoginFilter implements Filter {
       //判斷session是否過期 或 沒登入
       if (session.getAttribute("login") == null) {
         System.out.println("請求網址時 還沒 登入！！");
-        response.setHeader("sessionstatus", "timeout");
+        //response.setHeader("sessionstatus", "timeout");
         if (!path.equals(Eater.LOGIN) && !path.equals(Admin.LOGIN) && !path.equals(Eater.SIGN_UP) ) {
           if (eaterWebUrls.contains(path) || deliverWebUrls.contains(path)) {
             response.sendRedirect(Eater.LOGIN);
