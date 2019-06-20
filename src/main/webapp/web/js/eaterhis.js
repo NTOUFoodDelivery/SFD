@@ -1,26 +1,4 @@
-function eatergethistory() {
-    $.ajax({
-        url: "/ShowHistoryOrderServlet",
-        type: "GET",
-        dataType: "json",
-        success: function (JData) {
 
-            //alert("SUCCESS!!!");
-            var i = 0;
-            //var stringJData = JSON.stringify(JData);
-            //alert(stringJData);
-            //這裡改用.each這個函式來取出JData裡的物件
-            // $.each(JData, function () {
-            if (JData == null) alert("沒有購買紀錄悠^^");
-
-
-
-            //  });
-        },
-
-
-    });
-}
 
 function eatergetorder() {
 
@@ -32,25 +10,41 @@ function eatergetorder() {
 
             //alert("SUCCESS!!!");
             var i = 0;
+            var te="";
+            var bill="";
             //var stringJData = JSON.stringify(JData);
             //alert(stringJData);
             //這裡改用.each這個函式來取出JData裡的物件
-            $.each(JData, function () {
+    
                 if (JData == null) alert("還沒有購買喔:)");
                 else {
-                    var m1, m2, m3, m4, m5, m6;
-                    m1 = JData["Rest_Name"];
-                    m2 = JData["Rest_Address"];
-                    m3 = JData["Address"];
-                    m4 = JData["Total"];
-                    m6 = JData["Type_Count"]
-                    m5 = JData["meals"][0]["Food_Name"];
+                    var time = JDate["Order"]["Start_Time"];
+                    var status=JData["Order"]["Order_Status"];
                     a = JData["Deliver_Id"];
+                    for(var i =0;i<JData["Order"]["Type_Count"];i++)
+                    {
+                        bill=bill+"餐廳名稱: "+JData["Order"][i]["Rest_Name"]+"\n";
+                        bill=bill+JData["Order"][i]["Food_Name"]+"\n 數量: "+JData["Order"][i]["Count"]+" 單價: "+JData["Order"][i]["Cost"]
+
+                    }
 
                 }
 
+                te=te+"送出訂單時間: "+time+"\n"
+                te=te+"目前訂單狀態: "+status+"\n"
+                if(status=="DEALING"||"COMFIRMING")
+                {
+                    var deliver=JData["Deliver"]["User_Name"];
+                    var deliverphone=JData["Deliver"]["Phone_Number"];
+                    te=te+"外送員: "+deliver+"\n";
+                    te=te+"外送員電話: "+deliverphone+"\n";
+                }
+                te=te+"餐點總金額"+JData["Order"]["Total"]+"\n";
+                te=te+"訂單資料:\n"+bill;
 
-            })},
+
+                alert(te);
+            },
 
         error: function () {
                     alert("無法取得餐廳資訊，請重新整理");
