@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import member.controller.service.MemberService;
+import member.model.dao.UserDao;
+import member.model.daoImpl.UserDaoImpl;
 import member.model.javabean.MemberApiResponse;
 import member.model.javabean.User;
 import member.util.setting.Validate;
@@ -28,14 +30,14 @@ public class LoginServlet extends HttpServlet {
         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     String account = request.getParameter("account");
     String password = request.getParameter("password");
-
+    System.out.println(account);
     MemberService memberService = new MemberService();
     Validate validate = memberService.login(request, account, password);
     MemberApiResponse memberApiResponse = new MemberApiResponse();
     memberApiResponse.setResult(validate.toString());
-    //memberApiResponse.setMessage("");
     memberApiResponse.setTime(new Date().toString());
-
+    System.out.println(request.getSession());
+    System.out.println(validate);
     String json = gson.toJson(memberApiResponse);
     memberService = null;
 
@@ -52,7 +54,7 @@ public class LoginServlet extends HttpServlet {
     HttpSession httpSession = request.getSession();
     User currentUser = (User) httpSession.getAttribute("user");
     String json = gson.toJson(currentUser);
-
+    System.out.println(request.getSession());
     PrintWriter out = response.getWriter();
     out.println(json);
     out.flush();

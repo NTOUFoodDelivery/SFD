@@ -1,6 +1,6 @@
 var rest_inner;
 var rest_infor;
-import_restaurant("");
+//import_restaurant("");
 function import_restaurant(searcher) {
     if(rest_infor==null)
     {
@@ -140,6 +140,8 @@ function gethistory()
             
             var t=JSON.stringify(JData_);
             alert(t);
+            console.log(t);
+            console.log(JData_);
             
             //alert("switch to deliver");
          }
