@@ -30,8 +30,8 @@ function generateHistoryOrder(historyOrder){
 	
 	
   //Deliver_order_ID = deliver_order["Order"]["Order_Id"];
-  m1 = historyOrder["Order"]["Meals"][0]["Rest_Name"];
-  m2 = historyOrder["Order"]["Meals"][0]["Rest_Address"];
+  m1 = historyOrder["Customer"]["User_Name"];
+  m2 = historyOrder["Customer"]["Phone_Number"];
   m3 = historyOrder["Customer"]["Address"];
   m4 = historyOrder["Order"]["Total"];
   m6 = historyOrder["Order"]["Type_Count"]
@@ -61,8 +61,8 @@ function generateHistoryOrder(historyOrder){
 	}
 
   //alert(rest_ID);
-  var txt = '目的地:' + m3 + '<br>代付額:' + m4
-      + '元<br>外送費:50元<br>訂單明細:<br>';
+  var txt = '顧客:'+m1+'<br>顧客電話:'+m2+'<br>目的地:' + m3 + '<br>代付額:' + m4
+      + '元<br>外送費:50'+50*rest_ID.length+'元<br>訂單明細:<br>';
 	for(var j=0;j<rest_ID.length;j++)
 	{
 		txt=txt+"<br>餐廳:" + rest_ID[j]  +'<br>'; 
