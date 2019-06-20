@@ -503,11 +503,11 @@ public class OrderDaoImpl implements OrderDao {
   public List<Order> searchDeliverHistoryOrder(Long deliverId) {
     List<Order> orderList = new ArrayList<>();
     Connection connection = C3P0Util.getConnection();
-    PreparedStatement preparedStatement = null;
+    PreparedStatement preparedStatement = null;//
     ResultSet resultSet = null;
     try {
       String sql =
-          "SELECT history.History_Id, history.Start_Time, history.Total history.Type_Count, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number "
+          "SELECT history.History_Id, history.Start_Time, history.Total, history.Type_Count, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number "
               +
               "FROM history" +
               " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id "
@@ -529,7 +529,7 @@ public class OrderDaoImpl implements OrderDao {
         order.getOrder().setOrderID(resultSet.getLong("History_Id"));
         order.getOrder().setStartTime(resultSet.getString("Start_Time"));
         order.getOrder().setTotal(resultSet.getInt("Total"));
-        order.getOrder().setTypeCount(resultSet.getInt("TYpe_Count"));
+        order.getOrder().setTypeCount(resultSet.getInt("Type_Count"));
         order.getCustomer().setAddress(resultSet.getString("Address"));
         order.getCustomer().setOther(resultSet.getString("Other"));
         order.getCustomer().setAccount(resultSet.getString("Account"));
