@@ -374,7 +374,7 @@ public class OrderDaoImpl implements OrderDao {
     ResultSet resultSet = null;
     try {
       String sql =
-          "SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other, member.Account, member.User_Name "
+          "SELECT history.History_Id, history.Start_Time, history.Total, history.Type_Count, history.Address, history.Other, member.Account, member.User_Name "
               +
               " FROM history " +
               " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id  "
@@ -396,6 +396,7 @@ public class OrderDaoImpl implements OrderDao {
         order.getOrder().setOrderID(resultSet.getLong("History_Id"));
         order.getOrder().setStartTime(resultSet.getString("Start_Time"));
         order.getOrder().setTotal(resultSet.getInt("Total"));
+        order.getOrder().setTypeCount(resultSet.getInt("Type_Count"));
         order.getCustomer().setAddress(resultSet.getString("Address"));
         order.getCustomer().setOther(resultSet.getString("Other"));
         order.getDeliver().setAccount(resultSet.getString("Account"));
@@ -506,7 +507,7 @@ public class OrderDaoImpl implements OrderDao {
     ResultSet resultSet = null;
     try {
       String sql =
-          "SELECT history.History_Id, history.Start_Time, history.Total, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number "
+          "SELECT history.History_Id, history.Start_Time, history.Total history.Type_Count, history.Address, history.Other,  member.Account, member.User_Name, member.Phone_Number "
               +
               "FROM history" +
               " INNER JOIN history_customer_deliver_info ON history.History_Id = history_customer_deliver_info.History_Id "
@@ -528,14 +529,16 @@ public class OrderDaoImpl implements OrderDao {
         order.getOrder().setOrderID(resultSet.getLong("History_Id"));
         order.getOrder().setStartTime(resultSet.getString("Start_Time"));
         order.getOrder().setTotal(resultSet.getInt("Total"));
+        order.getOrder().setTypeCount(resultSet.getInt("TYpe_Count"));
         order.getCustomer().setAddress(resultSet.getString("Address"));
         order.getCustomer().setOther(resultSet.getString("Other"));
-        order.getDeliver().setAccount(resultSet.getString("Account"));
-        order.getDeliver().setUserName(resultSet.getString("User_Name"));
-        order.getDeliver().setPhoneNumber(resultSet.getString("Phone_Number"));
+        order.getCustomer().setAccount(resultSet.getString("Account"));
+        order.getCustomer().setUserName(resultSet.getString("User_Name"));
+        order.getCustomer().setPhoneNumber(resultSet.getString("Phone_Number"));
 
         ResultSet mealResultSet = null;
         String mealSql =
+        		
             "SELECT history_food.Food_Name, history_food.Count, history_food.Rest_Name " +
                 "  FROM history " +
                 " INNER JOIN history_food ON history.History_Id = history_food.History_Id " +
