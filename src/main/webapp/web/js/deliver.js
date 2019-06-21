@@ -53,8 +53,8 @@ function generatResult(Deliver_Id, accept) {
     "accept": accept
   };
 }
-//var rest_address= new Array();
-//var rest_ID= new Array();
+var rest_address= new Array();
+var rest_ID= new Array();
 function OrderIsComing(deliver_order) {
 	//alert(deliver_order);
   console.log(deliver_order)
@@ -78,8 +78,8 @@ function OrderIsComing(deliver_order) {
   rest_address_for_map = m2;
   DeleteMarkers();
   //var test=new string(m2);
-  var rest_ID= new Array();
-  var rest_address= new Array();
+  rest_ID= [];
+  rest_address= [];
   rest_ID.push(deliver_order["Order"]["Meals"][0]["Rest_Name"]);
   rest_address.push(deliver_order["Order"]["Meals"][0]["Rest_Address"]);
 	for (var i = 0; i < m6; i++) 
@@ -102,7 +102,7 @@ function OrderIsComing(deliver_order) {
   //alert(rest_ID);
   var txt = '目的地:' + m3 + '\n代付額:' + m4
       + '元\n外送費:50元\n訂單明細:\n';
-	//var selectRest="";
+	var selectRest="";
 	for(var j=0;j<rest_ID.length;j++)
 	{
 		txt=txt+"\n餐廳:" + rest_ID[j] + '\n餐廳地址:' + rest_address[j] +'\n'; 
@@ -114,8 +114,8 @@ function OrderIsComing(deliver_order) {
 				+ deliver_order["Order"]["Meals"][i]["Count"] + "個\n";
 				}
 		}
-		//selectRest=selectRest+'<option value="'+rest_address[j]+'">餐廳'+(j+1)+'</option>';
-		//document.getElementById("restSelect").innerHTML = selectRest;
+		selectRest=selectRest+'<option value="'+rest_address[j]+'">餐廳'+(j+1)+'</option>';
+		document.getElementById("restSelect").innerHTML = selectRest;
 	}
 	
   //import_Order_menu(m1,m2,txt);

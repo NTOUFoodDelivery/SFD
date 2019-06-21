@@ -139,7 +139,7 @@
       var request;
       var start;
       var end = "俞家鮮魚湯";
-	  //mark_rest();//重新標記選取的餐廳
+	  mark_rest();//重新標記選取的餐廳
       if (selectedAgree == "yes") {
 
         getUrposition();
@@ -224,8 +224,8 @@
       <option value="DRIVING">開車</option>
       <option value="WALKING">步行</option>
     </select>
-	<!--<select id="restSelect" style="margin-top:2px;">
-    </select>-->
+	<select id="restSelect" style="margin-top:2px;">
+    </select>
     <input type="button" value="前往!" id="go" onclick="calcRoute();" style="margin-left:10px"/><br/>
 
     <div style="margin-top:-20px">
