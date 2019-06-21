@@ -22,7 +22,7 @@
     <filter-class>member.util.filter.LoginFilter</filter-class>
     <init-param>
       <param-name>excludedUrls</param-name>
-      <param-value>/LoginServlet,/LoginServlet/admin,/pushOrderEndpoint,/ShowMenuServlet,/ShowRestInfoServlet
+      <param-value>/LoginServlet,/LoginServlet/admin,/SignUpServlet,/pushOrderEndpoint,/ShowMenuServlet,/ShowRestInfoServlet
       </param-value>
     </init-param>
     <init-param>

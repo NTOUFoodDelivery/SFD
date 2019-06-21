@@ -304,23 +304,24 @@
     var userNow = $('#userNow')[0].value;
     var userStatus = $('#userStatus')[0].value;
 
-    var json = `{
-      "User_Id": ${userID},
-      "Account": ${account},
-      "Password": ${password},
-      "User_Name": ${userName},
-      "Email": ${email},
-      "Phone_Number": ${phoneNumber},
-      "Last_Address": ${address},
-      "User_Type": ${userType},
-      "User_Now": ${userNow},
-      "User_Status": ${userStatus}
-    }`;
+    var json = {
+      "User_Id": userID,
+      "Account": account,
+      "Password": password,
+      "User_Name": userName,
+      "Email": email,
+      "Phone_Number": phoneNumber,
+      "Last_Address": address,
+      "User_Type": userType,
+      "User_Now": userNow,
+      "User_Status": userStatus
+    }
+    console.log(json)
     $.ajax({
       url: '/SignUpServlet',
       type: 'POST',
-      data: json,
       dataType: 'json',
+      data: JSON.stringify(json),
       success: function (data) {
         console.log(data);
         if (data.result === "SUCCESS") {
