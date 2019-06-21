@@ -1,11 +1,11 @@
 var cart_inner;
-var _sent_bill;
+var _sent_bill=0;
 
 
 function _additemtocart(foodname, cost, id, restaurant, restaurantadress) {
     var getcountid = "buy_count" + id;
     var count = document.getElementById(getcountid).value;
-    if (_sent_bill == null) {
+    if (_sent_bill == 0) {
         _sent_bill = [
             {
                 "Rest_Name": restaurant,
@@ -108,11 +108,56 @@ function _sentbill() {
         switchpage("rest");
 }
 
-function _cartpage() {
+
+function _billpage()
+{
+    switchpage("bill");
+
+}
+function set_sent_meals() {
+
+}
+
+var _sent_bill=0;
+function opcartpage() {
     switchpage("cart");
-    if(_sent_bill==null)
+    _sent_bill={
+        "Customer": {
+           "User_Id": 1,
+           "User_Name": "你好",
+           "Address": "我家",
+           "Other": "gufjdk",
+           "Phone_Number": "02222"
+        },
+        "Order": {
+           "Order_Id": 253678911,
+           "Total": 75,
+           "Type_Count": 2,
+           "Meals": [{
+                 "Rest_Name": "阿MAN 早午餐",
+                 "Rest_Address": "基隆市中正區中正路822號1樓",
+                 "Food_Id": 3,
+                 "Food_Name": "麥克雞塊",
+                 "Cost": 25,
+                 "Count": 2
+              },
+              {
+                 "Rest_Name": "阿MAN 早午餐",
+                 "Rest_Address": "基隆市中正區中正路822號1樓",
+                 "Food_Id": 4,
+                 "Food_Name": "蘿蔔糕",
+                 "Cost": 25,
+                 "Count": 1
+              }
+           ],
+           "Start_Time": "2019-05-17 03:31:00",
+           "Order_Status": "WAIT",
+           "CastingPrio": 0
+        }
+     }
+    if(_sent_bill!=null)
     {
-        <div class="box" style="display:none"><p></p><a>刪除項目</a></div>
+      
         var insi="";
         for(var i=0;i<_sent_bill.length;i++)
         {
@@ -136,15 +181,6 @@ function _cartpage() {
 
 }
 
-
-function _billpage()
-{
-    switchpage("bill");
-
-}
-function set_sent_meals() {
-
-}
 
 function _deleteitem(id)
 {

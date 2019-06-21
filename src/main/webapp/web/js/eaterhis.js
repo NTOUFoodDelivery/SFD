@@ -48,7 +48,7 @@ function eatergetorder() {
             },
 
         error: function () {
-                    alert("無法取得餐廳資訊，請重新整理");
+                    alert("無法取得訂單資訊");
                 }
     });
 }
