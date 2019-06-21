@@ -176,6 +176,7 @@ public class MemberService {
     if (!currentUser.getUserNow().equals(userType)) { // 不同身份 才要變
       if (userDao.modifyUserNow(userId, userType.toString()) && userDao.modifyUserStatus(userId,
           UserStatus.DELIVER_OFF.toString())) {
+        currentUser.setUserStatus(UserStatus.DELIVER_ON);
         currentUser.setUserNow(UserType.Deliver); // 更新 session user 的狀態 為可推播
         success = true;
       } else { // 還原
@@ -193,6 +194,7 @@ public class MemberService {
     if (!currentUser.getUserNow().equals(userType)) { // 不同狀態 才要變
       if (userDao.modifyUserNow(userId, userType.toString()) && userDao.modifyUserStatus(userId,
           UserStatus.CUSTOMER.toString())) {
+        currentUser.setUserStatus(UserStatus.CUSTOMER);
         currentUser.setUserNow(UserType.Customer); // 更新 session user 的狀態 為可推播
         success = true;
       } else { // 還原
