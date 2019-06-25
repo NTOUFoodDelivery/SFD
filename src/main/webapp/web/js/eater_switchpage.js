@@ -56,6 +56,7 @@ function switchtobill()
 
 }
 
+var kl;
 
 
 function seeeentbill()
@@ -64,10 +65,10 @@ function seeeentbill()
     const timestamp = Math.floor(dateTime / 1000);
     var json = {
       "Customer": {
-         "User_Id": 1,
-         "User_Name": "你好",
-         "Account":"sadsd",
-         "Address": "我家",
+         "User_Id": 2,
+         "User_Name": "Testc",
+         "Account":"c",
+         "Address": "C.address",
          "Other": "gufjdk",
          "Phone_Number": "02222"
       },
@@ -104,6 +105,19 @@ function seeeentbill()
       data:JSON.stringify(json),
       success: function (data) {console.log(data)}
     })
-
+    kl=timestamp;
 switchpage("rest");
+}
+
+
+function endbill()
+{
+    var op="SendOrderServlet?orderID="+kl;
+    $.ajax({
+        url: op,
+        type: "GET",
+        dataType: "json",
+        data:JSON.stringify(json),
+        success: function (data) {console.log(data)}
+      })
 }
